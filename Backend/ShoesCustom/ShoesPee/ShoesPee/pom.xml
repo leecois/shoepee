@@ -14,7 +14,7 @@
 	<name>ShoesPee</name>
 	<description>Project service shoes</description>
 	<properties>
-		<java.version>21</java.version>
+		<java.version>20</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -64,6 +64,18 @@
 					</excludes>
 				</configuration>
 			</plugin>
+
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<version>3.11.0</version> <!-- Make sure this version supports Java 21 -->
+						<configuration>
+							<source>20</source> <!-- Set this to the version of Java you're using -->
+							<target>20</target> <!-- Set this to the version of Java you're using -->
+						</configuration>
+					</plugin>
+
+
 		</plugins>
 	</build>
 
