@@ -30,7 +30,6 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
 
-    # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     - name: Distribute jar-war file # Gửi file .jar .war đi đâu, CD nhảy vào ...
         run: mkdir staging && cp target/*.jar staging # tạo thư mục staging chứa file .jar .war sau khi build      
      
