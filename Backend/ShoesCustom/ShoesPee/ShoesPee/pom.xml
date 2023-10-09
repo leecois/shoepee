@@ -68,13 +68,17 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-compiler-plugin</artifactId>
-						<version>3.11.0</version> <!-- Make sure this version supports Java 21 -->
+						<version>3.11.0</version>
 						<configuration>
-							<source>20</source> <!-- Set this to the version of Java you're using -->
-							<target>20</target> <!-- Set this to the version of Java you're using -->
+							<source>20</source>
+							<target>20</target>
 						</configuration>
 					</plugin>
-
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.22.2</version>
+			</plugin>
 
 		</plugins>
 	</build>
