@@ -73,6 +73,18 @@
 							<source>20</source>
 							<target>20</target>
 						</configuration>
+						<executions>
+							<execution>
+								<id>copy-dependencies</id>
+								<phase>package</phase>
+								<goals>
+									<goal>compile</goal>
+								</goals>
+								<configuration>
+									<outputDirectory>${project.build.directory}/staging</outputDirectory>
+								</configuration>
+							</execution>
+						</executions>
 					</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
