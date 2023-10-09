@@ -1,19 +1,22 @@
-import React from 'react'
-import Billboard from '../../components/Billboard/Billboard';
-import ShoeCanvasPicker from '../../components/ShoePicker/ShoeCanvasPicker';
+import React from "react";
+import Hero from "../../components/Hero/Hero";
+import Billboard from "../../components/Billboard/Billboard";
+import HeroMessage from "../../components/Hero/HeroMessage";
+import Footer from "../../components/footer";
+import StepCustomize from "../../components/Steps/stepsCustomize";
+import StepCleaning from "../../components/Steps/stepsCleaning";
 
 const HomePage = () => {
   return (
     <div>
-        <Billboard />
-        <h1>Request a Custom Quote - Waitlist!</h1>
-        <ShoeCanvasPicker />
-
-        <div>
-            orther content
-        </div>
+      <Hero />
+      <HeroMessage />
+      <StepCustomize />
+      <Billboard />
+      <StepCleaning />
+      <Footer />
     </div>
-  )
-}
+  );
+};
 
 export default HomePage;

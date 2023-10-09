@@ -434,6 +434,11 @@ export default function Navigation() {
           </div>
         </nav>
       </header>
+      <img
+        src="https://images.vans.com/is/image/VansBrand/clp-hero-top?$fullres$" // Replace with the URL of your image
+        alt="color"
+        className="w-full"
+      />
     </div>
   )
 }
