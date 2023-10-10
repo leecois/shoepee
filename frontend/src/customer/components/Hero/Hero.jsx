@@ -10,13 +10,13 @@ const Hero = () => {
           {/* ::Hero Inner */}
           <div className="p-5 flex flex-col justify-center items-center lg:items-start text-center lg:text-left">
             {/* Hero Title */}
-            <h1 className="py-10 text-3xl sm:text-5xl font-light tracking-wide leading-tight">Shoepee, <br/>Sneaker cleaning, <br/>Shoe by you.</h1>
+            <h1 className="py-10 text-3xl sm:text-5xl font-light tracking-wide leading-tight">Shoepee, <br/>Shoe cleaning, <br/>Shoe by you custom shoes.</h1>
             {/* Starting Price */}
             <p className="text-lg font-semibold text-gray-400 tracking-wide">Starting at $1</p>
             {/* Buttons */}
             <div className="mt-10 flex flex-col sm:flex-row items-center">
-              <button className="m-1.5 py-2.5 px-5 rounded-md bg-teal-300 text-white font-semibold uppercase hover:bg-teal-400">Start your customize</button>
-              <button className="m-1.5 py-2.5 px-5 rounded-md border-2 border-gray-300 text-gray-400 font-semibold uppercase hover:text-teal-400 hover:border-teal-400">SCHEDULE YOUR SNEAKER CLEANING AND PICK-UP</button>
+              <button className="m-1.5 py-2.5 px-5 rounded-md bg-black text-white font-semibold uppercase hover:bg-red-800">Start your customize</button>
+              <button className="m-1.5 py-2.5 px-5 rounded-md border-2 border-black text-gblack font-semibold uppercase hover:text-teal-400 hover:border-teal-400">SCHEDULE YOUR SNEAKER CLEANING AND PICK-UP</button>
             </div>
           </div>
         </div>

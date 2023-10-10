@@ -251,12 +251,7 @@ export default function Navigation() {
 
                 <div className="border-t border-gray-200 px-4 py-6">
                   <a href="#" className="-m-2 flex items-center p-2">
-                    <img
-                      src="https://tailwindui.com/img/flags/flag-canada.svg"
-                      alt=""
-                      className="block h-auto w-5 flex-shrink-0"
-                    />
-                    <span className="ml-3 block text-base font-medium text-gray-900">CAD</span>
+                    <span className="ml-3 block text-base font-medium text-gray-900">VN</span>
                     <span className="sr-only">, change currency</span>
                   </a>
                 </div>
@@ -283,10 +278,10 @@ export default function Navigation() {
               {/* Logo */}
               <div className="ml-4 flex lg:ml-0">
                 <a href="#">
-                  <span className="sr-only">Your Company</span>
+                  <span className="sr-only">Shoepee</span>
                   <img
-                    className="h-20 w-auto"
-                    src="/logoshopee.svg"
+                    className="h-10 w-auto"
+                    src="/boot.png"
                     alt=""
                   />
                 </a>

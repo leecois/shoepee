@@ -29,7 +29,7 @@ const HeroMessage = () => {
           your shoe and make them yours.
         </p>
         <button className="bg-gray-600 hover:bg-black text-white font-bold py-3 px-8 rounded-full">
-          CUSTOMIZE YOUR SHOE
+          Customise
         </button>
       </div>
     </div>
