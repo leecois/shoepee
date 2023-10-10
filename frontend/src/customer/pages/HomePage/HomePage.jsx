@@ -11,9 +11,9 @@ const HomePage = () => {
   return (
     <div>
       <Hero />
+      <Billboard />
       <StepCustomize />
       <HeroMessage />
-      <Billboard />
       <StepCleaning />
       <CleaningSection />
       <Testimonial />
