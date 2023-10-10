@@ -248,13 +248,6 @@ export default function Navigation() {
                     </a>
                   </div>
                 </div>
-
-                <div className="border-t border-gray-200 px-4 py-6">
-                  <a href="#" className="-m-2 flex items-center p-2">
-                    <span className="ml-3 block text-base font-medium text-gray-900">VN</span>
-                    <span className="sr-only">, change currency</span>
-                  </a>
-                </div>
               </Dialog.Panel>
             </Transition.Child>
           </div>
@@ -395,13 +388,6 @@ export default function Navigation() {
                   <span className="h-6 w-px bg-gray-200" aria-hidden="true" />
                   <a href="#" className="text-sm font-medium text-gray-700 hover:text-gray-800">
                     Create account
-                  </a>
-                </div>
-
-                <div className="hidden lg:ml-8 lg:flex">
-                  <a href="#" className="flex items-center text-gray-700 hover:text-gray-800">
-                    <span className="ml-3 block text-sm font-medium">VN</span>
-                    <span className="sr-only">, change currency</span>
                   </a>
                 </div>
 
