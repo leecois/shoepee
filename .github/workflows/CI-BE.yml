@@ -1,0 +1,40 @@
+name: CI with GitHub Actions using Maven and JUnit | © 2023 by minhchan
+
+
+on:
+  push:
+  pull_request:
+    branches: [ main ]
+
+jobs: 
+
+  build:
+
+    runs-on: ubuntu-latest
+
+
+    steps:
+
+      - name: Check-out repository 
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 20 
+        uses: actions/setup-java@v3 
+        with:
+          java-version: '20' 
+          distribution: 'temurin'
+          cache: maven
+     
+      - name: Build project with Maven
+        run: mvn -B package --file Backend/ShoesCustom/ShoesPee/ShoesPee/pom.xml
+      
+      # - name: Distribute jar-war file 
+      #   run: mkdir staging && cp target/*.jar staging     
+     
+      # - name: Make hyperlink to jar-war file 
+      #   uses: actions/upload-artifact@v1
+      #   with:
+      #     name: 1.0-SNAPSHOT.jar 
+      #     path: staging
+
+

@@ -9,6 +9,6 @@ public interface UserService {
     User getUserById(Long id);
     void removeUser(Long id);
     User editUser(Long id,User newUser);
-    
+
 
 }
