@@ -14,7 +14,7 @@ const SignUp = () => {
                 <div className='w-full flex flex-col max-w-[520px]'>
                     <div className='w-full flex flex-col mb-2'>
                         <h3 className='text-3xl font-semibold mb-2'> REGISTER </h3>
-                        <p className='font-light text-base mb-8'>PLEASE ENTER YOUR DETAILS. </p>
+                        <p className='font-light text-base mb-8'>PLEASE ENTER YOUR DETAILS.</p>
                     </div>
                     <div className='w-full flex flex-col'>
                         <input
@@ -44,7 +44,7 @@ const SignUp = () => {
                     <div className='w-full flex item-center justify-between'>
                         <div className='w-full flex items-center'>
                             <input type="checkbox" className='w-4 h-4 mr-2 my-3' />
-                            <p className='text-sm'>Agree to our Term</p><br />
+                            <p className='text-sm'>Agree to our Terms</p><br />
                         </div>
                     </div>
                     <div className='w-full flex flex-col'>
