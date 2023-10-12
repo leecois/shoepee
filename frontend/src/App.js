@@ -1,20 +1,14 @@
-import Navigation from "./customer/components/Navigation/Navigation";
-import HomePage from "./customer/pages/HomePage/HomePage";
-import Footer from "./customer/components/Footer/footer";
-import "./App.css";
-
-function App() {
+import React from "react";
+import { BrowserRouter as Router } from "react-router-dom";
+import CustomerRouters from "./Routers/CustomerRouters";
+const App = () => {
   return (
-    <div className="">
-      <Navigation />
+    <Router>
       <div>
-        <HomePage />
+        <CustomerRouters />
       </div>
-      <div>
-        <Footer />
-      </div>
-    </div>
+    </Router>
   );
-}
+};
 
 export default App;
