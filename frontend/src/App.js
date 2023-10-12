@@ -1,6 +1,6 @@
 import React from "react";
-import { BrowserRouter as Router } from "react-router-dom"; 
-import CustomerRouters from "./Routers/CustomerRouters"; 
+import { BrowserRouter as Router } from "react-router-dom";
+import CustomerRouters from "./Routers/CustomerRouters";
 const App = () => {
   return (
     <Router>

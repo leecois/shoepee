@@ -9,7 +9,7 @@ const SignIn = () => {
             </div>
             <div className='lg:w-1/2 w-full h-full bg-white  flex  flex-col p-20 justify-between items-center '>
                 <img
-                    className=" flex h-10 lg:w-auto transition-transform transform hover:scale-110"
+                    className=" flex h-20 lg:w-auto transition-transform transform hover:scale-110"
                     src="/logoshoepee.png"
                     alt=""
                 />
@@ -40,8 +40,6 @@ const SignIn = () => {
                     </div>
                     <div className='w-full flex flex-col'>
                         <button className='w-full text-white my-2 bg-[black] font-semibold rounded-md  p-4 text-center flex items-center justify-center cursor-pointer'>LOGIN</button>
-                        <button className='w-full text-black my-2 bg-[white] font-semibold border-2 border-black rounded-md  p-4 text-center flex items-center justify-center cursor-pointer'>REGISTER</button>
-
                     </div>
                 </div>
 
