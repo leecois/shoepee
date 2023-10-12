@@ -131,7 +131,7 @@
 -- INSERT INTO tblOrderDetail (orderId,quantity,unitPrice,subtotal) VALUES (1,4,'200','1500');
 -- select * from tbluser
 
-tblorderdetailtbluseruserId
+-- tblorderdetailtbluseruserId
 create database shoePee;
 use shoePee;
 create table tblUserRole(
