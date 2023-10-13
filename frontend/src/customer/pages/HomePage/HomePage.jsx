@@ -6,6 +6,7 @@ import StepCustomize from "../../components/Steps/stepsCustomize";
 import StepCleaning from "../../components/Steps/stepsCleaning";
 import CleaningSection from "../../components/Sections/CleaningSection";
 import Testimonial from "../../components/Testimonial/testimonial";
+import { Footer } from "antd/es/layout/layout";
 
 const HomePage = () => {
   return (
@@ -17,6 +18,7 @@ const HomePage = () => {
       <StepCleaning />
       <CleaningSection />
       <Testimonial />
+      <Footer/>
     </div>
   );
 };

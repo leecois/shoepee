@@ -11,6 +11,7 @@ const CustomerRouters = () => {
         <Routes>
             <Route path='/' element={<HomePage />}></Route>
         </Routes>
+        
     </div>
   )
 }
