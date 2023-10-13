@@ -22,9 +22,9 @@ const Hero = () => {
             </p>
             {/* Buttons */}
             <div className="mt-10 flex flex-col sm:flex-row items-center">
-              <button className="m-1.5 py-2.5 px-5 rounded-md bg-black text-white font-semibold uppercase hover:bg-red-800">
+              <a href="/product" className="m-1.5 py-2.5 px-5 rounded-md bg-black text-white font-semibold uppercase hover:bg-red-800">
                 Start your customize
-              </button>
+              </a>
               <button className="m-1.5 py-2.5 px-5 rounded-md border-2 border-black text-gblack font-semibold uppercase hover:text-teal-400 hover:border-teal-400">
                 SCHEDULE YOUR SNEAKER CLEANING AND PICK-UP
               </button>

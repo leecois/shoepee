@@ -4,7 +4,6 @@ import com.ToDoiVar.ShoesPee.Models.User;
 import com.ToDoiVar.ShoesPee.Services.UserService;
 import com.ToDoiVar.ShoesPee.repositiory.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,41 +15,33 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserService userService;
-    @GetMapping("/user")
-    public List<User> getUsers(){
-
-        return userService.readAll();
+    @PostMapping("/createuser")
+    public ResponseEntity<User> createUser(@RequestBody User newUser){
+        return new ResponseEntity<User>(userService.createUser(newUser),HttpStatus.CREATED);
     }
-    @PostMapping("/saveUser")
-     public User saveUser(@RequestBody User user){
-        return userService.saveUser(user);
+    @GetMapping("/users")
+    public ResponseEntity<List<User>> getALlUser(){
+        return new ResponseEntity<List<User>>(userService.getAllUser(),HttpStatus.OK);
     }
     @GetMapping("/user/{id}")
-    public User getUserById(@PathVariable Long id){
-        return  userService.getUserById(id);
+    public ResponseEntity<User> getUserById(@PathVariable Long id){
+        return new ResponseEntity<User>(userService.getUserById(id),HttpStatus.OK);
     }
-    @DeleteMapping("/removeUser/{id}")
-    public ResponseEntity<HttpStatus> deleteUser( @PathVariable Long id){
+    @GetMapping("/deleteuser/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable Long id){
         userService.removeUser(id);
-        return new ResponseEntity<HttpStatus>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<String>("Delete sucessful",HttpStatus.OK);
     }
-    @Autowired
-    public UserRepository userRepository;
-    @PutMapping("/updateuser/{id}")
-
-    public ResponseEntity<User> updateUser(@RequestBody User newUser,@PathVariable Long id){
-            User updateUser = userRepository.findById(id).map(user -> {
-                user.setUserName(newUser.getUserName());
-                user.setPassword(newUser.getPassword());
-                user.setAddress(newUser.getAddress());
-                user.setPhone(newUser.getPhone());
-                user.setRoleId(newUser.getRoleId());
-                return userRepository.save(newUser);
-            }).orElseGet(() -> {
-                newUser.setUserId(id);
-                return userRepository.save(newUser);
-            });
-            return ResponseEntity.ok(updateUser);
-
+    @PostMapping("/edituser/{id}")
+    public ResponseEntity<User> editUser(@PathVariable Long id,@RequestBody User newUser){
+            return new ResponseEntity<User>(userService.editUser(id,newUser),HttpStatus.OK);
+    }
+    @GetMapping("/username/{name}")
+    public  ResponseEntity<User> getUserByName(@PathVariable String name){
+        User user = userService.fineUserByName(name);
+        if(user == null){
+            return new  ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new  ResponseEntity<>(user,HttpStatus.OK);
     }
 }
