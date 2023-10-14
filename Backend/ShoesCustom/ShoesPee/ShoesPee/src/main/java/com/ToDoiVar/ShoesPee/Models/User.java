@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 @Data
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "userid")
     private long userId;
     @Column(name = "username")

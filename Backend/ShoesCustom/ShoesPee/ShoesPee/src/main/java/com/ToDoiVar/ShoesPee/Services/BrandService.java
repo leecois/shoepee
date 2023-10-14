@@ -1,6 +1,6 @@
 package com.ToDoiVar.ShoesPee.Services;
 
-import com.ToDoiVar.ShoesPee.repositiory.Brand;
+import com.ToDoiVar.ShoesPee.Models.Brand;
 import com.ToDoiVar.ShoesPee.repositiory.BrandRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

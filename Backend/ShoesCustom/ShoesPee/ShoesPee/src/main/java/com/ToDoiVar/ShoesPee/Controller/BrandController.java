@@ -1,6 +1,6 @@
 package com.ToDoiVar.ShoesPee.Controller;
 
-import com.ToDoiVar.ShoesPee.repositiory.Brand;
+import com.ToDoiVar.ShoesPee.Models.Brand;
 import com.ToDoiVar.ShoesPee.Services.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
