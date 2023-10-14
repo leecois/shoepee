@@ -1,4 +1,4 @@
-package com.ToDoiVar.ShoesPee.Models;
+package com.ToDoiVar.ShoesPee.repositiory;
 
 import jakarta.persistence.*;
 

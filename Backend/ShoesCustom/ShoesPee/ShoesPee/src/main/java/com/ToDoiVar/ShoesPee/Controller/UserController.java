@@ -36,4 +36,12 @@ public class UserController {
     public ResponseEntity<User> editUser(@PathVariable Long id,@RequestBody User newUser){
             return new ResponseEntity<User>(userService.editUser(id,newUser),HttpStatus.OK);
     }
+    @GetMapping("/username/{name}")
+    public  ResponseEntity<User> getUserByName(@PathVariable String name){
+        User user = userService.fineUserByName(name);
+        if(user == null){
+            return new  ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new  ResponseEntity<>(user,HttpStatus.OK);
+    }
 }
