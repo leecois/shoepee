@@ -13,12 +13,12 @@ import lombok.NoArgsConstructor;
 public class ShoeModels {
     @Id
     @Column(name = "modelid")
-    private Long modelId;
+    private int modelId;
     @Column(name = "brandid")
     private Long brandId;
     @Column(name = "modelname")
-    private String modelName;
+    private String modelname;
     @Column(name = "imageurl")
-    private String imageUrl;
+    private String imageurl;
 
 }

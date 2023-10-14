@@ -17,7 +17,7 @@ public class shoeModelController {
     @Autowired
     private final ShoeModelService shoeModelService;
     @PostMapping("/addShoemodel")
-    public ShoeModels addShoeModel(ShoeModels newShoeModel){
+    public ShoeModels addShoeModel(@RequestBody ShoeModels newShoeModel){
         return shoeModelService.addShoeModel(newShoeModel);
     }
     @GetMapping("/getallshoemodel")
@@ -25,7 +25,7 @@ public class shoeModelController {
         return new ResponseEntity<>(shoeModelService.getAllShoeModel(), HttpStatus.FOUND);
     }
     @GetMapping("/getshoemodelbyid/{id}")
-    public ShoeModels getShoeModelById(@PathVariable Long id){
+    public ShoeModels getShoeModelById(@PathVariable int id){
         return shoeModelService.getShoeModelById(id);
     }
     @GetMapping("/getshoemodelbyname/{name}")
@@ -33,11 +33,11 @@ public class shoeModelController {
         return shoeModelService.getShoeModelByName(name);
     }
     @PutMapping("/editshoemode/{id}")
-    public ShoeModels editShoeModel(@PathVariable Long id,@RequestBody ShoeModels editShoeModel){
+    public ShoeModels editShoeModel(@PathVariable int id,@RequestBody ShoeModels editShoeModel){
         return shoeModelService.updateShoeModel(id,editShoeModel);
     }
     @DeleteMapping("/removeshoemodel/{id}")
-    public void removeShoeModel(@PathVariable Long id){
+    public void removeShoeModel(@PathVariable int id){
        shoeModelService.removeShoeModel(id);
     }
 }

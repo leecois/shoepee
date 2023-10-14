@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface ShoeModelRepository extends JpaRepository<ShoeModels,Long> {
-    Optional <ShoeModels> getShoeModelsByModelName(String modeName);
+public interface ShoeModelRepository extends JpaRepository<ShoeModels,Integer> {
+    Optional <ShoeModels> getShoeModelsByModelname(String modeName);
 
 }
