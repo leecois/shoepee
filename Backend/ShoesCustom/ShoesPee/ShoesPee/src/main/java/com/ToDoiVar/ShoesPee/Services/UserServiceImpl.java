@@ -1,6 +1,5 @@
 package com.ToDoiVar.ShoesPee.Services;
 
-import com.ToDoiVar.ShoesPee.Models.Brand;
 import com.ToDoiVar.ShoesPee.Models.User;
 import com.ToDoiVar.ShoesPee.repositiory.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class    UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService{
     @Autowired
     private UserRepository userRepository;
     @Override
@@ -37,7 +36,7 @@ public class    UserServiceImpl implements UserService{
     }
     public User editUser(Long id,User newUser){
         Optional<User> updateuser = Optional.of(userRepository.findById(id).map(user -> {
-            user.setUserName(newUser.getUserName());
+            user.setUsername(newUser.getUsername());
             user.setPassword(newUser.getPassword());
             user.setAddress(newUser.getAddress());
             user.setPhone(newUser.getPhone());
@@ -51,7 +50,10 @@ public class    UserServiceImpl implements UserService{
         return newUser;
     }
 
-
+    @Override
+    public User fineUserByName(String name) {
+        return userRepository.findByUsername(name);
+    }
 
 
 }
