@@ -1,8 +1,8 @@
 import { Fragment, useState } from "react";
 import { Dialog, Popover, Tab, Transition } from "@headlessui/react";
+import AuthModal from "../../features/Auth/components/AuthModal/AuthModal";
 import {
   Bars3Icon,
-  MagnifyingGlassIcon,
   ShoppingBagIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
@@ -134,9 +134,20 @@ function classNames(...classes) {
 
 export default function Navigation() {
   const [open, setOpen] = useState(false);
+  const [openAuthModal, setOpenAuthModal] = useState(false);
+
+  // Function to open the sign-in modal
+  const handleClickOpen = () => {
+    setOpenAuthModal(true);
+  };
+
+  // Function to close the sign-in modal
+  const handleClose = () => {
+    setOpenAuthModal(false);
+  };
 
   return (
-    <div className="bg-white relative z-60">
+    <div className="bg-white relative z-50">
       {/* Mobile menu */}
       <Transition.Root show={open} as={Fragment}>
         <Dialog as="div" className="relative z-40 lg:hidden" onClose={setOpen}>
@@ -277,20 +288,13 @@ export default function Navigation() {
 
                 <div className="space-y-6 border-t border-gray-200 px-4 py-6">
                   <div className="flow-root">
-                    <a
-                      href="#"
-                      className="-m-2 block p-2 font-medium text-gray-900"
+                    <button
+                      type="button"
+                      className="relative -m-2 inline-flex items-center justify-center rounded-md p-2 text-gray-400"
+                      onClick={handleClickOpen}
                     >
                       Sign in
-                    </a>
-                  </div>
-                  <div className="flow-root">
-                    <a
-                      href="#"
-                      className="-m-2 block p-2 font-medium text-gray-900"
-                    >
-                      Create account
-                    </a>
+                    </button>
                   </div>
                 </div>
               </Dialog.Panel>
@@ -454,19 +458,14 @@ export default function Navigation() {
 
               <div className="ml-auto flex items-center">
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                  <a
-                    href="#"
-                    className="text-sm font-medium text-gray-700 hover:text-gray-800"
-                  >
-                    Sign in
-                  </a>
+                    <button
+                      type="button"
+                      className="relative -m-2 inline-flex items-center justify-center rounded-md p-2 text-gray-400"
+                      onClick={() => handleClickOpen()}
+                    >
+                      Sign in
+                    </button>                
                   <span className="h-6 w-px bg-gray-200" aria-hidden="true" />
-                  <a
-                    href="#"
-                    className="text-sm font-medium text-gray-700 hover:text-gray-800"
-                  >
-                    Create account
-                  </a>
                 </div>
 
                 {/* Search */}
@@ -511,6 +510,7 @@ export default function Navigation() {
           </div>
         </nav>
       </header>
+      <AuthModal handleClickOpen={openAuthModal} handleClose={handleClose} />
       <img
         src="https://images.vans.com/is/image/VansBrand/clp-hero-top?$fullres$" // Replace with the URL of your image
         alt="color"
