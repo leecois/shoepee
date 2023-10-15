@@ -15,7 +15,7 @@ public class ShoeModels {
     @Column(name = "modelid")
     private int modelId;
     @Column(name = "brandid")
-    private Long brandId;
+    private int brandId;
     @Column(name = "modelname")
     private String modelname;
     @Column(name = "imageurl")

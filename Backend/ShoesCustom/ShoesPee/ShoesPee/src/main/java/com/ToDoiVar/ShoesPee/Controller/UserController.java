@@ -24,16 +24,16 @@ public class UserController {
         return new ResponseEntity<List<User>>(userService.getAllUser(),HttpStatus.OK);
     }
     @GetMapping("/user/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id){
+    public ResponseEntity<User> getUserById(@PathVariable int id){
         return new ResponseEntity<User>(userService.getUserById(id),HttpStatus.OK);
     }
     @GetMapping("/deleteuser/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable Long id){
+    public ResponseEntity<String> deleteUser(@PathVariable int id){
         userService.removeUser(id);
         return new ResponseEntity<String>("Delete sucessful",HttpStatus.OK);
     }
     @PostMapping("/edituser/{id}")
-    public ResponseEntity<User> editUser(@PathVariable Long id,@RequestBody User newUser){
+    public ResponseEntity<User> editUser(@PathVariable int id,@RequestBody User newUser){
             return new ResponseEntity<User>(userService.editUser(id,newUser),HttpStatus.OK);
     }
     @GetMapping("/username/{name}")
