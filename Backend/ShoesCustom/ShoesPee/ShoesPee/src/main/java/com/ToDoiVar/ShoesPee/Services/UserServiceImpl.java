@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService{
                 userDto.getRoleName()
         );
         userRepository.save(user);
-        return user.getUsername();
+        return user.getEmail();
     }
 
     @Override

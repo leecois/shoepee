@@ -18,8 +18,7 @@ const SignUp = ({ goBack, enteredEmail }) => {
         address: data.get("address"),
         username: data.get("username"),
         phone: 123123123,
-        rollid: 1,
-        rolename: "customer",
+        rolename: "User",
       };
 
       // auto set username = email

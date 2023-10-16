@@ -3,7 +3,7 @@ import { API_BASE_URL } from '../config/apiConfig'
 
 const userApi = {
     register(data) {
-        const url = `${API_BASE_URL}/auth/local/register`;
+        const url = `${API_BASE_URL}/save`;
         return axiosClient.post(url, data);
     },
 };
