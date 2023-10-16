@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService{
                 userDto.getEmail(),
                 userDto.getAddress(),
                 userDto.getPhone(),
-                userDto.getRoleName()
+                "USER"
         );
         userRepository.save(user);
         return user.getUsername();
