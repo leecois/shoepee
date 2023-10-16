@@ -103,22 +103,30 @@ const AuthModal = ({ handleClickOpen, handleClose }) => {
               </p>
               <div className="text-left mb-4">
                 <h3 className="text-lg font-bold mb-2">SIGN IN OR SIGN UP</h3>
-                <input
-                  type="email"
-                  id="emailInput"
-                  placeholder="Enter your email (e.g., name@gmail.com)"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="border border-gray-400 p-3 rounded w-full"
-                  required
-                />
+                <label
+                  htmlFor="Email"
+                  className="relative block rounded-md border border-gray-200 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
+                >
+                  <input
+                    type="email"
+                    id="emailInput"
+                    placeholder="Enter your email (e.g., name@gmail.com)"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="peer w-full border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0"
+                    required
+                  />
+                  <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
+                    Email
+                  </span>
+                </label>
                 {emailError && (
                   <div className="text-red-600 text-sm mt-1">{emailError}</div>
                 )}
               </div>
               <button
                 onClick={handleContinue}
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                className="w-full text-white bg-red-900 hover:bg-black focus:ring-4 focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-800 dark:hover-bg-red-700 dark:focus-ring-blue-800"
               >
                 Continue
               </button>

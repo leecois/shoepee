@@ -1,4 +1,4 @@
-name: CI with GitHub Actions using Maven and JUnit | © 2023 by minhchan
+name: CI with GitHub Actions | © 2023 by minhchan
 
 
 on:
@@ -29,12 +29,12 @@ jobs:
         run: mvn -B package --file Backend/ShoesCustom/ShoesPee/ShoesPee/pom.xml
       
       # - name: Distribute jar-war file 
-      #   run: mkdir staging && cp out/artifacts/shoe_stylise_jar/*.jar staging     
+      #   run: mkdir staging && cp target/*.jar staging     
      
       # - name: Make hyperlink to jar-war file 
       #   uses: actions/upload-artifact@v1
       #   with:
-      #     name: shoe-stylise.jar
+      #     name: 0.0.1-SNAPSHOT.jar  
       #     path: staging
 
 

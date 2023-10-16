@@ -12,9 +12,6 @@ const Billboard = () => {
         src={item.image}
         alt=""
       />
-      <div className="absolute bottom-0 left-0 bg-black bg-opacity-50 right-0 p-4 text-white text-center">
-        <h2 className="text-xl font-semibold">{item.title}</h2>
-      </div>
     </div>
   ));
 
