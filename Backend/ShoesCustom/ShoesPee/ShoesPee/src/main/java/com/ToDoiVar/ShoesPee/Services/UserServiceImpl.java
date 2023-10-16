@@ -65,19 +65,6 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public String addUser(UserDto userDto) {
-<<<<<<< HEAD
-        User user = new User(
-                userDto.getUserId(),
-                userDto.getUsername(),
-                this.passwordEncoder.encode(userDto.getPassword()),
-                userDto.getEmail(),
-                userDto.getAddress(),
-                userDto.getPhone(),
-                "USER"
-        );
-        userRepository.save(user);
-        return user.getEmail();
-=======
         if(userExisted(userDto.getUsername())){
             throw new userExistedException("this user has been existed");
         }else {
@@ -98,7 +85,6 @@ public class UserServiceImpl implements UserService{
 
     private boolean userExisted(String username) {
         return userRepository.getUserByUsername(username).isPresent();
->>>>>>> origin/BE-new
     }
 
     @Override
