@@ -1,4 +1,4 @@
-name: CI with GitHub Actions using Maven and JUnit | © 2023 by minhchan
+name: CI with GitHub Actions | © 2023 by minhchan
 
 
 on:
