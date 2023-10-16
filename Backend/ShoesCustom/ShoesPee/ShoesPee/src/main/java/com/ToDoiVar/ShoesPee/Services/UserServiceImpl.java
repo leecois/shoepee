@@ -1,7 +1,9 @@
 package com.ToDoiVar.ShoesPee.Services;
 
 import com.ToDoiVar.ShoesPee.Models.User;
+import com.ToDoiVar.ShoesPee.dto.LoginDto;
 import com.ToDoiVar.ShoesPee.dto.UserDto;
+import com.ToDoiVar.ShoesPee.payload.response.LoginMesage;
 import com.ToDoiVar.ShoesPee.repositiory.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -64,14 +66,19 @@ public class UserServiceImpl implements UserService{
         User user = new User(
                 userDto.getUserId(),
                 userDto.getUsername(),
+                this.passwordEncoder.encode(userDto.getPassword()),
                 userDto.getEmail(),
                 userDto.getAddress(),
                 userDto.getPhone(),
-                userDto.getRoleName(),
-                this.passwordEncoder.encode(userDto.getPassword())
+                userDto.getRoleName()
         );
         userRepository.save(user);
         return user.getUsername();
+    }
+
+    @Override
+    public LoginMesage loginUser(LoginDto loginDto) {
+        return null;
     }
 
 
