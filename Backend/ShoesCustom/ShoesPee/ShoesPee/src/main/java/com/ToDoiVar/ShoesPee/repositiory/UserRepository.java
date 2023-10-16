@@ -11,6 +11,6 @@ import java.util.Optional;
 @Repository
 @EnableJpaRepositories
 public interface UserRepository extends JpaRepository<User, Integer>,CrudRepository<User,Integer> {
-
-   Optional <User> getUserByUsername(String name);
+    Optional<User> findByUsernameAndPassword(String username, String password);
+    User findByUsername(String username);
 }

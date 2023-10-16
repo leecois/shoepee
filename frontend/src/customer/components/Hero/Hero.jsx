@@ -11,23 +11,27 @@ const Hero = () => {
           {/* ::Hero Inner */}
           <div className="p-5 flex flex-col justify-center items-center lg:items-start text-center lg:text-left">
             {/* Hero Title */}
-            <h1 className="py-10 text-3xl sm:text-5xl font-light tracking-wide leading-tight">
-              <span className="text-red-500 font-semibold">Shoe</span>pee, <br />
-              <span className="text-yellow-500 font-semibold">Shoe</span> cleaning, <br />
-              <span className="text-green-500 font-semibold">Shoe</span> by you custom shoes.
+            <h1 className="py-10 text-3xl sm:text-5xl font-light tracking-wide leading-tight select-none">
+              <span className="text-red-500 font-semibold">Shoe</span>pee,{" "}
+              <br />
+              <span className="text-yellow-500 font-semibold">Shoe</span>{" "}
+              cleaning, <br />
+              <span className="text-green-500 font-semibold">Shoe</span> by you
+              custom shoes.
             </h1>
             {/* Starting Price */}
-            <p className="text-lg font-semibold text-gray-400 tracking-wide">
+            <p className="text-lg font-semibold text-gray-400 tracking-wide select-none">
               Starting at $1
             </p>
             {/* Buttons */}
             <div className="mt-10 flex flex-col sm:flex-row items-center">
-              <a href="/product" className="m-1.5 py-2.5 px-5 rounded-md bg-black text-white font-semibold uppercase hover:bg-red-800">
+              <a
+                href="/product"
+                className=" transition ease-in-out delay-150  hover:-translate-z-1 hover:scale-110 hover:background-color: #EF4444; duration-300 m-1.5 py-2.5 px-5 rounded-md bg-black text-white font-semibold uppercase hover:bg-red-800"
+              >
                 Start your customize
               </a>
-              <button className="m-1.5 py-2.5 px-5 rounded-md border-2 border-black text-gblack font-semibold uppercase hover:text-teal-400 hover:border-teal-400">
-                SCHEDULE YOUR SNEAKER CLEANING AND PICK-UP
-              </button>
+              
             </div>
           </div>
         </div>
@@ -78,7 +82,7 @@ const Hero = () => {
               d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"
             />
           </svg>
-          <span className="text-center">EASY USE</span>
+          <span className="text-center">EASY CUSTOMIZE</span>
         </div>
 
         {/* ::Quality Materials */}

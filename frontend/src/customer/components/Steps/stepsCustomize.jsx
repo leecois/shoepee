@@ -47,49 +47,79 @@ export const StepCustomize = () => {
           <div className="w-px h-full bg-gray-300 lg:w-full lg:h-px" />
         </div>
         <div className="p-5 duration-300 transform bg-white border rounded shadow-sm hover:-translate-y-2">
+          {/* Step 1 */}
+          <img
+            src="https://images.vans.com/is/image/VansBrand/english/customs/lp-evolution-2023/clp-icon-pick-your-style.svg?$fullres$&fmt=png-alpha"
+            alt="Step 1"
+            className="mb-4 mx-auto w-20 h-20"
+          />
           <div className="flex items-center justify-between mb-2">
-            <p className="text-lg font-bold leading-5">PICK YOUR SHOE STYLE</p>
+            <p className="text-lg font-bold leading-5">
+              CHOOSE YOUR SHOE STYLE
+            </p>
             <p className="flex items-center justify-center w-6 h-6 font-bold rounded text-deep-purple-accent-400 bg-indigo-50">
               1
             </p>
           </div>
           <p className="text-sm text-gray-900">
-            Choose from our classics like the Slip-On and Old Skool or something
-            more modern like the UltraRange Exo.
+            The first step in creating your own Shoepee shoes is to choose the
+            style that you want to customize.
           </p>
         </div>
         <div className="p-5 duration-300 transform bg-white border rounded shadow-sm hover:-translate-y-2">
+          {/* Step 2 */}
+          <img
+            src="https://images.vans.com/is/image/VansBrand/english/customs/lp-evolution-2023/clp-icon-select-upgrades.svg?$fullres$&fmt=png-alpha"
+            alt="Step 2"
+            className="mb-4 mx-auto w-20 h-20"
+          />
           <div className="flex items-center justify-between mb-2">
-            <p className="text-lg font-bold leading-5">SELECT ANY UPGRADES</p>
+            <p className="text-lg font-bold leading-5">CHOOSE YOUR COLORS</p>
             <p className="flex items-center justify-center w-6 h-6 font-bold rounded text-deep-purple-accent-400 bg-indigo-50">
               2
             </p>
           </div>
           <p className="text-sm text-gray-900">
-            Level up your Customs with upgrades like comfort, Skate performance,
-            Platform height or Wide width.
+            You can choose different colors for different parts of the shoe,
+            such as the upper, the swoosh, and the outsole.
           </p>
         </div>
         <div className="p-5 duration-300 transform bg-white border rounded shadow-sm hover:-translate-y-2">
+          {/* Step 3 */}
+          <img
+            src="https://images.vans.com/is/image/VansBrand/english/customs/lp-evolution-2023/clp-icon-personal-touch.svg?$fullres$&fmt=png-alpha"
+            alt="Step 3"
+            className="mb-4 mx-auto w-20 h-20"
+          />
           <div className="flex items-center justify-between mb-2">
-            <p className="text-lg font-bold leading-5">MAKE THEM YOURS</p>
+            <p className="text-lg font-bold leading-5">
+              ADD YOUR PERSONAL TOUCH
+            </p>
             <p className="flex items-center justify-center w-6 h-6 font-bold rounded text-deep-purple-accent-400 bg-indigo-50">
               3
             </p>
           </div>
           <p className="text-sm text-gray-900">
-            Choose from 90+ colors, patterns and materials. You can even add
-            your own photo, art or embroidery.
+            Now it’s time to add your personal touch to your design.
           </p>
         </div>
         <div className="p-5 duration-300 transform bg-white border rounded shadow-sm hover:-translate-y-2">
+          {/* Step 4 */}
+          <img
+            src="https://images.vans.com/is/image/VansBrand/creative-tools-icon-designashoe?$scale-original$&fmt=png8-alpha"
+            alt="Step 4"
+            className="mb-4 mx-auto w-20 h-20"
+          />
           <div className="flex items-center justify-between mb-2">
-            <p className="text-lg font-bold leading-5">YOUR EMOTION</p>
+            <p className="text-lg font-bold leading-5">REVIEW AND PURCHASE</p>
             <p className="flex items-center justify-center w-6 h-6 font-bold rounded text-deep-purple-accent-400 bg-indigo-50">
               4
             </p>
           </div>
-          <p className="text-sm text-gray-900">Review and feedback.</p>
+          <p className="text-sm text-gray-900">
+            Shoepee also offers free shipping and returns on all custom orders,
+            so you can shop with confidence.
+          </p>
         </div>
       </div>
       <div className="text-center">
@@ -103,4 +133,5 @@ export const StepCustomize = () => {
     </div>
   );
 };
+
 export default StepCustomize;

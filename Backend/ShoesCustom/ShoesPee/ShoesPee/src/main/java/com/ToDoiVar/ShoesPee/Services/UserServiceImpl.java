@@ -1,7 +1,5 @@
 package com.ToDoiVar.ShoesPee.Services;
 
-import com.ToDoiVar.ShoesPee.Exeption.userExistedException;
-import com.ToDoiVar.ShoesPee.Exeption.userNotFoundException;
 import com.ToDoiVar.ShoesPee.Models.User;
 import com.ToDoiVar.ShoesPee.dto.LoginDto;
 import com.ToDoiVar.ShoesPee.dto.UserDto;
@@ -60,36 +58,45 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User fineUserByName(String name) {
-        return userRepository.getUserByUsername(name).orElseThrow(() -> new userNotFoundException("Sorry, this user couldn't be found"));
+        return userRepository.findByUsername(name);
     }
 
     @Override
     public String addUser(UserDto userDto) {
-        if(userExisted(userDto.getUsername())){
-                throw new userExistedException("This user has been existed");
-        }else {
-            User user = new User(
-                    userDto.getUserId(),
-                    userDto.getUsername(),
-                    this.passwordEncoder.encode(userDto.getPassword()),
-                    userDto.getEmail(),
-                    userDto.getAddress(),
-                    userDto.getPhone(),
-                    "USER"
-            );
-            userRepository.save(user);
-            return user.getUsername();
-        }
-
-    }
-
-    private boolean userExisted(String userName) {
-        return userRepository.getUserByUsername(userName).isPresent();
+        User user = new User(
+                userDto.getUserId(),
+                userDto.getUsername(),
+                this.passwordEncoder.encode(userDto.getPassword()),
+                userDto.getEmail(),
+                userDto.getAddress(),
+                userDto.getPhone(),
+                "USER"
+        );
+        userRepository.save(user);
+        return user.getEmail();
     }
 
     @Override
     public LoginMesage loginUser(LoginDto loginDto) {
-        return null;
+        String msg = "";
+        User user1 = userRepository.findByUsername(loginDto.getUsername());
+        if(user1 != null) {
+            String password = loginDto.getPassword();
+            String encodedPassword = user1.getPassword();
+            Boolean isPwdRight = passwordEncoder.matches(password,encodedPassword);
+            if(isPwdRight) {
+                Optional<User> user = userRepository.findByUsernameAndPassword(loginDto.getUsername(),encodedPassword);
+                if (user.isPresent()) {
+                    return new LoginMesage("Login Success",true);
+                } else {
+                    return new LoginMesage("Login Failed", false);
+                }
+            } else {
+                return new LoginMesage("password Not Match ",false);
+            }
+            } else {
+            return new LoginMesage("Username not exist",false);
+        }
     }
 
 
