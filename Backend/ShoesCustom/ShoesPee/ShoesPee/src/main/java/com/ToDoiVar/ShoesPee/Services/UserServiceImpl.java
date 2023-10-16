@@ -73,12 +73,30 @@ public class UserServiceImpl implements UserService{
                 userDto.getRoleName()
         );
         userRepository.save(user);
-        return user.getUsername();
+        return user.getEmail();
     }
 
     @Override
     public LoginMesage loginUser(LoginDto loginDto) {
-        return null;
+        String msg = "";
+        User user1 = userRepository.findByUsername(loginDto.getUsername());
+        if(user1 != null) {
+            String password = loginDto.getPassword();
+            String encodedPassword = user1.getPassword();
+            Boolean isPwdRight = passwordEncoder.matches(password,encodedPassword);
+            if(isPwdRight) {
+                Optional<User> user = userRepository.findByUsernameAndPassword(loginDto.getUsername(),encodedPassword);
+                if (user.isPresent()) {
+                    return new LoginMesage("Login Success",true);
+                } else {
+                    return new LoginMesage("Login Failed", false);
+                }
+            } else {
+                return new LoginMesage("password Not Match ",false);
+            }
+            } else {
+            return new LoginMesage("Username not exist",false);
+        }
     }
 
 
