@@ -28,13 +28,13 @@ jobs:
       - name: Build project with Maven
         run: mvn -B package --file Backend/ShoesCustom/ShoesPee/ShoesPee/pom.xml
       
-      - name: Distribute jar-war file 
-        run: mkdir staging && cp target/*.jar staging     
+      # - name: Distribute jar-war file 
+      #   run: mkdir staging && cp target/*.jar staging     
      
-      - name: Make hyperlink to jar-war file 
-        uses: actions/upload-artifact@v1
-        with:
-          name: 0.0.1-SNAPSHOT.jar  
-          path: staging
+      # - name: Make hyperlink to jar-war file 
+      #   uses: actions/upload-artifact@v1
+      #   with:
+      #     name: 0.0.1-SNAPSHOT.jar  
+      #     path: staging
 
 
