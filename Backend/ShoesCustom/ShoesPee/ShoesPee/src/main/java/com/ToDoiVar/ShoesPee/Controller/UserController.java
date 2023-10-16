@@ -18,10 +18,6 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserService userService;
-    @PostMapping("/createuser")
-    public ResponseEntity<User> createUser(@RequestBody User newUser){
-        return new ResponseEntity<User>(userService.createUser(newUser),HttpStatus.CREATED);
-    }
     @GetMapping("/users")
     public ResponseEntity<List<User>> getALlUser(){
         return new ResponseEntity<List<User>>(userService.getAllUser(),HttpStatus.OK);

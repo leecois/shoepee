@@ -1,16 +1,13 @@
 package com.ToDoiVar.ShoesPee.Services;
 
 import com.ToDoiVar.ShoesPee.Models.Brand;
-import com.ToDoiVar.ShoesPee.repositiory.BrandRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
-@Service
-public class BrandService {
-    @Autowired
-    private BrandRepository brandRepository;
-    public List<Brand> readAllBrand(){
-        return brandRepository.findAll();
-    }
+public interface BrandService {
+    public List<Brand> getAllBrand();
+    public Brand getBrandById(int id);
+    public Brand getBrandByName(String name);
+    public Brand addBrand(Brand newBrand);
+    public void deleteBrand(int id);
+    public Brand editBrand(int id,Brand editBrand);
 }

@@ -24,38 +24,29 @@ public class UserServiceImpl implements UserService{
     public List<User> getAllUser() {
         return userRepository.findAll();
     }
-
-    @Override
-    public User createUser(User user) {
-        return userRepository.save(user);
-    }
-
     @Override
     public User getUserById(int id) {
-       return userRepository.findById(id).get();
+       return userRepository.findById(id).orElseThrow(() -> new userNotFoundException("this user does not exist"));
     }
 
     @Override
     public void removeUser(int id) {
-        User user = userRepository.findById(id).get();
-        if(user != null){
-            userRepository.delete(user);
+        if(!userRepository.existsById(id)){
+            throw new userNotFoundException("this user does not exist");
         }
+        userRepository.deleteById(id);
     }
     public User editUser(int id,User newUser){
-        Optional<User> updateuser = Optional.of(userRepository.findById(id).map(user -> {
+        return userRepository.findById(id).map(user -> {
             user.setUsername(newUser.getUsername());
             user.setPassword(newUser.getPassword());
             user.setAddress(newUser.getAddress());
             user.setPhone(newUser.getPhone());
-//            user.setRoleId(newUser.getRoleId());
             return userRepository.save(newUser);
-        }).orElseGet(() -> {
-            newUser.setUserId(id);
-            return userRepository.save(newUser);
-        }));
+        }).orElseThrow(() ->
+            new userNotFoundException("this user does not exist")
+        );
 
-        return newUser;
     }
 
     @Override
