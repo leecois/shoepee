@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class Brand {
     @Id
     @Column(name = "brandid")
-    private long brandId;
+    private int brandId;
     @Column(name = "brandname")
     private String brandName;
     @Column(name = "imageurl")

@@ -14,8 +14,8 @@ public class ShoeModelServiceImpl implements ShoeModelService{
     private ShoeModelRepository shoeModelRepository;
     @Override
     public ShoeModels addShoeModel(ShoeModels newShoeModels) {
-        if(shoeModelExisted(newShoeModels.getModelName())){
-            throw new shoeModelExistedException(newShoeModels.getModelName() + "ShoeModel has been existed");
+        if(shoeModelExisted(newShoeModels.getModelname())){
+            throw new shoeModelExistedException(newShoeModels.getModelname() + "ShoeModel has been existed");
         }
         return shoeModelRepository.save(newShoeModels);
     }
@@ -26,15 +26,15 @@ public class ShoeModelServiceImpl implements ShoeModelService{
     }
 
     @Override
-    public ShoeModels getShoeModelById(Long id) {
+    public ShoeModels getShoeModelById(int id) {
         return shoeModelRepository.findById(id).orElseThrow(() -> new shoeModelNotFounException("Sorry, no shoe model found with the Id: " + id));
     }
 
     @Override
-    public ShoeModels updateShoeModel(Long id, ShoeModels updateShoeModel) {
+    public ShoeModels updateShoeModel(int id, ShoeModels updateShoeModel) {
        return shoeModelRepository.findById(id).map(sm -> {
-            sm.setImageUrl(updateShoeModel.getImageUrl());
-            sm.setModelName(updateShoeModel.getModelName());
+            sm.setImageurl(updateShoeModel.getImageurl());
+            sm.setModelname(updateShoeModel.getModelname());
             sm.setBrandId(updateShoeModel.getBrandId());
             return shoeModelRepository.save(sm);
         }).orElseThrow(() -> new shoeModelNotFounException("Sorry, this shoemodel could be not found"));
@@ -42,7 +42,7 @@ public class ShoeModelServiceImpl implements ShoeModelService{
     }
 
     @Override
-    public void removeShoeModel(Long id) {
+    public void removeShoeModel(int id) {
         if(!shoeModelRepository.existsById(id)){
             throw new shoeModelNotFounException("Sorry, this shoemodel could be not found");
         }
@@ -51,9 +51,9 @@ public class ShoeModelServiceImpl implements ShoeModelService{
 
     @Override
     public ShoeModels getShoeModelByName(String name) {
-        return shoeModelRepository.getShoeModelsByModelName(name).orElseThrow(() -> new shoeModelNotFounException("Sorry, this shoemodel could be not found"));
+        return shoeModelRepository.getShoeModelsByModelname(name).orElseThrow(() -> new shoeModelNotFounException("Sorry, this shoemodel could be not found"));
     }
     private boolean shoeModelExisted(String modelName) {
-        return shoeModelRepository.getShoeModelsByModelName(modelName).isPresent();
+        return shoeModelRepository.getShoeModelsByModelname(modelName).isPresent();
     }
 }

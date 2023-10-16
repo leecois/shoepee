@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class User {
     @Id
     @Column(name = "userid")
-    private long userId;
+    private int userId;
     @Column(name = "username")
     private String username;
     @Column(name = "password")
@@ -26,8 +26,6 @@ public class User {
     private String address;
     @Column(name = "phone")
     private String phone;
-    @Column(name = "roleid")
-    private int roleId;
     @Column(name = "rolename")
     private String roleName;
 
