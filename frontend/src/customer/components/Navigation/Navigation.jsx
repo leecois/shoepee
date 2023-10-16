@@ -147,10 +147,10 @@ export default function Navigation() {
   };
 
   return (
-    <div className="bg-white relative z-50">
+    <div className="bg-white relative z-40">
       {/* Mobile menu */}
       <Transition.Root show={open} as={Fragment}>
-        <Dialog as="div" className="relative z-40 lg:hidden" onClose={setOpen}>
+        <Dialog as="div" className="relative lg:hidden" onClose={setOpen}>
           <Transition.Child
             as={Fragment}
             enter="transition-opacity ease-linear duration-300"
@@ -290,7 +290,7 @@ export default function Navigation() {
                   <div className="flow-root">
                     <button
                       type="button"
-                      className="relative -m-2 inline-flex items-center justify-center rounded-md p-2 text-gray-400"
+                      className="relative -m-2 inline-flex items-center justify-center rounded-md p-2 text-gray-500"
                       onClick={handleClickOpen}
                     >
                       Sign in
@@ -460,7 +460,7 @@ export default function Navigation() {
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
                     <button
                       type="button"
-                      className="relative -m-2 inline-flex items-center justify-center rounded-md p-2 text-gray-400"
+                      className="relative -m-2 inline-flex items-center justify-center rounded-md p-2 text-gray-500"
                       onClick={() => handleClickOpen()}
                     >
                       Sign in

@@ -1,30 +1,38 @@
 import { Checkbox } from "@mui/material";
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getUser, register } from "../../../../../State/Auth/Action";
+import { unwrapResult } from "@reduxjs/toolkit";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { register } from "../../userSlice";
 
 const SignUp = ({ goBack, enteredEmail }) => {
-  const dispatch = useDispatch();
-  const jwt = localStorage.getItem("jwt");
-  const { auth } = useSelector((store) => store);
-
-  useEffect(() => {
-    if (jwt) {
-      dispatch(getUser());
-    }
-  }, [jwt, auth.jwt]);
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const userData = {
-      email: data.get("email"),
-      password: data.get("password"),
-    };
-    dispatch(register(userData));
-    console.log("userData", userData);
-  };
   const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const data = new FormData(event.currentTarget);
+      const userData = {
+        email: data.get("email"),
+        password: data.get("password"),
+        address: data.get("address"),
+        username: data.get("username"),
+        phone: 123123123,
+        rollid: 1,
+        rolename: "customer",
+      };
+
+      // auto set username = email
+      userData.username = userData.email;
+      const action = register(userData);
+      const resultAction = await dispatch(action);
+      const user = unwrapResult(resultAction);
+
+      console.log("New user", user);
+    } catch (error) {
+      console.log("Failed to register:", error);
+    }
+  };
 
   return (
     <div>
@@ -51,42 +59,46 @@ const SignUp = ({ goBack, enteredEmail }) => {
         <h3 className="text-xl font-medium text-white dark:text-black">
           HELLO! WELCOME TO SHOEPEE
         </h3>
-        <p className="text-gray-700 dark:text-gray-300">
+        <p className="text-gray-700 dark:text-gray-500">
           We are glad to see you again! Please create a password to continue.
         </p>
-        <div>
+        <div className="text-left">
           <label
-            htmlFor="email"
-            className="text-sm font-medium text-gray-900 dark:text-gray-300"
+            htmlFor="Email"
+            className="relative block rounded-md border border-gray-200 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
           >
-            Your email
+            <input
+              type="email"
+              name="email"
+              id="email"
+              value={enteredEmail} // Sử dụng enteredEmail thay vì email
+              className="peer w-full border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0"
+              required=""
+              readOnly
+            />
+            <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
+              Email
+            </span>
           </label>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            value={enteredEmail} // Sử dụng enteredEmail thay vì email
-            className="bg-gray-100 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-black focus:border-black w-full p-2.5"
-            required=""
-            readOnly
-          />
         </div>
         <div className="text-left">
           <label
-            htmlFor="password"
-            className="text-sm font-medium text-gray-900 dark:text-gray-300"
+            htmlFor="Username"
+            className="relative block rounded-md border border-gray-200 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
           >
-            Create Password
+            <input
+              type="password"
+              name="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="peer w-full border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0"
+              required=""
+            />
+            <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
+              Password
+            </span>
           </label>
-          <input
-            type="password"
-            name="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="bg-gray-100 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-black focus:border-black w-full p-2.5"
-            required=""
-          />
         </div>
         <div className="text-left">
           <div className="flex items-center">

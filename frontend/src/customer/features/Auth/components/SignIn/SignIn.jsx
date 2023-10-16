@@ -10,7 +10,6 @@ const SignIn = ({ goBack, enteredEmail }) => {
     };
     console.log("userData", userData);
   };
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   return (
@@ -43,38 +42,43 @@ const SignIn = ({ goBack, enteredEmail }) => {
         </p>
         <div className="text-left">
           <label
-            htmlFor="email"
-            className="text-sm font-medium text-gray-900 dark:text-gray-500"
+            htmlFor="Email"
+            className="relative block rounded-md border border-gray-200 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
           >
-            Email
+            <input
+              type="email"
+              name="email"
+              id="email"
+              value={enteredEmail} // Sử dụng enteredEmail thay vì email
+              className="peer w-full border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0"
+              required=""
+              readOnly
+            />
+            <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
+              Email
+            </span>
           </label>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            value={enteredEmail} // Sử dụng enteredEmail thay vì email
-            className="bg-gray-100 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-black focus:border-black w-full p-2.5"
-            required=""
-            readOnly
-          />
         </div>
         <div className="text-left">
           <label
-            htmlFor="password"
-            className="text-sm font-medium text-gray-900 dark:text-gray-500"
+            htmlFor="Password"
+            className="relative block rounded-md border border-gray-200 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
           >
-            Password
+            <input
+              type="password"
+              name="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="peer w-full border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0"
+              required=""
+            />
+            <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
+              Password
+            </span>
           </label>
-          <input
-            type="password"
-            name="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="bg-gray-100 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-black focus:border-black w-full p-2.5"
-            required=""
-          />
         </div>
+        
         <div className="flex justify-between">
           <div className="flex items-start">
             <div className="flex items-center h-5">
@@ -103,11 +107,11 @@ const SignIn = ({ goBack, enteredEmail }) => {
           </a>
         </div>
         <button
-            type="submit"
-            className="w-full text-white bg-red-900 hover:bg-black focus:ring-4 focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-800 dark:hover-bg-red-700 dark:focus-ring-blue-800"
-          >
-            SIGN IN
-          </button>
+          type="submit"
+          className="w-full text-white bg-red-900 hover:bg-black focus:ring-4 focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-800 dark:hover-bg-red-700 dark:focus-ring-blue-800"
+        >
+          SIGN IN
+        </button>
       </form>
     </div>
   );
