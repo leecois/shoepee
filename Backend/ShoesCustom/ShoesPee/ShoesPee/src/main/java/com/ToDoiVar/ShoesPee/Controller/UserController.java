@@ -2,6 +2,7 @@ package com.ToDoiVar.ShoesPee.Controller;
 
 import com.ToDoiVar.ShoesPee.Models.User;
 import com.ToDoiVar.ShoesPee.Services.UserService;
+import com.ToDoiVar.ShoesPee.dto.UserDto;
 import com.ToDoiVar.ShoesPee.repositiory.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -43,5 +44,12 @@ public class UserController {
             return new  ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new  ResponseEntity<>(user,HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/save")
+    public String saveEmployee(@RequestBody UserDto userDto)
+    {
+        String id = userService.addUser(userDto);
+        return id;
     }
 }

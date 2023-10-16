@@ -1,8 +1,10 @@
 package com.ToDoiVar.ShoesPee.Services;
 
 import com.ToDoiVar.ShoesPee.Models.User;
+import com.ToDoiVar.ShoesPee.dto.UserDto;
 import com.ToDoiVar.ShoesPee.repositiory.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,6 +14,8 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService{
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Override
     public List<User> getAllUser() {
         return userRepository.findAll();
@@ -53,6 +57,21 @@ public class UserServiceImpl implements UserService{
     @Override
     public User fineUserByName(String name) {
         return userRepository.findByUsername(name);
+    }
+
+    @Override
+    public String addUser(UserDto userDto) {
+        User user = new User(
+                userDto.getUserId(),
+                userDto.getUsername(),
+                userDto.getEmail(),
+                userDto.getAddress(),
+                userDto.getPhone(),
+                userDto.getRoleName(),
+                this.passwordEncoder.encode(userDto.getPassword())
+        );
+        userRepository.save(user);
+        return user.getUsername();
     }
 
 
