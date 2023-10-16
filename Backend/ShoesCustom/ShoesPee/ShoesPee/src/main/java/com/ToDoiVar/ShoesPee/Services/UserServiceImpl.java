@@ -1,5 +1,7 @@
 package com.ToDoiVar.ShoesPee.Services;
 
+import com.ToDoiVar.ShoesPee.Exeption.userExistedException;
+import com.ToDoiVar.ShoesPee.Exeption.userNotFoundException;
 import com.ToDoiVar.ShoesPee.Models.User;
 import com.ToDoiVar.ShoesPee.dto.LoginDto;
 import com.ToDoiVar.ShoesPee.dto.UserDto;
@@ -58,28 +60,37 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User fineUserByName(String name) {
-        return userRepository.findByUsername(name);
+        return userRepository.getUserByUsername(name).orElseThrow(() -> new userNotFoundException("Sorry, this user cound not found"));
     }
 
     @Override
     public String addUser(UserDto userDto) {
-        User user = new User(
-                userDto.getUserId(),
-                userDto.getUsername(),
-                this.passwordEncoder.encode(userDto.getPassword()),
-                userDto.getEmail(),
-                userDto.getAddress(),
-                userDto.getPhone(),
-                "USER"
-        );
-        userRepository.save(user);
-        return user.getEmail();
+        if(userExisted(userDto.getUsername())){
+            throw new userExistedException("this user has been existed");
+        }else {
+            User user = new User(
+                    userDto.getUserId(),
+                    userDto.getUsername(),
+                    this.passwordEncoder.encode(userDto.getPassword()),
+                    userDto.getEmail(),
+                    userDto.getAddress(),
+                    userDto.getPhone(),
+                    "USER"
+            );
+            userRepository.save(user);
+            return user.getEmail();
+        }
+
+    }
+
+    private boolean userExisted(String username) {
+        return userRepository.getUserByUsername(username).isPresent();
     }
 
     @Override
     public LoginMesage loginUser(LoginDto loginDto) {
         String msg = "";
-        User user1 = userRepository.findByUsername(loginDto.getUsername());
+        User user1 = userRepository.findUserByUsername(loginDto.getUsername());
         if(user1 != null) {
             String password = loginDto.getPassword();
             String encodedPassword = user1.getPassword();
