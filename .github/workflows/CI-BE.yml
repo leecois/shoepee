@@ -29,12 +29,12 @@ jobs:
         run: mvn -B package --file Backend/ShoesCustom/ShoesPee/ShoesPee/pom.xml
       
       # - name: Distribute jar-war file 
-      #   run: mkdir staging && cp target/*.jar staging     
+      #   run: mkdir staging && cp out/artifacts/shoe_stylise_jar/*.jar staging     
      
       # - name: Make hyperlink to jar-war file 
       #   uses: actions/upload-artifact@v1
       #   with:
-      #     name: 1.0-SNAPSHOT.jar 
+      #     name: shoe-stylise.jar
       #     path: staging
 
 
