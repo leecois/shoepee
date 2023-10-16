@@ -1,10 +1,13 @@
 import React, { useRef, useState } from "react";
-import RadioCheck from "./RadioCheck";
 import OptionModal from "./OptionModal";
+import RadioCheck from "./RadioCheck";
+import { shoesData } from "./shoeData";
 
 const FullModal = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedBrand, setSelectedBrand] = useState("Nike"); // Thương hiệu mặc định
+  const [selectedShoe, setSelectedShoe] = useState(null);
+  const [optionModalOpen, setOptionModalOpen] = useState(false);
 
   const trigger = useRef(null);
   const modal = useRef(null);
@@ -19,60 +22,21 @@ const FullModal = () => {
     document.body.style.overflow = "auto";
   };
 
-  // Xác định danh sách giày dựa trên thương hiệu đã chọn
-  const shoesData = [
-    {
-      id: 1,
-      brand: "Nike",
-      name: "Nike Air Max",
-      image: "https://images.vans.com/is/image/VansBrand/customs-sk8hi-classic?$scale-original$",
-    },
-    {
-      id: 2,
-      brand: "Gucci",
-      name: "Gucci Sneakers",
-      image: "https://images.vans.com/is/image/VansBrand/customs-ultrarange?$scale-original$",
-    },
-    {
-      id: 3,
-      brand: "Adidas",
-      name: "Adidas Superstar",
-      image: "https://images.vans.com/is/image/VansBrand/customs-authentic-classic?$scale-original$",
-    },
-    {
-      id: 4,
-      brand: "Vans",
-      name: "Puma Suede",
-      image: "https://images.vans.com/is/image/VansBrand/customs-slipon-classic?$scale-original$",
-    },
-    {
-      id: 5,
-      brand: "Vans",
-      name: "Reebok Classic",
-      image: "https://images.vans.com/is/image/VansBrand/customs-era-classic?$scale-original$",
-    },
-    {
-      id: 6,
-      brand: "Vans",
-      name: "Converse Chuck Taylor",
-      image: "https://images.vans.com/is/image/VansBrand/customs-oldskool-classic?$scale-original$",
-    },
-    {
-      id: 7,
-      brand: "Vans",
-      name: "Vans Old Skool",
-      image: "https://images.vans.com/is/image/VansBrand/customs-slipon-classic?$scale-original$",
-    },
-  ];
-
   const filteredShoes = shoesData.filter(
     (shoe) => shoe.brand === selectedBrand
   );
+  const openOptionModal = (shoeId) => {
+    setSelectedShoe(shoeId);
+    setOptionModalOpen(true);
+  };
+
+  const closeOptionModal = () => {
+    setOptionModalOpen(false);
+  };
 
   return (
     <>
       <div className="container mx-auto py-20 relative">
-        <OptionModal />
         <button
           ref={trigger}
           onClick={openModal}
@@ -109,7 +73,17 @@ const FullModal = () => {
                   />
                 </svg>
               </button>
-              <header className="bg-gray-100 p-4">                
+              <header className="bg-gray-100 p-4">
+                <div className="flex justify-center mb-4">
+                  <img
+                    src="./logoshoepee.png"
+                    alt="Shoepee"
+                    className="w-16 h-16"
+                  />
+                </div>
+                <h3 className="pb-2 text-xl font-bold text-dark sm:text-2xl">
+                  CHOOSE A STYLE OF BRAND
+                </h3>
                 <RadioCheck
                   selectedBrand={selectedBrand}
                   setSelectedBrand={setSelectedBrand}
@@ -119,14 +93,16 @@ const FullModal = () => {
                 <ul className="grid gap-4 mb-4 sm:grid-cols-2 lg:grid-cols-3">
                   {filteredShoes.map((shoe) => (
                     <li key={shoe.id}>
-                      <button className="block ml-4 mb-4 overflow-hidden group ">
+                      <button
+                        onClick={() => openOptionModal(shoe.id)}
+                        className="block ml-4 mb-4 overflow-hidden group"
+                      >
                         <img
                           src={shoe.image}
                           alt={shoe.name}
                           className="w-full object-cover transition duration-500 group-hover:scale-105"
                         />
-
-                        <div className="relative pt-3 ">
+                        <div className="relative pt-3">
                           <h3 className="text-lg font-bold text-gray-700 group-hover:text-red-500">
                             {shoe.name}
                           </h3>
@@ -138,6 +114,12 @@ const FullModal = () => {
               </div>
             </div>
           </div>
+          {optionModalOpen && (
+            <OptionModal
+              selectedShoe={selectedShoe}
+              closeModal={closeOptionModal}
+            />
+          )}
         </div>
       </div>
     </>

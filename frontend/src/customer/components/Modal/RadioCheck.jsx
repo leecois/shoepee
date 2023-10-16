@@ -15,12 +15,6 @@ const RadioCheck = ({ selectedBrand, setSelectedBrand }) => {
 
   return (
     <>
-      <div className="flex justify-center mb-4">
-        <img src="./logoshoepee.png" alt="Shoepee" className="w-16 h-16" />
-      </div>
-      <h3 className="pb-2 text-xl font-bold text-dark sm:text-2xl">
-        CHOOSE A STYLE OF BRAND
-      </h3>
       <fieldset className="grid grid-cols-6 gap-4">
         <legend className="sr-only">Brand Options</legend>
 
