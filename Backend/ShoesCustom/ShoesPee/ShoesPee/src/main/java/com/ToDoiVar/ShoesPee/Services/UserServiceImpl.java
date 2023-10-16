@@ -1,5 +1,7 @@
 package com.ToDoiVar.ShoesPee.Services;
 
+import com.ToDoiVar.ShoesPee.Exeption.userExistedException;
+import com.ToDoiVar.ShoesPee.Exeption.userNotFoundException;
 import com.ToDoiVar.ShoesPee.Models.User;
 import com.ToDoiVar.ShoesPee.dto.LoginDto;
 import com.ToDoiVar.ShoesPee.dto.UserDto;
@@ -58,22 +60,31 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User fineUserByName(String name) {
-        return userRepository.findByUsername(name);
+        return userRepository.getUserByUsername(name).orElseThrow(() -> new userNotFoundException("Sorry, this user couldn't be found"));
     }
 
     @Override
     public String addUser(UserDto userDto) {
-        User user = new User(
-                userDto.getUserId(),
-                userDto.getUsername(),
-                this.passwordEncoder.encode(userDto.getPassword()),
-                userDto.getEmail(),
-                userDto.getAddress(),
-                userDto.getPhone(),
-                "USER"
-        );
-        userRepository.save(user);
-        return user.getUsername();
+        if(userExisted(userDto.getUsername())){
+                throw new userExistedException("This user has been existed");
+        }else {
+            User user = new User(
+                    userDto.getUserId(),
+                    userDto.getUsername(),
+                    this.passwordEncoder.encode(userDto.getPassword()),
+                    userDto.getEmail(),
+                    userDto.getAddress(),
+                    userDto.getPhone(),
+                    "USER"
+            );
+            userRepository.save(user);
+            return user.getUsername();
+        }
+
+    }
+
+    private boolean userExisted(String userName) {
+        return userRepository.getUserByUsername(userName).isPresent();
     }
 
     @Override
