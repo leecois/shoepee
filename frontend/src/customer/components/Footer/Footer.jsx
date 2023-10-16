@@ -38,7 +38,7 @@ const Footer = () => {
               <li>
                 <a
                   className="text-gray-700 transition font-bold hover:text-gray-700/75 dark:text-white dark:hover:text-white/75"
-                  href="/"
+                  href="/location"
                 >
                   FIND A STORE
                 </a>
