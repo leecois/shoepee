@@ -6,11 +6,15 @@ import {
   UserOutlined,
   VideoCameraOutlined,
 } from '@ant-design/icons';
+import { FaBloggerB } from "react-icons/fa";
+import { Outlet } from 'react-router-dom';
 import {AiOutlineDashboard,AiOutlineShopping, AiOutlineOrderedList,AiTwotoneShopping } from "react-icons/ai"
 import {AiOutlineUser, AiOutlineExperiment, AiFillMediumCircle, AiOutlineShoppingCart } from "react-icons/ai"
+import {IoIosNotifications} from "react-icons/io"
 import { Layout, Menu, Button, theme } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { SiBrandfolder } from "react-icons/si";
+import Dashboard from '../pages/Dashboard';
 
 const { Header, Sider, Content } = Layout;
 const MainLayout = () => {
@@ -23,13 +27,18 @@ const MainLayout = () => {
   return (
      <Layout>
       <Sider trigger={null} collapsible collapsed={collapsed}>
-        <div className="logo" />
+        <div className="logo" >
+          <h2 className='text-white fs-5 text-center py-3 nb-0'>
+            <span className='sm-logo'>SP</span>
+            <span className='lg-logo'>Shoepee</span>
+            </h2>
+          </div>
         <Menu
           theme="dark"
           mode="inline"
           defaultSelectedKeys={['']}
           onClick={({ key }) => {
-            if (key == "signout"){
+            if (key === "signout"){
              } else {
               navigate(key);
              }
@@ -42,14 +51,9 @@ const MainLayout = () => {
               label: 'Dashboard',
             },
             {
-              key: 'customer',
+              key: 'customers',
               icon: <AiOutlineUser className='fs-4'/>,
               label: 'Customers',
-            },
-            {
-              key: 'orders',
-              icon: <AiOutlineShopping className='fs-4'/>,
-              label: 'Orders',
             },
             {
               key: 'catalog',
@@ -58,17 +62,10 @@ const MainLayout = () => {
               children: [
                 {
                   
-                    key: 'cate',
-                    icon: <AiOutlineOrderedList className='fs-4'/>,
-                    label: 'Categories',
+                    key: 'staff',
+                    icon: <AiOutlineUser className='fs-4'/>,
+                    label: 'Staffs',
                   
-                },
-                {
-                  
-                  key: 'catelist',
-                  icon: <AiOutlineOrderedList className='fs-4'/>,
-                  label: 'Categories List',
-                
                 },
                 {
                   
@@ -85,56 +82,70 @@ const MainLayout = () => {
                 
                 },
               {
-                key: 'products',
+                key: 'model',
                 icon: <AiTwotoneShopping className='fs-4'/>,
-                label: 'Products',
+                label: 'Model',
                 children: [
                   {
-                    key: 'addproducts',
+                    key: 'addmodel',
                   icon: <AiTwotoneShopping className='fs-4'/>,
-                  label: 'add Products',
+                  label: 'Add Model',
                   },
                   {
-                    key: 'allproducts',
+                    key: 'Model',
                   icon: <AiTwotoneShopping className='fs-4'/>,
-                  label: 'all Products',
+                  label: 'All Model',
                   }
                 ]
               },
               ]
             },
-            
-            
             {
-              key: 'staffs',
-              icon: <AiOutlineUser className='fs-4'/>,
-              label: 'Staffs',
+              key: 'bloglist',
+              icon: <FaBloggerB className='fs-4'/>,
+              label: 'BlogList',
             },
             {
-              key: 'material',
-              icon: <AiOutlineExperiment className='fs-4'/>,
-              label: 'Materials',
-            },
-            {
-              key: 'sm',
+              key: 'enquiries',
               icon: <AiFillMediumCircle className='fs-4'/>,
-              label: 'Social media',
+              label: 'Enquiries',
             },
           ]}
         />
       </Sider>
-      <Layout>
-        <Header style={{ padding: 0, background: colorBgContainer }}>
-          <Button
-            type="text"
-            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-            onClick={() => setCollapsed(!collapsed)}
-            style={{
-              fontSize: '16px',
-              width: 64,
-              height: 64,
-            }}
-          />
+      <Layout className='site-layout'>
+      <Header
+        className='d-flex justify-content-between ps-3 pe-5'
+        style={{ 
+          padding: 0, 
+          background: colorBgContainer, 
+          }}
+          >
+            {React.createElement(
+              collapsed ? MenuUnfoldOutlined :MenuFoldOutlined,
+              {
+                className: "trigger",
+                onClick: () => setCollapsed(!collapsed),
+              }
+            )}
+            <div className='d-flex gap-4 align-items-center'>
+              <div className='position-relative'>
+                <IoIosNotifications className='fs-4'/>
+                <span className='badge bg-warning rounded-circle p-1 position-absolute'>3</span>
+              </div>
+            <div className='d-flex gap-3 align-items-center'>
+                <div>
+                  <img
+                  width={32}
+                  height={32}
+                   src="https://images.all-free-download.com/images/graphiclarge/user_2_40788.jpg"  alt=""/>
+                </div>
+                <div>
+                  <h5 className='text-dark mb-0'>TRAN HOAN</h5>
+                  <p className='mb-0'>hoantse@fff.com</p>
+                </div>
+              </div>
+            </div>
         </Header>
         <Content
           style={{
@@ -144,7 +155,9 @@ const MainLayout = () => {
             background: colorBgContainer,
           }}
         >
-          Content
+        
+          <Outlet/>
+        
         </Content>
       </Layout>
     </Layout>

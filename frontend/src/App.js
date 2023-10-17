@@ -8,7 +8,7 @@ import AdminRouters from "./Routers/AdminRouters";
 function App() {
   return (
     <div className="">
-      <Navigation />
+      
       <Router>
         <Routes>
           <Route path="/" element={<HomePage />} />
