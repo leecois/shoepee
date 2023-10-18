@@ -1,123 +1,55 @@
 import React from "react";
+import { productsData } from "./ProductsData";
 
 const Collection = () => {
   return (
     <section>
-      <div className="max-w-screen-xl px-4 py-8 mx-auto sm:px-6 sm:py-12 lg:px-8">
+      <div className="max-w-screen-xl py-8 mx-auto sm:py-12">
         <header>
-          <h2 className="text-xl font-bold text-gray-900 sm:text-3xl">
+          <h2 className="text-3xl font-bold text-gray-900 sm:text-3xl">
             GET STARTED WITH A BLANK CANVAS
           </h2>
 
           <p className="max-w-md mt-4 text-gray-500">
-            Create your unique pair of Shoepee and show off your own personal
-            style.
+            Create your unique pair of Shoepee and show off your personal style.
           </p>
         </header>
 
-        <ul className="grid gap-4 mt-8 sm:grid-cols-2 lg:grid-cols-4">
-          <li>
-            <a href="#" className="block overflow-hidden group">
-              <img
-                src="https://images.vans.com/is/image/VansBrand/clp-blanks-old-skool?$fullres$"
-                alt=""
-                className="h-[350px] w-full object-cover transition duration-500 group-hover:scale-105 sm:h-[450px]"
-              />
-
-              <div className="relative pt-3 bg-white">
-                <h3 className="text-xs text-gray-700 group-hover:underline group-hover:underline-offset-4">
-                  Basic Tee
-                </h3>
-
-                <p className="mt-2">
-                  <span className="sr-only"> Regular Price </span>
-
-                  <span className="tracking-wider text-gray-900">
-                    {" "}
-                    £24.00 GBP{" "}
-                  </span>
-                </p>
-              </div>
-            </a>
-          </li>
-
-          <li>
-            <a href="#" className="block overflow-hidden group">
-              <img
-                src="https://images.vans.com/is/image/VansBrand/clp-blanks-old-skool?$fullres$"
-                alt=""
-                className="h-[350px] w-full object-cover transition duration-500 group-hover:scale-105 sm:h-[450px]"
-              />
-
-              <div className="relative pt-3 bg-white">
-                <h3 className="text-xs text-gray-700 group-hover:underline group-hover:underline-offset-4">
-                  Basic Tee
-                </h3>
-
-                <p className="mt-2">
-                  <span className="sr-only"> Regular Price </span>
-
-                  <span className="tracking-wider text-gray-900">
-                    {" "}
-                    £24.00 GBP{" "}
-                  </span>
-                </p>
-              </div>
-            </a>
-          </li>
-
-          <li>
-            <a href="#" className="block overflow-hidden group">
-              <img
-                src="https://images.vans.com/is/image/VansBrand/clp-blanks-old-skool?$fullres$"
-                alt=""
-                className="h-[350px] w-full object-cover transition duration-500 group-hover:scale-105 sm:h-[450px]"
-              />
-
-              <div className="relative pt-3 bg-white">
-                <h3 className="text-xs text-gray-700 group-hover:underline group-hover:underline-offset-4">
-                  Basic Tee
-                </h3>
-
-                <p className="mt-2">
-                  <span className="sr-only"> Regular Price </span>
-
-                  <span className="tracking-wider text-gray-900">
-                    {" "}
-                    £24.00 GBP{" "}
-                  </span>
-                </p>
-              </div>
-            </a>
-          </li>
-
-          <li>
-            <a href="#" className="block overflow-hidden group">
-              <img
-                src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
-                alt=""
-                className="h-[350px] w-full object-cover transition duration-500 group-hover:scale-105 sm:h-[450px]"
-              />
-
-              <div className="relative pt-3 bg-white">
-                <h3 className="text-xs text-gray-700 group-hover:underline group-hover:underline-offset-4">
-                  Basic Tee
-                </h3>
-
-                <p className="mt-2">
-                  <span className="sr-only"> Regular Price </span>
-
-                  <span className="tracking-wider text-gray-900">
-                    {" "}
-                    £24.00 GBP{" "}
-                  </span>
-                </p>
-              </div>
-            </a>
-          </li>
-        </ul>
+        <div className="overflow-y-auto max-h-[500px] ">
+          <div className="grid gap-4 mb-4 sm:grid-cols-2 lg:grid-cols-3">
+            {productsData.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        </div>
       </div>
     </section>
+  );
+};
+
+const ProductCard = ({ product }) => {
+  return (
+    <div>
+      <a href="/product/productdetail" className="block group">
+        <img
+          src={product.imageUrl}
+          alt={product.name}
+          className="h-full rounded-lg w-full object-cover object-center dark:bg-gray-500"
+        />
+        <div className="mt-1.5">
+          <div className="text-lg text-orange-700 font-bold">Customize</div>
+          <div className="flex justify-between mt-3 text-sm">
+            <h3 className="text-gray-500 font-bold">{product.brand}</h3>
+          </div>
+          <div className="flex justify-between mt-3 text-sm">
+            <h3 className="text-black font-bold group-hover:underline group-hover:underline-offset-4">
+              {product.name}
+            </h3>
+            <p className="text-black text-md font-semibold">${product.price}</p>
+          </div>
+        </div>
+      </a>
+    </div>
   );
 };
 

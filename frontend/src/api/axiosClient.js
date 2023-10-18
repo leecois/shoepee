@@ -2,36 +2,32 @@ import axios from "axios";
 import { API_BASE_URL } from "../config/apiConfig";
 
 const axiosClient = axios.create({
-  baseURL: `${API_BASE_URL}`,
+  baseURL: API_BASE_URL,
   headers: {
     "Content-Type": "application/json",
   },
 });
 
-// Add a request interceptor for axiosClient
-axiosClient.interceptors.request.use(
-  function (config) {
-    // Do something before request is sent
-    return config;
-  },
-  function (error) {
-    // Do something with request error
-    return Promise.reject(error);
-  }
-);
-
-// Add a response interceptor for axiosClient
 axiosClient.interceptors.response.use(
   function (response) {
-    // Any status code that lies within the range of 2xx cause this function to trigger
-    // Do something with response data
+    // Xử lý thành công cho các phản hồi từ máy chủ
     return response;
   },
   function (error) {
-    // Any status codes that fall outside the range of 2xx cause this function to trigger
-    // Do something with response error
+    // Xử lý lỗi cho các phản hồi từ máy chủ
+    const { config, status, data } = error.response;
+
+    // Kiểm tra nếu URL thuộc danh sách URL cần xử lý
+    const URLS = ["/login", "/register"];
+    if (URLS.includes(config.url) && status === 400) {
+      const errorList = data.data || [];
+      const firstError = errorList[0] || {};
+      const messageList = firstError.messages || [];
+      const firstMessage = messageList[0] || {};
+      throw new Error(firstMessage.message);
+    }
     return Promise.reject(error);
   }
-);      
+);
 
 export default axiosClient;

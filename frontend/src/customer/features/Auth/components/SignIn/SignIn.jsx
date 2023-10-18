@@ -1,16 +1,41 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { login } from "../../userSlice";
+import { unwrapResult } from "@reduxjs/toolkit";
+import { SnackbarProvider, useSnackbar } from "notistack";
 
-const SignIn = ({ goBack, enteredEmail }) => {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const userData = {
-      email: data.get("email"),
-      password: data.get("password"),
-    };
-    console.log("userData", userData);
-  };
+const SignIn = ({ goBack, enteredEmail, handleCloseSuccess }) => {
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const data = new FormData(event.currentTarget);
+      const userData = {
+        email: enteredEmail,
+        password: data.get("password"),
+      };
+      // Auto set username = email
+      userData.username = userData.email;
+      setIsLoading(true);
+
+      const action = login(userData);
+      const resultAction = await dispatch(action);
+      const user = unwrapResult(resultAction);
+
+      console.log("New user", user);
+
+      // Close modal on successful login
+      handleCloseSuccess();
+    } catch (error) {
+      console.log("Failed to login:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div>
@@ -49,7 +74,7 @@ const SignIn = ({ goBack, enteredEmail }) => {
               type="email"
               name="email"
               id="email"
-              value={enteredEmail} // Sử dụng enteredEmail thay vì email
+              value={enteredEmail}
               className="peer w-full border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0"
               required=""
               readOnly
@@ -78,7 +103,7 @@ const SignIn = ({ goBack, enteredEmail }) => {
             </span>
           </label>
         </div>
-        
+
         <div className="flex justify-between">
           <div className="flex items-start">
             <div className="flex items-center h-5">
@@ -106,12 +131,16 @@ const SignIn = ({ goBack, enteredEmail }) => {
             Lost Password?
           </a>
         </div>
-        <button
-          type="submit"
-          className="w-full text-white bg-red-900 hover:bg-black focus:ring-4 focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-800 dark:hover-bg-red-700 dark:focus-ring-blue-800"
-        >
-          SIGN IN
-        </button>
+        <SnackbarProvider>
+          <button
+            type="submit"
+            onClick={() => enqueueSnackbar("Login Success!")}
+            className="w-full text-white bg-red-900 hover:bg-black focus:ring-4 focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-800 dark:hover-bg-red-700 dark:focus-ring-blue-800"
+            disabled={isLoading}
+          >
+            {isLoading ? "Loading..." : "SIGN IN"}
+          </button>
+        </SnackbarProvider>
       </form>
     </div>
   );

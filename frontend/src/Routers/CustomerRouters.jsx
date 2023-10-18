@@ -7,6 +7,7 @@ import Location from "../customer/components/Location/Location";
 import Product from "../customer/components/Product/Product";
 import SignIn from "../customer/features/Auth/components/SignIn/SignIn";
 import SignUp from "../customer/features/Auth/components/SignUp/SignUp";
+import ProductDetail from "../customer/components/ProductDetails/ProductDetails";
 
 const CustomerRouters = () => {
   return (
@@ -17,6 +18,10 @@ const CustomerRouters = () => {
       <Routes>
         <Route path="/" element={<HomePage />}></Route>
         <Route path="/product" element={<Product />}></Route>
+        <Route
+          path="/product/productdetail"
+          element={<ProductDetail />}
+        ></Route>
         <Route path="/signin" element={<SignIn />}></Route>
         <Route path="/signup" element={<SignUp />}></Route>
         <Route path="/location" element={<Location />}></Route>
