@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Disclosure, Menu } from "@headlessui/react";
-import { productsData } from "./ProductsData";
 import {
   ChevronDownIcon,
   ChevronRightIcon,
@@ -9,8 +8,31 @@ import {
   RectangleGroupIcon,
   XCircleIcon,
 } from "@heroicons/react/24/outline";
+import productApi from "../../../api/productApi";
+import ProductList from "./ProductList";
+import PropTypes from "prop-types";
+
+ProductList.propTypes = {
+  data: PropTypes.array,
+};
+
+ProductList.propTypes = {
+  data: [],
+};
 
 const Product = () => {
+  const [productList, setProductList] = useState([]);
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data } = await productApi.getAll({ _page: 1, _limit: 10 });
+        setProductList(data);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, []);
+
   const [openFilter, setOpenFilter] = useState(true);
 
   const [sortOptions, setSortOptions] = useState([
@@ -289,35 +311,8 @@ const Product = () => {
             ))}
           </div>
         </div>
-        <div className="col-span-full md:col-span-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {productsData.map((product) => (
-            <div key={product.id}>
-              <a href="/product/productdetail" className="block group">
-                <img
-                  src={product.imageUrl}
-                  alt={product.name}
-                  className="h-full rounded-lg object-cover object-center dark:bg-gray-500"
-                />
-                <div className="mt-1.5">
-                  <div className="text-lg text-orange-700 font-bold">
-                    Customize
-                  </div>
-                  <div className="flex justify-between mt-3 text-sm">
-                    <h3 className="text-gray-500 font-bold">{product.brand}</h3>
-                  </div>
-                  <div className="flex justify-between mt-3 text-sm">
-                    <h3 className="text-black font-bold group-hover:underline group-hover:underline-offset-4">
-                      {product.name}
-                    </h3>
-                    <p className="text-black text-md font-semibold">
-                      ${product.price}
-                    </p>
-                  </div>
-                </div>
-              </a>
-            </div>
-          ))}
-        </div>
+        {/* Product */}
+        <ProductList data={productList} />
       </div>
     </div>
   );

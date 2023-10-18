@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Box, Modal } from "@mui/material";
 import SignIn from "../SignIn/SignIn";
 import axios from "axios";
-import { API_BASE_URL } from "config/apiConfig";
 import SignUp from "../SignUp/SignUp";
+import { API_BASE_URL } from "../../../../../constants/apiConfig";
 
 const style = {
   position: "absolute",
