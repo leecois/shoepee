@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import HomePage from "../customer/pages/HomePage/HomePage";
 import Footer from "../customer/components/Footer/Footer";
@@ -8,8 +8,19 @@ import Product from "../customer/components/Product/Product";
 import SignIn from "../customer/features/Auth/components/SignIn/SignIn";
 import SignUp from "../customer/features/Auth/components/SignUp/SignUp";
 import ProductDetail from "../customer/components/ProductDetails/ProductDetails";
+import productApi from "../api/productApi";
 
 const CustomerRouters = () => {
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const params = {
+        _limit: 10,
+      };
+      const response = await productApi.getAll(params);
+      console.log(response);
+    };
+    fetchProducts();
+  }, []);
   return (
     <div>
       <div>

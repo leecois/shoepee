@@ -1,1 +1,1 @@
-export const API_BASE_URL = "http://localhost:8080/shoepee";
+export const API_BASE_URL = "https://api.ezfrontend.com";

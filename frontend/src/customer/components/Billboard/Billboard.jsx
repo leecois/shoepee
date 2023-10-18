@@ -1,7 +1,6 @@
-import { BillboardData } from "./BillboardData";
 import AliceCarousel from "react-alice-carousel";
-import React from "react";
 import "react-alice-carousel/lib/alice-carousel.css";
+import { BillboardData } from "./BillboardData";
 
 const Billboard = () => {
   const items = BillboardData.map((item) => (

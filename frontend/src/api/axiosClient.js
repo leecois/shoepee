@@ -1,5 +1,5 @@
 import axios from "axios";
-import { API_BASE_URL } from "../config/apiConfig";
+import { API_BASE_URL } from "config/apiConfig";
 
 const axiosClient = axios.create({
   baseURL: API_BASE_URL,
@@ -11,7 +11,7 @@ const axiosClient = axios.create({
 axiosClient.interceptors.response.use(
   function (response) {
     // Xử lý thành công cho các phản hồi từ máy chủ
-    return response;
+    return response.data;
   },
   function (error) {
     // Xử lý lỗi cho các phản hồi từ máy chủ

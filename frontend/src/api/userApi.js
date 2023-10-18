@@ -1,8 +1,7 @@
 import axiosClient from "./axiosClient";
-import { API_BASE_URL } from "../config/apiConfig";
 
 const createApiRequest = (endpoint) => (data) => {
-  const url = `${API_BASE_URL}/${endpoint}`;
+  const url = `/${endpoint}`;
   return axiosClient.post(url, data);
 };
 
