@@ -1,4 +1,4 @@
-[![CI with GitHub Actions using Maven and JUnit | © 2023 by minhchan](https://github.com/leecois/shoe-stylise/actions/workflows/CI-BE.yml/badge.svg)](https://github.com/leecois/shoe-stylise/actions/workflows/CI-BE.yml)
+[![CI with GitHub Actions | © 2023 by minhchan](https://github.com/leecois/shoe-stylise/actions/workflows/CI-BE.yml/badge.svg)](https://github.com/leecois/shoe-stylise/actions/workflows/CI-BE.yml)
 
 # Shoe Stylise
 
