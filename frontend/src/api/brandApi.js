@@ -1,24 +1,24 @@
 import axiosClient from "./axiosClient";
 
 const brandApi = {
-  getAll: () => {
-    const url = "/brand";
+  async getAll() {
+    const url = `/brands`;
     return axiosClient.get(url);
   },
   get: (id) => {
-    const url = `/brand/${id}`;
+    const url = `/brands/${id}`;
     return axiosClient.get(url);
   },
   add: (data) => {
-    const url = `/brand`;
+    const url = `/brands`;
     return axiosClient.post(url, data);
   },
   update: (data) => {
-    const url = `/brand/${data.id}`;
+    const url = `/brands/${data.id}`;
     return axiosClient.patch(url, data);
   },
   remove: (id) => {
-    const url = `/brand/${id}`;
+    const url = `/brands/${id}`;
     return axiosClient.delete(url);
   },
 };

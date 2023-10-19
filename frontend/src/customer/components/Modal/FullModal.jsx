@@ -1,9 +1,21 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import OptionModal from "./OptionModal";
 import RadioCheck from "./RadioCheck";
 import { shoesData } from "./shoeData";
+import brandApi from "../../../api/brandApi";
 
 const FullModal = () => {
+  const [brandList, setBrandList] = useState([]);
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data } = await brandApi.getAll();
+        setBrandList(data);
+      } catch (error) {
+        console.log("Non-response Error:", error.message);
+      }
+    })();
+  }, []);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedBrand, setSelectedBrand] = useState("Nike"); // Thương hiệu mặc định
   const [selectedShoe, setSelectedShoe] = useState(null);
@@ -87,6 +99,7 @@ const FullModal = () => {
                 <RadioCheck
                   selectedBrand={selectedBrand}
                   setSelectedBrand={setSelectedBrand}
+                  data={brandList}
                 />
               </header>
               <div className="overflow-y-auto max-h-[500px] bg-light-yellow">

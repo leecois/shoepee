@@ -1,23 +1,8 @@
-import React, { useEffect, useState } from "react";
-import brandApi from "../../../api/brandApi";
+import React from "react";
 
-const RadioCheck = ({ selectedBrand, setSelectedBrand }) => {
+const RadioCheck = ({ selectedBrand, setSelectedBrand, data }) => {
   // Khai báo state cho thương hiệu được chọn
-  const [brandList, setBrandList] = useState([]);
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const { data } = await brandApi.getAll();
-        setBrandList(data);
-      } catch (error) {
-        console.log("Non-response Error:", error.message);
-        // Handle the error as needed
-      }
-    })();
-  }, []);
-
-  // Khi người dùng chọn thương hiệu mới
   const handleBrandChange = (newBrand) => {
     setSelectedBrand(newBrand);
   };
@@ -25,7 +10,7 @@ const RadioCheck = ({ selectedBrand, setSelectedBrand }) => {
   return (
     <fieldset className="grid grid-cols-6 gap-4">
       <legend className="sr-only">Brand Options</legend>
-      {brandList.map((brand) => (
+      {data.map((brand) => (
         <div key={brand.brandId}>
           <input
             type="radio"
