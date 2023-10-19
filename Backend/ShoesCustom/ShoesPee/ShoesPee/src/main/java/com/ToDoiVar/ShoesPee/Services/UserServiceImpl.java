@@ -2,15 +2,19 @@ package com.ToDoiVar.ShoesPee.Services;
 
 import com.ToDoiVar.ShoesPee.Exeption.userExistedException;
 import com.ToDoiVar.ShoesPee.Exeption.userNotFoundException;
+import com.ToDoiVar.ShoesPee.Models.ChangePasswordRequest;
+import com.ToDoiVar.ShoesPee.Models.Role;
 import com.ToDoiVar.ShoesPee.Models.User;
 import com.ToDoiVar.ShoesPee.dto.LoginDto;
 import com.ToDoiVar.ShoesPee.dto.UserDto;
 import com.ToDoiVar.ShoesPee.payload.response.LoginMesage;
 import com.ToDoiVar.ShoesPee.repositiory.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +24,7 @@ public class UserServiceImpl implements UserService{
     private UserRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+
     @Override
     public List<User> getAllUser() {
         return userRepository.findAll();
@@ -46,8 +51,6 @@ public class UserServiceImpl implements UserService{
         Optional<User> updateuser = Optional.of(userRepository.findById(id).map(user -> {
             user.setUsername(newUser.getUsername());
             user.setPassword(newUser.getPassword());
-            user.setAddress(newUser.getAddress());
-            user.setPhone(newUser.getPhone());
 //            user.setRoleId(newUser.getRoleId());
             return userRepository.save(newUser);
         }).orElseGet(() -> {
@@ -73,12 +76,10 @@ public class UserServiceImpl implements UserService{
                     userDto.getUsername(),
                     this.passwordEncoder.encode(userDto.getPassword()),
                     userDto.getEmail(),
-                    userDto.getAddress(),
-                    userDto.getPhone(),
-                    "USER"
+                    Role.USER
             );
             userRepository.save(user);
-            return user.getEmail();
+            return "Register OK: " + user.getEmail();
         }
 
     }
@@ -110,5 +111,24 @@ public class UserServiceImpl implements UserService{
         }
     }
 
+    public void changePassword(ChangePasswordRequest request, Principal connectedUser) {
+
+        var user = (User) ((UsernamePasswordAuthenticationToken) connectedUser).getPrincipal();
+
+        // check if the current password is correct
+        if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())) {
+            throw new IllegalStateException("Wrong password");
+        }
+        // check if the two new passwords are the same
+        if (!request.getNewPassword().equals(request.getConfirmationPassword())) {
+            throw new IllegalStateException("Password are not the same");
+        }
+
+        // update the password
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+
+        // save the new password
+        userRepository.save(user);
+    }
 
 }
