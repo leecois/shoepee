@@ -1,9 +1,9 @@
 import axiosClient from "./axiosClient";
 
 const brandApi = {
-  getAll: (params) => {
-    const url = `/brand`;
-    return axiosClient.get(url, { params });
+  getAll: () => {
+    const url = "/brand";
+    return axiosClient.get(url);
   },
   get: (id) => {
     const url = `/brand/${id}`;

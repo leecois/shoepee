@@ -28,7 +28,6 @@ const ProductList = ({ data }) => {
           </a>
         </div>
       ))}
-      ;
     </div>
   );
 };
