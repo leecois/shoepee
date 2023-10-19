@@ -29,10 +29,7 @@ public class UserServiceImpl implements UserService{
         return userRepository.findAll();
     }
 
-    @Override
-    public User createUser(User user) {
-        return userRepository.save(user);
-    }
+
 
     @Override
     public User getUserById(int id) {
