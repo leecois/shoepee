@@ -16,7 +16,7 @@ import React, { useState } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import CreateProductForm from "./components/CreateProductForm";
 import Dashboard from "./components/Dashboard";
-import OrderTable from "./components/OrderTable";
+import OrdersTable from "./components/OrdersTable";
 import ProductsTable from "./components/ProductsTable";
 import CustomersTable from "./components/CustomersTable";
 
@@ -108,7 +108,7 @@ const Admin = () => {
               element={<CreateProductForm />}
             ></Route>
             <Route path="/products" element={<ProductsTable />}></Route>
-            <Route path="/orders" element={<OrderTable />}></Route>
+            <Route path="/orders" element={<OrdersTable />}></Route>
             <Route path="/customers" element={<CustomersTable />}></Route>
           </Routes>
         </Box>
