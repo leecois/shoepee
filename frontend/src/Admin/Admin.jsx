@@ -46,8 +46,12 @@ const Admin = () => {
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
-        // border: "1px solid black",
         height: "100%",
+        backgroundColor: "bg-gray-200",
+        width: "w-64",
+        padding: "p-4",
+        shadow: "shadow-lg",
+        transition: "transition-transform",
       }}
     >
       <>
@@ -58,10 +62,13 @@ const Admin = () => {
               key={item.name}
               disablePadding
               onClick={() => navigate(item.path)}
+              className="py-2 hover:bg-gray-300 cursor-pointer"
             >
               <ListItemButton>
                 <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText>{item.name}</ListItemText>
+                <ListItemText className="text-gray-600">
+                  {item.name}
+                </ListItemText>
               </ListItemButton>
             </ListItem>
           ))}
@@ -83,24 +90,11 @@ const Admin = () => {
 
   return (
     <div>
-      <Box sx={{ display: `${isLargeScreen} ? "flex":"black"` }}>
+      <div className="flex h-screen">
         <CssBaseline />
-        <Drawer
-          variant="permanent"
-          sx={{
-            height: "100vh",
-            border: "1px solid black",
-            width: 240,
-            flexShrink: 0,
-            [`& .MuiDrawer-paper`]: {
-              width: 240,
-              boxSizing: "border-box",
-            },
-          }}
-        >
-          {drawer}
-        </Drawer>
-        <Box>
+        <div>{drawer}</div>
+        <div></div>
+        <Box className="flex-1 bg-white p-4">
           <Routes>
             <Route path="/" element={<Dashboard />}></Route>
             <Route
@@ -112,7 +106,7 @@ const Admin = () => {
             <Route path="/customers" element={<CustomersTable />}></Route>
           </Routes>
         </Box>
-      </Box>
+      </div>
     </div>
   );
 };
