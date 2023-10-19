@@ -106,6 +106,16 @@ const MainLayout = () => {
               label: 'BlogList',
             },
             {
+              key: 'blogs',
+              icon: <FaBloggerB className='fs-4'/>,
+              label: 'Blog',
+            },
+            {
+              key: 'blogcat',
+              icon: <FaBloggerB className='fs-4'/>,
+              label: 'BlogCategory',
+            },
+            {
               key: 'enquiries',
               icon: <AiFillMediumCircle className='fs-4'/>,
               label: 'Enquiries',

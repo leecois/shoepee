@@ -7,6 +7,7 @@ import Bloglist from '../Admin/pages/Bloglist'
 import Staff from '../Admin/pages/Staff'
 import Customers from '../Admin/pages/Customers'
 import Addblog from '../Admin/pages/Addblog'
+import Addblogcat from '../Admin/pages/Addblogcat'
 
 
 const AdminRouters = () => {
@@ -19,7 +20,8 @@ const AdminRouters = () => {
           <Route path='bloglist' element={<Bloglist/>}/>
           <Route path='staff' element={<Staff/>}/>
           <Route path='customers' element={<Customers/>}/>
-          <Route path='blog' element={<Addblog/>}/>
+          <Route path='blogs' element={<Addblog/>}/>
+          <Route path='blogcat' element={<Addblogcat/>}/>
         </Route>
       </Routes>
     </div>
