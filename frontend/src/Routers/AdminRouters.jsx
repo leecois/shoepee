@@ -1,15 +1,50 @@
-import React from "react";
-import { Routes, Route } from "react-router-dom";
-import Admin from "../Admin/Admin";
+import { Suspense, lazy, useEffect, useState } from 'react';
+import { Toaster } from 'react-hot-toast';
+import { Route, Routes } from 'react-router-dom';
 
-const AdminRouters = () => {
-  return (
-    <div>
+import Loader from '../Admin/common/Loader';
+import Dashboard from '../Admin/pages/Dashboard/Dashboard';
+import routes from '../Admin/routes';
+
+const DefaultLayout = lazy(() => import('../Admin/layout/DefaultLayout'));
+
+function AdminRouters() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 1000);
+  }, []);
+
+  return loading ? (
+    <Loader />
+  ) : (
+    <>
+      <Toaster
+        position="top-right"
+        reverseOrder={false}
+        containerClassName="overflow-auto"
+      />
       <Routes>
-        <Route path="/*" element={<Admin />} />
+        <Route element={<DefaultLayout />}>
+          <Route index element={<Dashboard />} />
+          {routes.map((route, index) => {
+            const { path, component: Component } = route;
+            return (
+              <Route
+                key={index}
+                path={path}
+                element={
+                  <Suspense fallback={<Loader />}>
+                    <Component />
+                  </Suspense>
+                }
+              />
+            );
+          })}
+        </Route>
       </Routes>
-    </div>
+    </>
   );
-};
+}
 
 export default AdminRouters;

@@ -147,7 +147,7 @@ export default function Navigation() {
   };
 
   return (
-    <div className="bg-white relative z-40">
+    <div className="bg-white relative z-1">
       {/* Mobile menu */}
       <Transition.Root show={open} as={Fragment}>
         <Dialog as="div" className="relative lg:hidden" onClose={setOpen}>
@@ -308,7 +308,7 @@ export default function Navigation() {
           aria-label="Top"
           className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"
         >
-          <div className="border-b border-gray-200">
+          <div>
             <div className="flex h-16 items-center">
               <button
                 type="button"
@@ -473,7 +473,7 @@ export default function Navigation() {
                   <form action="" className="relative mx-auto w-max">
                     <input
                       type="search"
-                      className="peer cursor-pointer relative z-10 h-10 w-12 bg-transparent pl-12 outline-none focus:w-full focus:cursor-text focus:pl-16 focus:pr-4 rounded-l border-none"
+                      className="peer cursor-pointer relative z-10 h-10 w-12 bg-transparent pl-12 focus:outline-none focus:w-full focus:cursor-text focus:pl-16 focus:pr-4 rounded-l focus:ring-0 border-none"
                     />
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

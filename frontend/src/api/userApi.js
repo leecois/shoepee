@@ -6,7 +6,7 @@ const createApiRequest = (endpoint) => (data) => {
 };
 
 const userApi = {
-  register: createApiRequest("save"),
+  register: createApiRequest("register"),
   login: createApiRequest("login"),
 };
 
