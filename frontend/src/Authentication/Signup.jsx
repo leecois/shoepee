@@ -1,14 +1,13 @@
+import { Checkbox } from "@mui/material";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import { register } from "./userSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
-import { SnackbarProvider, useSnackbar } from "notistack";
-import { login } from "../../userSlice";
 
-const SignIn = ({ goBack, enteredEmail, handleCloseSuccess }) => {
+const SignUp = ({ goBack, enteredEmail, handleCloseSuccess }) => {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
-  const { enqueueSnackbar } = useSnackbar();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -17,21 +16,23 @@ const SignIn = ({ goBack, enteredEmail, handleCloseSuccess }) => {
       const userData = {
         email: enteredEmail,
         password: data.get("password"),
+        address: data.get("address"),
+        username: data.get("username") || enteredEmail, // Auto set username to email
+        phone: 123123123,
       };
-      // Auto set username = email
-      userData.username = userData.email;
+
       setIsLoading(true);
 
-      const action = login(userData);
+      const action = register(userData);
       const resultAction = await dispatch(action);
       const user = unwrapResult(resultAction);
 
       console.log("New user", user);
 
-      // Close modal on successful login
+      // Close modal on successful registration
       handleCloseSuccess();
     } catch (error) {
-      console.log("Failed to login:", error);
+      console.log("Failed to register:", error);
     } finally {
       setIsLoading(false);
     }
@@ -56,14 +57,14 @@ const SignIn = ({ goBack, enteredEmail, handleCloseSuccess }) => {
         </svg>
       </button>
       <div className="flex justify-center mb-4">
-        <img src="./logoshoepee.png" alt="Shoepee" className="w-16 h-16" />
+        <img src="./logoshoepee.png" alt="Your Logo" className="w-16 h-16" />
       </div>
       <form className="space-y-6" onSubmit={handleSubmit}>
         <h3 className="text-xl font-medium text-white dark:text-black">
           HELLO! WELCOME TO SHOEPEE
         </h3>
-        <p className="text-gray-700 dark:text-gray-700">
-          We are glad to see you again! Please enter your password to continue.
+        <p className="text-gray-700 dark:text-gray-500">
+          We are glad to see you again! Please create a password to continue.
         </p>
         <div className="text-left">
           <label
@@ -86,7 +87,7 @@ const SignIn = ({ goBack, enteredEmail, handleCloseSuccess }) => {
         </div>
         <div className="text-left">
           <label
-            htmlFor="Password"
+            htmlFor="Username"
             className="relative block rounded-md border border-gray-200 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
           >
             <input
@@ -103,47 +104,30 @@ const SignIn = ({ goBack, enteredEmail, handleCloseSuccess }) => {
             </span>
           </label>
         </div>
-
-        <div className="flex justify-between">
-          <div className="flex items-start">
-            <div className="flex items-center h-5">
-              <input
-                id="remember"
-                aria-describedby="remember"
-                type="checkbox"
-                className="bg-gray-50 border border-gray-300 focus:ring-3 focus:ring-blue-300 h-4 w-4 rounded dark:border-gray-500 dark:focus-ring-blue-600 dark:ring-offset-gray-800"
-                required=""
-              />
-            </div>
-            <div className="text-sm ml-3">
-              <label
-                htmlFor="remember"
-                className="font-medium text-gray-700 dark:text-gray-500"
-              >
-                Remember me
-              </label>
-            </div>
+        <div className="text-left">
+          <div className="flex items-center">
+            <Checkbox className="text-white dark:text-black" />
+            <label className="text-sm">I have read the Shoepee Terms</label>
           </div>
-          <a
-            href="#"
-            className="text-sm text-blue-700 hover:underline dark:text-blue-500"
-          >
-            Lost Password?
-          </a>
+          <div className="flex items-center">
+            <Checkbox className="text-white dark:text-black" />
+            <label className="text-sm">
+              I have read and agree to the Privacy Policy
+            </label>
+          </div>
         </div>
-        <SnackbarProvider>
+        <div className="flex justify-between">
           <button
             type="submit"
-            onClick={() => enqueueSnackbar("Login Success!")}
             className="w-full text-white bg-red-900 hover:bg-black focus:ring-4 focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-800 dark:hover-bg-red-700 dark:focus-ring-blue-800"
             disabled={isLoading}
           >
-            {isLoading ? "Loading..." : "SIGN IN"}
+            {isLoading ? "Loading..." : "SIGN UP"}
           </button>
-        </SnackbarProvider>
+        </div>
       </form>
     </div>
   );
 };
 
-export default SignIn;
+export default SignUp;

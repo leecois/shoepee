@@ -1,29 +1,29 @@
-import React, { useState } from "react";
-import { Box, Modal } from "@mui/material";
-import SignIn from "../SignIn/SignIn";
-import axios from "axios";
-import SignUp from "../SignUp/SignUp";
-import { API_BASE_URL } from "../../../../../constants/apiConfig";
+import { Box, Modal } from '@mui/material';
+import axios from 'axios';
+import React, { useState } from 'react';
+import { API_BASE_URL } from '../constants/index';
+import SignIn from './SignIn';
+import SignUp from './Signup';
 
 const style = {
-  position: "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
   width: 400,
-  bgcolor: "background.paper",
+  bgcolor: 'background.paper',
   outline: 0,
   boxShadow: 24,
   p: 4,
 };
 
 const AuthModal = ({ handleClickOpen, handleClose }) => {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('');
   const [showInitialScreen, setShowInitialScreen] = useState(true);
   const [isSignInVisible, setIsSignInVisible] = useState(false);
   const [isSignUpVisible, setIsSignUpVisible] = useState(false);
-  const [emailError, setEmailError] = useState("");
-  const [enteredEmail, setEnteredEmail] = useState(""); // Lưu email
+  const [emailError, setEmailError] = useState('');
+  const [enteredEmail, setEnteredEmail] = useState(''); // Lưu email
   const [isLoading, setIsLoading] = useState(false); // Thêm biến isLoading
 
   const handleContinue = () => {
@@ -31,10 +31,10 @@ const AuthModal = ({ handleClickOpen, handleClose }) => {
       !email ||
       !email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)
     ) {
-      setEmailError("This field is required");
+      setEmailError('This field is required');
       return;
     } else {
-      setEmailError("");
+      setEmailError('');
     }
 
     setEnteredEmail(email);
@@ -155,7 +155,7 @@ const AuthModal = ({ handleClickOpen, handleClose }) => {
                 onClick={handleContinue}
                 className="w-full text-white bg-red-900 hover:bg-black focus:ring-4 focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-800 dark:hover-bg-red-700 dark:focus-ring-blue-800"
               >
-                {isLoading ? "Loading..." : "Continue"}{" "}
+                {isLoading ? 'Loading...' : 'Continue'}{' '}
                 {/* Hiển thị "Loading..." nếu isLoading là true */}
               </button>
             </div>

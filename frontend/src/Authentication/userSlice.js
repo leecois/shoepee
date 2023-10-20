@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import userApi from "../../../api/userApi";
-import StorageKeys from "../../../constants/storage-keys";
+import userApi from "../api/userApi";
+import StorageKeys from "../constants/storage-keys";
 
 // Helper function to save data to local storage
 const saveDataToLocalStorage = (data) => {

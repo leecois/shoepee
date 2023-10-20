@@ -5,7 +5,6 @@ import {
   ShieldCheckIcon,
   XMarkIcon,
 } from "@heroicons/react/24/solid";
-import Breadcrumb from "../Breadcrumb/Breadcrumb";
 import Collection from "../Product/Collection";
 
 const ProductDetail = () => {
@@ -51,16 +50,10 @@ const ProductDetail = () => {
   const starsNumber = Math.floor(product.rating);
   const isHalfStar = !Number.isInteger(product.rating);
   const emptyStars = 5 - Math.ceil(product.rating);
-  const breadcrumbItems = [
-    { label: "Parent", url: "/parent" },
-    { label: "Parent", url: "/parent" },
-    { label: "Current" },
-  ];
 
   return (
     <div className="mx-auto py-8 px-4 w-full max-w-7xl bg-white">
-      <Breadcrumb items={breadcrumbItems} />
-      <div className="mx-auto max-w-2xl mt-2 lg:max-w-none grid grid-cols-1 lg:grid-cols-2 gap-5">
+      <div className="mx-auto max-w-2xl lg:max-w-none grid grid-cols-1 lg:grid-cols-2 gap-5">
         {/* Product Pictures */}
         <div className="order-2 lg:order-1 relative rounded-sm">
           <div className="grid grid-cols-2 gap-2 lg:grid-cols-2 lg:gap-2">

@@ -1,10 +1,10 @@
 // Breadcrumb.jsx
-import React from "react";
+import React from 'react';
 
 const Breadcrumb = ({ items }) => {
   return (
     <nav aria-label="Breadcrumb">
-      <ol className="flex items-center gap-1 text-sm text-gray-600">
+      <ol className="flex items-center gap-2 ml-4 mt-4 text-sm text-gray-600">
         <li>
           <a href="/" className="block transition hover:text-gray-700">
             <span className="sr-only"> Home </span>
@@ -42,7 +42,7 @@ const Breadcrumb = ({ items }) => {
             </li>
             <li>
               <a
-                href={item.url || "#"}
+                href={item.url || '#'}
                 className="block transition hover:text-gray-700"
               >
                 {item.label}

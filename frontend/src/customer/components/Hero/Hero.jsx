@@ -12,11 +12,11 @@ const Hero = () => {
           <div className="p-5 flex flex-col justify-center items-center lg:items-start text-center lg:text-left">
             {/* Hero Title */}
             <h1 className="py-10 text-3xl sm:text-5xl font-light tracking-wide leading-tight select-none">
-              <span className="text-red-500 font-semibold">Shoe</span>pee,{" "}
+              <span className="text-meta-7 font-semibold">Shoe</span>pee,{" "}
               <br />
-              <span className="text-yellow-500 font-semibold">Shoe</span>{" "}
+              <span className="text-meta-6 font-semibold">Shoe</span>{" "}
               cleaning, <br />
-              <span className="text-green-500 font-semibold">Shoe</span> by you
+              <span className="text-meta-3 font-semibold">Shoe</span> by you
               custom shoes.
             </h1>
             {/* Starting Price */}
@@ -26,7 +26,7 @@ const Hero = () => {
             {/* Buttons */}
             <div className="mt-10 flex flex-col sm:flex-row items-center">
               <a
-                href="/product"
+                href="/products"
                 className=" transition ease-in-out delay-150  hover:-translate-z-1 hover:scale-110 hover:background-color: #EF4444; duration-300 m-1.5 py-2.5 px-5 rounded-md bg-black text-white font-semibold uppercase hover:bg-red-800"
               >
                 Start your customize

@@ -1,6 +1,6 @@
 import { Fragment, useState } from "react";
+import AuthModal from "../../Authentication/AuthModal";
 import { Dialog, Popover, Tab, Transition } from "@headlessui/react";
-import AuthModal from "../../features/Auth/components/AuthModal/AuthModal";
 import {
   Bars3Icon,
   ShoppingBagIcon,
