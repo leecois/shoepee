@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Disclosure, Menu } from "@headlessui/react";
-import { productsData } from "./ProductsData";
 import {
   ChevronDownIcon,
   ChevronRightIcon,
@@ -9,8 +8,31 @@ import {
   RectangleGroupIcon,
   XCircleIcon,
 } from "@heroicons/react/24/outline";
+import productApi from "../../../api/productApi";
+import ProductList from "./ProductList";
+import PropTypes from "prop-types";
+
+ProductList.propTypes = {
+  data: PropTypes.array,
+};
+
+ProductList.propTypes = {
+  data: [],
+};
 
 const Product = () => {
+  const [productList, setProductList] = useState([]);
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data } = await productApi.getAll({ _page: 1, _limit: 10 });
+        setProductList(data);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, []);
+
   const [openFilter, setOpenFilter] = useState(true);
 
   const [sortOptions, setSortOptions] = useState([
@@ -109,11 +131,9 @@ const Product = () => {
   return (
     <div className="relative mx-auto py-8 sm:py-16 px-4 w-auto">
       <div className="grid grid-cols-4 gap-y-8 gap-x-4">
-        {/* Heading */}
         <div className="col-span-full pb-6 flex flex-col sm:flex-row items-center justify-between space-y-5 sm:space-y-0 border-b border-gray-200">
           <h2 className="text-3xl font-bold">Shoepee By You Shoes</h2>
           <div className="flex items-center space-x-5">
-            {/* Input search (large devices) */}
             <div className="hidden lg:inline-block relative">
               <label htmlFor="search" className="sr-only">
                 Search
@@ -129,7 +149,6 @@ const Product = () => {
                 <MagnifyingGlassIcon className="w-4 h-4" />
               </span>
             </div>
-            {/* Sort menu */}
             <Menu as="div" className="flex-shrink-0 relative">
               <Menu.Button className="inline-flex items-center text-base text-gray-400 font-semibold hover:text-gray-700">
                 Sort by
@@ -157,11 +176,9 @@ const Product = () => {
                 ))}
               </Menu.Items>
             </Menu>
-            {/* Display option */}
             <button className="text-gray-400 hover:text-blue-400">
               <RectangleGroupIcon className="w-6 h-6" />
             </button>
-            {/* Filter button (small devices) */}
             <button
               className="lg:hidden text-gray-400 hover:text-blue-400"
               onClick={() => setOpenFilter(!openFilter)}
@@ -170,23 +187,16 @@ const Product = () => {
             </button>
           </div>
         </div>
-
-        {/* FILTER OPEN BACKGROUND (small devices) */}
         <div
           className={`lg:hidden absolute inset-0 bg-gray-500 bg-opacity-75 ${
             openFilter ? "visible" : "invisible"
           }`}
         />
-
-        {/* FILTERS */}
         <div
-          className={`col-span-1 absolute top-0 right-0 lg:inset-0 lg:relative w-full h-full max-h-full max-w-xs overflow-y-scroll lg:overflow-auto bg-gray-50 transition-all duration-300 ease-in-out transform ${
-            openFilter
-              ? "translate-x-0 opacity-100"
-              : "translate-x-full opacity-0"
+          className={`col-span-1 absolute top-0 right-0 lg:inset-0 lg:relative w-full h-full max-h-full max-w-xs overflow-y-scroll lg:overflow-auto bg-gray-50 transition-all duration-300 ease-in-out ${
+            openFilter ? "left-0 opacity-100" : "-left-full opacity-0"
           }`}
         >
-          {/* Title (small devices) */}
           <div className="lg:hidden py-5 px-5 flex items-center justify-between border-b border-gray-200">
             <h3 className="text-2xl text-gray-700 font-semibold">Filters</h3>
             <button
@@ -196,8 +206,6 @@ const Product = () => {
               <XCircleIcon className="w-5 h-5" />
             </button>
           </div>
-
-          {/* Input Search (small devices) */}
           <div className="lg:hidden relative m-5">
             <label htmlFor="search" className="sr-only">
               Search
@@ -213,8 +221,6 @@ const Product = () => {
               <MagnifyingGlassIcon className="w-4 h-4" />
             </span>
           </div>
-
-          {/* Subcategories Section */}
           <div className="mt-5 pb-5 pl-5 border-b border-gray-200">
             <ul className="flex flex-col items-start space-y-2">
               {subCategories.map((subcategory) => (
@@ -229,8 +235,6 @@ const Product = () => {
               ))}
             </ul>
           </div>
-
-          {/* Filters */}
           <div>
             {filters.map((section) => (
               <Disclosure
@@ -244,7 +248,6 @@ const Product = () => {
                       open && "bg-blue-50"
                     }`}
                   >
-                    {/* Category name */}
                     <Disclosure.Button className="group flex items-center justify-between">
                       <span className="text-base text-gray-700 font-semibold">
                         {section.name}
@@ -257,7 +260,6 @@ const Product = () => {
                         }`}
                       />
                     </Disclosure.Button>
-                    {/* Filters color */}
                     {section.id === "color" && (
                       <Disclosure.Panel className="mt-5 flex flex-wrap items-center">
                         {section.options.map((option) => (
@@ -278,7 +280,6 @@ const Product = () => {
                         ))}
                       </Disclosure.Panel>
                     )}
-                    {/* Filters price & brand */}
                     {section.id !== "color" && (
                       <Disclosure.Panel className="mt-5 flex flex-col">
                         {section.options.map((option) => (
@@ -310,39 +311,8 @@ const Product = () => {
             ))}
           </div>
         </div>
-
-        {/* PRODUCT CARD */}
-        <div className="col-span-full md:col-span-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {productsData.map((product) => (
-            <div key={product.id}>
-              <a href="#" className="block group">
-                <img
-                  src={product.imageUrl}
-                  alt={product.name}
-                  className="h-[350px] w-full object-cover sm:h-[450px]"
-                />
-
-                <div className="mt-1.5">
-                  <div className="text-lg text-orange-700 font-bold">
-                    Customize
-                  </div>
-
-                  <div className="flex justify-between mt-3 text-sm">
-                    <h3 className="text-gray-500 font-bold">
-                      {product.brand}
-                    </h3>
-                  </div>
-                  <div className="flex justify-between mt-3 text-sm">
-                    <h3 className="text-black font-bold group-hover:underline group-hover:underline-offset-4">
-                      {product.name}
-                    </h3>
-                    <p className="text-black text-md font-semibold">${product.price}</p>
-                  </div>
-                </div>
-              </a>
-            </div>
-          ))}
-        </div>
+        {/* Product */}
+        <ProductList data={productList} />
       </div>
     </div>
   );

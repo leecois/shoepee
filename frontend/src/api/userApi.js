@@ -1,11 +1,13 @@
-import axiosClient from './axiosClient';
-import { API_BASE_URL } from '../config/apiConfig'
+import axiosClient from "./axiosClient";
+
+const createApiRequest = (endpoint) => (data) => {
+  const url = `/${endpoint}`;
+  return axiosClient.post(url, data);
+};
 
 const userApi = {
-    register(data) {
-        const url = `${API_BASE_URL}/auth/local/register`;
-        return axiosClient.post(url, data);
-    },
+  register: createApiRequest("register"),
+  login: createApiRequest("login"),
 };
 
 export default userApi;

@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Box, Modal } from "@mui/material";
 import SignIn from "../SignIn/SignIn";
+import axios from "axios";
 import SignUp from "../SignUp/SignUp";
+import { API_BASE_URL } from "../../../../../constants/apiConfig";
 
 const style = {
   position: "absolute",
@@ -21,7 +23,8 @@ const AuthModal = ({ handleClickOpen, handleClose }) => {
   const [isSignInVisible, setIsSignInVisible] = useState(false);
   const [isSignUpVisible, setIsSignUpVisible] = useState(false);
   const [emailError, setEmailError] = useState("");
-  const [enteredEmail, setEnteredEmail] = useState(""); // Lưu email được nhập từ bên ngoài
+  const [enteredEmail, setEnteredEmail] = useState(""); // Lưu email
+  const [isLoading, setIsLoading] = useState(false); // Thêm biến isLoading
 
   const handleContinue = () => {
     if (
@@ -34,27 +37,51 @@ const AuthModal = ({ handleClickOpen, handleClose }) => {
       setEmailError("");
     }
 
-    // Lưu email được nhập từ bên ngoài vào trạng thái
     setEnteredEmail(email);
+    let emailExists = false; // Mặc định là false
+    let isCheckEmailSuccess = false; // Mặc định là false
+    setIsLoading(true); // Bắt đầu loading
 
-    // Implement logic to check if the email exists in your database.
-    const emailExists = false; // Replace with your actual logic
+    axios
+      .get(`${API_BASE_URL}/username/${email}`)
+      .then((response) => {
+        emailExists = response.data.email;
+        isCheckEmailSuccess = true; // Đã kiểm tra email thành công
+      })
+      .catch((error) => {
+        isCheckEmailSuccess = true; // Đã kiểm tra email với lỗi
+      })
+      .finally(() => {
+        setIsLoading(false); // Kết thúc loading
 
-    if (emailExists) {
-      setShowInitialScreen(false);
-      setIsSignInVisible(true);
-      setIsSignUpVisible(false);
-    } else {
-      setShowInitialScreen(false);
-      setIsSignInVisible(false);
-      setIsSignUpVisible(true);
-    }
+        if (isCheckEmailSuccess) {
+          // Kiểm tra email đã hoàn thành (có hoặc không có lỗi)
+          if (emailExists) {
+            // Xử lý khi email tồn tại
+            setShowInitialScreen(false);
+            setIsSignInVisible(true);
+            setIsSignUpVisible(false);
+          } else {
+            // Xử lý khi email không tồn tại
+            setShowInitialScreen(false);
+            setIsSignInVisible(false);
+            setIsSignUpVisible(true);
+          }
+        } else {
+          // Xử lý khi kiểm tra email chưa hoàn thành (có lỗi)
+          // Điều gì xảy ra tùy thuộc vào logic của bạn
+        }
+      });
   };
 
   const handleBackToAuthModal = () => {
     setIsSignInVisible(false);
     setIsSignUpVisible(false);
     setShowInitialScreen(true);
+  };
+  const handleCloseSuccess = () => {
+    setIsSignUpVisible(false);
+    setIsSignInVisible(false);
   };
 
   return (
@@ -128,22 +155,27 @@ const AuthModal = ({ handleClickOpen, handleClose }) => {
                 onClick={handleContinue}
                 className="w-full text-white bg-red-900 hover:bg-black focus:ring-4 focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-800 dark:hover-bg-red-700 dark:focus-ring-blue-800"
               >
-                Continue
+                {isLoading ? "Loading..." : "Continue"}{" "}
+                {/* Hiển thị "Loading..." nếu isLoading là true */}
               </button>
             </div>
           ) : isSignInVisible ? (
             <SignIn
               goBack={handleBackToAuthModal}
               enteredEmail={enteredEmail}
+              handleCloseSuccess={handleCloseSuccess}
             />
           ) : isSignUpVisible ? (
             <SignUp
               goBack={handleBackToAuthModal}
               enteredEmail={enteredEmail}
+              handleCloseSuccess={handleCloseSuccess}
             />
           ) : (
             <div>
-              <button onClick={handleBackToAuthModal}>Back to AuthModal</button>
+              <button onClick={handleBackToAuthModal}>
+                Update your profile
+              </button>
             </div>
           )}
         </Box>

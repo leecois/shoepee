@@ -1,11 +1,12 @@
 import { Checkbox } from "@mui/material";
-import { unwrapResult } from "@reduxjs/toolkit";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { register } from "../../userSlice";
+import { unwrapResult } from "@reduxjs/toolkit";
 
-const SignUp = ({ goBack, enteredEmail }) => {
+const SignUp = ({ goBack, enteredEmail, handleCloseSuccess }) => {
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
 
   const handleSubmit = async (event) => {
@@ -13,24 +14,27 @@ const SignUp = ({ goBack, enteredEmail }) => {
     try {
       const data = new FormData(event.currentTarget);
       const userData = {
-        email: data.get("email"),
+        email: enteredEmail,
         password: data.get("password"),
         address: data.get("address"),
-        username: data.get("username"),
+        username: data.get("username") || enteredEmail, // Auto set username to email
         phone: 123123123,
-        rollid: 1,
-        rolename: "customer",
       };
 
-      // auto set username = email
-      userData.username = userData.email;
+      setIsLoading(true);
+
       const action = register(userData);
       const resultAction = await dispatch(action);
       const user = unwrapResult(resultAction);
 
       console.log("New user", user);
+
+      // Close modal on successful registration
+      handleCloseSuccess();
     } catch (error) {
       console.log("Failed to register:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -71,7 +75,7 @@ const SignUp = ({ goBack, enteredEmail }) => {
               type="email"
               name="email"
               id="email"
-              value={enteredEmail} // Sử dụng enteredEmail thay vì email
+              value={enteredEmail}
               className="peer w-full border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0"
               required=""
               readOnly
@@ -116,8 +120,9 @@ const SignUp = ({ goBack, enteredEmail }) => {
           <button
             type="submit"
             className="w-full text-white bg-red-900 hover:bg-black focus:ring-4 focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-800 dark:hover-bg-red-700 dark:focus-ring-blue-800"
+            disabled={isLoading}
           >
-            SIGN UP
+            {isLoading ? "Loading..." : "SIGN UP"}
           </button>
         </div>
       </form>

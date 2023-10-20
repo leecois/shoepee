@@ -1,5 +1,4 @@
 import React from "react";
-import Billboard from "../../components/Billboard/Billboard";
 import Hero from "../../components/Hero/Hero";
 import HeroMessage from "../../components/Hero/HeroMessage";
 import Collection from "../../components/Product/Collection";
