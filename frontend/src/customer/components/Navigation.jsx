@@ -458,13 +458,13 @@ export default function Navigation() {
 
               <div className="ml-auto flex items-center">
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                    <button
-                      type="button"
-                      className="relative -m-2 inline-flex items-center justify-center rounded-md p-2 text-gray-500"
-                      onClick={() => handleClickOpen()}
-                    >
-                      Sign in
-                    </button>                
+                  <button
+                    type="button"
+                    className="relative -m-2 inline-flex items-center justify-center rounded-md p-2 text-gray-500"
+                    onClick={() => handleClickOpen()}
+                  >
+                    Sign in
+                  </button>
                   <span className="h-6 w-px bg-gray-200" aria-hidden="true" />
                 </div>
 
@@ -494,7 +494,7 @@ export default function Navigation() {
 
                 {/* Cart */}
                 <div className="ml-4 flow-root lg:ml-6">
-                  <a href="#" className="group -m-2 flex items-center p-2">
+                  <a href="/Cart" className="group -m-2 flex items-center p-2">
                     <ShoppingBagIcon
                       className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
                       aria-hidden="true"
