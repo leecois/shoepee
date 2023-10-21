@@ -3,6 +3,7 @@ import { lazy } from 'react';
 const ProductPage = lazy(() => import('../pages/ProductPage/ProductPage'));
 const ProductDetail = lazy(() => import('../pages/ProductPage/ProductDetail'));
 const Cart = lazy(() => import('../components/Cart/Cart'));
+const ShoeCustomizer = lazy(() => import('../pages/ShoeCustomizer'));
 
 const coreRoutes = [
   {
@@ -19,6 +20,11 @@ const coreRoutes = [
     path: '/Cart',
     title: 'Cart',
     component: Cart,
+  },
+  {
+    path: '/customizer',
+    title: 'Customizer',
+    component: ShoeCustomizer,
   },
 ];
 
