@@ -2,6 +2,7 @@ import { lazy } from 'react';
 
 const ProductPage = lazy(() => import('../pages/ProductPage/ProductPage'));
 const ProductDetail = lazy(() => import('../pages/ProductPage/ProductDetail'));
+const ShoeCustomizer = lazy(() => import('../pages/ShoeCustomizer'));
 
 const coreRoutes = [
   {
@@ -13,6 +14,11 @@ const coreRoutes = [
     path: '/products/product-detail/:id',
     title: 'Products Details',
     component: ProductDetail,
+  },
+  {
+    path: '/customizer',
+    title: 'Customizer',
+    component: ShoeCustomizer,
   },
 ];
 
