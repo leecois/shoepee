@@ -1,13 +1,9 @@
-import React from 'react';
-import { Box, Flex, Heading, IconButton, Stack, Text } from '@chakra-ui/react';
+import { ChevronUpIcon } from '@heroicons/react/24/outline';
 import { AnimatePresence, motion } from 'framer-motion';
-import { useContext } from 'react';
-import { CustomizationContext } from '../layout/CustomizationContex';
+import React, { useContext } from 'react';
+import { CustomizationContext } from '../layout/CustomizationContext';
 import CustomColorPicker from './CustomColorPicker.jsx';
 import SizeCustomizer from './SizeCustomizer.jsx';
-import { ChevronUpIcon } from '@heroicons/react/24/outline';
-
-
 
 export default function CustomizationInterface() {
   const { isOpenModal, customization, setIsOpenModal } =
@@ -19,34 +15,25 @@ export default function CustomizationInterface() {
   const toggleModal = () => setIsOpenModal(!isOpenModal);
 
   return (
-    <Box
+    <div
       style={{ position: 'absolute', top: 0, right: '1%' }}
-      p={3}
-      ml={3}
-      width="310px"
+      className="p-3 ml-3 w-80"
     >
-      <Box className="headingGlass text-meta-2" mb={4} p={4}>
-        <Flex justify="space-between">
-          <Text p={2}>Shoe Configurator</Text>
+      <div className="headingGlass mb-4 p-4 text-meta-2">
+        <div className="flex justify-between">
+          <h1>Shoe Customize</h1>
           {isOpenModal && (
-            <IconButton
-              variant="outline"
-              colorScheme="whiteAlpha"
-              aria-label="Collapse menu"
+            <ChevronUpIcon
               onClick={toggleModal}
-              icon={<ChevronUpIcon />}
+              aria-label="Collapse menu"
+              className="w-5 h-5"
             />
           )}
-        </Flex>
-        <Heading
-          as="h1"
-          size="lg"
-          p={2}
-          style={{ fontFamily: 'Noto Sans Mono' }}
-        >
+        </div>
+        <h1 className="text-lg font-mono">
           {customization.layerName || 'Click on a layer to start editing!'}
-        </Heading>
-      </Box>
+        </h1>
+      </div>
       <AnimatePresence>
         {isOpenModal && (
           <motion.div
@@ -64,24 +51,23 @@ export default function CustomizationInterface() {
             }}
             transition={{ duration: 0.3, ease: [0.04, 0.62, 0.23, 0.98] }}
           >
-            <Stack spacing="4">
-              <Stack className="text-meta-2 glass" p={8} width="290px" spacing="12px">
-                <Heading as="h3" size="sm" py={2}>
-                  Layer color
-                </Heading>
+            <div className="space-y-4">
+              <div className="text-meta-2 glass p-4 space-y-4">
+                <h2 className="text-sm py-2">Layer color</h2>
                 <CustomColorPicker />
-              </Stack>
+              </div>
 
-              <Stack className=" text-meta-2 glass" p={8} width="290px" spacing="12px">
-                <Heading as="h3" size="sm" py={2}>
-                  Layer size
-                </Heading>
+              <div className="text-meta-2 glass p-4 space-y-4">
+                <h2 className="text-sm py-2">Layer size</h2>
                 <SizeCustomizer />
-              </Stack>
-            </Stack>
+              </div>
+              <button className="bg-white font-bold text-black border border-white p-2 rounded hover:bg-gray-200 w-full">
+                Add To Cart
+              </button>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </Box>
+    </div>
   );
 }

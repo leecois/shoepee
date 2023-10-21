@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { productsData } from "../Product/ProductsData";
-import { resetCart, addToCart, increaseQuantity, decreaseQuantity, deleteItem } from "./cartSlice";
+import { deleteItem } from "./cartSlice";
 
 
 const Cart = () => {

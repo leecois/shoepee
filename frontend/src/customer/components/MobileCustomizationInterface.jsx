@@ -1,11 +1,10 @@
-import { Box, Flex, Heading, IconButton, Stack, Text } from '@chakra-ui/react';
 import { useContext, useEffect, useRef, useState } from 'react';
+import { ChevronUpIcon } from '@heroicons/react/24/outline';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import CustomColorPicker from '../components/CustomColorPicker';
 import SizeCustomizer from '../components/SizeCustomizer';
-import { CustomizationContext } from '../layout/CustomizationContex';
-import { ChevronUpIcon } from '@heroicons/react/24/outline';
+import { CustomizationContext } from '../layout/CustomizationContext';
 
 export default function MobileCustomizationInterface() {
   const { isOpenModal, customization, setIsOpenModal } =
@@ -14,84 +13,66 @@ export default function MobileCustomizationInterface() {
   const myRef = useRef();
 
   const handleClickInside = () => setIsOpenModal(true);
+
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (myRef.current && !myRef.current.contains(e.target)) {
         setIsOpenModal(false);
       }
     };
-    
+
     document.body.addEventListener('mousedown', handleClickOutside);
     return () =>
       document.body.removeEventListener('mousedown', handleClickOutside);
-  });
+  }, []);
 
   return (
-    <>
-      <Box
-        style={{ position: 'absolute', top: 0, right: '1%' }}
-        ml={4}
-        width="250px"
-        className="headingGlass text-meta-2"
-        mt={2}
-        px={2}
-      >
-        <Flex justify="space-between" mt={2}>
-          <Text p={2}>Shoe Configurator</Text>
-          {isOpenModal ? (
-            <IconButton
-              variant="outline"
-              colorScheme="whiteAlpha"
-              aria-label="Collapse menu"
+    <div className="fixed top-0 right-4 mt-2">
+      <div className="w-80 headingGlass text-meta-2 px-2">
+        <div className="flex justify-between mt-2">
+          <p className="p-2">Shoe Customize</p>
+          {isOpenModal && (
+            <button
               onClick={() => setIsOpenModal(!isOpenModal)}
-              icon={<ChevronUpIcon />}
-            />
-          ) : null}
-        </Flex>
-        <Heading
-          as="h1"
-          size="lg"
-          p={2}
-          style={{ fontFamily: 'Noto Sans Mono' }}
-          mb={2}
-        >
+              className="border border-white text-white p-2 hover:bg-gray-200 rounded-full"
+              aria-label="Collapse menu"
+            >
+              <ChevronUpIcon className="w-6 h-6" />
+            </button>
+          )}
+        </div>
+        <h1 className="text-lg p-2 font-mono">
           {customization.layerName
             ? customization.layerName
             : 'Click on a layer to start editing!'}
-        </Heading>
-      </Box>
+        </h1>
+      </div>
 
-      <Box
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          margin: 'auto',
-        }}
-        p={3}
-        ml={3}
-        width="310px"
-      >
-        {isOpenModal ? (
+      <div className="absolute m-auto p-2">
+        {isOpenModal && (
           <div ref={myRef} onClick={handleClickInside}>
-            <Carousel className="glass text-meta-2" swipeable={false} showThumbs={false}>
-              <Stack p={8} spacing="12px">
-                <Heading as="h3" size="sm" py={2}>
-                  Layer color
-                </Heading>
+            <Carousel
+              className="glass text-meta-2 px-4"
+              swipeable={false}
+              showThumbs={false}
+            >
+              <div className="pb-5">
+                <h3 className="text-sm py-2">Layer color</h3>
                 <CustomColorPicker />
-              </Stack>
-              <Stack p={8} spacing="12px">
-                <Heading as="h3" size="sm" py={2}>
-                  Layer size
-                </Heading>
+              </div>
+              <div className="pb-5">
+                <h3 className="text-sm py-2">Layer size</h3>
                 <SizeCustomizer />
-              </Stack>
+              </div>
             </Carousel>
           </div>
-        ) : null}
-      </Box>
-    </>
+        )}
+      </div>
+
+      {/* Button Submit */}
+      <button className="fixed bottom-4 right-4 bg-white hover:bg-blue-700 text-black font-bold py-2 px-4 rounded">
+        Add To Cart
+      </button>
+    </div>
   );
 }

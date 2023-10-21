@@ -1,6 +1,5 @@
 import { EllipsisHorizontalIcon } from '@heroicons/react/24/outline';
 import ProductOne from '../images/product/product-01.png';
-import ProductTwo from '../images/product/product-02.png';
 
 const AccountsListTable = () => {
   return (

@@ -1,6 +1,6 @@
-import { useGLTF, Bounds } from '@react-three/drei';
-import { useRef, useContext, useEffect } from 'react';
-import { CustomizationContext } from '../../../layout/CustomizationContex';
+import { Bounds, useGLTF } from '@react-three/drei';
+import { useContext, useRef } from 'react';
+import { CustomizationContext } from '../../../layout/CustomizationContext';
 
 function ModelShoe({ ...props }) {
   const { nodes, materials } = useGLTF('/model.glb');

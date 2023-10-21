@@ -1,18 +1,14 @@
-import {
-  Button,
-  Slider,
-  SliderFilledTrack,
-  SliderThumb,
-  SliderTrack,
-  Text,
-} from '@chakra-ui/react';
-import { useContext } from 'react';
-import { CustomizationContext } from '../layout/CustomizationContex';
+import React, { useContext, useState } from 'react';
+import { CustomizationContext } from '../layout/CustomizationContext';
 
 export default function SizeCustomizer() {
   const { customization, setCustomization } = useContext(CustomizationContext);
+  const [initialColor, setInitialColor] = useState(
+    customization.layerColor[customization.layerName]
+  );
 
-  const handleSliderChange = (value, axis) => {
+  const handleSliderChange = (event, axis) => {
+    const value = parseFloat(event.target.value);
     const updatedSize = {
       ...customization.layerSize[customization.layerName],
       [axis]: value,
@@ -40,6 +36,10 @@ export default function SizeCustomizer() {
         ...prevState.layerSize,
         [layer]: defaultSize,
       },
+      layerColor: {
+        ...prevState.layerColor,
+        [layer]: initialColor,
+      },
     }));
   };
 
@@ -55,75 +55,71 @@ export default function SizeCustomizer() {
       patch: { x: 1, y: 1, z: 1 },
     };
 
+    const defaultColors = { ...initialColor };
+
     setCustomization((prevState) => ({
       ...prevState,
       layerSize: defaultSizes,
+      layerColor: defaultColors,
     }));
   };
 
   return (
-    <>
-      <Text>Width</Text>
-      <Slider
-        aria-label="slider-width"
-        min={0}
-        max={3}
-        step={0.2}
-        value={customization.layerSize[customization.layerName].z}
-        onChange={(v) => handleSliderChange(v, 'z')}
-      >
-        <SliderTrack>
-          <SliderFilledTrack />
-        </SliderTrack>
-        <SliderThumb />
-      </Slider>
+    <div className="text-white p-4">
+      <div className="mb-4">
+        <label className="text-sm">Width</label>
+        <input
+          type="range"
+          min="0"
+          max="3"
+          step="0.2"
+          value={customization.layerSize[customization.layerName].z}
+          onChange={(e) => handleSliderChange(e, 'z')}
+          className="w-full"
+        />
+      </div>
 
-      <Text>Height</Text>
-      <Slider
-        aria-label="slider-height"
-        min={0}
-        max={3}
-        step={0.2}
-        value={customization.layerSize[customization.layerName].y}
-        onChange={(v) => handleSliderChange(v, 'y')}
-      >
-        <SliderTrack>
-          <SliderFilledTrack />
-        </SliderTrack>
-        <SliderThumb />
-      </Slider>
+      <div className="mb-4">
+        <label className="text-sm">Height</label>
+        <input
+          type="range"
+          min="0"
+          max="3"
+          step="0.2"
+          value={customization.layerSize[customization.layerName].y}
+          onChange={(e) => handleSliderChange(e, 'y')}
+          className="w-full"
+        />
+      </div>
 
-      <Text>Depth</Text>
-      <Slider
-        aria-label="slider-depth"
-        min={0}
-        max={3}
-        step={0.2}
-        value={customization.layerSize[customization.layerName].x}
-        onChange={(v) => handleSliderChange(v, 'x')}
-      >
-        <SliderTrack>
-          <SliderFilledTrack />
-        </SliderTrack>
-        <SliderThumb />
-      </Slider>
+      <div className="mb-4">
+        <label className="text-sm">Depth</label>
+        <input
+          type="range"
+          min="0"
+          max="3"
+          step="0.2"
+          value={customization.layerSize[customization.layerName].x}
+          onChange={(e) => handleSliderChange(e, 'x')}
+          className="w-full"
+        />
+      </div>
 
-      <Button
-        variant="outline"
-        colorScheme="whiteAlpha"
-        mt={10}
-        onClick={() => setDefaultValuesForLayer(customization.layerName)}
-      >
-        Default values for layer
-      </Button>
+      <div className="grid grid-cols-2 gap-2">
+        <button
+          className="glass text-gray-300 p-2 rounded hover:bg-meta-2 w-full"
+          onClick={() => setDefaultValuesForLayer(customization.layerName)}
+        >
+          Reset Color
+        </button>
 
-      <Button
-        variant="outline"
-        colorScheme="whiteAlpha"
-        onClick={setDefaultValuesForModel}
-      >
-        Default values for model
-      </Button>
-    </>
+        <button
+          className="glass text-gray-300 p-2 rounded hover:bg-meta-2 w-full"
+          onClick={setDefaultValuesForModel}
+        >
+          Reset Size
+        </button>
+      </div>
+    </div>
   );
 }

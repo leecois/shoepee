@@ -2,7 +2,7 @@ import { useContext, useState, useEffect } from 'react';
 import { HexColorPicker } from 'react-colorful';
 import styled from '@emotion/styled';
 import Circle from '@uiw/react-color-circle';
-import { CustomizationContext } from '../layout/CustomizationContex';
+import { CustomizationContext } from '../layout/CustomizationContext';
 
 const StyledColorPicker = styled(HexColorPicker)`
   &.react-colorful {

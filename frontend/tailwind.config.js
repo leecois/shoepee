@@ -1,13 +1,18 @@
-const defaultTheme = require('tailwindcss/defaultTheme')
+const defaultTheme = require('tailwindcss/defaultTheme');
+const colors = require('tailwindcss/colors');
 
 module.exports = {
-  content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
-  ],
-  darkMode:'class',
+  content: ['./src/**/*.{js,jsx,ts,tsx}'],
+  darkMode: 'class',
   theme: {
     colors: {
-      'light-yellow':'#f1f2ed',
+      black: colors.black,
+      white: colors.white,
+      gray: colors.trueGray,
+      indigo: colors.indigo,
+      red: colors.rose,
+      yellow: colors.amber,
+      'light-yellow': '#f1f2ed',
       current: 'currentColor',
       transparent: 'transparent',
       white: '#FFFFFF',
@@ -20,7 +25,6 @@ module.exports = {
       primary: '#3C50E0',
       secondary: '#80CAEE',
       stroke: '#E2E8F0',
-      gray: '#EFF4FB',
       graydark: '#333A48',
       'gray-2': '#F7F9FC',
       'gray-3': '#FAFAFA',
@@ -249,7 +253,5 @@ module.exports = {
       },
     },
   },
-  plugins: [
-    require('@tailwindcss/forms'),
-  ],
-}
+  plugins: [require('@tailwindcss/forms')],
+};

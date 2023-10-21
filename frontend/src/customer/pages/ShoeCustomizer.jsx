@@ -3,7 +3,7 @@ import Media from 'react-media';
 import CustomizationInterface from '../components/CustomizationInterface';
 import MobileCustomizationInterface from '../components/MobileCustomizationInterface';
 import Scene from '../components/Scene/Scene';
-import CustomizationContextProvider from '../layout/CustomizationContex';
+import CustomizationContextProvider from '../layout/CustomizationContext';
 
 const ShoeCustomizer = () => {
   return (
