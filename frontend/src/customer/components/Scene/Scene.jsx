@@ -10,7 +10,7 @@ function Scene() {
       <Suspense fallback={<p>Loading...</p>} />
       <OrbitControls enablePan={true} enableZoom={true} enableRotate={true} />
       <directionalLight intensity={0.1} position={[100, 0, 50]} />
-      <ModelShoe />
+      <ModelNike />
       <Environment files="./img/small.hdr" background />
       <Suspense />
     </Canvas>
