@@ -2,8 +2,8 @@ import { ChevronUpIcon } from '@heroicons/react/24/outline';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { useContext } from 'react';
 import { CustomizationContext } from '../layout/CustomizationContext';
-import CustomColorPicker from './CustomColorPicker.jsx';
-import SizeCustomizer from './SizeCustomizer.jsx';
+import CustomColorPicker from './CustomColorPicker';
+import SizeCustomizer from './SizeCustomizer';
 
 export default function CustomizationInterface() {
   const { isOpenModal, customization, setIsOpenModal } =
@@ -19,7 +19,7 @@ export default function CustomizationInterface() {
       style={{ position: 'absolute', top: 0, right: '1%' }}
       className="p-3 ml-3 w-80"
     >
-      <div className="headingGlass mb-4 p-4 text-meta-2">
+      <div className="headingGlass mb-4 p-4 text-meta-4">
         <div className="flex justify-between">
           <h1>Shoe Customize</h1>
           {isOpenModal && (
@@ -58,7 +58,6 @@ export default function CustomizationInterface() {
               </div>
 
               <div className="text-meta-2 glass p-4 space-y-4">
-                <h2 className="text-sm py-2">Layer size</h2>
                 <SizeCustomizer />
               </div>
               <button className="bg-white font-bold text-black border border-white p-2 rounded hover:bg-gray-200 w-full">

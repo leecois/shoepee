@@ -2,74 +2,46 @@ import { useState, createContext } from 'react';
 
 export const CustomizationContext = createContext({});
 
-export default function CustomizationContextProvider({ children }){
-  const [layerSize, setLayerSize] = useState();
+export default function CustomizationContextProvider({ children }) {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [customization, setCustomization] = useState({
-    layerName:'',
-    layerColor:{
-      laces:'#ffffff',
-      mesh:'#ffffff',
-      caps:'#ffffff',
-      inner:'#ffffff',
-      sole:'#ffffff',
-      stripes:'#ffffff',
-      band:'#ffffff',
-      patch:'#ffffff',
-    },
-    layerSize:{
-      laces:{
-        x:1,
-        y:1,
-        z:1
-      },
-      mesh:{
-        x:1,
-        y:1,
-        z:1
-      },
-      caps:{
-        x:1,
-        y:1,
-        z:1
-      },
-      inner:{
-        x:1,
-        y:1,
-        z:1
-      },
-      sole:{
-        x:1,
-        y:1,
-        z:1
-      },
-      stripes:{
-        x:1,
-        y:1,
-        z:1
-      },
-      band:{
-        x:1,
-        y:1,
-        z:1
-      },
-      patch:{
-        x:1,
-        y:1,
-        z:1
-      },
+    layerName: '',
+    layerColor: {
+      'Main Body Material': '#ffffff',
+      'Sole Material': '#ffffff',
+      'Tag material': '#ffffff',
+      'Flap Material.002': '#ffffff',
+      'Logo right Material': '#ffffff',
+      'Logo left Material': '#ffffff',
+      logo: '#ffffff',
+      tag: '#ffffff',
+      flap: '#ffffff',
+      laces: '#ffffff',
+      mesh: '#ffffff',
+      caps: '#ffffff',
+      inner: '#ffffff',
+      sole: '#ffffff',
+      stripes: '#ffffff',
+      band: '#ffffff',
+      patch: '#ffffff',
     },
   });
 
   const onOpenModal = () => setIsOpenModal(true);
   const onCloseModal = () => setIsOpenModal(false);
 
-  return(
-    <CustomizationContext.Provider 
-      value={{isOpenModal,onOpenModal,onCloseModal, setIsOpenModal, layerSize,setLayerSize, customization, setCustomization}}
+  return (
+    <CustomizationContext.Provider
+      value={{
+        isOpenModal,
+        onOpenModal,
+        onCloseModal,
+        setIsOpenModal,
+        customization,
+        setCustomization,
+      }}
     >
       {children}
     </CustomizationContext.Provider>
-  )
+  );
 }
-

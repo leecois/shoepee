@@ -65,61 +65,13 @@ export default function SizeCustomizer() {
   };
 
   return (
-    <div className="text-white p-4">
-      <div className="mb-4">
-        <label className="text-sm">Width</label>
-        <input
-          type="range"
-          min="0"
-          max="3"
-          step="0.2"
-          value={customization.layerSize[customization.layerName].z}
-          onChange={(e) => handleSliderChange(e, 'z')}
-          className="w-full"
-        />
-      </div>
-
-      <div className="mb-4">
-        <label className="text-sm">Height</label>
-        <input
-          type="range"
-          min="0"
-          max="3"
-          step="0.2"
-          value={customization.layerSize[customization.layerName].y}
-          onChange={(e) => handleSliderChange(e, 'y')}
-          className="w-full"
-        />
-      </div>
-
-      <div className="mb-4">
-        <label className="text-sm">Depth</label>
-        <input
-          type="range"
-          min="0"
-          max="3"
-          step="0.2"
-          value={customization.layerSize[customization.layerName].x}
-          onChange={(e) => handleSliderChange(e, 'x')}
-          className="w-full"
-        />
-      </div>
-
-      <div className="grid grid-cols-2 gap-2">
-        <button
-          className="glass text-gray-300 p-2 rounded hover:bg-meta-2 w-full"
-          onClick={() => setDefaultValuesForLayer(customization.layerName)}
-        >
-          Reset Color
-        </button>
-
-        <button
-          className="glass text-gray-300 p-2 rounded hover:bg-meta-2 w-full"
-          onClick={setDefaultValuesForModel}
-        >
-          Reset Size
-        </button>
-      </div>
+    <div className="text-white">
+      <button
+        className="glass text-white p-2 rounded hover:bg-gray-500 w-full"
+        onClick={() => setDefaultValuesForLayer(customization.layerName)}
+      >
+        Reset Color
+      </button>
     </div>
   );
 }
