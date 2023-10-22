@@ -1,1 +1,1 @@
-*.glb filter=lfs -text
+*.glb -text
