@@ -1,1 +1,1 @@
-*.glb filter=lfs merge=lfs -text
+*.glb filter=lfs -text
