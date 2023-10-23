@@ -3,7 +3,7 @@ import { useCallback, useContext, useRef } from 'react';
 import { CustomizationContext } from '../../../layout/CustomizationContext';
 
 function ModelNike({ ...props }) {
-  const { nodes, materials } = useGLTF('/ModelNike3D.glb');
+  const { nodes, materials } = useGLTF('/model/ModelNike3D.glb');
   const group = useRef();
   const { setIsOpenModal, customization, setCustomization } =
     useContext(CustomizationContext);

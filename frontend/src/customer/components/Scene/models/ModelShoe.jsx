@@ -3,7 +3,7 @@ import { useContext, useRef } from 'react';
 import { CustomizationContext } from '../../../layout/CustomizationContext';
 
 function ModelShoe({ ...props }) {
-  const { nodes, materials } = useGLTF('/model.glb');
+  const { nodes, materials } = useGLTF('/model/model.glb');
   const group = useRef();
   const { setIsOpenModal, customization, setCustomization } =
     useContext(CustomizationContext);
