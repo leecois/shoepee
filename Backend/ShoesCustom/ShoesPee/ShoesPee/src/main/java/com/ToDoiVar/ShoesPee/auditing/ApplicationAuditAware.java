@@ -1,9 +1,11 @@
 package com.ToDoiVar.ShoesPee.auditing;
+
+import com.ToDoiVar.ShoesPee.user.User;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import com.ToDoiVar.ShoesPee.Models.User;
+
 import java.util.Optional;
 
 public class ApplicationAuditAware implements AuditorAware<Integer> {
@@ -14,14 +16,13 @@ public class ApplicationAuditAware implements AuditorAware<Integer> {
                         .getContext()
                         .getAuthentication();
         if (authentication == null ||
-                !authentication.isAuthenticated() ||
+            !authentication.isAuthenticated() ||
                 authentication instanceof AnonymousAuthenticationToken
         ) {
             return Optional.empty();
         }
 
         User userPrincipal = (User) authentication.getPrincipal();
-        return Optional.ofNullable(userPrincipal.getUserId());
+        return Optional.ofNullable(userPrincipal.getId());
     }
 }
-

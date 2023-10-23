@@ -1,4 +1,4 @@
-package com.ToDoiVar.ShoesPee.Models;
+package com.ToDoiVar.ShoesPee.user;
 
 import lombok.Builder;
 import lombok.Getter;
