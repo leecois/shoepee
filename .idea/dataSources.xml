@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="shoe_system" uuid="3dbbfa51-cda5-4749-ba74-fb6a11e5fb33">
+    <data-source source="LOCAL" name="shoepee" uuid="1dd2eefb-8c3a-425f-8be4-598b6a223fc4">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://127.0.0.1:3306/shoepee</jdbc-url>
+      <jdbc-url>jdbc:mysql://shoespee.cv1mjmcgcifj.ap-southeast-1.rds.amazonaws.com:3306/shoepee</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>
