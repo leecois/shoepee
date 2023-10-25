@@ -1,66 +1,70 @@
 
-drop database shoePee;
-create database shoePee;
-use shoePee;
+drop database shoepee;
+create database shoepee;
+use shoepee;
 
 
-create table tblBrand(
-                         brandId int primary key auto_increment,
-                         brandName nvarchar(255),
-                         imageUrl varchar(1000)
+create table tblbrand
+(
+    brandId int primary key auto_increment,
+    brandName nvarchar(255),
+    imageUrl varchar(1000)
 );
 
 
-create table tblShopLocation(
-                                locationId int primary key auto_increment,
-                                locationName nvarchar(255),
-                                address nvarchar(255),
-                                phone varchar(50),
-                                email varchar(255),
-                                workingHour time
-);
-
-
-
-create table tblUSER(
-                        userId int primary key auto_increment,
-                        userName nvarchar(100),
-                        password varchar(100),
-                        email varchar(255)
-);
-
-create table tbInforUser (
-                             id int primary key auto_increment,
-                             fullName nvarchar(100),
-                             address varchar(1000),
-                             phone varchar(50),
-                             foreign key(id) references tblUSER(userId)
-);
-
-create table tblOrder(
-                         orderId int primary key auto_increment,
-                         userId int,
-                         orderDate varchar(255),
-                         status bit,
-                         locationId int,
-                         totalPrice decimal(10,2),
-                         foreign key(userId) references tblUSER(userId),
-                         foreign key(locationId) references tblShopLocation(locationId)
+create table tblshoplocation
+(
+    locationId int primary key auto_increment,
+    locationName nvarchar(255),
+    address nvarchar(255),
+    phone varchar(50),
+    email varchar(255),
+    workingHour time
 );
 
 
 
-create table tblOrderDetail(
+create table tbluser
+(
+    userid int primary key auto_increment,
+    userName nvarchar(100),
+    password varchar(100),
+    email varchar(255)
+);
+
+create table tblinforuser (
+                              id int primary key auto_increment,
+                              fullName nvarchar(100),
+                              address varchar(1000),
+                              phone varchar(50),
+                              foreign key(id) references tbluser (userid)
+);
+
+create table tblorder
+(
+    orderId int primary key auto_increment,
+    userid int,
+    orderDate varchar(255),
+    status bit,
+    locationId int,
+    totalPrice decimal(10,2),
+    foreign key(userid) references tbluser (userid),
+    foreign key(locationId) references tblshoplocation(locationId)
+);
+
+
+
+create table tblorderdetail(
                                orderDetailId int primary key auto_increment,
                                orderId int,
                                quantity int,
                                unitPrice decimal(10,2),
                                subtotal decimal(10,2),
-                               foreign key(orderId) references tblOrder(orderId)
+                               foreign key(orderId) references tblorder (orderId)
 );
 
 
-create table tblService(
+create table tblservice(
                            serviceId int primary key auto_increment,
                            name nvarchar(100),
                            description nvarchar(1000),
@@ -68,16 +72,16 @@ create table tblService(
 );
 
 
-create table tblshoeModel(
+create table tblshoemodel(
                              modelId int primary key auto_increment,
                              brandId int,
                              modelName nvarchar(255),
                              imageurl varchar(1000),
-                             foreign key(brandId) references tblBrand(brandId)
+                             foreign key(brandId) references tblbrand (brandId)
 );
 
 
-create table tblShoe(
+create table tblshoe(
                         shoeId int primary key auto_increment,
                         brandId int,
                         modelId int,
@@ -86,43 +90,43 @@ create table tblShoe(
                         description nvarchar(1000),
                         imageUrl varchar(1000),
                         orderId int,
-                        foreign key(orderId) references tblOrder(orderId),
-                        foreign key(modelId) references tblshoeModel(modelId)
+                        foreign key(orderId) references tblorder (orderId),
+                        foreign key(modelId) references tblshoemodel(modelId)
 );
 
 
-create table tblServiceModel(
+create table tblservicemodel(
                                 serviceModelId int primary key auto_increment,
                                 serviceId int,
                                 modelId int,
                                 price decimal(10,2),
                                 orderDetailId int,
                                 imageModel varchar(1000),
-                                foreign key(orderDetailId) references tblOrderDetail(orderDetailId),
-                                foreign key(serviceId) references tblService(serviceId),
-                                foreign key(modelId) references tblshoeModel(modelId)
+                                foreign key(orderDetailId) references tblorderdetail(orderDetailId),
+                                foreign key(serviceId) references tblservice(serviceId),
+                                foreign key(modelId) references tblshoemodel(modelId)
 );
 
 
-create table tblUserDrawing(
+create table tbluserdrawing(
                                id int primary key auto_increment,
-                               userId int,
+                               userid int,
                                drawingFile varchar(1000),
                                description nvarchar(1000),
                                orderDetailId int,
-                               foreign key(userId) references tblUSER(userId),
-                               foreign key(orderDetailId) references tblOrderDetail(orderDetailId)
+                               foreign key(userid) references tbluser (userid),
+                               foreign key(orderDetailId) references tblorderdetail(orderDetailId)
 );
 
 
-create table tblPayment(
+create table tblpayment(
                            paymentId int primary key auto_increment,
                            orderId int,
                            amount int,
                            paymentDate datetime,
                            method varchar(255),
                            status varchar(255),
-                           foreign key(orderId) references tblOrder(orderId)
+                           foreign key(orderId) references tblorder (orderId)
 );
 
 
@@ -134,8 +138,8 @@ create table tblPayment(
 # INSERT INTO tblUSER (userName,password,email) VALUES ('anxem','1','an123@gmail.com');
 # INSERT INTO tbInforUser (fullName,address,phone) VALUES ('Tran Binh Minh','vinhome','0123546789');
 # INSERT INTO tbInforUser (fullName,address,phone) VALUES ('Tran Minh An','le van viet','0103546789');
-# INSERT INTO tblOrder (userId,orderDate,status,locationId,totalPrice) VALUES (2,'10/7/2023',1,2,'1000');
-# INSERT INTO tblOrder (userId,orderDate,status,locationId,totalPrice) VALUES (2,'9/16/2023',1,2,'400');
+# INSERT INTO tblOrder (userid,orderDate,status,locationId,totalPrice) VALUES (2,'10/7/2023',1,2,'1000');
+# INSERT INTO tblOrder (userid,orderDate,status,locationId,totalPrice) VALUES (2,'9/16/2023',1,2,'400');
 # INSERT INTO tblOrderDetail (orderId,quantity,unitPrice,subtotal) VALUES (1,4,'200','1500');
 # INSERT INTO tblOrderDetail (orderId,quantity,unitPrice,subtotal) VALUES (2,4,'300','1300');
 # INSERT INTO tblService (name,description,price) VALUES ('custom','stickers,','25');
@@ -145,8 +149,8 @@ create table tblPayment(
 # VALUES (1,1,42,'99','A shoe has flexible','https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/4f225a0bbc3e43729858af0100006731_9366/Giay_Ultraboost_1.0_trang_HQ4207_01_standard.jpg',1);
 # INSERT INTO tblServiceModel (serviceId,modelId,price,orderDetailId)
 # VALUES (1,1,'15',2);
-# INSERT INTO tblUserDrawing (userId,drawingFile,description,orderDetailId)
+# INSERT INTO tblUserDrawing (userid,drawingFile,description,orderDetailId)
 # VALUES (1,'good','best of store',1);
 # INSERT INTO tblPayment (orderId,amount,paymentDate,method,status)
 # VALUES (1,1,'2022-10-10','paint','done');
-select * from tbluser--
+-- select * from tbluser

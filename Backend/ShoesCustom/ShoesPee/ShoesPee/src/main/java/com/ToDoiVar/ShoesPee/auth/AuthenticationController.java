@@ -1,5 +1,6 @@
 package com.ToDoiVar.ShoesPee.auth;
 
+import com.ToDoiVar.ShoesPee.Models.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -21,14 +22,6 @@ public class AuthenticationController {
     ) {
         return ResponseEntity.ok(service.register(request));
     }
-    @PostMapping("/register-admin")
-    public ResponseEntity<AuthenticationResponse> registerAdmin(
-            @RequestBody RegisterRequest request
-    ) {
-        return ResponseEntity.ok(service.registerAdmin(request));
-    }
-
-
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(
             @RequestBody AuthenticationRequest request

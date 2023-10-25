@@ -1,4 +1,5 @@
 package com.ToDoiVar.ShoesPee.config;
+import com.ToDoiVar.ShoesPee.Services.UserService;
 import com.ToDoiVar.ShoesPee.repositiory.UserRepository;
 import com.ToDoiVar.ShoesPee.auditing.ApplicationAuditAware;
 import jakarta.persistence.criteria.CriteriaBuilder;

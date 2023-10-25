@@ -15,12 +15,17 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import static com.ToDoiVar.ShoesPee.Models.Role.ADMIN;
 import static com.ToDoiVar.ShoesPee.Models.Role.USER;
 
-@SpringBootApplication(exclude = SecurityAutoConfiguration.class)
-@EnableJpaAuditing(auditorAwareRef = "auditorAware")
-public class ShoesPeeApplication {
+@SpringBootApplication
+//@EnableJpaAuditing(auditorAwareRef = "auditorAware")
+public class ShoesPeeApplication implements CommandLineRunner{
 
 	public static void main(String[] args) {
 		SpringApplication.run(ShoesPeeApplication.class, args);
+	}
+
+	@Override
+	public void run(String... args) throws Exception {
+
 	}
 
 //	@Bean
