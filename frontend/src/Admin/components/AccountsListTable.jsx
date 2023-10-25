@@ -56,7 +56,7 @@ const AccountsListTable = () => {
           </p>
         </div>
         <div className="col-span-1 hidden items-center sm:flex">
-          <p className="text-sm text-black dark:text-white">41, 42, 43</p>
+          <p className="text-sm text-black dark:text-white">Admin</p>
         </div>
         <div className="col-span-1 hidden items-center sm:flex">
           <p className="text-sm text-black dark:text-white">
@@ -65,7 +65,7 @@ const AccountsListTable = () => {
         </div>
         <div className="col-span-1 flex items-center">
           <p className="text-sm text-meta-5">
-            <EllipsisHorizontalIcon class="h-6 w-6" />
+            <EllipsisHorizontalIcon className="h-6 w-6" />
           </p>
         </div>
       </div>
@@ -91,7 +91,7 @@ const AccountsListTable = () => {
           </p>
         </div>
         <div className="col-span-1 hidden items-center sm:flex">
-          <p className="text-sm text-black dark:text-white">41, 42, 43</p>
+          <p className="text-sm text-black dark:text-white">Manager</p>
         </div>
         <div className="col-span-1 hidden items-center sm:flex">
           <p className="text-sm text-black dark:text-white">
@@ -100,7 +100,7 @@ const AccountsListTable = () => {
         </div>
         <div className="col-span-1 flex items-center">
           <p className="text-sm text-meta-5">
-            <EllipsisHorizontalIcon class="h-6 w-6" />
+            <EllipsisHorizontalIcon className="h-6 w-6" />
           </p>
         </div>
       </div>

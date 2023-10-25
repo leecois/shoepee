@@ -1,1 +1,1 @@
-export const API_BASE_URL = "http://13.229.62.12/shoepee";
+export const API_BASE_URL = "https://65360746c620ba9358ece21f.mockapi.io";

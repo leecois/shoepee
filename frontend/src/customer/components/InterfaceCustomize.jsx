@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { CustomizationContext } from '../layout/CustomizationContext';
 
-export default function SizeCustomizer() {
+export default function InterfaceCustomize() {
   const { customization, setCustomization } = useContext(CustomizationContext);
   const [initialColor, setInitialColor] = useState(
     customization.layerColor[customization.layerName]
@@ -67,10 +67,13 @@ export default function SizeCustomizer() {
   return (
     <div className="text-white">
       <button
-        className="glass text-white p-2 rounded hover:bg-gray-500 w-full"
+        className="glass font-mono text-white p-2 mb-2 border-b-2 rounded hover:bg-gray-500 w-full"
         onClick={() => setDefaultValuesForLayer(customization.layerName)}
       >
         Reset Color
+      </button>
+      <button className="glass font-mono text-white p-2 mb-2 border-b-2 border-meta-3 font-bold rounded hover:bg-gray-500 w-full">
+        Add To Cart
       </button>
     </div>
   );

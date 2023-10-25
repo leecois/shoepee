@@ -3,7 +3,7 @@ import { ChevronUpIcon } from '@heroicons/react/24/outline';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import CustomColorPicker from '../components/CustomColorPicker';
-import SizeCustomizer from '../components/SizeCustomizer';
+import InterfaceCustomize from '../components/InterfaceCustomize';
 import { CustomizationContext } from '../layout/CustomizationContext';
 
 export default function MobileCustomizationInterface() {
@@ -62,7 +62,7 @@ export default function MobileCustomizationInterface() {
               </div>
               <div className="pb-5">
                 <h3 className="text-sm py-2">Layer size</h3>
-                <SizeCustomizer />
+                <InterfaceCustomize />
               </div>
             </Carousel>
           </div>

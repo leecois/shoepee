@@ -1,47 +1,62 @@
-import axiosClient from "./axiosClient";
+import axiosClient from './axiosClient';
 
 const productApi = {
   async getAll(params) {
-    // Transform _page to _start
-    const newParams = { ...params };
-    newParams._start =
-      !params._page || params._page <= 1
-        ? 0
-        : (params._page - 1) * (params._limit || 50);
-    // Remove un-needed key
-    delete newParams._page;
-    // Fetch product list + count
-    const productList = await axiosClient.get("/products", {
-      params: newParams,
-    });
-    const count = await axiosClient.get("/products/count", {
-      params: newParams,
-    });
-    // Build response and return
-    return {
-      data: productList,
-      pagination: {
-        page: params._page,
-        limit: params._limit,
-        total: count,
-      },
-    };
+    try {
+      const response = await axiosClient.get('/products', {
+        params: {
+          ...params,
+          _start:
+            !params._page || params._page <= 1
+              ? 0
+              : (params._page - 1) * (params._limit || 50),
+        },
+      });
+
+      return {
+        data: response,
+        pagination: {
+          page: params._page,
+          limit: params._limit,
+          total: response.length,
+        },
+      };
+    } catch (error) {
+      throw error;
+    }
   },
-  get: (id) => {
-    const url = `/products/${id}`;
-    return axiosClient.get(url);
+  async get(productId) {
+    try {
+      const response = await axiosClient.get(`/products/${productId}`);
+      return response;
+    } catch (error) {
+      throw error;
+    }
   },
-  add: (data) => {
-    const url = `/products`;
-    return axiosClient.post(url, data);
+  add: async (data) => {
+    try {
+      const response = await axiosClient.post('/products', data);
+      return response;
+    } catch (error) {
+      throw error;
+    }
   },
-  update: (data) => {
-    const url = `/products/${data.id}`;
-    return axiosClient.patch(url, data);
+  update: async (data) => {
+    try {
+      const response = await axiosClient.patch(`/products/${data.id}`, data);
+      return response;
+    } catch (error) {
+      throw error;
+    }
   },
-  remove: (id) => {
-    const url = `/products/${id}`;
-    return axiosClient.delete(url);
+  remove: async (id) => {
+    try {
+      const response = await axiosClient.delete(`/products/${id}`);
+      return response;
+    } catch (error) {
+      throw error;
+    }
   },
 };
+
 export default productApi;

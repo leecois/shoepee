@@ -61,7 +61,7 @@ const Header = (props) => {
           <form action="https://formbold.com/s/unique_form_id" method="POST">
             <div className="relative">
               <button className="absolute top-1/2 left-0 -translate-y-1/2">
-                <MagnifyingGlassIcon class="h-5 w-5 text-gray-500 hover:fill-primary dark:fill-bodydark dark:hover:fill-primary" />
+                <MagnifyingGlassIcon className="h-5 w-5 text-gray-500 hover:fill-primary dark:fill-bodydark dark:hover:fill-primary" />
               </button>
               <input
                 type="text"

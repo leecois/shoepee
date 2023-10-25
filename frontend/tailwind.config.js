@@ -12,6 +12,8 @@ module.exports = {
       indigo: colors.indigo,
       red: colors.rose,
       yellow: colors.amber,
+      pink: colors.pink,
+      blue: colors.blue,
       'light-yellow': '#f1f2ed',
       current: 'currentColor',
       transparent: 'transparent',

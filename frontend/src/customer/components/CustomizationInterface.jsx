@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import React, { useContext } from 'react';
 import { CustomizationContext } from '../layout/CustomizationContext';
 import CustomColorPicker from './CustomColorPicker';
-import SizeCustomizer from './SizeCustomizer';
+import InterfaceCustomize from './InterfaceCustomize';
 
 export default function CustomizationInterface() {
   const { isOpenModal, customization, setIsOpenModal } =
@@ -19,8 +19,8 @@ export default function CustomizationInterface() {
       style={{ position: 'absolute', top: 0, right: '1%' }}
       className="p-3 ml-3 w-80"
     >
-      <div className="headingGlass mb-4 p-4 text-meta-4">
-        <div className="flex justify-between">
+      <div className="headingGlass mb-4 p-4 ">
+        <div className="flex text-black text-white font-bold justify-between">
           <h1>Shoe Customize</h1>
           {isOpenModal && (
             <ChevronUpIcon
@@ -30,7 +30,7 @@ export default function CustomizationInterface() {
             />
           )}
         </div>
-        <h1 className="text-lg font-mono">
+        <h1 className="text-lg text-white font-mono">
           {customization.layerName || 'Click on a layer to start editing!'}
         </h1>
       </div>
@@ -53,16 +53,12 @@ export default function CustomizationInterface() {
           >
             <div className="space-y-4">
               <div className="text-meta-2 glass p-4 space-y-4">
-                <h2 className="text-sm py-2">Layer color</h2>
                 <CustomColorPicker />
               </div>
 
               <div className="text-meta-2 glass p-4 space-y-4">
-                <SizeCustomizer />
+                <InterfaceCustomize />
               </div>
-              <button className="bg-white font-bold text-black border border-white p-2 rounded hover:bg-gray-200 w-full">
-                Add To Cart
-              </button>
             </div>
           </motion.div>
         )}

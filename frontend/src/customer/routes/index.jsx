@@ -1,9 +1,9 @@
 import { lazy } from 'react';
 
 const ProductPage = lazy(() => import('../pages/ProductPage/ProductPage'));
-const ProductDetail = lazy(() => import('../pages/ProductPage/ProductDetail'));
+const ProductDetailPage = lazy(() => import('../pages/ProductPage/ProductDetailPage'));
 const Cart = lazy(() => import('../components/Cart/Cart'));
-const ShoeCustomizer = lazy(() => import('../pages/ShoeCustomizer'));
+const ShoeCustomize = lazy(() => import('../pages/ShoeCustomize'));
 
 const coreRoutes = [
   {
@@ -12,9 +12,9 @@ const coreRoutes = [
     component: ProductPage,
   },
   {
-    path: '/products/product-detail/:id',
+    path: '/products/:productId',
     title: 'Products Details',
-    component: ProductDetail,
+    component: ProductDetailPage,
   },
   {
     path: '/Cart',
@@ -22,9 +22,9 @@ const coreRoutes = [
     component: Cart,
   },
   {
-    path: '/customizer',
-    title: 'Customizer',
-    component: ShoeCustomizer,
+    path: '/customize',
+    title: 'Customize',
+    component: ShoeCustomize,
   },
 ];
 

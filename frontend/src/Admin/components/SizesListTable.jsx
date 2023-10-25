@@ -46,7 +46,7 @@ const SizesListTable = () => {
 
         <div className="col-span-1 flex items-center">
           <p className="text-sm text-meta-5">
-            <EllipsisHorizontalIcon class="h-6 w-6" />
+            <EllipsisHorizontalIcon className="h-6 w-6" />
           </p>
         </div>
       </div>
@@ -70,7 +70,7 @@ const SizesListTable = () => {
 
         <div className="col-span-1 flex items-center">
           <p className="text-sm text-meta-5">
-            <EllipsisHorizontalIcon class="h-6 w-6" />
+            <EllipsisHorizontalIcon className="h-6 w-6" />
           </p>
         </div>
       </div>

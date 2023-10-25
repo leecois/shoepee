@@ -1,9 +1,9 @@
-import userSlice from '../Authentication/userSlice';
+import counterReducer from '../containers/Counter/counterSlice'
 
 const { configureStore } = require('@reduxjs/toolkit');
 
 const rootReducer = {
-  user: userSlice.reducer,
+  counter: counterReducer,
 };
 
 const store = configureStore({
