@@ -23,7 +23,7 @@ const useProductData = () => {
     fetchData();
   }, [page, limit]);
 
-  return { productList, page, setPage, limit, setLimit };
+  return { productList };
 };
 
 export default useProductData;

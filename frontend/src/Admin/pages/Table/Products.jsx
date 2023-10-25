@@ -3,13 +3,13 @@ import Breadcrumb from '../../components/Breadcrumb';
 import useProductData from '../../../hooks/useProductData';
 
 const Products = () => {
-  const { product } = useProductData();
+  const { productList } = useProductData();
   return (
     <>
       <Breadcrumb pageName="Products" />
 
       <div className="flex flex-col gap-10">
-        <ProductsListTable data={product} />
+        <ProductsListTable data={productList} />
       </div>
     </>
   );

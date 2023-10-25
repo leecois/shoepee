@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { SnackbarProvider, useSnackbar } from "notistack";
-import { login } from "./userSlice";
+import { login } from "../containers/userSlice";
 
 const SignIn = ({ goBack, enteredEmail, handleCloseSuccess }) => {
   const [password, setPassword] = useState("");

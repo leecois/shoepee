@@ -11,7 +11,7 @@ const ProductDetailPage = () => {
 
   const breadcrumbItems = [
     { label: 'Products', url: '/products' },
-    { label: 'Current' },
+    { label: `${product.name}` },
   ];
 
   if (loading) {

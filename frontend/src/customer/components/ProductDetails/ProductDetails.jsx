@@ -6,9 +6,31 @@ import {
 } from '@heroicons/react/24/outline';
 import React, { useState } from 'react';
 import Collection from '../Product/Collection';
+import AddToCartForm from '../Cart/AddToCartForm';
+import { useDispatch } from 'react-redux';
+import { addToCart } from '../../../containers/Cart/cartSlice';
 
 const ProductDetails = ({ product }) => {
+  const [quantity, setQuantity] = useState(0);
+
+  const handleAddToCart = () => {
+    const action = addToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      size: selectedSize,
+      quantity: quantity + 1,
+    });
+    dispatch(action);
+    console.log(action);
+  };
+  const handleCustomizeClick = () => {
+    const customizeUrl = '/customize';
+    window.location.href = customizeUrl;
+  };
   const [selectedSize, setSelectedSize] = useState(null);
+
+  const dispatch = useDispatch();
 
   if (!product) {
     return <div>Loading...</div>;
@@ -121,8 +143,15 @@ const ProductDetails = ({ product }) => {
               <QuestionMarkCircleIcon className="ml-2 w-4 h-4" />
             </a>
           </div>
-          <button className="mt-10 py-2 w-full inline-block rounded-md bg-red-500 text-base text-white font-semibold tracking-wide hover:bg-red-600">
-            Add to cart
+          {/* TODO: Add to cart form */}
+          <div className="mt-10 py-2 w-full inline-block rounded-md bg-red-600 hover:bg-red-700 text-base transition delay-150 text-white font-semibold tracking-wide ">
+            <AddToCartForm onAddToCart={handleAddToCart} />
+          </div>
+          <button
+            onClick={handleCustomizeClick}
+            className="mt-4 py-2 w-full inline-block rounded-md border-2 outline-8 transition delay-150 text-base text-red font-semibold tracking-wide hover:text-red-600"
+          >
+            CUSTOMIZE
           </button>
           <p className="mt-3 w-full inline-flex justify-center items-center text-sm text-gray-500 font font-semibold">
             <ShieldCheckIcon className="mr-2 w-4 h-4" />

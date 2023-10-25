@@ -61,18 +61,16 @@ export default function MobileCustomizationInterface() {
                 <CustomColorPicker />
               </div>
               <div className="pb-5">
-                <h3 className="text-sm py-2">Layer size</h3>
+                <h3 className="text-sm py-2"> ... </h3>
                 <InterfaceCustomize />
               </div>
             </Carousel>
           </div>
         )}
       </div>
-
-      {/* Button Submit */}
-      <button className="fixed bottom-4 right-4 bg-white hover:bg-blue-700 text-black font-bold py-2 px-4 rounded">
-        Add To Cart
-      </button>
+      <div className="fixed bottom-4 right-4  text-black font-bold py-2 px-4 rounded">
+        <InterfaceCustomize />
+      </div>
     </div>
   );
 }

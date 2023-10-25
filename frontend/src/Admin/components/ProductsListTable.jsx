@@ -41,47 +41,51 @@ const ProductsListTable = ({ data }) => {
         </div>
       </div>
 
-      {data?.map((product) => (
-        <div
-          key={product.id}
-          className="grid grid-cols-7 border-t gap-x-4 border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-9 md:px-6 2xl:px-7.5"
-        >
-          <div className="col-span-3 flex items-center">
+      <div className="grid grid-cols-7 border-t gap-x-4 border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-9 md:px-6 2xl:px-7.5">
+        {data?.map((product) => (
+          <div
+            key={product.id}
+            className="col-span-7 sm:col-span-9 flex items-center"
+          >
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
               <div className="h-12.5 w-15 rounded-md">
-                <img src={product.pictures[0]} alt={product.name} />
+                <img src={product.pictures[0]} alt={product.alt} />
               </div>
               <p className="text-sm text-black dark:text-white">
                 {product.name}
               </p>
             </div>
+            <div className="col-span-1 flex items-center">
+              <p className="text-sm text-meta-3">${product.price}</p>
+            </div>
+            <div className="col-span-1 flex items-center sm:flex">
+              <p className="text-sm text-black dark:text-white">
+                {product.brand}
+              </p>
+            </div>
+            <div className="col-span-1 hidden items-center sm:flex">
+              <p className="text-sm text-black dark:text-white">
+                {product.alt}
+              </p>
+            </div>
+            <div className="col-span-1 hidden items-center sm:flex">
+              <p className="text-sm text-black dark:text-white">
+                {product.sizes}
+              </p>
+            </div>
+            <div className="col-span-1 hidden items-center sm:flex">
+              <p className="text-sm text-black dark:text-white">
+                {product.brand}
+              </p>
+            </div>
+            <div className="col-span-1 flex items-center">
+              <p className="text-sm text-meta-5">
+                <EllipsisHorizontalIcon className="h-6 w-6" />
+              </p>
+            </div>
           </div>
-          <div className="col-span-1 flex items-center">
-            <p className="text-sm text-meta-3">${product.price}</p>
-          </div>
-          <div className="col-span-1 flex items-center sm:flex">
-            <p className="text-sm text-black dark:text-white">
-              {product.brand}
-            </p>
-          </div>
-          <div className="col-span-1 hidden items-center sm:flex">
-            <p className="text-sm text-black dark:text-white">{product.alt}</p>
-          </div>
-          <div className="col-span-1 hidden items-center sm:flex">
-            <p className="text-sm text-black dark:text-white">
-              {product.sizes}
-            </p>
-          </div>
-          <div className="col-span-1 hidden items-center sm:flex">
-            <p className="text-sm text-black dark:text-white">{product.name}</p>
-          </div>
-          <div className="col-span-1 flex items-center">
-            <p className="text-sm text-meta-5">
-              <EllipsisHorizontalIcon className="h-6 w-6" />
-            </p>
-          </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 };

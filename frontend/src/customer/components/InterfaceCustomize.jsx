@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { CustomizationContext } from '../layout/CustomizationContext';
+import CartDrawer from '../components/CartDrawer';
 
 export default function InterfaceCustomize() {
   const { customization, setCustomization } = useContext(CustomizationContext);
@@ -72,9 +73,7 @@ export default function InterfaceCustomize() {
       >
         Reset Color
       </button>
-      <button className="glass font-mono text-white p-2 mb-2 border-b-2 border-meta-3 font-bold rounded hover:bg-gray-500 w-full">
-        Add To Cart
-      </button>
+      <CartDrawer />
     </div>
   );
 }

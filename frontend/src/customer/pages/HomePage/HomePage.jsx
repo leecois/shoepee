@@ -13,7 +13,6 @@ const HomePage = () => {
       <StepCustomize />
       <HeroMessage />
       <Collection />
-      <FullModal />
       <Testimonial />
     </>
   );

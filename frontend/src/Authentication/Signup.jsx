@@ -1,7 +1,7 @@
 import { Checkbox } from "@mui/material";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { register } from "./userSlice";
+import { register } from "../containers/userSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
 
 const SignUp = ({ goBack, enteredEmail, handleCloseSuccess }) => {
