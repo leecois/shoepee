@@ -14,3 +14,23 @@ export const cartTotalSelector = createSelector(
   (cartItems) =>
     cartItems.reduce((total, item) => total + item.price * item.quantity, 0)
 );
+
+export const cartProductNamesSelector = createSelector(
+  cartItemsSelector,
+  (cartItems) => cartItems.map((item) => item.name)
+);
+
+export const cartProductImagesSelector = createSelector(
+  cartItemsSelector,
+  (cartItems) => cartItems.map((item) => item.image)
+);
+
+export const cartProductSizesSelector = createSelector(
+  cartItemsSelector,
+  (cartItems) => cartItems.map((item) => item.size)
+);
+
+export const cartProductPricesSelector = createSelector(
+  cartItemsSelector,
+  (cartItems) => cartItems.map((item) => item.price)
+);

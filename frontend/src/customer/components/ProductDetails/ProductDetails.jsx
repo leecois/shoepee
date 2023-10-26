@@ -17,6 +17,7 @@ const ProductDetails = ({ product }) => {
     const action = addToCart({
       id: product.id,
       name: product.name,
+      image: product.pictures[0],
       price: product.price,
       size: selectedSize,
       quantity: quantity + 1,
