@@ -14,6 +14,5 @@ public interface UserService {
     public User editUser(int id,User newUser);
     public User fineUserByName(String name);
     String addUser(UserDto userDto);
-    UserDetailsService userDetailsService();
     LoginMesage loginUser(LoginDto loginDto);
 }
