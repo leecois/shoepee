@@ -1,4 +1,4 @@
-package com.ToDoiVar.ShoesPee.config;
+package com.ToDoiVar.ShoesPee.Security.config;
 
 
 import io.jsonwebtoken.*;

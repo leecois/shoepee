@@ -1,8 +1,6 @@
-package com.ToDoiVar.ShoesPee.config;
-import com.ToDoiVar.ShoesPee.Services.UserService;
+package com.ToDoiVar.ShoesPee.Security.config;
+import com.ToDoiVar.ShoesPee.Security.auditing.ApplicationAuditAware;
 import com.ToDoiVar.ShoesPee.repositiory.UserRepository;
-import com.ToDoiVar.ShoesPee.auditing.ApplicationAuditAware;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

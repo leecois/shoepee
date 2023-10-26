@@ -1,4 +1,4 @@
-package com.ToDoiVar.ShoesPee.auth;
+package com.ToDoiVar.ShoesPee.Security.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

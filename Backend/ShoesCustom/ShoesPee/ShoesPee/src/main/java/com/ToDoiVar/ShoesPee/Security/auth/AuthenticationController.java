@@ -1,6 +1,5 @@
-package com.ToDoiVar.ShoesPee.auth;
+package com.ToDoiVar.ShoesPee.Security.auth;
 
-import com.ToDoiVar.ShoesPee.Models.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

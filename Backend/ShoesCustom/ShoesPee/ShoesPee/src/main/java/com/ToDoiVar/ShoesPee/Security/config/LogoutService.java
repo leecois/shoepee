@@ -1,4 +1,4 @@
-package com.ToDoiVar.ShoesPee.config;
+package com.ToDoiVar.ShoesPee.Security.config;
 
 
 import com.ToDoiVar.ShoesPee.token.TokenRepository;

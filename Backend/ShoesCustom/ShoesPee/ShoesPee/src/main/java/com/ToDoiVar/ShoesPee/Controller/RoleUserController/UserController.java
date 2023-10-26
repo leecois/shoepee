@@ -1,11 +1,10 @@
-package com.ToDoiVar.ShoesPee.Controller;
+package com.ToDoiVar.ShoesPee.Controller.RoleUserController;
 
 import com.ToDoiVar.ShoesPee.Models.User;
 import com.ToDoiVar.ShoesPee.Services.UserService;
 import com.ToDoiVar.ShoesPee.dto.LoginDto;
 import com.ToDoiVar.ShoesPee.dto.UserDto;
 import com.ToDoiVar.ShoesPee.payload.response.LoginMesage;
-import com.ToDoiVar.ShoesPee.repositiory.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/shoepee")
+@RequestMapping("/api/v1/auth")
 public class UserController {
     @Autowired
     private UserService userService;

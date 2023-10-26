@@ -1,4 +1,4 @@
-package com.ToDoiVar.ShoesPee.Controller;
+package com.ToDoiVar.ShoesPee.Controller.RoleAdminController;
 
 import com.ToDoiVar.ShoesPee.Models.ShoeModels;
 import com.ToDoiVar.ShoesPee.Services.ShoeModelService;
@@ -9,11 +9,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/shoemodel")
+@RequestMapping("/api/v1/admin")
 @RequiredArgsConstructor
-public class shoeModelController {
+public class ShoeModelManageController {
     @Autowired
     private final ShoeModelService shoeModelService;
     @PostMapping("/addShoemodel")
@@ -24,20 +25,21 @@ public class shoeModelController {
     public ResponseEntity<List<ShoeModels>> getAllShoeModel(){
         return new ResponseEntity<>(shoeModelService.getAllShoeModel(), HttpStatus.FOUND);
     }
-    @GetMapping("/getshoemodelbyid/{id}")
-    public ShoeModels getShoeModelById(@PathVariable int id){
-        return shoeModelService.getShoeModelById(id);
-    }
+
     @GetMapping("/getshoemodelbyname/{name}")
     public ShoeModels getShoeModelByName(@PathVariable String name){
         return shoeModelService.getShoeModelByName(name);
     }
-    @PutMapping("/editshoemode/{id}")
-    public ShoeModels editShoeModel(@PathVariable int id,@RequestBody ShoeModels editShoeModel){
-        return shoeModelService.updateShoeModel(id,editShoeModel);
-    }
-    @DeleteMapping("/removeshoemodel/{id}")
-    public void removeShoeModel(@PathVariable int id){
-       shoeModelService.removeShoeModel(id);
-    }
+//    @GetMapping("/getshoemodelbyid/{id}")
+//    public ShoeModels getShoeModelById(@PathVariable int id){
+//        return shoeModelService.getShoeModelById(id);
+//    }
+//    @PutMapping("/editshoemode/{id}")
+//    public ShoeModels editShoeModel(@PathVariable int id,@RequestBody ShoeModels editShoeModel){
+//        return shoeModelService.updateShoeModel(id,editShoeModel);
+//    }
+//    @DeleteMapping("/removeshoemodel/{id}")
+//    public void removeShoeModel(@PathVariable int id){
+//       shoeModelService.removeShoeModel(id);
+//    }
 }

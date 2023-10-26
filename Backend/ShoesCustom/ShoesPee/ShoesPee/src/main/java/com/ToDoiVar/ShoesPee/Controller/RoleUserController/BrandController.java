@@ -1,4 +1,4 @@
-package com.ToDoiVar.ShoesPee.Controller;
+package com.ToDoiVar.ShoesPee.Controller.RoleUserController;
 
 import com.ToDoiVar.ShoesPee.Models.Brand;
 import com.ToDoiVar.ShoesPee.Services.BrandService;
@@ -24,16 +24,16 @@ public class BrandController {
     public Brand getBrandByName(String name){
         return brandService.getBrandByName(name);
     }
-    @PostMapping("/addbrand")
-    public Brand addBrand(@RequestBody Brand newBrand){
-        return brandService.addBrand(newBrand);
-    }
-    @PutMapping("/editbrand/{id}")
-    public Brand editBrand(@PathVariable int id,@RequestBody Brand editBrand){
-        return brandService.editBrand(id,editBrand);
-    }
-    @DeleteMapping("/deletebrand/{id}")
-    public void deleteBrand(@PathVariable int id){
-        brandService.deleteBrand(id);
-    }
+//    @PostMapping("/addbrand")
+//    public Brand addBrand(@RequestBody Brand newBrand){
+//        return brandService.addBrand(newBrand);
+//    }
+//    @PutMapping("/editbrand/{id}")
+//    public Brand editBrand(@PathVariable int id,@RequestBody Brand editBrand){
+//        return brandService.editBrand(id,editBrand);
+//    }
+//    @DeleteMapping("/deletebrand/{id}")
+//    public void deleteBrand(@PathVariable int id){
+//        brandService.deleteBrand(id);
+//    }
 }

@@ -1,22 +1,15 @@
-package com.ToDoiVar.ShoesPee.config;
-import com.ToDoiVar.ShoesPee.Services.UserService;
+package com.ToDoiVar.ShoesPee.Security.config;
 import com.ToDoiVar.ShoesPee.token.TokenRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.beans.Transient;
 import java.io.IOException;
-import java.security.Security;
 
-import jakarta.transaction.TransactionScoped;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

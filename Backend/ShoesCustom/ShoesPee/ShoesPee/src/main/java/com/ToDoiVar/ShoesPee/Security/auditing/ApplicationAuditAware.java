@@ -1,4 +1,4 @@
-package com.ToDoiVar.ShoesPee.auditing;
+package com.ToDoiVar.ShoesPee.Security.auditing;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;

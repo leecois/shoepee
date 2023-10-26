@@ -1,5 +1,6 @@
 package com.ToDoiVar.ShoesPee.Models;
 
+import com.ToDoiVar.ShoesPee.Models.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;

@@ -1,6 +1,6 @@
-package com.ToDoiVar.ShoesPee.auth;
+package com.ToDoiVar.ShoesPee.Security.auth;
 
-import com.ToDoiVar.ShoesPee.config.JwtService;
+import com.ToDoiVar.ShoesPee.Security.config.JwtService;
 import com.ToDoiVar.ShoesPee.repositiory.UserRepository;
 import com.ToDoiVar.ShoesPee.token.Token;
 import com.ToDoiVar.ShoesPee.token.TokenRepository;
@@ -11,17 +11,12 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.stereotype.Service;
+
 import java.io.IOException;
-import java.util.HashMap;
 
 import com.ToDoiVar.ShoesPee.Models.Role;
 import com.ToDoiVar.ShoesPee.Models.User;
