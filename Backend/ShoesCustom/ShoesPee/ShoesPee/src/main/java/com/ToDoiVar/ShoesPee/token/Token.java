@@ -37,6 +37,6 @@ public class Token {
 
     @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "us_erid")
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "userid")
     public User user;
 }
