@@ -1,6 +1,6 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import userApi from "../api/userApi";
-import StorageKeys from "../constants/storage-keys";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import userApi from '../api/userApi';
+import StorageKeys from '../constants/storage-keys';
 
 // Helper function to save data to local storage
 const saveDataToLocalStorage = (data) => {
@@ -12,28 +12,28 @@ const saveDataToLocalStorage = (data) => {
   }
 };
 
-export const register = createAsyncThunk("user/register", async (payload) => {
+export const register = createAsyncThunk('user/register', async (payload) => {
   try {
     const data = await userApi.register(payload);
     saveDataToLocalStorage(data);
     return data.user;
   } catch (error) {
-    throw error; // Re-throw the error for error handling in components
+    throw error;
   }
 });
 
-export const login = createAsyncThunk("user/login", async (payload) => {
+export const login = createAsyncThunk('user/login', async (payload) => {
   try {
     const data = await userApi.login(payload);
     saveDataToLocalStorage(data);
     return data.user;
   } catch (error) {
-    throw error; // Re-throw the error for error handling in components
+    throw error;
   }
 });
 
 const userSlice = createSlice({
-  name: "user",
+  name: 'user',
   initialState: {
     current: null, // You can set initial state to null or an empty object
     settings: {},

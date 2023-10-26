@@ -1,9 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
 import { Button } from '@mui/material';
+import React, { useEffect, useRef, useState } from 'react';
+import brandApi from '../../../api/brandApi';
+import productApi from '../../../api/productApi';
 import OptionModal from './OptionModal';
 import RadioCheck from './RadioCheck';
 import { shoesData } from './shoeData';
-import brandApi from '../../../api/brandApi';
 
 const FullModal = ({ handleClickOpen, handleClose }) => {
   const [brandList, setBrandList] = useState([]);
@@ -11,6 +12,8 @@ const FullModal = ({ handleClickOpen, handleClose }) => {
   const [selectedBrand, setSelectedBrand] = useState('Vans');
   const [selectedShoe, setSelectedShoe] = useState(null);
   const [optionModalOpen, setOptionModalOpen] = useState(false);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(12);
 
   const trigger = useRef(null);
   const modal = useRef(null);
@@ -18,8 +21,12 @@ const FullModal = ({ handleClickOpen, handleClose }) => {
   useEffect(() => {
     const fetchBrandData = async () => {
       try {
-        const { data } = await brandApi.getAll();
+        const { data } = await productApi.getAll({
+          _page: page,
+          _limit: limit,
+        });
         setBrandList(data);
+        console.log('Brand List:', data);
       } catch (error) {
         console.log('Non-response Error:', error.message);
       }
@@ -37,7 +44,9 @@ const FullModal = ({ handleClickOpen, handleClose }) => {
     document.body.style.overflow = 'auto';
   };
 
-  const filteredShoes = shoesData.filter((shoe) => shoe.brand === selectedBrand);
+  const filteredShoes = brandList.filter(
+    (shoe) => shoe.brand.name === selectedBrand && shoe.type === "blank"
+  );
 
   const openOptionModal = (shoeId) => {
     setSelectedShoe(shoeId);
@@ -65,7 +74,10 @@ const FullModal = ({ handleClickOpen, handleClose }) => {
             modalOpen ? 'block' : 'hidden'
           }`}
         >
-          <div ref={modal} className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
+          <div
+            ref={modal}
+            className="absolute top-0 left-0 w-full h-full flex items-center justify-center"
+          >
             <div className="w-full h-full bg-white py-2 px-2 text-center md:py-[20px] md:px-[20px]">
               <button
                 onClick={closeModal}
@@ -79,28 +91,47 @@ const FullModal = ({ handleClickOpen, handleClose }) => {
                   stroke="currentColor"
                   className="w-8 h-8"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               </button>
               <header className="bg-gray-100 p-4">
                 <div className="flex justify-center mb-4">
-                  <img src="./logoshoepee.png" alt="Shoepee" className="w-16 h-16" />
+                  <img
+                    src="./logoshoepee.png"
+                    alt="Shoepee"
+                    className="w-16 h-16"
+                  />
                 </div>
-                <h3 className="pb-2 text-xl font-bold text-dark sm:text-2xl">CHOOSE A STYLE OF BRAND</h3>
-                <RadioCheck selectedBrand={selectedBrand} setSelectedBrand={setSelectedBrand} data={brandList} />
+                <h3 className="pb-2 text-xl font-bold text-dark sm:text-2xl">
+                  CHOOSE A STYLE OF BRAND
+                </h3>
+                <RadioCheck
+                  selectedBrand={selectedBrand}
+                  setSelectedBrand={setSelectedBrand}
+                  data={brandList}
+                />
               </header>
               <div className="overflow-y-auto max-h-[500px] bg-light-yellow">
                 <ul className="grid gap-4 mb-4 sm:grid-cols-2 lg:grid-cols-3">
                   {filteredShoes.map((shoe) => (
                     <li key={shoe.id}>
-                      <button onClick={() => openOptionModal(shoe.id)} className="block ml-4 mb-4 overflow-hidden group">
+                      <button
+                        onClick={() => openOptionModal(shoe.id)}
+                        className="block ml-4 mb-4 overflow-hidden group"
+                      >
                         <img
-                          src={shoe.image}
+                          src={shoe.pictures}
                           alt={shoe.name}
-                          className="w-full object-cover transition duration-500 group-hover:scale-105"
+                          className="w-full h-65 object-cover transition duration-500 group-hover:scale-105"
                         />
                         <div className="relative pt-3">
-                          <h3 className="text-lg font-bold text-gray-700 group-hover:text-red-500">{shoe.name}</h3>
+                          <h3 className="text-lg font-bold text-gray-700 group-hover:text-red-500">
+                            {shoe.name}
+                          </h3>
                         </div>
                       </button>
                     </li>
@@ -109,7 +140,12 @@ const FullModal = ({ handleClickOpen, handleClose }) => {
               </div>
             </div>
           </div>
-          {optionModalOpen && <OptionModal selectedShoe={selectedShoe} closeModal={closeOptionModal} />}
+          {optionModalOpen && (
+            <OptionModal
+              selectedShoe={selectedShoe}
+              closeModal={closeOptionModal}
+            />
+          )}
         </div>
       </div>
     </>

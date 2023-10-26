@@ -60,9 +60,10 @@ const ProductsListTable = ({ data }) => {
             </div>
             <div className="col-span-1 flex items-center sm:flex">
               <p className="text-sm text-black dark:text-white">
-                {product.brand}
+                {product.brand.name}
               </p>
             </div>
+
             <div className="col-span-1 hidden items-center sm:flex">
               <p className="text-sm text-black dark:text-white">
                 {product.alt}
@@ -75,7 +76,7 @@ const ProductsListTable = ({ data }) => {
             </div>
             <div className="col-span-1 hidden items-center sm:flex">
               <p className="text-sm text-black dark:text-white">
-                {product.brand}
+                {product.brand.name}
               </p>
             </div>
             <div className="col-span-1 flex items-center">

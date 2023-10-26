@@ -25,7 +25,7 @@ function ProductList({ data }) {
                 {product.name}
               </div>
               <div className="flex justify-between mt-3 text-sm">
-                <h3 className="text-gray-500 font-bold">{product.brand}</h3>
+                <h3 className="text-gray-500 font-bold">{product.brand.name}</h3>
                 <p className="text-black pl-4 text-md font-semibold">
                   ${product.price}
                 </p>

@@ -137,7 +137,7 @@ function classNames(...classes) {
 
 export default function Navigation() {
   const navigate = useNavigate();
-  const handleCartCLick = () => {
+  const handleCartClick = () => {
     navigate('/cart');
   };
   const cartItemsCount = useSelector(cartItemsCountSelector);
@@ -503,7 +503,7 @@ export default function Navigation() {
                 {/* Cart */}
                 <div className="ml-4 flow-root lg:ml-6">
                   <button
-                    onClick={handleCartCLick}
+                    onClick={handleCartClick}
                     className="group -m-2 flex items-center p-2"
                   >
                     <ShoppingBagIcon
