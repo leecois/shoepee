@@ -30,16 +30,16 @@ public class ShoeModelManageController {
     public ShoeModels getShoeModelByName(@PathVariable String name){
         return shoeModelService.getShoeModelByName(name);
     }
-//    @GetMapping("/getshoemodelbyid/{id}")
-//    public ShoeModels getShoeModelById(@PathVariable int id){
-//        return shoeModelService.getShoeModelById(id);
-//    }
-//    @PutMapping("/editshoemode/{id}")
-//    public ShoeModels editShoeModel(@PathVariable int id,@RequestBody ShoeModels editShoeModel){
-//        return shoeModelService.updateShoeModel(id,editShoeModel);
-//    }
-//    @DeleteMapping("/removeshoemodel/{id}")
-//    public void removeShoeModel(@PathVariable int id){
-//       shoeModelService.removeShoeModel(id);
-//    }
+    @GetMapping("/getshoemodelbyid/{id}")
+    public ShoeModels getShoeModelById(@PathVariable int id){
+        return shoeModelService.getShoeModelById(id);
+    }
+    @PutMapping("/editshoemode/{id}")
+    public ShoeModels editShoeModel(@PathVariable int id,@RequestBody ShoeModels editShoeModel){
+        return shoeModelService.updateShoeModel(id,editShoeModel);
+    }
+    @DeleteMapping("/removeshoemodel/{id}")
+    public void removeShoeModel(@PathVariable int id){
+       shoeModelService.removeShoeModel(id);
+    }
 }
