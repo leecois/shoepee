@@ -20,14 +20,14 @@ public class shoeModelController {
     public ShoeModels addShoeModel(@RequestBody ShoeModels newShoeModel){
         return shoeModelService.addShoeModel(newShoeModel);
     }
-    @GetMapping("/getallshoemodel")
+    @GetMapping("/shoemodels")
     public ResponseEntity<List<ShoeModels>> getAllShoeModel(){
-        return new ResponseEntity<>(shoeModelService.getAllShoeModel(), HttpStatus.FOUND);
+        return new ResponseEntity<>(shoeModelService.getAllShoeModel(), HttpStatus.OK);
     }
 
     @GetMapping("/getshoemodelbyname/{name}")
-    public ShoeModels getShoeModelByName(@PathVariable String name){
-        return shoeModelService.getShoeModelByName(name);
+    public ResponseEntity<ShoeModels> getShoeModelByName(@PathVariable String name){
+        return new ResponseEntity<>(shoeModelService.getShoeModelByName(name),HttpStatus.OK);
     }
 //    @GetMapping("/getshoemodelbyid/{id}")
 //    public ShoeModels getShoeModelById(@PathVariable int id){

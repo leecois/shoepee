@@ -3,7 +3,6 @@ package com.ToDoiVar.ShoesPee.Controller.RoleAdminController;
 import com.ToDoiVar.ShoesPee.Models.Brand;
 import com.ToDoiVar.ShoesPee.Services.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,7 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/admin")
 
-public class BandManageController {
+public class BrandManageController {
     @Autowired
     private BrandService brandService;
     @GetMapping("/brands")

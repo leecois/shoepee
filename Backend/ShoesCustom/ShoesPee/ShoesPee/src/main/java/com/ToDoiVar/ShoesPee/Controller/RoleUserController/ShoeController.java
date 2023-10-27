@@ -16,7 +16,7 @@ import java.util.Optional;
 public class ShoeController {
     @Autowired
     private ShoeService shoeService;
-    @GetMapping("/getallshoe")
+    @GetMapping("/shoes")
     public List<Shoe> getAllShoe(){
         return shoeService.getAllShoe();
     }

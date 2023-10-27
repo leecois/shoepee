@@ -1,19 +1,11 @@
 package com.ToDoiVar.ShoesPee.Services;
 
-import com.ToDoiVar.ShoesPee.Exeption.userExistedException;
 import com.ToDoiVar.ShoesPee.Exeption.userNotFoundException;
 import com.ToDoiVar.ShoesPee.Models.ChangePasswordRequest;
-import com.ToDoiVar.ShoesPee.Models.Role;
 import com.ToDoiVar.ShoesPee.Models.User;
-import com.ToDoiVar.ShoesPee.dto.LoginDto;
-import com.ToDoiVar.ShoesPee.dto.UserDto;
-import com.ToDoiVar.ShoesPee.payload.response.LoginMesage;
 import com.ToDoiVar.ShoesPee.repositiory.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -84,8 +76,8 @@ public class UserServiceImpl implements UserService{
 
 
     @Override
-    public User getUserById(int id) {
-       return userRepository.findById(id).get();
+    public Optional<User> getUserById(int id) {
+       return Optional.of(userRepository.findById(id).get());
     }
 
     @Override
@@ -109,25 +101,30 @@ public class UserServiceImpl implements UserService{
         return newUser;
     }
     @Override
-    public User fineUserByName(String name) {
+    public User getUserByName(String name) {
         return userRepository.getUserByUsername(name).orElseThrow(() -> new userNotFoundException("Sorry, this user cound not found"));
     }
-    @Override
-    public String addUser(UserDto userDto) {
-        if(userExisted(userDto.getUsername())){
-            throw new userExistedException("this user has been existed");
-        }else {
-            User user = new User(
-                    userDto.getUserId(),
-                    userDto.getUsername(),
-                    this.passwordEncoder.encode(userDto.getPassword()),
-                    userDto.getEmail(),
-                    Role.USER
-            );
-            userRepository.save(user);
-            return "Register OK: " + user.getEmail();
-        }
+//    @Override
+//    public String addUser(UserDto userDto) {
+//        if(userExisted(userDto.getUsername())){
+//            throw new userExistedException("this user has been existed");
+//        }else {
+//            User user = new User(
+//                    userDto.getUserId(),
+//                    userDto.getUsername(),
+//                    this.passwordEncoder.encode(userDto.getPassword()),
+//                    userDto.getEmail(),
+//                    Role.USER
+//            );
+//            userRepository.save(user);
+//            return "Register OK: " + user.getEmail();
+//        }
+//
+//    }
 
+    @Override
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() -> new userNotFoundException("User not found"));
     }
 
 
@@ -135,28 +132,28 @@ public class UserServiceImpl implements UserService{
         return userRepository.getUserByUsername(username).isPresent();
     }
 
-    @Override
-    public LoginMesage loginUser(LoginDto loginDto) {
-        String msg = "";
-        User user1 = userRepository.findUserByUsername(loginDto.getUsername());
-        if(user1 != null) {
-            String password = loginDto.getPassword();
-            String encodedPassword = user1.getPassword();
-            Boolean isPwdRight = passwordEncoder.matches(password,encodedPassword);
-            if(isPwdRight) {
-                Optional<User> user = userRepository.findByUsernameAndPassword(loginDto.getUsername(),encodedPassword);
-                if (user.isPresent()) {
-                    return new LoginMesage("Login Success",true);
-                } else {
-                    return new LoginMesage("Login Failed", false);
-                }
-            } else {
-                return new LoginMesage("password Not Match ",false);
-            }
-            } else {
-            return new LoginMesage("Username not exist",false);
-        }
-    }
+//    @Override
+//    public LoginMesage loginUser(LoginDto loginDto) {
+//        String msg = "";
+//        User user1 = userRepository.findUserByUsername(loginDto.getUsername());
+//        if(user1 != null) {
+//            String password = loginDto.getPassword();
+//            String encodedPassword = user1.getPassword();
+//            Boolean isPwdRight = passwordEncoder.matches(password,encodedPassword);
+//            if(isPwdRight) {
+//                Optional<User> user = userRepository.findByUsernameAndPassword(loginDto.getUsername(),encodedPassword);
+//                if (user.isPresent()) {
+//                    return new LoginMesage("Login Success",true);
+//                } else {
+//                    return new LoginMesage("Login Failed", false);
+//                }
+//            } else {
+//                return new LoginMesage("password Not Match ",false);
+//            }
+//            } else {
+//            return new LoginMesage("Username not exist",false);
+//        }
+//    }
 
     public void changePassword(ChangePasswordRequest request, Principal connectedUser) {
 

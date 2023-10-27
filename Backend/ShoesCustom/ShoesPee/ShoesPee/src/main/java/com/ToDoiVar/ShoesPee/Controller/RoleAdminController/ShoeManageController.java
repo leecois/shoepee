@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/v1/admin")
 public class ShoeManageController {
     @Autowired
     private ShoeService shoeService;
-    @GetMapping("/getallshoe")
+    @GetMapping("/shoes")
     public ResponseEntity<List<Shoe>> getAllShoe(){
         return new ResponseEntity<>(shoeService.getAllShoe(), HttpStatus.FOUND);
     }
@@ -24,16 +24,17 @@ public class ShoeManageController {
         return shoeService.getShoeByShoeModelId(shomemodelId);
     }
     @PostMapping("/addshoe")
-    public Shoe addShoe(@RequestBody Shoe newShoe){
-        return shoeService.addShoe(newShoe);
+    public ResponseEntity<Shoe> addShoe(@RequestBody Shoe newShoe){
+        return new ResponseEntity<>(shoeService.addShoe(newShoe),HttpStatus.OK);
     }
     @PostMapping("/editshoe/{id}")
-    public Shoe editShoe(@PathVariable int id,@RequestBody Shoe editshoe){
-        return shoeService.editShoe(id,editshoe);
+    public ResponseEntity<Shoe> editShoe(@PathVariable int id,@RequestBody Shoe editshoe){
+        return new ResponseEntity<>(shoeService.editShoe(id,editshoe),HttpStatus.OK);
     }
     @DeleteMapping("/deleteshe/{id}")
-        public void deleteShoe(int id){
+        public ResponseEntity<String> deleteShoe(int id){
             shoeService.deleteShoe(id);
+            return new ResponseEntity<String>("Delete sucessful",HttpStatus.OK);
     }
 
 }

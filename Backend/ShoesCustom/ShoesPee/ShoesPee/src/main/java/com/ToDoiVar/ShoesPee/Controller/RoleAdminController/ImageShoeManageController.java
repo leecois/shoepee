@@ -3,10 +3,12 @@ package com.ToDoiVar.ShoesPee.Controller.RoleAdminController;
 import com.ToDoiVar.ShoesPee.Models.ImageShoe;
 import com.ToDoiVar.ShoesPee.Services.ImageShoeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
-
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/v1/admin")
 public class ImageShoeManageController {
@@ -18,11 +20,12 @@ public class ImageShoeManageController {
         return imageShoeService.getImageShoeByShoeId(shoeid);
     }
     @PostMapping("/addimageshoe")
-    public ImageShoe addImageShoe(@RequestBody ImageShoe newImageShoe){
-        return imageShoeService.addImageShoe(newImageShoe);
+    public ResponseEntity<ImageShoe> addImageShoe(@RequestBody ImageShoe newImageShoe){
+        return new ResponseEntity<>(imageShoeService.addImageShoe(newImageShoe), HttpStatus.OK);
     }
     @DeleteMapping("/deleteimageshoe")
-    public void deleteImageShoe(@PathVariable int shoeId){
+    public ResponseEntity<String> deleteImageShoe(@PathVariable int shoeId){
         imageShoeService.deleteImageShoe(shoeId);
+        return new ResponseEntity<String>("Delete sucessful",HttpStatus.OK);
     }
 }

@@ -21,25 +21,26 @@ public class ShoeModelManageController {
     public ShoeModels addShoeModel(@RequestBody ShoeModels newShoeModel){
         return shoeModelService.addShoeModel(newShoeModel);
     }
-    @GetMapping("/getallshoemodel")
+    @GetMapping("/shoemodels")
     public ResponseEntity<List<ShoeModels>> getAllShoeModel(){
-        return new ResponseEntity<>(shoeModelService.getAllShoeModel(), HttpStatus.FOUND);
+        return new ResponseEntity<>(shoeModelService.getAllShoeModel(), HttpStatus.OK);
     }
 
     @GetMapping("/getshoemodelbyname/{name}")
-    public ShoeModels getShoeModelByName(@PathVariable String name){
-        return shoeModelService.getShoeModelByName(name);
+    public ResponseEntity<ShoeModels> getShoeModelByName(@PathVariable String name){
+        return new ResponseEntity<>(shoeModelService.getShoeModelByName(name),HttpStatus.OK);
     }
     @GetMapping("/getshoemodelbyid/{id}")
-    public ShoeModels getShoeModelById(@PathVariable int id){
-        return shoeModelService.getShoeModelById(id);
+    public ResponseEntity<ShoeModels> getShoeModelById(@PathVariable int id){
+        return new ResponseEntity<>(shoeModelService.getShoeModelById(id),HttpStatus.OK);
     }
     @PutMapping("/editshoemode/{id}")
-    public ShoeModels editShoeModel(@PathVariable int id,@RequestBody ShoeModels editShoeModel){
-        return shoeModelService.updateShoeModel(id,editShoeModel);
+    public ResponseEntity<ShoeModels> editShoeModel(@PathVariable int id,@RequestBody ShoeModels editShoeModel){
+        return new ResponseEntity<>(shoeModelService.updateShoeModel(id,editShoeModel),HttpStatus.OK);
     }
-    @DeleteMapping("/removeshoemodel/{id}")
-    public void removeShoeModel(@PathVariable int id){
+    @DeleteMapping("/deleteshoemodel/{id}")
+    public ResponseEntity<String> removeShoeModel(@PathVariable int id){
        shoeModelService.removeShoeModel(id);
+       return new ResponseEntity<String>("Delete sucessful",HttpStatus.OK);
     }
 }

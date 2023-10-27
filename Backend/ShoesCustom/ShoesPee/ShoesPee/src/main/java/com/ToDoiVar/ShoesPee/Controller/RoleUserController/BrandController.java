@@ -3,6 +3,8 @@ package com.ToDoiVar.ShoesPee.Controller.RoleUserController;
 import com.ToDoiVar.ShoesPee.Models.Brand;
 import com.ToDoiVar.ShoesPee.Services.BrandService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,12 +19,12 @@ public class BrandController {
         return brandService.getAllBrand();
     }
     @GetMapping("/getbrandbyid/{id}")
-    public Brand getBrandById(int id){
-        return brandService.getBrandById(id);
+    public ResponseEntity<Brand> getBrandById(int id){
+        return new ResponseEntity<>(brandService.getBrandById(id), HttpStatus.OK);
     }
     @GetMapping("/getbrandbyname/{name}")
-    public Brand getBrandByName(String name){
-        return brandService.getBrandByName(name);
+    public ResponseEntity<Brand> getBrandByName(String name){
+        return new ResponseEntity<>(brandService.getBrandByName(name),HttpStatus.OK);
     }
 //    @PostMapping("/addbrand")
 //    public Brand addBrand(@RequestBody Brand newBrand){
