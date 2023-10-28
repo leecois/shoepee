@@ -1,5 +1,4 @@
 import React from "react";
-import { productsData } from "./ProductsData";
 
 const Collection = () => {
   return (
@@ -17,9 +16,6 @@ const Collection = () => {
 
         <div className="overflow-y-auto max-h-[500px] ">
           <div className="grid gap-6 mb-4 sm:grid-cols-2 lg:grid-cols-3">
-            {productsData.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
           </div>
         </div>
       </div>

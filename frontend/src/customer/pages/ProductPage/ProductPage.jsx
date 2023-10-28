@@ -1,13 +1,13 @@
 import React from 'react';
-import HeaderProduct from '../../components/Product/HeaderProduct';
-import Product from '../../components/Product/Product';
-import ProductList from '../../components/Product/ProductList';
-import useProductData from '../../../hooks/useProductData';
+import useModelData from '../../../hooks/useModelData';
 import Breadcrumb from '../../components/Breadcrumb';
+import Filters from '../../components/Product/Filters';
+import HeaderProduct from '../../components/Product/HeaderProduct';
+import ProductList from '../../components/Product/ProductList';
 
 const ProductPage = () => {
   const breadcrumbItems = [{ label: 'Products', url: '/products' }];
-  const { productList } = useProductData();
+  const { modelList } = useModelData();
 
   return (
     <>
@@ -15,8 +15,8 @@ const ProductPage = () => {
       <div className="relative mx-auto py-4 sm:py-8 px-4 w-auto">
         <HeaderProduct />
         <div className="flex justify-between mt-4">
-          <Product />
-          <ProductList data={productList} />
+          <Filters />
+          <ProductList data={modelList} />
         </div>
       </div>
     </>

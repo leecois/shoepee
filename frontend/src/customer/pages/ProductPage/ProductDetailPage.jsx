@@ -6,12 +6,12 @@ import ProductDetails from '../../components/ProductDetails/ProductDetails';
 import useProductDetail from '../../../hooks/useProductDetail.js';
 
 const ProductDetailPage = () => {
-  const { productId } = useParams();
-  const { product, loading } = useProductDetail(productId);
+  const { modelId } = useParams();
+  const { product, loading } = useProductDetail(modelId);
 
   const breadcrumbItems = [
     { label: 'Products', url: '/products' },
-    { label: `${product.name}` },
+    { label: `${product.modelname}` },
   ];
 
   if (loading) {

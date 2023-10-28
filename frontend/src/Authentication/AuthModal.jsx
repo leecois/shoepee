@@ -23,8 +23,8 @@ const AuthModal = ({ handleClickOpen, handleClose }) => {
   const [isSignInVisible, setIsSignInVisible] = useState(false);
   const [isSignUpVisible, setIsSignUpVisible] = useState(false);
   const [emailError, setEmailError] = useState('');
-  const [enteredEmail, setEnteredEmail] = useState(''); // Lưu email
-  const [isLoading, setIsLoading] = useState(false); // Thêm biến isLoading
+  const [enteredEmail, setEnteredEmail] = useState(''); 
+  const [isLoading, setIsLoading] = useState(false); 
 
   const handleContinue = () => {
     if (
@@ -43,7 +43,7 @@ const AuthModal = ({ handleClickOpen, handleClose }) => {
     setIsLoading(true); // Bắt đầu loading
 
     axios
-      .get(`${API_BASE_URL}/username/${email}`)
+      .get(`${API_BASE_URL}/auth/existuser/${email}`)
       .then((response) => {
         emailExists = response.data.email;
         isCheckEmailSuccess = true; // Đã kiểm tra email thành công

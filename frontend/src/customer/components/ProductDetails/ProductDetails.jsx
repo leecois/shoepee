@@ -56,7 +56,7 @@ const ProductDetails = ({ product }) => {
 
         <div className="order-1 lg:order-2 col-span-full lg:col-span-1 lg:max-w-xl flex flex-col items-start">
           <h1 className="text-3xl sm:text-4xl text-gray-700 font-extrabold tracking-wide">
-            {product.name}
+            {product.modelname}
           </h1>
           <div className="mt-5 flex items-center">
             <p className="pr-5 border-r border-gray-200 text-2xl text-gray-700 font-normal">
@@ -114,7 +114,32 @@ const ProductDetails = ({ product }) => {
               </p>
             )}
           </div>
-          <div className="mt-10 w-full">
+          {/* Inspiration */}
+          <div className="mt-4 w-full">
+            <h3 className="text-sm text-gray-700 font-semibold">Inspiration</h3>
+
+            <div className="mt-2 grid grid-cols-2 lg:grid-cols-2 gap-2">
+              {product.sizes?.map((size) => (
+                <button
+                  key={size}
+                  type="button"
+                  className={`p-3 inline-flex flex-col items-center space-y-2 rounded-lg border-2 ${
+                    selectedSize === size
+                      ? 'border border-red-400'
+                      : 'border border-gray-200'
+                  } text-left`}
+                  onClick={() => setSelectedSize(size)}
+                >
+                  <span className="text-base text-gray-700 font-semibold">
+                    {size}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+          
+          {/* Size */}
+          <div className="mt-4 w-full">
             <h3 className="text-sm text-gray-700 font-semibold">Size</h3>
 
             <div className="mt-2 grid grid-cols-2 lg:grid-cols-2 gap-2">

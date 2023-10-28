@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { API_BASE_URL } from '../constants/index';
+import  StorageKeys  from '../constants/storage-keys';
 
 // Define your common axios configuration
 const axiosConfig = {
@@ -33,5 +34,23 @@ axiosClient.interceptors.response.use(undefined, function (error) {
 
   return Promise.reject(error);
 });
+
+// Add an interceptor to include the Authorization header with the token
+axiosClient.interceptors.request.use(
+  (config) => {
+    // Get the token from local storage or where it's stored
+    const token = localStorage.getItem(StorageKeys.TOKEN);
+
+    // Add the token to the Authorization header
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 export default axiosClient;

@@ -1,19 +1,19 @@
 import { useEffect, useState } from 'react';
-import productApi from '../api/productApi';
+import modelApi from '../api/modelApi';
 
-const useProductData = () => {
-  const [productList, setProductList] = useState([]);
+const useModelData = () => {
+  const [modelList, setModelList] = useState([]);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(12);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await productApi.getAll({
+        const { data } = await modelApi.getAll({
           _page: page,
           _limit: limit,
         });
-        setProductList(data);
+        setModelList(data);
         console.log(data);
       } catch (error) {
         if (error.response && error.response.status) {
@@ -27,7 +27,7 @@ const useProductData = () => {
     fetchData();
   }, [page, limit]);
 
-  return { productList };
+  return { modelList };
 };
 
-export default useProductData;
+export default useModelData;

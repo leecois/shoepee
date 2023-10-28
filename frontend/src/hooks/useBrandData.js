@@ -1,19 +1,14 @@
 import { useEffect, useState } from 'react';
-import productApi from '../api/productApi';
+import brandApi from '../api/brandApi';
 
-const useProductData = () => {
-  const [productList, setProductList] = useState([]);
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(12);
+const useBrandData = () => {
+  const [brandList, setBrandList] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await productApi.getAll({
-          _page: page,
-          _limit: limit,
-        });
-        setProductList(data);
+        const data = await brandApi.getAll();
+        setBrandList(data);
         console.log(data);
       } catch (error) {
         if (error.response && error.response.status) {
@@ -25,9 +20,9 @@ const useProductData = () => {
     };
 
     fetchData();
-  }, [page, limit]);
+  }, []);
 
-  return { productList };
+  return { brandList };
 };
 
-export default useProductData;
+export default useBrandData;

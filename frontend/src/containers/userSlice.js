@@ -4,8 +4,8 @@ import StorageKeys from '../constants/storage-keys';
 
 // Helper function to save data to local storage
 const saveDataToLocalStorage = (data) => {
-  if (data.jwt) {
-    localStorage.setItem(StorageKeys.TOKEN, data.jwt);
+  if (data.access_token) {
+    localStorage.setItem(StorageKeys.TOKEN, data.access_token);
   }
   if (data.user) {
     localStorage.setItem(StorageKeys.USER, JSON.stringify(data.user));
@@ -16,7 +16,7 @@ export const register = createAsyncThunk('user/register', async (payload) => {
   try {
     const data = await userApi.register(payload);
     saveDataToLocalStorage(data);
-    return data.user;
+    return data.access_token;
   } catch (error) {
     throw error;
   }
@@ -26,7 +26,7 @@ export const login = createAsyncThunk('user/login', async (payload) => {
   try {
     const data = await userApi.login(payload);
     saveDataToLocalStorage(data);
-    return data.user;
+    return data.access_token;
   } catch (error) {
     throw error;
   }
@@ -35,7 +35,7 @@ export const login = createAsyncThunk('user/login', async (payload) => {
 const userSlice = createSlice({
   name: 'user',
   initialState: {
-    current: null, // You can set initial state to null or an empty object
+    current: {},
     settings: {},
   },
   reducers: {},
@@ -49,5 +49,5 @@ const userSlice = createSlice({
       });
   },
 });
-
-export default userSlice.reducer;
+const { reducer } = userSlice;
+export default reducer;

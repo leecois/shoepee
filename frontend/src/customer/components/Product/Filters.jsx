@@ -6,9 +6,11 @@ import {
 } from '@heroicons/react/24/outline';
 
 import React, { useEffect, useState } from 'react';
+import useBrandData from '../../../hooks/useBrandData';
 
-const Product = () => {
+const Filters = () => {
   const [openFilter, setOpenFilter] = useState(true);
+  const { brandList } = useBrandData();
 
   const subCategories = [
     { name: 'Sneaker', href: '#' },
@@ -69,13 +71,13 @@ const Product = () => {
         { value: '5tr', label: 'Over 5,000,000', checked: false },
       ],
     },
-    {
-      id: 'brand',
-      name: 'Brand',
-      options: [
-        { value: 'Gucci', label: 'Gucci', checked: false },
-        { value: 'Nike', label: 'Nike', checked: false },
-      ],
+    {id: 'brand',
+    name: 'Brand',
+    options: brandList.map((brand) => ({
+      value: brand.brandName,
+      label: brand.brandName,
+      checked: false,
+      })),
     },
   ];
 
@@ -184,28 +186,28 @@ const Product = () => {
                   )}
                   {section.id !== 'color' && (
                     <Disclosure.Panel className="mt-5 flex flex-col">
-                      {section.options.map((option) => (
-                        <div className="m-1 flex items-center space-x-3">
-                          <div>
-                            <label
-                              htmlFor={option.label}
-                              className="sr-only"
-                            >{`Color ${option.label}`}</label>
-                            <input
-                              type="checkbox"
-                              name={option.label}
-                              id={option.label}
-                              defaultValue={option.value}
-                              defaultChecked={option.checked}
-                              className="form-checkbox h-5 w-5 border-gray-300 rounded text-blue-400 focus:ring-blue-400"
-                            />
-                          </div>
-                          <span className="text-base text-gray-700">
-                            {option.label}
-                          </span>
+                    {section.options.map((option) => (
+                      <div className="m-1 flex items-center space-x-3">
+                        <div>
+                          <label
+                            htmlFor={option.label}
+                            className="sr-only"
+                          >{`Color ${option.label}`}</label>
+                          <input
+                            type="checkbox"
+                            name={option.label}
+                            id={option.label}
+                            defaultValue={option.value}
+                            defaultChecked={option.checked}
+                            className="form-checkbox h-5 w-5 border-gray-300 rounded text-blue-400 focus:ring-blue-400"
+                          />
                         </div>
-                      ))}
-                    </Disclosure.Panel>
+                        <span className="text-base text-gray-700">
+                          {option.label}
+                        </span>
+                      </div>
+                    ))}
+                  </Disclosure.Panel>
                   )}
                 </div>
               )}
@@ -217,4 +219,4 @@ const Product = () => {
   );
 };
 
-export default Product;
+export default Filters;
