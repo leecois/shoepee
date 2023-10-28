@@ -24,7 +24,7 @@ public class UserManageController {
     public Optional<User> getUserById(@PathVariable int id){
         return userService.getUserById(id);
     }
-    @GetMapping("/deleteuser/{id}")
+    @DeleteMapping("/deleteuser/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable int id){
         userService.removeUser(id);
         return new ResponseEntity<String>("Delete sucessful",HttpStatus.OK);

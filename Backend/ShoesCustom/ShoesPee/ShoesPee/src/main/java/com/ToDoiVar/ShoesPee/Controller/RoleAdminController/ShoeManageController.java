@@ -20,19 +20,19 @@ public class ShoeManageController {
         return new ResponseEntity<>(shoeService.getAllShoe(), HttpStatus.FOUND);
     }
     @GetMapping("/getshoebyshoemodelid/{shoemodelid}")
-    public Optional<List<Shoe>> getShoeByShoemodelId(@PathVariable int shomemodelId){
-        return shoeService.getShoeByShoeModelId(shomemodelId);
+    public ResponseEntity<List<Shoe>> getShoeByShoemodelId(@PathVariable int shoemodelid){
+        return new ResponseEntity<>(shoeService.getShoeByShoeModelId(shoemodelid),HttpStatus.OK);
     }
     @PostMapping("/addshoe")
     public ResponseEntity<Shoe> addShoe(@RequestBody Shoe newShoe){
         return new ResponseEntity<>(shoeService.addShoe(newShoe),HttpStatus.OK);
     }
-    @PostMapping("/editshoe/{id}")
+    @PutMapping("/editshoe/{id}")
     public ResponseEntity<Shoe> editShoe(@PathVariable int id,@RequestBody Shoe editshoe){
         return new ResponseEntity<>(shoeService.editShoe(id,editshoe),HttpStatus.OK);
     }
     @DeleteMapping("/deleteshe/{id}")
-        public ResponseEntity<String> deleteShoe(int id){
+        public ResponseEntity<String> deleteShoe(@PathVariable int id){
             shoeService.deleteShoe(id);
             return new ResponseEntity<String>("Delete sucessful",HttpStatus.OK);
     }

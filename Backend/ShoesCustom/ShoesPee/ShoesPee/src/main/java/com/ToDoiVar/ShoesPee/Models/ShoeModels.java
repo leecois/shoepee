@@ -21,4 +21,8 @@ public class ShoeModels {
     @Column(name = "imageurl")
     private String imageurl;
 
+//    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+//    @JoinColumn(name = "brandid",referencedColumnName = "brandid")
+//    private Brand brand;
+
 }

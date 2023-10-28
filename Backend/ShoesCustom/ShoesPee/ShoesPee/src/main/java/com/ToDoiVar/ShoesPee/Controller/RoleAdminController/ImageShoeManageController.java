@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 @CrossOrigin("*")
 @RestController
@@ -16,8 +17,8 @@ public class ImageShoeManageController {
     private ImageShoeService imageShoeService;
 
     @GetMapping("/getimageshoe/{shoeid}")
-    public Optional<ImageShoe> getImageShoeByShoeId(@PathVariable int shoeid){
-        return imageShoeService.getImageShoeByShoeId(shoeid);
+    public ResponseEntity<List<ImageShoe>> getImageShoeByShoeId(@PathVariable int shoeid){
+        return new ResponseEntity<>(imageShoeService.getImageShoeByShoeId(shoeid),HttpStatus.OK);
     }
     @PostMapping("/addimageshoe")
     public ResponseEntity<ImageShoe> addImageShoe(@RequestBody ImageShoe newImageShoe){

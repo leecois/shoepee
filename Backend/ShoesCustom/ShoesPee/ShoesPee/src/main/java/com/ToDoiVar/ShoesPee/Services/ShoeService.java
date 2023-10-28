@@ -10,6 +10,6 @@ public interface ShoeService {
     Shoe getShoeById(int id);
     Shoe addShoe(Shoe newShoe);
     Shoe editShoe(int id,Shoe editShoe);
-    Optional<List<Shoe>> getShoeByShoeModelId(int shoeModelId);
+    List<Shoe> getShoeByShoeModelId(int shoeModelId);
     void deleteShoe(int id);
 }

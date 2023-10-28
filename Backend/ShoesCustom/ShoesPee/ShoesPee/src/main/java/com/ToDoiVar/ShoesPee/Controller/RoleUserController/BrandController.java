@@ -15,15 +15,15 @@ public class BrandController {
     @Autowired
     private BrandService brandService;
     @GetMapping("/brands")
-    public List<Brand> getAllBrand(){
-        return brandService.getAllBrand();
+    public ResponseEntity<List<Brand>> getAllBrand(){
+        return new ResponseEntity<>(brandService.getAllBrand(),HttpStatus.OK);
     }
     @GetMapping("/getbrandbyid/{id}")
-    public ResponseEntity<Brand> getBrandById(int id){
+    public ResponseEntity<Brand> getBrandById(@PathVariable int id){
         return new ResponseEntity<>(brandService.getBrandById(id), HttpStatus.OK);
     }
     @GetMapping("/getbrandbyname/{name}")
-    public ResponseEntity<Brand> getBrandByName(String name){
+    public ResponseEntity<Brand> getBrandByName(@PathVariable String name){
         return new ResponseEntity<>(brandService.getBrandByName(name),HttpStatus.OK);
     }
 //    @PostMapping("/addbrand")

@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
+
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -16,10 +18,10 @@ import java.util.List;
 public class shoeModelController {
     @Autowired
     private final ShoeModelService shoeModelService;
-    @PostMapping("/addShoemodel")
-    public ShoeModels addShoeModel(@RequestBody ShoeModels newShoeModel){
-        return shoeModelService.addShoeModel(newShoeModel);
-    }
+//    @PostMapping("/addShoemodel")
+//    public ResponseEntity<ShoeModels> addShoeModel(@RequestBody ShoeModels newShoeModel){
+//        return new ResponseEntity<>(shoeModelService.addShoeModel(newShoeModel),HttpStatus.OK);
+//    }
     @GetMapping("/shoemodels")
     public ResponseEntity<List<ShoeModels>> getAllShoeModel(){
         return new ResponseEntity<>(shoeModelService.getAllShoeModel(), HttpStatus.OK);
@@ -28,6 +30,10 @@ public class shoeModelController {
     @GetMapping("/getshoemodelbyname/{name}")
     public ResponseEntity<ShoeModels> getShoeModelByName(@PathVariable String name){
         return new ResponseEntity<>(shoeModelService.getShoeModelByName(name),HttpStatus.OK);
+    }
+    @GetMapping("/getshoemodelbybrandid/{id}")
+    public Optional<List<ShoeModels>> getShoeModelByBrandId(@PathVariable int id){
+        return shoeModelService.getShoeModelByBrandId(id);
     }
 //    @GetMapping("/getshoemodelbyid/{id}")
 //    public ShoeModels getShoeModelById(@PathVariable int id){

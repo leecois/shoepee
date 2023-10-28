@@ -6,6 +6,7 @@ import com.ToDoiVar.ShoesPee.repositiory.ImageShoeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -15,8 +16,8 @@ public class ImageShoeServiceImp implements ImageShoeService{
 
 
     @Override
-    public Optional<ImageShoe> getImageShoeByShoeId(int shoeId) {
-        return imageShoeRepository.getImageShoeByShoeId(shoeId);
+    public List<ImageShoe> getImageShoeByShoeId(int shoeId) {
+        return imageShoeRepository.getImageShoeByShoeId(shoeId).orElseThrow(() -> new imageShoeNotFound("iamgeShoe not foud"));
     }
 
     @Override

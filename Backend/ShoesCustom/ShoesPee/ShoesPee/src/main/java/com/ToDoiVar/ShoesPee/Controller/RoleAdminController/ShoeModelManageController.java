@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin("*")
 @RestController
@@ -18,8 +19,8 @@ public class ShoeModelManageController {
     @Autowired
     private final ShoeModelService shoeModelService;
     @PostMapping("/addShoemodel")
-    public ShoeModels addShoeModel(@RequestBody ShoeModels newShoeModel){
-        return shoeModelService.addShoeModel(newShoeModel);
+    public ResponseEntity<ShoeModels> addShoeModel(@RequestBody ShoeModels newShoeModel){
+        return new ResponseEntity<>(shoeModelService.addShoeModel(newShoeModel),HttpStatus.OK);
     }
     @GetMapping("/shoemodels")
     public ResponseEntity<List<ShoeModels>> getAllShoeModel(){
@@ -34,6 +35,10 @@ public class ShoeModelManageController {
     public ResponseEntity<ShoeModels> getShoeModelById(@PathVariable int id){
         return new ResponseEntity<>(shoeModelService.getShoeModelById(id),HttpStatus.OK);
     }
+    @GetMapping("/getshoemodelbybrandid/{id}")
+    public Optional<List<ShoeModels>> getShoeModelByBrandId(@PathVariable int id){
+        return shoeModelService.getShoeModelByBrandId(id);
+    }
     @PutMapping("/editshoemode/{id}")
     public ResponseEntity<ShoeModels> editShoeModel(@PathVariable int id,@RequestBody ShoeModels editShoeModel){
         return new ResponseEntity<>(shoeModelService.updateShoeModel(id,editShoeModel),HttpStatus.OK);
@@ -43,4 +48,5 @@ public class ShoeModelManageController {
        shoeModelService.removeShoeModel(id);
        return new ResponseEntity<String>("Delete sucessful",HttpStatus.OK);
     }
+
 }

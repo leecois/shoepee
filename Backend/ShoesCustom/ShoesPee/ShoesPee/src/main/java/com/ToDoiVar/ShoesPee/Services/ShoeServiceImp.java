@@ -26,6 +26,7 @@ public class ShoeServiceImp implements ShoeService{
 
     @Override
     public Shoe addShoe(Shoe newShoe) {
+
         return shoeRepository.save(newShoe);
     }
 
@@ -42,8 +43,8 @@ public class ShoeServiceImp implements ShoeService{
     }
 
     @Override
-    public Optional<List<Shoe>> getShoeByShoeModelId(int shoemodelId) {
-        return shoeRepository.getShoeByModelId(shoemodelId);
+    public List<Shoe> getShoeByShoeModelId(int shoemodelId) {
+        return shoeRepository.getShoeByModelId(shoemodelId).orElseThrow(() -> new shoeNotFoundException("shoe not found"));
     }
 
     @Override

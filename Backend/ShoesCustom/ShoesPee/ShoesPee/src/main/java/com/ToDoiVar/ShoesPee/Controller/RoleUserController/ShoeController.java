@@ -17,11 +17,11 @@ public class ShoeController {
     @Autowired
     private ShoeService shoeService;
     @GetMapping("/shoes")
-    public List<Shoe> getAllShoe(){
-        return shoeService.getAllShoe();
+    public ResponseEntity<List<Shoe>> getAllShoe(){
+        return new ResponseEntity<>(shoeService.getAllShoe(),HttpStatus.OK);
     }
     @GetMapping("/getshoebyshoemodelid/{shoemodelid}")
-    public Optional<List<Shoe>> getShoeByShoemodelId(@PathVariable int shomemodelId){
-      return shoeService.getShoeByShoeModelId(shomemodelId);
+    public ResponseEntity<List<Shoe>> getShoeByShoemodelId(@PathVariable int shoemodelid){
+      return new ResponseEntity<>(shoeService.getShoeByShoeModelId(shoemodelid),HttpStatus.OK);
     }
 }
