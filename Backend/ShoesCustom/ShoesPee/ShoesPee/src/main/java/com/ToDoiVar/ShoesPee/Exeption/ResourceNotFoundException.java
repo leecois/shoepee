@@ -1,0 +1,13 @@
+package com.ToDoiVar.ShoesPee.Exeption;
+
+public class ResourceNotFoundException extends RuntimeException {
+
+    public ResourceNotFoundException() {
+        super();
+    }
+
+    public ResourceNotFoundException(String message) {
+        super(message);
+    }
+
+}
