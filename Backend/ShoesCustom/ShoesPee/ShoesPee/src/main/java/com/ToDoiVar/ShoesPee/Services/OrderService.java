@@ -1,0 +1,123 @@
+package com.ToDoiVar.ShoesPee.Services;
+
+import com.ToDoiVar.ShoesPee.Exeption.ResourceNotFoundException;
+import com.ToDoiVar.ShoesPee.Models.*;
+import com.ToDoiVar.ShoesPee.dto.OrderDto;
+import com.ToDoiVar.ShoesPee.repositiory.CartRepository;
+import com.ToDoiVar.ShoesPee.repositiory.OrderRepository;
+import com.ToDoiVar.ShoesPee.repositiory.UserRepository;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
+@Service
+public class OrderService {
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private CartRepository cartRepository;
+    @Autowired
+    private ModelMapper modelMapper;
+    @Autowired
+    private OrderRepository orderRepository;
+
+    //order Create method
+
+    public OrderDto orderCreate(OrderRequest request, String username) {
+
+        User user = this.userRepository.findByEmail(username).orElseThrow(()->new ResourceNotFoundException("User not found"));
+
+        int cartId=request.getCartId();
+        String orderAddress=request.getOrderAddress();
+        //find cart
+        Cart cart= this.cartRepository.findById(cartId).orElseThrow(()->new ResourceNotFoundException("Cart Not Found"));
+        //getting CartItem
+        Set<CartItem> items  = cart.getItems();
+        Order order=new Order();
+
+        AtomicReference<Double> totalOrderPrice= new AtomicReference<Double>(0.0);
+        Set<OrderItem>	orderitems=items.stream().map((cartItem)-> {
+            OrderItem orderItem=new OrderItem();
+            //set cartItem into OrderItem
+
+            //set product in orderItem
+            orderItem.setShoe(cartItem.getShoe());
+
+            //set productQty in orderItem
+
+            orderItem.setShoeQuantity(cartItem.getQuantity());
+
+            orderItem.setTotalShoeprice(cartItem.getTotalprice());
+            orderItem.setOrder(order);
+
+            totalOrderPrice.set(totalOrderPrice.get()+ orderItem.getTotalShoeprice());
+            int shoeId=orderItem.getShoe().getId();
+
+            return orderItem;
+        }).collect(Collectors.toSet());
+        order.setBillingAddress(orderAddress);
+        order.setOrderDelivered(null);
+        order.setOrderStatus("CREATED");
+        order.setPaymentStatus("NOT PAID");
+        order.setUser(user);
+        order.setOrderItem(orderitems);
+        order.setOrderAmt(totalOrderPrice.get());
+        order.setOrderCreateAt(new Date());
+        Order save;
+        if(order.getOrderAmt()>0){
+            save = this.orderRepository.save(order);
+            cart.getItems().clear();
+            this.cartRepository.save(cart);
+            System.out.println("Hello");
+        }else {
+            System.out.println(order.getOrderAmt());
+            throw new ResourceNotFoundException("Plz Add Cart First and place Order");
+        }
+
+
+        return this.modelMapper.map(save,OrderDto.class);
+    }
+
+    public void CancelOrder(int orderId){
+        Order order = this.orderRepository.findById(orderId).orElseThrow(()->new ResourceNotFoundException("Order not Found"));
+        this.orderRepository.delete(order);
+    }
+
+
+    public OrderDto findById(int orderId){
+        Order order = this.orderRepository.findById(orderId).orElseThrow(()->new ResourceNotFoundException("order not found"));
+        return this.modelMapper.map(order,OrderDto.class);
+    }
+
+    // find All Product by page
+
+    public OrderResponse findAllOrders(int pageNumber,int pageSize ){
+
+        Pageable pageable= PageRequest.of(pageNumber, pageSize);
+        Page<Order> findAll=this.orderRepository.findAll(pageable);
+        List<Order> content = findAll.getContent();
+
+        //change order to orderDto
+        List<OrderDto> collect = content.stream().map((each)->this.modelMapper.map(each,OrderDto.class)).collect(Collectors.toList());
+        OrderResponse response= new OrderResponse();
+        response.setContent(collect);
+        response.setPageNumber(findAll.getNumber());
+        response.setLastPage(findAll.isLast());
+        response.setPageSize(findAll.getSize());
+        response.setTotalPage(findAll.getTotalPages());
+
+        //getTotalElements return Long
+        response.setTotalElemet(findAll.getTotalElements());
+
+        return response;
+    }
+
+}
