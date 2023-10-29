@@ -1,5 +1,6 @@
 package com.ToDoiVar.ShoesPee.Services;
 
+import com.ToDoiVar.ShoesPee.Models.Role;
 import com.ToDoiVar.ShoesPee.Models.User;
 
 import java.util.List;
@@ -13,5 +14,6 @@ public interface UserService {
      User getUserByName(String name);
 //    String addUser(UserDto userDto);
     User getUserByEmail(String email);
+    User getRoleUser(String name);
 //    LoginMesage loginUser(LoginDto loginDto);
 }

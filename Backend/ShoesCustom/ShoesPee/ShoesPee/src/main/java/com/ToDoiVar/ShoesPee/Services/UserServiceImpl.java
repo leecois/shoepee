@@ -2,6 +2,7 @@ package com.ToDoiVar.ShoesPee.Services;
 
 import com.ToDoiVar.ShoesPee.Exeption.userNotFoundException;
 import com.ToDoiVar.ShoesPee.Models.ChangePasswordRequest;
+import com.ToDoiVar.ShoesPee.Models.Role;
 import com.ToDoiVar.ShoesPee.Models.User;
 import com.ToDoiVar.ShoesPee.repositiory.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -102,7 +102,7 @@ public class UserServiceImpl implements UserService{
     }
     @Override
     public User getUserByName(String name) {
-        return userRepository.getUserByUsername(name).orElseThrow(() -> new userNotFoundException("Sorry, this user cound not found"));
+        return userRepository.findUserByUsername(name).orElseThrow(() -> new userNotFoundException("Sorry, this user cound not found"));
     }
 //    @Override
 //    public String addUser(UserDto userDto) {
@@ -127,9 +127,15 @@ public class UserServiceImpl implements UserService{
         return userRepository.findByEmail(email).orElseThrow(() -> new userNotFoundException("User not found"));
     }
 
+    @Override
+    public User getRoleUser(String name) {
+ 
+        return null;
+    }
+
 
     private boolean userExisted(String username) {
-        return userRepository.getUserByUsername(username).isPresent();
+        return userRepository.findUserByUsername(username).isPresent();
     }
 
 //    @Override
