@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import axiosClient from '../api/axiosClient'; // Import your axiosClient
 import userApi from '../api/userApi';
 
 const useUserData = () => {

@@ -1,43 +1,167 @@
-import { DataGrid } from "@mui/x-data-grid";
+import AddIcon from '@mui/icons-material/Add';
+import CancelIcon from '@mui/icons-material/Close';
+import DeleteIcon from '@mui/icons-material/DeleteOutlined';
+import EditIcon from '@mui/icons-material/Edit';
+import SaveIcon from '@mui/icons-material/Save';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import {
+  DataGrid,
+  GridActionsCellItem,
+  GridRowEditStopReasons,
+  GridRowModes,
+  GridToolbarContainer,
+} from '@mui/x-data-grid';
+import { randomId } from '@mui/x-data-grid-generator';
+import React, { useState } from 'react';
+
+
+function EditToolbar(props) {
+  const { setRows, setRowModesModel } = props;
+
+  const handleClick = () => {
+    const brandId = randomId();
+    const newRow = { brandId, brandName: '', isNew: true };
+    setRows((oldRows) => [...oldRows, newRow]);
+    setRowModesModel((oldModel) => ({
+      ...oldModel,
+      [brandId]: { mode: GridRowModes.Edit, fieldToFocus: 'brandName' },
+    }));
+  };
+
+  return (
+    <GridToolbarContainer>
+      <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
+        Add Brands
+      </Button>
+    </GridToolbarContainer>
+  );
+}
+
+export default function BrandListTable({ brandData }) {
+  const [rows, setRows] = useState(brandData);
+  const [rowModesModel, setRowModesModel] = useState({});
+
+  const handleRowEditStop = (params, event) => {
+    if (params.reason === GridRowEditStopReasons.rowFocusOut) {
+      event.defaultMuiPrevented = true;
+    }
+  };
+
+  const handleEditClick = (brandId) => () => {
+    setRowModesModel({ ...rowModesModel, [brandId]: { mode: GridRowModes.Edit } });
+  };
+
+  const handleSaveClick = (brandId) => () => {
+    setRowModesModel({ ...rowModesModel, [brandId]: { mode: GridRowModes.View } });
+  };
+
+  const handleDeleteClick = (brandId) => () => {
+    setRows(rows.filter((row) => row.brandId !== brandId));
+  };
+
+  const handleCancelClick = (brandId) => () => {
+    setRowModesModel({
+      ...rowModesModel,
+      [brandId]: { mode: GridRowModes.View, ignoreModifications: true },
+    });
+
+    const editedRow = rows.find((row) => row.brandId === brandId);
+    if (editedRow.isNew) {
+      setRows(rows.filter((row) => row.brandId !== brandId));
+    }
+  };
+
+  const processRowUpdate = (newRow) => {
+    const updatedRow = { ...newRow, isNew: false };
+    setRows(rows.map((row) => (row.brandId === newRow.brandId ? updatedRow : row)));
+    return updatedRow;
+  };
+
+  const handleRowModesModelChange = (newRowModesModel) => {
+    setRowModesModel(newRowModesModel);
+  };
 
   const columns = [
-    { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'brandName', headerName: 'Brand Name', width: 230 },
+    { field: 'brandId', headerName: 'brandId', width: 180, editable: true },
+    { field: 'brandName', headerName: 'Brand', width: 180, editable: true },
     {
-      field: 'description',
-      headerName: 'Description',
-      description: 'This column has a value getter and is not sortable.',
-      sortable: false,
-      width: 660,
+      field: 'actions',
+      type: 'actions',
+      headerName: 'Actions',
+      width: 100,
+      cellClassName: 'actions',
+      getActions: ({ brandId }) => {
+        const isInEditMode = rowModesModel[brandId]?.mode === GridRowModes.Edit;
+
+        if (isInEditMode) {
+          return [
+            <GridActionsCellItem
+              icon={<SaveIcon />}
+              label="Save"
+              sx={{
+                color: 'primary.main',
+              }}
+              onClick={handleSaveClick(brandId)}
+            />,
+            <GridActionsCellItem
+              icon={<CancelIcon />}
+              label="Cancel"
+              className="textPrimary"
+              onClick={handleCancelClick(brandId)}
+              color="inherit"
+            />,
+          ];
+        }
+
+        return [
+          <GridActionsCellItem
+            icon={<EditIcon />}
+            label="Edit"
+            className="textPrimary"
+            onClick={handleEditClick(brandId)}
+            color="inherit"
+          />,
+          <GridActionsCellItem
+            icon={<DeleteIcon />}
+            label="Delete"
+            onClick={handleDeleteClick(brandId)}
+            color="inherit"
+          />,
+        ];
+      },
     },
-    { field: 'date', headerName: 'Date', width: 130 },
-    
   ];
-  
-  const rows = [
-    { id: 1, brandName: 'Nike', description: 'Nike is an American multinational corporation that is engaged in the design, development, manufacturing, and worldwide marketing and sales of footwear, apparel, equipment, accessories, and services.', date: '2022-09-01' },
-    { id: 2, brandName: 'Adidas', description: 'Adidas is a German multinational corporation, founded and headquartered in Herzogenaurach, Germany, that designs and manufactures shoes, clothing and accessories.', date: '2021-09-01' },
-    { id: 3, brandName: 'Puma', description: 'Puma SE, branded as Puma, is a German multinational corporation that designs and manufactures athletic and casual footwear, apparel and accessories, which is headquartered in Herzogenaurach, Bavaria, Germany.', date: '2021-09-01' },
-    { id: 4, brandName: 'New Balance', description: 'New Balance Athletics, Inc., best known as simply New Balance, is an American multinational corporation based in the Boston, Massachusetts area.', date: '2021-09-01' },
-    { id: 5, brandName: 'Reebok', description: 'Reebok is an English footwear and apparel company, and a subsidiary of German sporting goods giant Adidas since 2005.', date: '2021-09-01' },
-    { id: 6, brandName: 'Converse', description: 'Converse is an American shoe company that designs, distributes, and licenses sneakers, skating shoes, lifestyle brand footwear, apparel, and accessories.', date: '2021-09-01' },
-  ];
-  
-  export default function BrandsListTable() {
-    return (
-      <div style={{ height: 630, width: '100%' }}>
+
+  return (
+    <Box
+      sx={{
+        height: 500,
+        width: '100%',
+        '& .actions': {
+          color: 'text.secondary',
+        },
+        '& .textPrimary': {
+          color: 'text.primary',
+        },
+      }}
+    >
       <DataGrid
         rows={rows}
         columns={columns}
-        className='bg-white dark:text-white dark:bg-boxdark'
-        initialState={{
-          pagination: {
-            paginationModel: { page: 0, pageSize: 10 },
-          },
+        getRowId={(row) => row.brandId}  // Sử dụng prop getRowId để xác định trường id
+        editMode="row"
+        rowModesModel={rowModesModel}
+        onRowModesModelChange={handleRowModesModelChange}
+        onRowEditStop={handleRowEditStop}
+        processRowUpdate={processRowUpdate}
+        slots={{
+          toolbar: EditToolbar,
         }}
-        pageSizeOptions={[10, 25]}
-        checkboxSelection
+        slotProps={{
+          toolbar: { setRows, setRowModesModel },
+        }}
       />
-    </div>
-    );
-  };
+    </Box>
+  );
+}

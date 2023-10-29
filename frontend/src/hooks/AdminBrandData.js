@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react';
-import brandApi from  '../api/brandApi';
+import { useEffect, useState } from "react";
+import adminBrandApi from "../api/adminBrandApi";
 
-const useBrandData = () => {
+const AdminBrandData = () => {
   const [brandList, setBrandList] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await brandApi.getAll();
+        const data = await adminBrandApi.getAll();
         setBrandList(data);
         console.log(data);
       } catch (error) {
@@ -25,4 +25,4 @@ const useBrandData = () => {
   return { brandList };
 };
 
-export default useBrandData;
+export default AdminBrandData;

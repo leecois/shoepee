@@ -1,90 +1,54 @@
-import * as React from 'react';
+import AddIcon from '@mui/icons-material/Add';
+import CancelIcon from '@mui/icons-material/Close';
+import DeleteIcon from '@mui/icons-material/DeleteOutlined';
+import EditIcon from '@mui/icons-material/Edit';
+import SaveIcon from '@mui/icons-material/Save';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import AddIcon from '@mui/icons-material/Add';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/DeleteOutlined';
-import SaveIcon from '@mui/icons-material/Save';
-import CancelIcon from '@mui/icons-material/Close';
 import {
-  GridRowModes,
   DataGrid,
-  GridToolbarContainer,
   GridActionsCellItem,
   GridRowEditStopReasons,
+  GridRowModes,
+  GridToolbarContainer,
 } from '@mui/x-data-grid';
-import {
-  randomCreatedDate,
-  randomTraderName,
-  randomId,
-  randomArrayItem,
-  random,
-} from '@mui/x-data-grid-generator';
-import useUserData from '../../hooks/useUserData';
+import * as React from 'react';
+import { useState } from 'react';
 
-const roles = ['Admin', 'Manager', 'Customer'];
-const randomRole = () => {
-  return randomArrayItem(roles);
-};
+const roles = ['Admin', 'Customer'];
+function generateUniqueId(userData) {
+  const maxId = userData.reduce(
+    (max, user) => (user.userId > max ? user.userId : max),
+    0
+  );
 
-const initialRows = [
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    email: randomTraderName() + '@gmail.com',
-    phone: random(1000000000, 9999999999),
-    address: '1234 Main St',
-    joinDate: randomCreatedDate(),
-    role: randomRole(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    email: randomTraderName() + '@gmail.com',
-    phone: random(1000000000, 9999999999),
-    address: 'New York',
-    joinDate: randomCreatedDate(),
-    role: randomRole(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    email: randomTraderName() + '@gmail.com',
-    phone: random(1000000000, 9999999999),
-    address: 'New York City',
-    joinDate: randomCreatedDate(),
-    role: randomRole(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    email: randomTraderName() + '@gmail.com',
-    phone: random(1000000000, 9999999999),
-    address: 'New York City',
-    joinDate: randomCreatedDate(),
-    role: randomRole(),
-  },
-  {
-    id: randomId(),
-    name: randomTraderName(),
-    email: randomTraderName() + '@gmail.com',
-    phone: random(1000000000, 9999999999),
-    address: 'New York City',
-    joinDate: randomCreatedDate(),
-    role: randomRole(),
-  },
-];
+  return maxId + 1;
+}
 
 function EditToolbar(props) {
   const { setRows, setRowModesModel } = props;
 
-  const handleClick = () => {
-    const id = randomId();
-    setRows((oldRows) => [...oldRows, { id, name: '', age: '', isNew: true }]);
+  const addNewRow = () => {
+    const id = 4;
+    const newRow = {
+      id,
+      name: '',
+      email: '',
+      phone: '',
+      address: '',
+      joinDate: '',
+      role: '',
+      isNew: true,
+    };
+    setRows((oldRows) => [...oldRows, newRow]);
     setRowModesModel((oldModel) => ({
       ...oldModel,
-      [id]: { mode: GridRowModes.Edit, fieldToFocus: 'name' },
+      [id]: { mode: GridRowModes.Edit, fieldToFocus: 'username' },
     }));
+  };
+
+  const handleClick = () => {
+    addNewRow();
   };
 
   return (
@@ -96,11 +60,14 @@ function EditToolbar(props) {
   );
 }
 
-export default function AccountsListTable() {
-  const { userData, error } = useUserData();
-  const [rows, setRows] = React.useState(Object.values(userData));
-
-  const [rowModesModel, setRowModesModel] = React.useState({});
+export default function AccountsListTable({ userData }) {
+  const [rows, setRows] = useState(userData);
+  const [rowModesModel, setRowModesModel] = useState({});
+  // Dự đoán `id` từ trường `userId`
+  const dataWithIds = userData.map((user, index) => ({
+    ...user,
+    id: user.userId || index + 1,
+  }));
 
   const handleRowEditStop = (params, event) => {
     if (params.reason === GridRowEditStopReasons.rowFocusOut) {
@@ -143,25 +110,17 @@ export default function AccountsListTable() {
   };
 
   const columns = [
-    { field: 'name', headerName: 'Name', width: 180, editable: true },
+    { field: 'userId', headerName: 'ID', width: 80, editable: true },
+    { field: 'username', headerName: 'User Name', width: 180, editable: true },
     { field: 'email', headerName: 'Email', width: 280, editable: true },
     {
       field: 'phone',
       headerName: 'Phone',
       type: 'number',
       width: 180,
-      align: 'left',
-      headerAlign: 'left',
       editable: true,
     },
-    {
-      field: 'address',
-      headerName: 'Address',
-      width: 180,
-      align: 'left',
-      headerAlign: 'left',
-      editable: true,
-    },
+    { field: 'address', headerName: 'Address', width: 180, editable: true },
     {
       field: 'joinDate',
       headerName: 'Join date',
@@ -175,7 +134,7 @@ export default function AccountsListTable() {
       width: 220,
       editable: true,
       type: 'singleSelect',
-      valueOptions: ['Admin', 'Manager', 'Customer'],
+      valueOptions: roles,
     },
     {
       field: 'actions',
@@ -239,7 +198,7 @@ export default function AccountsListTable() {
       }}
     >
       <DataGrid
-        rows={rows}
+        rows={dataWithIds}
         columns={columns}
         editMode="row"
         rowModesModel={rowModesModel}

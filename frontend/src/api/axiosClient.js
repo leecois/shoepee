@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { API_BASE_URL } from '../constants/index';
-import  StorageKeys  from '../constants/storage-keys';
+import StorageKeys from '../constants/storage-keys';
 
 // Define your common axios configuration
 const axiosConfig = {
