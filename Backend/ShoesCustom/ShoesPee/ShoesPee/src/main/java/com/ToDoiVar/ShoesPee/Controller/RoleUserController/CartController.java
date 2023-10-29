@@ -6,19 +6,24 @@ import com.ToDoiVar.ShoesPee.dto.CartDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
 @RestController
-@RequestMapping("/api/v1/auth/cart")
+@RequestMapping("/api/v1/auth")
+@PreAuthorize("hasRole('USER')")
 public class CartController {
 
     @Autowired
     private CartService cartService;
 
-    @PostMapping("/")
+    @PostMapping("/cart")
     public ResponseEntity<CartDto> addtoCart(@RequestBody ItemRequest itemRequest, Principal principal){
+        if (principal == null) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED); // Hoặc mã lỗi tùy chọn
+        }
         String email=principal.getName();
         System.out.println(email);
         CartDto addItem = this.cartService.addItem(itemRequest,principal.getName());
@@ -28,12 +33,17 @@ public class CartController {
 
 
     //create method for getting cart
-    @GetMapping("/")
+    @GetMapping("/cart")
     public ResponseEntity<CartDto>getAllCart(Principal principal){
-        CartDto getcartAll = this.cartService.getcartAll(principal.getName());
-        return new ResponseEntity<CartDto>(getcartAll,HttpStatus.ACCEPTED);
+        if (principal != null) {
+            CartDto getcartAll = this.cartService.getcartAll(principal.getName());
+            return new ResponseEntity<CartDto>(getcartAll, HttpStatus.ACCEPTED);
+        } else {
+            String errorMessage = "Can't take information user";
+            return new ResponseEntity<>(new CartDto(errorMessage), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
-    @GetMapping("/{cartId}")
+    @GetMapping("/cart/{cartId}")
     public ResponseEntity<CartDto>getCartById(@PathVariable  int cartId){
 
         System.out.println(cartId);
@@ -41,7 +51,7 @@ public class CartController {
         return new ResponseEntity<CartDto>(cartByID,HttpStatus.OK);
     }
 
-    @DeleteMapping("/{pid}")
+    @DeleteMapping("/cart/{pid}")
     public ResponseEntity<CartDto>deleteCartItemFromCart(@PathVariable int pid,Principal p){
 
         CartDto remove = this.cartService.removeCartItemFromCart(p.getName(),pid);
