@@ -8,6 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SizeRepository extends JpaRepository<Size,Integer> {
-    Optional<Size> getSizesBySize(String size);
+    Optional<Size> getSizesBySize(int size);
     Optional<List<Size>> getSizesByid(int id);
 }

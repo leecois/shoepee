@@ -26,7 +26,7 @@ public class SizeServiceImp implements SizeService{
     public Size getSizeById(int id) {
         return sizeRepository.findById(id).orElseThrow(() -> new SizeException("Sorry, no size found with the Id: " + id));
     }
-    private boolean SizeExisted(String size) {
+    private boolean SizeExisted(int size) {
         return sizeRepository.getSizesBySize(size).isPresent();
     }
 }
