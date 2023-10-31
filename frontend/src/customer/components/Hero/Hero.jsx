@@ -36,7 +36,7 @@ const Hero = () => {
         {/* :HERO ILLUSTRATION */}
         <div className="relative w-full lg:w-1/2 flex flex-col justify-center items-center overflow-hidden">
           <img
-            src="https://www.theshoecreator.ch/images/giveaway-en.jpg"
+            src="/assets/publiceye.jpg"
             alt=""
             className="w-2/3 lg:w-full"
           />

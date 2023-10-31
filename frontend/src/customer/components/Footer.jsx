@@ -253,7 +253,7 @@ const Footer = () => {
             <div className="flex justify-center text-teal-600 dark:text-teal-300 sm:justify-start">
               <img 
                 className="h-10 w-auto"
-                src="%PUBLIC_URL%/logoshoepee.png"
+                src="logoshoepee.png"
                 alt="Workflow"
               />
             </div>

@@ -71,7 +71,7 @@ export default function Navigation() {
   return (
     <>
       <div
-        className={`navbar bg-base-200 sticky top-0 z-50 transition-all duration-300 ${
+        className={`navbar bg-base-200 sticky top-0 z-99999 transition-all duration-300 ${
           visible ? 'opacity-100' : 'opacity-0 -translate-y-full'
         }`}
       >
@@ -206,8 +206,8 @@ export default function Navigation() {
         </div>
       </div>
       <img
-        src="https://images.vans.com/is/image/VansBrand/clp-hero-top?$fullres$"
-        alt="Vans"
+        src="/assets/clp-hero-top.webp"
+        alt="Colorful"
       />
       {openAuthModal && (
         <div className="modal active">
