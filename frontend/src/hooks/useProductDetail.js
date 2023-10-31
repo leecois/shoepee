@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import productApi from '../api/productApi';
 import modelApi from '../api/modelApi';
 
 export default function useProductDetail(productId) {

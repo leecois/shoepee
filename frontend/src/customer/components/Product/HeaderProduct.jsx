@@ -6,23 +6,46 @@ import {
   RectangleGroupIcon,
 } from '@heroicons/react/24/outline';
 import React, { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-const HeaderProduct = () => {
-  const [openFilter, setOpenFilter] = useState(true);
-  const [sortOptions, setSortOptions] = useState([
-    { name: 'Most Popular', href: '#', current: true },
-    { name: 'Newest', href: '#', current: false },
-    { name: 'Best Rating', href: '#', current: false },
-    { name: 'Price: Low to High', href: '#', current: false },
-    { name: 'Price: High to Low', href: '#', current: false },
-  ]);
-  const sortBy = (value) => {
-    const updatedSortOptions = sortOptions.map((option) => ({
-      ...option,
-      current: option.name === value,
-    }));
-    setSortOptions(updatedSortOptions);
+const HeaderProduct = ({ data }) => {
+  const navigate = useNavigate();
+  const sortOptions = [
+    { name: 'Best Rating', value: 'rating' },
+    { name: 'Price: Low to High', value: 'price_asc' },
+    { name: 'Price: High to Low', value: 'price_desc' },
+  ];
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const sort = queryParams.get('sort') || 'popularity';
+
+  const handleSort = (value) => {
+    sortProducts(value);
+    const query = new URLSearchParams(location.search);
+    query.set('sort', value);
+    navigate(`${location.pathname}?${query.toString()}`);
   };
+
+  const sortProducts = (sortOption) => {
+    let sortedProducts = [...data];
+    switch (sortOption) {
+      case 'rating':
+        sortedProducts.sort((a, b) => b.rating - a.rating);
+        break;
+      case 'price_asc':
+        sortedProducts.sort((a, b) => a.price - b.price);
+        break;
+      case 'price_desc':
+        sortedProducts.sort((a, b) => b.brandId - a.brandId);
+        break;
+      default:
+        break;
+    }
+    // Set the sorted products to your state or update your UI with the sorted data
+  };
+
+  const [openFilter, setOpenFilter] = useState(true);
+
   return (
     <div className="col-span-full pb-6 flex flex-col sm:flex-row items-center justify-between space-y-5 sm:space-y-0 border-b border-gray-200">
       <h2 className="text-3xl font-bold">Shoepee By You Shoes</h2>
@@ -51,19 +74,18 @@ const HeaderProduct = () => {
             {sortOptions.map((option) => (
               <Menu.Item key={option.name}>
                 {({ active }) => (
-                  <a
-                    href={option.href}
+                  <button
                     className={`p-1 block rounded ${
                       active
                         ? 'bg-gray-50'
-                        : option.current
+                        : sort === option.name
                         ? 'bg-blue-50 text-blue-500'
                         : 'bg-transparent text-gray-400'
                     } text-base font-medium whitespace-nowrap`}
-                    onClick={() => sortBy(option.name)}
+                    onClick={() => handleSort(option.value)}
                   >
                     {option.name}
-                  </a>
+                  </button>
                 )}
               </Menu.Item>
             ))}

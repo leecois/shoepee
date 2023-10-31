@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
@@ -14,8 +15,6 @@ const Hero = () => {
             <h1 className="py-10 text-3xl sm:text-5xl font-light tracking-wide leading-tight select-none">
               <span className="text-meta-7 font-semibold">Shoe</span>pee,{" "}
               <br />
-              <span className="text-meta-6 font-semibold">Shoe</span>{" "}
-              cleaning, <br />
               <span className="text-meta-3 font-semibold">Shoe</span> by you
               custom shoes.
             </h1>
@@ -25,12 +24,11 @@ const Hero = () => {
             </p>
             {/* Buttons */}
             <div className="mt-10 flex flex-col sm:flex-row items-center">
-              <a
-                href="/products"
+              <Link to={`/products`}
                 className=" transition ease-in-out delay-150  hover:-translate-z-1 hover:scale-110 hover:background-color: #EF4444; duration-300 m-1.5 py-2.5 px-5 rounded-md bg-black text-white font-semibold uppercase hover:bg-red-800"
               >
                 Start your customize
-              </a>
+              </Link>
               
             </div>
           </div>

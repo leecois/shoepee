@@ -1,5 +1,5 @@
 import counterReducer from '../containers/Counter/counterSlice';
-import userReducer from '../containers/userSlice';
+import userReducer from '../containers/User/userSlice';
 import cartReducer from '../containers/Cart/cartSlice';
 
 const { configureStore } = require('@reduxjs/toolkit');

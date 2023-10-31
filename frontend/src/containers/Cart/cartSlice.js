@@ -23,6 +23,7 @@ export const cartSlice = createSlice({
         // Add to cart
         state.cartItems.push(newItem);
       }
+      localStorage.setItem('cart', JSON.stringify(state.cartItems));
     },
     setSize(state, action) {
       const { id, size } = action.payload;
@@ -34,9 +35,11 @@ export const cartSlice = createSlice({
     removeFromCart: (state, action) => {
       const idNeedToRemove = action.payload;
       state.cartItems = state.cartItems.filter((x) => x.id !== idNeedToRemove);
+      localStorage.setItem('cart', JSON.stringify(state.cartItems));
     },
     resetCart: (state) => {
       state.cartItems = [];
+      localStorage.removeItem('cart');
     },
   },
 });

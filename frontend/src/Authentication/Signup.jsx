@@ -1,7 +1,7 @@
 import { Checkbox } from "@mui/material";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { register } from "../containers/userSlice";
+import { register } from "../containers/User/userSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
 
 const SignUp = ({ goBack, enteredEmail, handleCloseSuccess }) => {
@@ -57,7 +57,7 @@ const SignUp = ({ goBack, enteredEmail, handleCloseSuccess }) => {
         </svg>
       </button>
       <div className="flex justify-center mb-4">
-        <img src="./logoshoepee.png" alt="Your Logo" className="w-16 h-16" />
+        <img src="logoshoepee.png" alt="Your Logo" className="w-16 h-16" />
       </div>
       <form className="space-y-6" onSubmit={handleSubmit}>
         <h3 className="text-xl font-medium text-white dark:text-black">

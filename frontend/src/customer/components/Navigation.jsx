@@ -1,22 +1,38 @@
-import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { cartItemsCountSelector } from '../../containers/Cart/selectors';
+import { UserCircleIcon } from '@heroicons/react/24/outline';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 import AuthModal from '../../Authentication/AuthModal';
+import StorageKeys from '../../constants/storage-keys';
+import { clearUserData } from '../../containers/User/userSlice';
+import {
+  cartItemsCountSelector
+} from '../../containers/selectors';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ');
 }
 
 export default function Navigation() {
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const navigate = useNavigate();
   const handleCartClick = () => {
     navigate('/cart');
   };
+  const handleHomeClick = () => {
+    navigate('/');
+  };
+
+  // Retrieve user information from localStorage if authenticated
+  let user = null;
+  if (isAuthenticated) {
+    user = JSON.parse(localStorage.getItem(StorageKeys.USER));
+  }
+
+  const userId = user ? user.userId : null; 
+
   const cartItemsCount = useSelector(cartItemsCountSelector);
-  const [open, setOpen] = useState(false);
   const [openAuthModal, setOpenAuthModal] = useState(false);
-  const [signedIn, setSignedIn] = useState(false);
 
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
@@ -26,15 +42,20 @@ export default function Navigation() {
     setOpenAuthModal(true);
   };
 
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(clearUserData());
+  };
+
   // Function to close the sign-in modal
   const handleClose = () => {
     setOpenAuthModal(false);
-    setSignedIn(true);
   };
 
   // Function to handle scroll events
   const handleScroll = () => {
-    const currentScrollPos = window.pageYOffset;
+    const currentScrollPos = window.scrollY;
 
     setVisible(prevScrollPos > currentScrollPos || currentScrollPos < 10);
 
@@ -77,7 +98,7 @@ export default function Navigation() {
               className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
             >
               <li>
-                <a href="/">Home</a>
+                <button onClick={handleHomeClick}>Home</button>
               </li>
               <li>
                 <a href="/products">Shop</a>
@@ -89,19 +110,25 @@ export default function Navigation() {
           </div>
         </div>
         <div className="navbar-center">
-          <button className="btn btn-ghost font-bold normal-case text-xl">
+          <button
+            onClick={handleHomeClick}
+            className="btn btn-ghost font-bold normal-case text-xl"
+          >
             SHOEPEE
           </button>
         </div>
 
         {/* RIGHT */}
         <div className="navbar-end gap-4 flex-none">
-          {/* SIGN IN */}
-          {signedIn ? (
+          {/* Authenticate */}
+          {isAuthenticated ? (
             <div className="dropdown dropdown-end">
-              <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
-                <div className="w-10 rounded-full">
-                  <img src="/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+              <label
+                tabIndex={0}
+                className="btn btn-ghost justify-center btn-circle avatar"
+              >
+                <div className="indicator">
+                  <UserCircleIcon className="h-7 w-7" />
                 </div>
               </label>
               <ul
@@ -109,16 +136,16 @@ export default function Navigation() {
                 className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
               >
                 <li>
-                  <a className="justify-between">
+                  <Link to={`profile/${userId}`} className="justify-between">
                     Profile
                     <span className="badge">New</span>
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a>Settings</a>
+                  <button>Settings</button>
                 </li>
                 <li>
-                  <a>Logout</a>
+                  <button onClick={handleLogout}>Logout</button>
                 </li>
               </ul>
             </div>
@@ -151,7 +178,7 @@ export default function Navigation() {
                     d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
                   />
                 </svg>
-                <span className="badge badge-sm indicator-item">
+                <span className="badge badge-sm text-red-500 indicator-item">
                   {cartItemsCount}
                 </span>
               </div>

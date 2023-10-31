@@ -1,6 +1,8 @@
+import { useEffect, useState } from 'react';
 import { createSelector } from 'reselect';
 
 const cartItemsSelector = (state) => state.cart.cartItems;
+//user selector
 
 // Count number of cart items
 export const cartItemsCountSelector = createSelector(
@@ -34,3 +36,17 @@ export const cartProductPricesSelector = createSelector(
   cartItemsSelector,
   (cartItems) => cartItems.map((item) => item.price)
 );
+
+// USER
+export const useLocalStorageData = (key) => {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    const storedData = localStorage.getItem(key);
+    if (storedData) {
+      setData(storedData);
+    }
+  }, [key]);
+
+  return data;
+};

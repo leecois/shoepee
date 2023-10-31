@@ -5,6 +5,7 @@ import Loader from '../Admin/common/Loader';
 import HomePage from '../customer/pages/HomePage/HomePage';
 import routes from '../customer/routes';
 import ShoeCustomize from '../customer/pages/ShoeCustomize';
+import ErrorPage from '../customer/pages/ErrorPage';
 
 const DefaultLayout = lazy(() => import('../customer/layout/DefaultLayout'));
 
@@ -42,6 +43,7 @@ const CustomerRouters = () => {
               />
             );
           })}
+          <Route path="*" element={<ErrorPage />} />
         </Route>
       </Routes>
     </>

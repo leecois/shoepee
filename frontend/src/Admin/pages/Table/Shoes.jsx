@@ -1,9 +1,9 @@
 import ShoeListTable from '../../components/ShoeListTable';
 import Breadcrumb from '../../components/Breadcrumb';
-import useProductData from '../../../hooks/useProductData';
+import useShoeData from '../../../hooks/useShoeData';
 
 const Shoes = () => {
-  const { shoeList } = useProductData();
+  const { shoeList } = useShoeData();
   return (
     <>
       <Breadcrumb pageName="Shoes" />

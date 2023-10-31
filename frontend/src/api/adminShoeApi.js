@@ -1,9 +1,9 @@
 import axiosClient from './axiosClient';
 
-const modelApi = {
+const shoeApi = {
   async getAll(params) {
     try {
-      const response = await axiosClient.get('/auth/shoes', {
+      const response = await axiosClient.get('/admin/shoes', {
         params: {
           ...params,
           _start:
@@ -25,9 +25,9 @@ const modelApi = {
       throw error;
     }
   },
-  async get(productId) {
+  async get(shoeId) {
     try {
-      const response = await axiosClient.get(`/products/${productId}`);
+      const response = await axiosClient.get(`/admin/shoes/${shoeId}`);
       return response;
     } catch (error) {
       throw error;
@@ -35,7 +35,7 @@ const modelApi = {
   },
   add: async (data) => {
     try {
-      const response = await axiosClient.post('/products', data);
+      const response = await axiosClient.post('/admin/shoes', data);
       return response;
     } catch (error) {
       throw error;
@@ -43,7 +43,7 @@ const modelApi = {
   },
   update: async (data) => {
     try {
-      const response = await axiosClient.patch(`/products/${data.id}`, data);
+      const response = await axiosClient.patch(`/admin/shoes/${data.id}`, data);
       return response;
     } catch (error) {
       throw error;
@@ -51,7 +51,7 @@ const modelApi = {
   },
   remove: async (id) => {
     try {
-      const response = await axiosClient.delete(`/shoemodels/${id}`);
+      const response = await axiosClient.delete(`/admin/shoes/${id}`);
       return response;
     } catch (error) {
       throw error;
@@ -59,4 +59,4 @@ const modelApi = {
   },
 };
 
-export default modelApi;
+export default shoeApi;

@@ -5,7 +5,7 @@ import {
   cartProductPricesSelector,
   cartProductSizesSelector,
   cartTotalSelector,
-} from '../../../containers/Cart/selectors';
+} from '../../../containers/selectors';
 import { useSelector } from 'react-redux';
 
 const Cart = () => {

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 function ProductList({ data }) {
   if (!data) {
-    return <div>Loading...</div>;
+    return <span className="loading loading-dots loading-lg"></span>;
   }
 
   return (
@@ -28,7 +28,7 @@ function ProductList({ data }) {
                   {model.brandId}
                 </h3>
                 <p className="text-black pl-4 text-md font-semibold">
-                  ${model.modelname}
+                  ${model.price}
                 </p>
               </div>
             </div>

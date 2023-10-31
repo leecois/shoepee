@@ -13,7 +13,7 @@ const ProductPage = () => {
     <>
       <Breadcrumb items={breadcrumbItems} />
       <div className="relative mx-auto py-4 sm:py-8 px-4 w-auto">
-        <HeaderProduct />
+        <HeaderProduct data={modelList}/>
         <div className="flex justify-between mt-4">
           <Filters />
           <ProductList data={modelList} />

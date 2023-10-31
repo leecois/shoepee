@@ -199,7 +199,7 @@ const Filters = () => {
                             id={option.label}
                             defaultValue={option.value}
                             defaultChecked={option.checked}
-                            className="form-checkbox h-5 w-5 border-gray-300 rounded text-blue-400 focus:ring-blue-400"
+                            className="checkbox"
                           />
                         </div>
                         <span className="text-base text-gray-700">

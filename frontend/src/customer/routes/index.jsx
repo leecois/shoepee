@@ -4,6 +4,7 @@ const ProductPage = lazy(() => import('../pages/ProductPage/ProductPage'));
 const ProductDetailPage = lazy(() => import('../pages/ProductPage/ProductDetailPage'));
 const CartPage = lazy(() => import('../pages/CartPage/CartPage'));
 const ShoeCustomize = lazy(() => import('../pages/ShoeCustomize'));
+const Profile = lazy(() => import('../pages/Profile'));
 
 const coreRoutes = [
   {
@@ -26,6 +27,12 @@ const coreRoutes = [
     title: 'Customize',
     component: ShoeCustomize,
   },
+  {
+    path: '/profile/:userId',
+    title: 'Profile',
+    component: Profile,
+  },
+  
 ];
 
 const routes = [...coreRoutes];
