@@ -1,4 +1,4 @@
-name: CI with GitHub Actions | © 2023 by minhchan
+name: CI/CD with GitHub Actions | © 2023 by minhchan
 
 
 on:
@@ -26,7 +26,8 @@ jobs:
           cache: maven
      
       - name: Build project with Maven
-        run: mvn -B package --file Backend/ShoesCustom/ShoesPee/ShoesPee/pom.xml
+        run: mvn clean install
+        # run: mvn -B package --file Backend/ShoesCustom/ShoesPee/ShoesPee/pom.xml
       
       # - name: Distribute jar-war file 
       #   run: mkdir staging && cp target/*.jar staging     
@@ -36,5 +37,6 @@ jobs:
       #   with:
       #     name: 0.0.1-SNAPSHOT.jar  
       #     path: staging
+      
 
 
