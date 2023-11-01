@@ -1,9 +1,9 @@
-import { useContext, useEffect, useRef, useState } from 'react';
 import { ChevronUpIcon } from '@heroicons/react/24/outline';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import CustomColorPicker from '../components/CustomColorPicker';
-import SizeCustomizer from '../components/SizeCustomizer';
+import InterfaceCustomize from '../components/InterfaceCustomize';
 import { CustomizationContext } from '../layout/CustomizationContext';
 
 export default function MobileCustomizationInterface() {
@@ -61,18 +61,16 @@ export default function MobileCustomizationInterface() {
                 <CustomColorPicker />
               </div>
               <div className="pb-5">
-                <h3 className="text-sm py-2">Layer size</h3>
-                <SizeCustomizer />
+                <h3 className="text-sm py-2"> ... </h3>
+                <InterfaceCustomize />
               </div>
             </Carousel>
           </div>
         )}
       </div>
-
-      {/* Button Submit */}
-      <button className="fixed bottom-4 right-4 bg-white hover:bg-blue-700 text-black font-bold py-2 px-4 rounded">
-        Add To Cart
-      </button>
+      <div className="fixed bottom-4 right-4  text-black font-bold py-2 px-4 rounded">
+        <InterfaceCustomize />
+      </div>
     </div>
   );
 }

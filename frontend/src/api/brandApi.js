@@ -2,7 +2,7 @@ import axiosClient from "./axiosClient";
 
 const brandApi = {
   async getAll() {
-    const url = `/brands`;
+    const url = `/auth/brands`;
     return axiosClient.get(url);
   },
   get: (id) => {

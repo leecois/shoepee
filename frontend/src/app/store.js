@@ -1,9 +1,13 @@
-import userSlice from '../Authentication/userSlice';
+import counterReducer from '../containers/Counter/counterSlice';
+import userReducer from '../containers/User/userSlice';
+import cartReducer from '../containers/Cart/cartSlice';
 
 const { configureStore } = require('@reduxjs/toolkit');
 
 const rootReducer = {
-  user: userSlice.reducer,
+  counter: counterReducer,
+  user: userReducer,
+  cart: cartReducer,
 };
 
 const store = configureStore({

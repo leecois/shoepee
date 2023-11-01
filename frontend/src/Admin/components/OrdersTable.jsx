@@ -46,13 +46,13 @@ const OrdersTable = () => {
               <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                 <div className="flex items-center space-x-3.5">
                   <button className="hover:text-primary">
-                    <EyeIcon class="h-5 w-5" />
+                    <EyeIcon className="h-5 w-5" />
                   </button>
                   <button className="hover:text-primary">
-                    <TrashIcon class="h-5 w-5" />
+                    <TrashIcon className="h-5 w-5" />
                   </button>
                   <button className="hover:text-primary">
-                    <CloudArrowDownIcon class="h-5 w-5" />
+                    <CloudArrowDownIcon className="h-5 w-5" />
                   </button>
                 </div>
               </td>
@@ -79,13 +79,13 @@ const OrdersTable = () => {
               <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                 <div className="flex items-center space-x-3.5">
                   <button className="hover:text-primary">
-                    <EyeIcon class="h-5 w-5" />
+                    <EyeIcon className="h-5 w-5" />
                   </button>
                   <button className="hover:text-primary">
-                    <TrashIcon class="h-5 w-5" />
+                    <TrashIcon className="h-5 w-5" />
                   </button>
                   <button className="hover:text-primary">
-                    <CloudArrowDownIcon class="h-5 w-5" />
+                    <CloudArrowDownIcon className="h-5 w-5" />
                   </button>
                 </div>
               </td>
@@ -112,13 +112,13 @@ const OrdersTable = () => {
               <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                 <div className="flex items-center space-x-3.5">
                   <button className="hover:text-primary">
-                    <EyeIcon class="h-5 w-5" />
+                    <EyeIcon className="h-5 w-5" />
                   </button>
                   <button className="hover:text-primary">
-                    <TrashIcon class="h-5 w-5" />
+                    <TrashIcon className="h-5 w-5" />
                   </button>
                   <button className="hover:text-primary">
-                    <CloudArrowDownIcon class="h-5 w-5" />
+                    <CloudArrowDownIcon className="h-5 w-5" />
                   </button>
                 </div>
               </td>

@@ -1,5 +1,5 @@
 import Breadcrumb from '../../components/Breadcrumb';
-import StylesTable from '../../components/StylesTable';
+import ModelsTable from '../../components/ModelsTable';
 
 const Styles = () => {
   return (
@@ -7,7 +7,7 @@ const Styles = () => {
       <Breadcrumb pageName="Styles" />
 
       <div className="flex flex-col gap-10">
-        <StylesTable />
+        <ModelsTable />
       </div>
     </>
   );

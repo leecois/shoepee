@@ -4,7 +4,8 @@ import { Route, Routes } from 'react-router-dom';
 import Loader from '../Admin/common/Loader';
 import HomePage from '../customer/pages/HomePage/HomePage';
 import routes from '../customer/routes';
-import ShoeCustomizer from '../customer/pages/ShoeCustomizer';
+import ShoeCustomize from '../customer/pages/ShoeCustomize';
+import ErrorPage from '../customer/pages/ErrorPage';
 
 const DefaultLayout = lazy(() => import('../customer/layout/DefaultLayout'));
 
@@ -25,7 +26,7 @@ const CustomerRouters = () => {
       />
 
       <Routes>
-        <Route path="/customizer" element={<ShoeCustomizer />} />
+        <Route path="/customize" element={<ShoeCustomize />} />
         <Route element={<DefaultLayout />}>
           <Route index element={<HomePage />} />
           {routes.map((route, index) => {
@@ -42,6 +43,7 @@ const CustomerRouters = () => {
               />
             );
           })}
+          <Route path="*" element={<ErrorPage />} />
         </Route>
       </Routes>
     </>

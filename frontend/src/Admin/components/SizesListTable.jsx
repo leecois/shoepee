@@ -1,79 +1,50 @@
-import { EllipsisHorizontalIcon } from '@heroicons/react/24/outline';
+import { DataGrid } from "@mui/x-data-grid";
+
+const columns = [
+  { field: 'id', headerName: 'ID', width: 70 },
+  { field: 'name', headerName: 'Size Name', width: 230 },
+  { field: 'value', headerName: 'Value', description: 'This column has a value getter and is not sortable.',
+  sortable: false, type:'number', width: 130 },
+  { field: 'date', headerName: 'Date', width: 130 },
+  
+];
+
+const rows = [
+  { id: 1, name: 'Small', value: '#141242', date: '2022-09-01' },
+  { id: 2, name: 'Medium', value: 100, date: '2021-09-01' },
+  { id: 3, name: 'Large', value: 100, date: '2021-09-01' },
+  { id: 4, name: 'Extra Large', value: 100, date: '2021-09-01' },
+  { id: 5, name: 'Extra Extra Large', value: 100, date: '2021-09-01' },
+  { id: 6, name: 'Extra Extra Extra Large', value: 100, date: '2021-09-01' },
+  { id: 7, name: 'Small', value: 100, date: '2021-09-01' },
+  { id: 8, name: 'Medium', value: 100, date: '2021-09-01' },
+  { id: 9, name: 'Large', value: 100, date: '2021-09-01' },
+  { id: 10, name: 'Extra Large', value: 100, date: '2021-09-01' },
+  { id: 11, name: 'Extra Extra Large', value: 100, date: '2021-09-01' },
+  { id: 12, name: 'Extra Extra Extra Large', value: 100, date: '2021-09-01' },
+  { id: 13, name: 'Small', value: 100, date: '2021-09-01' },
+  { id: 14, name: 'Medium', value: 100, date: '2021-09-01' },
+  { id: 15, name: 'Large', value: 100, date: '2021-09-01' },
+  { id: 16, name: 'Extra Large', value: 100, date: '2021-09-01' },
+  { id: 17, name: 'Extra Extra Large', value: 100, date: '2021-09-01' },
+  { id: 18, name: 'Extra Extra Extra Large', value: 100, date: '2021-09-01' },
+];
 
 const SizesListTable = () => {
   return (
-    <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-      <div className="py-6 px-4 md:px-6 xl:px-7.5">
-        <h4 className="text-xl font-semibold text-black dark:text-white">
-          Sizes (7)
-        </h4>
-        <label>Manage size for Shoepee</label>
-      </div>
-
-      <div className="grid grid-cols-5 border-t gap-x-4 border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-7 md:px-6 2xl:px-7.5">
-        <div className="col-span-2 flex items-center">
-          <p className="font-medium">Name</p>
-        </div>
-
-        <div className="col-span-2 hidden items-center sm:flex">
-          <p className="font-medium">Value</p>
-        </div>
-
-        <div className="col-span-2 hidden items-center sm:flex">
-          <p className="font-medium">Date</p>
-        </div>
-        <div className="col-span-1 flex items-center">
-          <p className="font-medium"></p>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-5 border-t gap-x-4 border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-7 md:px-6 2xl:px-7.5">
-        <div className="col-span-2 flex items-center">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-            <p className="text-sm text-black dark:text-white">Large</p>
-          </div>
-        </div>
-        <div className="col-span-2 flex items-center">
-          <p className="text-sm text-black dark:text-white">M</p>
-        </div>
-
-        <div className="col-span-2 hidden items-center sm:flex">
-          <p className="text-sm text-meta-3">
-            Clogs, Technical Trainers, Chelsea Boots, Chelsea Boots, Cowboy
-            Boots, Kitten Heels, Chelsea Boots, Cowboy Boots, Kitten Heels
-          </p>
-        </div>
-
-        <div className="col-span-1 flex items-center">
-          <p className="text-sm text-meta-5">
-            <EllipsisHorizontalIcon class="h-6 w-6" />
-          </p>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-5 border-t gap-x-4 border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-7 md:px-6 2xl:px-7.5">
-        <div className="col-span-2 flex items-center">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-            <p className="text-sm text-black dark:text-white">Medium</p>
-          </div>
-        </div>
-        <div className="col-span-2 flex items-center">
-          <p className="text-sm text-black dark:text-white">L</p>
-        </div>
-
-        <div className="col-span-2 hidden items-center sm:flex">
-          <p className="text-sm text-meta-3">
-            Clogs, Technical Trainers, Chelsea Boots, Chelsea Boots, Cowboy
-            Boots, Kitten Heels, Chelsea Boots, Cowboy Boots, Kitten Heels
-          </p>
-        </div>
-
-        <div className="col-span-1 flex items-center">
-          <p className="text-sm text-meta-5">
-            <EllipsisHorizontalIcon class="h-6 w-6" />
-          </p>
-        </div>
-      </div>
+    <div style={{ height: 630, width: '100%' }}>
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        className='bg-white dark:text-white dark:bg-boxdark'
+        initialState={{
+          pagination: {
+            paginationModel: { page: 0, pageSize: 10 },
+          },
+        }}
+        pageSizeOptions={[10, 25]}
+        checkboxSelection
+      />
     </div>
   );
 };
