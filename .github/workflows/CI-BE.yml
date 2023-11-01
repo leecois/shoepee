@@ -26,8 +26,7 @@ jobs:
           cache: maven
      
       - name: Build project with Maven
-        run: mvn clean install
-        # run: mvn -B package --file Backend/ShoesCustom/ShoesPee/ShoesPee/pom.xml
+        run: mvn -B package --file Backend/ShoesCustom/ShoesPee/ShoesPee/pom.xml
       
       # - name: Distribute jar-war file 
       #   run: mkdir staging && cp target/*.jar staging     
