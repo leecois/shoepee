@@ -1,5 +1,5 @@
-import { useContext, useEffect, useRef, useState } from 'react';
 import { ChevronUpIcon } from '@heroicons/react/24/outline';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import CustomColorPicker from '../components/CustomColorPicker';

@@ -1,10 +1,8 @@
 import { Button } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
-import brandApi from '../../../api/brandApi';
 import productApi from '../../../api/productApi';
 import OptionModal from './OptionModal';
 import RadioCheck from './RadioCheck';
-import { shoesData } from './shoeData';
 
 const FullModal = ({ handleClickOpen, handleClose }) => {
   const [brandList, setBrandList] = useState([]);

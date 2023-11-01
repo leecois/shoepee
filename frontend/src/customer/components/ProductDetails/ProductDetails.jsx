@@ -11,7 +11,7 @@ import { useDispatch } from 'react-redux';
 import { addToCart } from '../../../containers/Cart/cartSlice';
 
 const ProductDetails = ({ product }) => {
-  const [quantity, setQuantity] = useState(0);
+  const [quantity] = useState(0);
 
   const handleAddToCart = () => {
     const action = addToCart({

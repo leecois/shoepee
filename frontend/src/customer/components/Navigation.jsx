@@ -9,10 +9,6 @@ import {
   cartItemsCountSelector
 } from '../../containers/selectors';
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
-}
-
 export default function Navigation() {
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const navigate = useNavigate();

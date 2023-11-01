@@ -3,8 +3,8 @@ import modelApi from '../api/modelApi';
 
 const useModelData = () => {
   const [modelList, setModelList] = useState([]);
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(12);
+  const [page] = useState(1);
+  const [limit] = useState(12);
 
   useEffect(() => {
     const fetchData = async () => {

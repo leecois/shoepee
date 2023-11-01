@@ -1,18 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import FullModal from '../Modal/FullModal';
 
 export const StepCustomize = () => {
-  const [openFullModal, setOpenFullModal] = useState(false);
 
-  // Function to open the sign-in modal
-  const handleClickOpen = () => {
-    setOpenFullModal(true);
-  };
-
-  // Function to close the sign-in modal
-  const handleClose = () => {
-    setOpenFullModal(false);
-  };
   return (
     <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
       <div className="max-w-xl mb-10 md:mx-auto sm:text-center lg:max-w-2xl md:mb-12">

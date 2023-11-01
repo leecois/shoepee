@@ -1,6 +1,5 @@
-import { Canvas } from '@react-three/fiber';
 import { Environment, OrbitControls } from '@react-three/drei';
-import ModelShoe from './models/ModelShoe';
+import { Canvas } from '@react-three/fiber';
 import ModelNike from './models/ModelNike';
 
 function Scene() {
