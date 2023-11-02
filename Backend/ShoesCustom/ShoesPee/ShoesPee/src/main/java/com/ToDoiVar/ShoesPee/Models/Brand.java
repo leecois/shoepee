@@ -19,6 +19,7 @@ public class Brand {
     @Column(name = "imageurl")
     private String imageUrl;
 
+
 //    public long getBrandId() {
 //        return brandId;
 //    }
