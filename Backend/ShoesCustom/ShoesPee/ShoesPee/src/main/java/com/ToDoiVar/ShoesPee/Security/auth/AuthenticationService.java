@@ -41,6 +41,7 @@ public class AuthenticationService {
         var refreshToken = jwtService.generateRefreshToken(user);
         saveUserToken(savedUser, jwtToken);
         return AuthenticationResponse.builder()
+                .user(user)
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
                 .build();
@@ -57,6 +58,7 @@ public class AuthenticationService {
         var refreshToken = jwtService.generateRefreshToken(user);
         saveUserToken(savedUser, jwtToken);
         return AuthenticationResponse.builder()
+                .user(user)
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
                 .build();
@@ -78,6 +80,7 @@ public class AuthenticationService {
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
+                .user(user)
                 .build();
     }
 

@@ -1,5 +1,6 @@
 package com.ToDoiVar.ShoesPee.Security.auth;
 
+import com.ToDoiVar.ShoesPee.Models.User;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,4 +17,5 @@ public class AuthenticationResponse {
     private String accessToken;
     @JsonProperty("refresh_token")
     private String refreshToken;
+    private User user;
 }

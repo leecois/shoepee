@@ -1,7 +1,8 @@
 package com.ToDoiVar.ShoesPee.Controller.RoleUserController;
 
-import com.ToDoiVar.ShoesPee.Models.ShoeModels;
+import com.ToDoiVar.ShoesPee.Models.ShoeModel;
 import com.ToDoiVar.ShoesPee.Services.ShoeModelService;
+import com.ToDoiVar.ShoesPee.dto.ShoeModelDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,18 +23,20 @@ public class shoeModelController {
 //    public ResponseEntity<ShoeModels> addShoeModel(@RequestBody ShoeModels newShoeModel){
 //        return new ResponseEntity<>(shoeModelService.addShoeModel(newShoeModel),HttpStatus.OK);
 //    }
-    @GetMapping("/shoemodels")
-    public ResponseEntity<List<ShoeModels>> getAllShoeModel(){
-        return new ResponseEntity<>(shoeModelService.getAllShoeModel(), HttpStatus.OK);
+        @GetMapping("/shoemodels")
+    public ResponseEntity<List<ShoeModel>> getAllShoeModel(){
+        List<ShoeModel> getALlShoeModel = shoeModelService.getAllShoeModel();
+        return new ResponseEntity<List<ShoeModel>>(getALlShoeModel, HttpStatus.OK);
     }
 
     @GetMapping("/getshoemodelbyname/{name}")
-    public ResponseEntity<ShoeModels> getShoeModelByName(@PathVariable String name){
+    public ResponseEntity<ShoeModel> getShoeModelByName(@PathVariable String name){
         return new ResponseEntity<>(shoeModelService.getShoeModelByName(name),HttpStatus.OK);
     }
-    @GetMapping("/getshoemodelbybrandid/{id}")
-    public Optional<List<ShoeModels>> getShoeModelByBrandId(@PathVariable int id){
-        return shoeModelService.getShoeModelByBrandId(id);
+    @GetMapping("/getshoemodelbybrand/{id}")
+    public ResponseEntity<List<ShoeModelDto>> getShoeModelByBrandId(@PathVariable int id){
+        List<ShoeModelDto>getShoemodelByBrand = this.shoeModelService.getShoeModelByBrand(id);
+        return new ResponseEntity<List<ShoeModelDto>>(getShoemodelByBrand,HttpStatus.OK);
     }
 //    @GetMapping("/getshoemodelbyid/{id}")
 //    public ShoeModels getShoeModelById(@PathVariable int id){

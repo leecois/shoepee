@@ -2,6 +2,7 @@ package com.ToDoiVar.ShoesPee;
 
 import com.ToDoiVar.ShoesPee.Security.auth.AuthenticationService;
 import com.ToDoiVar.ShoesPee.Security.auth.RegisterRequest;
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,6 +17,10 @@ public class ShoesPeeApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ShoesPeeApplication.class, args);
+	}
+	@Bean
+	public ModelMapper mapper(){
+		return new ModelMapper();
 	}
 }
 //	@Bean

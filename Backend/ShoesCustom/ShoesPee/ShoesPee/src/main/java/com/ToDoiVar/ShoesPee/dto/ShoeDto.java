@@ -1,5 +1,6 @@
 package com.ToDoiVar.ShoesPee.dto;
 
+import com.ToDoiVar.ShoesPee.Models.ShoeModel;
 import lombok.*;
 
 @Getter
@@ -12,4 +13,13 @@ public class ShoeDto {
     private double price;
     private String description;
     private String imageUrl;
+    private ShoeModel shoeModel;
+
+    public ShoeModel getShoeModel() {
+        return shoeModel;
+    }
+
+    public void setShoeModel(ShoeModel shoeModel) {
+        this.shoeModel = shoeModel;
+    }
 }

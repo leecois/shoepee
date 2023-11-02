@@ -40,8 +40,10 @@ public class UserController {
     public ResponseEntity<User> editUser(@PathVariable int id,@RequestBody User newUser){
             return new ResponseEntity<User>(userService.editUser(id,newUser),HttpStatus.OK);
     }
-//    @GetMapping("/isadmin/{name}")
-//    public ResponseEntity<User> isAdmin(@PathVariable String name){
-//        return new ResponseEntity<Role>(userService.g);
-//    }
+    @GetMapping("/isadmin/{name}")
+    public Boolean isAdmin(@PathVariable String name){
+        User user = userService.getUserByName(name);
+        String role = String.valueOf(user.getRole());
+        return role.equals("ADMIN");
+    }
 }
