@@ -42,7 +42,7 @@ jobs:
         with:
           image: minhchan/minhchan-shoepee
           tags: latest
-          registry: docker.io
+          registry: registry-1.docker.io
           dockerfile: Dockerfile
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
