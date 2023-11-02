@@ -37,24 +37,15 @@ jobs:
       #     name: 0.0.1-SNAPSHOT.jar  
       #     path: staging
       
-      # - name: Build & push Docker image
-      #   uses: mr-smithers-excellent/docker-build-push@v5
-      #   with:
-      #     image: minhchan/minhchan-shoepee
-      #     tags: latest
-      #     registry: docker.io
-      #     dockerfile: Dockerfile
-      #     username: ${{ secrets.DOCKER_USERNAME }}
-      #     password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build & push Docker image
+        uses: mr-smithers-excellent/docker-build-push@v5
+        with:
+          image: minhchan/minhchan-shoepee
+          tags: latest
+          registry: docker.io
+          dockerfile: Dockerfile
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
-  - name: Build & push Docker image
-    uses: mr-smithers-excellent/docker-build-push@v6
-    with:
-      image: minhchan/minhchan-shoepee
-      tags: v1, latest
-      registry: registry-url.io
-      dockerfile: Dockerfile
-      username: ${{ secrets.DOCKER_USERNAME }}
-      password: ${{ secrets.DOCKER_PASSWORD }}
 
   
