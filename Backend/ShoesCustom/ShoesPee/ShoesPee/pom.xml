@@ -146,6 +146,7 @@
 			</plugin>
 
 		</plugins>
+		<finalName>minhchan-shoepee</finalName>
 	</build>
 
 </project>
