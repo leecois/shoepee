@@ -1,97 +1,167 @@
+import AddIcon from '@mui/icons-material/Add';
+import CancelIcon from '@mui/icons-material/Close';
+import DeleteIcon from '@mui/icons-material/DeleteOutlined';
+import EditIcon from '@mui/icons-material/Edit';
+import SaveIcon from '@mui/icons-material/Save';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import {
-    EllipsisHorizontalIcon
-  } from '@heroicons/react/24/outline';
-  import ProductOne from '../images/product/product-01.png';
-  
-  const BrandsListTable = () => {
-    return (
-      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-        <div className="py-6 px-4 md:px-6 xl:px-7.5">
-          <h4 className="text-xl font-semibold text-black dark:text-white">
-            Brands (7)
-          </h4>
-          <label>Manage brands for Shoepee</label>
-        </div>
-  
-        <div className="grid grid-cols-5 border-t gap-x-4 border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-7 md:px-6 2xl:px-7.5">
-          <div className="col-span-2 flex items-center">
-            <p className="font-medium">Name</p>
-          </div>
-  
-          <div className="col-span-2 hidden items-center sm:flex">
-            <p className="font-medium">Description</p>
-          </div>
-  
-          <div className="col-span-2 hidden items-center sm:flex">
-            <p className="font-medium">Date</p>
-          </div>
-          <div className="col-span-1 flex items-center">
-            <p className="font-medium"></p>
-          </div>
-        </div>
-  
-        <div className="grid grid-cols-5 border-t gap-x-4 border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-7 md:px-6 2xl:px-7.5">
-          <div className="col-span-2 flex items-center">
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-              <div className="h-12.5 w-15 rounded-md">
-                <img src={ProductOne} alt="Product" />
-              </div>
-              <p className="text-sm text-black dark:text-white">GUCCI</p>
-            </div>
-          </div>
-          <div className="col-span-2 flex items-center">
-            <p className="text-sm text-black dark:text-white">
-              Chelsea Boots, Cowboy Boots, Kitten Heels, Chelsea Boots, Cowboy
-              Boots, Kitten Heels,Chelsea Boots, Cowboy Boots, Kitten Heels
-            </p>
-          </div>
-  
-          <div className="col-span-2 hidden items-center sm:flex">
-            <p className="text-sm text-meta-3">
-              Clogs, Technical Trainers, Chelsea Boots, Chelsea Boots, Cowboy
-              Boots, Kitten Heels, Chelsea Boots, Cowboy Boots, Kitten Heels
-            </p>
-          </div>
-  
-          <div className="col-span-1 flex items-center">
-            <p className="text-sm text-meta-5">
-              <EllipsisHorizontalIcon class="h-6 w-6" />
-            </p>
-          </div>
-        </div>
-  
-        <div className="grid grid-cols-5 border-t gap-x-4 border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-7 md:px-6 2xl:px-7.5">
-          <div className="col-span-2 flex items-center">
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-              <div className="h-12.5 w-15 rounded-md">
-                <img src={ProductOne} alt="Product" />
-              </div>
-              <p className="text-sm text-black dark:text-white">GUCCI</p>
-            </div>
-          </div>
-          <div className="col-span-2 flex items-center">
-            <p className="text-sm text-black dark:text-white">
-              Chelsea Boots, Cowboy Boots, Kitten Heels, Chelsea Boots, Cowboy
-              Boots, Kitten Heels,Chelsea Boots, Cowboy Boots, Kitten Heels
-            </p>
-          </div>
-  
-          <div className="col-span-2 hidden items-center sm:flex">
-            <p className="text-sm text-meta-3">
-              Clogs, Technical Trainers, Chelsea Boots, Chelsea Boots, Cowboy
-              Boots, Kitten Heels, Chelsea Boots, Cowboy Boots, Kitten Heels
-            </p>
-          </div>
-  
-          <div className="col-span-1 flex items-center">
-            <p className="text-sm text-meta-5">
-              <EllipsisHorizontalIcon class="h-6 w-6" />
-            </p>
-          </div>
-        </div>
-      </div>
-    );
+  DataGrid,
+  GridActionsCellItem,
+  GridRowEditStopReasons,
+  GridRowModes,
+  GridToolbarContainer,
+} from '@mui/x-data-grid';
+import { randomId } from '@mui/x-data-grid-generator';
+import React, { useState } from 'react';
+
+
+function EditToolbar(props) {
+  const { setRows, setRowModesModel } = props;
+
+  const handleClick = () => {
+    const brandId = randomId();
+    const newRow = { brandId, brandName: '', isNew: true };
+    setRows((oldRows) => [...oldRows, newRow]);
+    setRowModesModel((oldModel) => ({
+      ...oldModel,
+      [brandId]: { mode: GridRowModes.Edit, fieldToFocus: 'brandName' },
+    }));
   };
-  
-  export default BrandsListTable;
-  
+
+  return (
+    <GridToolbarContainer>
+      <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
+        Add Brands
+      </Button>
+    </GridToolbarContainer>
+  );
+}
+
+export default function BrandListTable({ brandData }) {
+  const [rows, setRows] = useState(brandData);
+  const [rowModesModel, setRowModesModel] = useState({});
+
+  const handleRowEditStop = (params, event) => {
+    if (params.reason === GridRowEditStopReasons.rowFocusOut) {
+      event.defaultMuiPrevented = true;
+    }
+  };
+
+  const handleEditClick = (brandId) => () => {
+    setRowModesModel({ ...rowModesModel, [brandId]: { mode: GridRowModes.Edit } });
+  };
+
+  const handleSaveClick = (brandId) => () => {
+    setRowModesModel({ ...rowModesModel, [brandId]: { mode: GridRowModes.View } });
+  };
+
+  const handleDeleteClick = (brandId) => () => {
+    setRows(rows.filter((row) => row.brandId !== brandId));
+  };
+
+  const handleCancelClick = (brandId) => () => {
+    setRowModesModel({
+      ...rowModesModel,
+      [brandId]: { mode: GridRowModes.View, ignoreModifications: true },
+    });
+
+    const editedRow = rows.find((row) => row.brandId === brandId);
+    if (editedRow.isNew) {
+      setRows(rows.filter((row) => row.brandId !== brandId));
+    }
+  };
+
+  const processRowUpdate = (newRow) => {
+    const updatedRow = { ...newRow, isNew: false };
+    setRows(rows.map((row) => (row.brandId === newRow.brandId ? updatedRow : row)));
+    return updatedRow;
+  };
+
+  const handleRowModesModelChange = (newRowModesModel) => {
+    setRowModesModel(newRowModesModel);
+  };
+
+  const columns = [
+    { field: 'brandId', headerName: 'brandId', width: 180, editable: true },
+    { field: 'brandName', headerName: 'Brand', width: 180, editable: true },
+    {
+      field: 'actions',
+      type: 'actions',
+      headerName: 'Actions',
+      width: 100,
+      cellClassName: 'actions',
+      getActions: ({ brandId }) => {
+        const isInEditMode = rowModesModel[brandId]?.mode === GridRowModes.Edit;
+
+        if (isInEditMode) {
+          return [
+            <GridActionsCellItem
+              icon={<SaveIcon />}
+              label="Save"
+              sx={{
+                color: 'primary.main',
+              }}
+              onClick={handleSaveClick(brandId)}
+            />,
+            <GridActionsCellItem
+              icon={<CancelIcon />}
+              label="Cancel"
+              className="textPrimary"
+              onClick={handleCancelClick(brandId)}
+              color="inherit"
+            />,
+          ];
+        }
+
+        return [
+          <GridActionsCellItem
+            icon={<EditIcon />}
+            label="Edit"
+            className="textPrimary"
+            onClick={handleEditClick(brandId)}
+            color="inherit"
+          />,
+          <GridActionsCellItem
+            icon={<DeleteIcon />}
+            label="Delete"
+            onClick={handleDeleteClick(brandId)}
+            color="inherit"
+          />,
+        ];
+      },
+    },
+  ];
+
+  return (
+    <Box
+      sx={{
+        height: 500,
+        width: '100%',
+        '& .actions': {
+          color: 'text.secondary',
+        },
+        '& .textPrimary': {
+          color: 'text.primary',
+        },
+      }}
+    >
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        getRowId={(row) => row.brandId}  // Sử dụng prop getRowId để xác định trường id
+        editMode="row"
+        rowModesModel={rowModesModel}
+        onRowModesModelChange={handleRowModesModelChange}
+        onRowEditStop={handleRowEditStop}
+        processRowUpdate={processRowUpdate}
+        slots={{
+          toolbar: EditToolbar,
+        }}
+        slotProps={{
+          toolbar: { setRows, setRowModesModel },
+        }}
+      />
+    </Box>
+  );
+}

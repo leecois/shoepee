@@ -1,11 +1,11 @@
 import { lazy } from 'react';
+import Shoes from '../pages/Table/Shoes';
 
 const Chart = lazy(() => import('../pages/Chart'));
-const Products = lazy(() => import('../pages/Table/Products'));
 const Brands = lazy(() => import('../pages/Table/Brands'));
 const Sizes = lazy(() => import('../pages/Table/Sizes'));
 const Accounts = lazy(() => import('../pages/Table/Accounts'));
-const ShoeStyles = lazy(() => import('../pages/Table/ShoeStyles'));
+const ShoeModels = lazy(() => import('../pages/Table/ShoeModels'));
 const Profile = lazy(() => import('../pages/Profile'));
 const Settings = lazy(() => import('../pages/Settings'));
 const Orders = lazy(() => import('../pages/Orders'));
@@ -17,9 +17,9 @@ const coreRoutes = [
     component: Profile,
   },
   {
-    path: 'tables/products',
+    path: 'tables/shoes',
     title: 'Forms Elements',
-    component: Products,
+    component: Shoes,
   },
   {
     path: 'tables/brands',
@@ -37,9 +37,9 @@ const coreRoutes = [
     component: Accounts,
   },
   {
-    path: 'tables/styles',
+    path: 'tables/models',
     title: 'Form Layouts',
-    component: ShoeStyles,
+    component: ShoeModels,
   },
   {
     path: 'orders',

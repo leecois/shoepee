@@ -22,7 +22,7 @@ const Profile = () => {
             >
               <input type="file" name="cover" id="cover" className="sr-only" />
               <span>
-                <CameraIcon class="h-5 w-5 text-gray-500" />
+                <CameraIcon className="h-5 w-5" />
               </span>
               <span>Edit</span>
             </label>
@@ -43,7 +43,7 @@ const Profile = () => {
                 htmlFor="profile"
                 className="absolute bottom-0 right-0 flex h-8.5 w-8.5 cursor-pointer items-center justify-center rounded-full bg-primary text-white hover:bg-opacity-90 sm:bottom-2 sm:right-2"
               >
-                <CameraIcon class="h-5 w-5 text-gray-500" />
+                <CameraIcon className="h-5 w-5 " />
                 <input
                   type="file"
                   name="profile"

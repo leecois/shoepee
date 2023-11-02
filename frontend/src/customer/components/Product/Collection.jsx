@@ -1,5 +1,4 @@
-import React from "react";
-import { productsData } from "./ProductsData";
+import React from 'react';
 
 const Collection = () => {
   return (
@@ -17,39 +16,31 @@ const Collection = () => {
 
         <div className="overflow-y-auto max-h-[500px] ">
           <div className="grid gap-6 mb-4 sm:grid-cols-2 lg:grid-cols-3">
-            {productsData.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
+            <a href="/product/productdetail" className="block group">
+              <img
+                src={''}
+                alt={'rg'}
+                className="h-full rounded-lg w-full object-cover object-center dark:bg-gray-500"
+              />
+              <div className="mt-1.5">
+                <div className="text-lg text-orange-700 font-bold">
+                  Customize
+                </div>
+                <div className="flex justify-between mt-3 text-sm">
+                  <h3 className="text-gray-500 font-bold">iyl</h3>
+                </div>
+                <div className="flex justify-between mt-3 text-sm">
+                  <h3 className="text-black font-bold group-hover:underline group-hover:underline-offset-4">
+                    ili
+                  </h3>
+                  <p className="text-black text-md font-semibold">$</p>
+                </div>
+              </div>
+            </a>
           </div>
         </div>
       </div>
     </section>
-  );
-};
-
-const ProductCard = ({ product }) => {
-  return (
-    <div>
-      <a href="/product/productdetail" className="block group">
-        <img
-          src={product.imageUrl}
-          alt={product.name}
-          className="h-full rounded-lg w-full object-cover object-center dark:bg-gray-500"
-        />
-        <div className="mt-1.5">
-          <div className="text-lg text-orange-700 font-bold">Customize</div>
-          <div className="flex justify-between mt-3 text-sm">
-            <h3 className="text-gray-500 font-bold">{product.brand}</h3>
-          </div>
-          <div className="flex justify-between mt-3 text-sm">
-            <h3 className="text-black font-bold group-hover:underline group-hover:underline-offset-4">
-              {product.name}
-            </h3>
-            <p className="text-black text-md font-semibold">${product.price}</p>
-          </div>
-        </div>
-      </a>
-    </div>
   );
 };
 

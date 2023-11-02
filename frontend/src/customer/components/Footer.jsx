@@ -2,9 +2,9 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer className="bg-white dark:bg-gray-900">
-      <div className="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
-        <div className="flex flex-col items-center gap-4 rounded-lg bg-gray-700 p-6 shadow-lg sm:flex-row sm:justify-between">
+    <footer className="bg-meta-9 dark:bg-gray-900">
+      <div className="mx-auto max-w-screen-xl px-4 pb-16 sm:px-6 lg:px-8">
+        <div className="flex mt-4 flex-col items-center gap-4 rounded-lg bg-gray-700 p-6 shadow-lg sm:flex-row sm:justify-between">
           <strong className="text-xl text-white sm:text-xl">
             Choose a So-You Shoe
           </strong>
@@ -32,7 +32,7 @@ const Footer = () => {
           </a>
         </div>
 
-        <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
           <div className="text-center sm:text-left">
             <ul className="mt-8 space-y-4 text-sm">
               <li>
@@ -181,7 +181,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="mt-16">
+        <div className="mt-4">
           <ul className="flex justify-center gap-6 sm:justify-end">
             <li>
               <a
@@ -249,16 +249,16 @@ const Footer = () => {
             </li>
           </ul>
 
-          <div className="mt-16 sm:flex sm:items-center sm:justify-between">
+          <div className="mt-8 sm:flex sm:items-center sm:justify-between">
             <div className="flex justify-center text-teal-600 dark:text-teal-300 sm:justify-start">
               <img 
                 className="h-10 w-auto"
-                src="./logoshoepee.png"
+                src="logoshoepee.png"
                 alt="Workflow"
               />
             </div>
 
-            <p className="mt-4 text-center text-sm text-gray-500 dark:text-gray-400 sm:mt-0 sm:text-right">
+            <p className="text-center text-sm text-gray-500 dark:text-gray-400 sm:mt-0 sm:text-right">
               &copy; 2023 Shoepee, Inc. All Rights Reserved
             </p>
           </div>

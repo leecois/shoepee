@@ -5,7 +5,7 @@ import MobileCustomizationInterface from '../components/MobileCustomizationInter
 import Scene from '../components/Scene/Scene';
 import CustomizationContextProvider from '../layout/CustomizationContext';
 
-const ShoeCustomizer = () => {
+const ShoeCustomize = () => {
   return (
     <>
       <CustomizationContextProvider>
@@ -26,4 +26,4 @@ const ShoeCustomizer = () => {
   );
 };
 
-export default ShoeCustomizer;
+export default ShoeCustomize;

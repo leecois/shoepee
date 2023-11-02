@@ -4,6 +4,8 @@ import React, { useState } from 'react';
 import { API_BASE_URL } from '../constants/index';
 import SignIn from './SignIn';
 import SignUp from './Signup';
+import { useNavigate } from 'react-router-dom';
+import StorageKeys from '../constants/storage-keys';
 
 const style = {
   position: 'absolute',
@@ -23,8 +25,10 @@ const AuthModal = ({ handleClickOpen, handleClose }) => {
   const [isSignInVisible, setIsSignInVisible] = useState(false);
   const [isSignUpVisible, setIsSignUpVisible] = useState(false);
   const [emailError, setEmailError] = useState('');
-  const [enteredEmail, setEnteredEmail] = useState(''); // Lưu email
-  const [isLoading, setIsLoading] = useState(false); // Thêm biến isLoading
+  const [enteredEmail, setEnteredEmail] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasSignedUp, setHasSignedUp] = useState(false);
+  const navigate = useNavigate();
 
   const handleContinue = () => {
     if (
@@ -43,7 +47,7 @@ const AuthModal = ({ handleClickOpen, handleClose }) => {
     setIsLoading(true); // Bắt đầu loading
 
     axios
-      .get(`${API_BASE_URL}/username/${email}`)
+      .get(`${API_BASE_URL}/auth/existuser/${email}`)
       .then((response) => {
         emailExists = response.data.email;
         isCheckEmailSuccess = true; // Đã kiểm tra email thành công
@@ -55,7 +59,6 @@ const AuthModal = ({ handleClickOpen, handleClose }) => {
         setIsLoading(false); // Kết thúc loading
 
         if (isCheckEmailSuccess) {
-          // Kiểm tra email đã hoàn thành (có hoặc không có lỗi)
           if (emailExists) {
             // Xử lý khi email tồn tại
             setShowInitialScreen(false);
@@ -68,8 +71,9 @@ const AuthModal = ({ handleClickOpen, handleClose }) => {
             setIsSignUpVisible(true);
           }
         } else {
-          // Xử lý khi kiểm tra email chưa hoàn thành (có lỗi)
-          // Điều gì xảy ra tùy thuộc vào logic của bạn
+          setEmailError(
+            'There was an error checking the email. Please try again.'
+          );
         }
       });
   };
@@ -82,6 +86,20 @@ const AuthModal = ({ handleClickOpen, handleClose }) => {
   const handleCloseSuccess = () => {
     setIsSignUpVisible(false);
     setIsSignInVisible(false);
+  };
+  const handleSignInSuccess = () => {
+    handleClose(); 
+  };
+  const handleSignUpSuccess = () => {
+    setHasSignedUp(true);
+    setIsSignUpVisible(false);
+    setIsSignInVisible(false);
+  };
+  const user = JSON.parse(localStorage.getItem(StorageKeys.USER));
+
+  const userId = user ? user.userId : null;
+  const handleUpdateProfile = () => {
+    navigate(`profile/${userId}`);
   };
 
   return (
@@ -156,28 +174,25 @@ const AuthModal = ({ handleClickOpen, handleClose }) => {
                 className="w-full text-white bg-red-900 hover:bg-black focus:ring-4 focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-800 dark:hover-bg-red-700 dark:focus-ring-blue-800"
               >
                 {isLoading ? 'Loading...' : 'Continue'}{' '}
-                {/* Hiển thị "Loading..." nếu isLoading là true */}
               </button>
             </div>
           ) : isSignInVisible ? (
             <SignIn
               goBack={handleBackToAuthModal}
               enteredEmail={enteredEmail}
-              handleCloseSuccess={handleCloseSuccess}
+              handleCloseSuccess={handleSignInSuccess}
             />
           ) : isSignUpVisible ? (
             <SignUp
               goBack={handleBackToAuthModal}
               enteredEmail={enteredEmail}
-              handleCloseSuccess={handleCloseSuccess}
+              handleCloseSuccess={handleSignUpSuccess} 
             />
-          ) : (
+          ) : hasSignedUp ? (
             <div>
-              <button onClick={handleBackToAuthModal}>
-                Update your profile
-              </button>
+              <button onClick={handleUpdateProfile}>Update your profile</button>
             </div>
-          )}
+          ) : null}
         </Box>
       </Modal>
     </div>

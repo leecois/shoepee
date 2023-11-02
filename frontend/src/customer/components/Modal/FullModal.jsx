@@ -1,42 +1,51 @@
-import React, { useEffect, useRef, useState } from "react";
-import OptionModal from "./OptionModal";
-import RadioCheck from "./RadioCheck";
-import { shoesData } from "./shoeData";
-import brandApi from "../../../api/brandApi";
+import { Button } from '@mui/material';
+import React, { useEffect, useRef, useState } from 'react';
+import productApi from '../../../api/productApi';
+import OptionModal from './OptionModal';
+import RadioCheck from './RadioCheck';
 
-const FullModal = () => {
+const FullModal = ({ handleClickOpen, handleClose }) => {
   const [brandList, setBrandList] = useState([]);
-  useEffect(() => {
-    (async () => {
-      try {
-        const { data } = await brandApi.getAll();
-        setBrandList(data);
-      } catch (error) {
-        console.log("Non-response Error:", error.message);
-      }
-    })();
-  }, []);
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedBrand, setSelectedBrand] = useState("Nike"); // Thương hiệu mặc định
+  const [selectedBrand, setSelectedBrand] = useState('Vans');
   const [selectedShoe, setSelectedShoe] = useState(null);
   const [optionModalOpen, setOptionModalOpen] = useState(false);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(12);
 
   const trigger = useRef(null);
   const modal = useRef(null);
 
+  useEffect(() => {
+    const fetchBrandData = async () => {
+      try {
+        const { data } = await productApi.getAll({
+          _page: page,
+          _limit: limit,
+        });
+        setBrandList(data);
+        console.log('Brand List:', data);
+      } catch (error) {
+        console.log('Non-response Error:', error.message);
+      }
+    };
+    fetchBrandData();
+  }, []);
+
   const openModal = () => {
     setModalOpen(true);
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow = 'hidden';
   };
 
   const closeModal = () => {
     setModalOpen(false);
-    document.body.style.overflow = "auto";
+    document.body.style.overflow = 'auto';
   };
 
-  const filteredShoes = shoesData.filter(
-    (shoe) => shoe.brand === selectedBrand
+  const filteredShoes = brandList.filter(
+    (shoe) => shoe.brand.name === selectedBrand && shoe.type === "blank"
   );
+
   const openOptionModal = (shoeId) => {
     setSelectedShoe(shoeId);
     setOptionModalOpen(true);
@@ -48,17 +57,19 @@ const FullModal = () => {
 
   return (
     <>
-      <div className="container mx-auto py-20 relative">
-        <button
+      <div className="z-9999 container mx-auto relative">
+        <Button
+          open={handleClickOpen}
           ref={trigger}
           onClick={openModal}
-          className={`px-6 py-3 text-base font-medium rounded-full bg-primary`}
+          variant="contained"
+          color="inherit"
         >
-          Open Modal
-        </button>
+          CUSTOMIZE YOUR SHOE
+        </Button>
         <div
           className={`fixed top-0 left-0 flex h-full min-h-screen w-full items-center justify-center bg-black bg-opacity-90 px-4 py-5 ${
-            modalOpen ? "block" : "hidden"
+            modalOpen ? 'block' : 'hidden'
           }`}
         >
           <div
@@ -111,9 +122,9 @@ const FullModal = () => {
                         className="block ml-4 mb-4 overflow-hidden group"
                       >
                         <img
-                          src={shoe.image}
+                          src={shoe.pictures}
                           alt={shoe.name}
-                          className="w-full object-cover transition duration-500 group-hover:scale-105"
+                          className="w-full h-65 object-cover transition duration-500 group-hover:scale-105"
                         />
                         <div className="relative pt-3">
                           <h3 className="text-lg font-bold text-gray-700 group-hover:text-red-500">

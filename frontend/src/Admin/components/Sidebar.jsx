@@ -82,7 +82,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
           aria-expanded={sidebarOpen}
           className="block lg:hidden absolute top-0 right-0 mt-2 mr-2"
         >
-          <XMarkIcon class="h-6 w-6 text-gray-500" />
+          <XMarkIcon className="h-6 w-6 text-gray-500" />
         </button>
       </div>
 
@@ -121,7 +121,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                             : setSidebarExpanded(true);
                         }}
                       >
-                        <CubeIcon class="h-6 w-6 text-gray-500" />
+                        <CubeIcon className="h-6 w-6 text-gray-500" />
                         Dashboard
                         <ChevronUpIcon
                           className={`h-5 w-5 absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
@@ -163,7 +163,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                     pathname.includes('profile') && 'bg-graydark dark:bg-meta-4'
                   }`}
                 >
-                  <UserIcon class="h-6 w-6 text-gray-500" />
+                  <UserIcon className="h-6 w-6 text-gray-500" />
                   Profile
                 </NavLink>
               </li>
@@ -192,7 +192,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                             : setSidebarExpanded(true);
                         }}
                       >
-                        <SquaresPlusIcon class="h-6 w-6 text-gray-500" />
+                        <SquaresPlusIcon className="h-6 w-6 text-gray-500" />
                         Tables
                         <ChevronUpIcon
                           className={`h-5 w-5 absolute right-4 top-1/2 -translate-y-1/2 fill-current ${
@@ -209,13 +209,13 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                         <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
                           <li>
                             <NavLink
-                              to="tables/products"
+                              to="tables/shoes"
                               className={({ isActive }) =>
                                 'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
                                 (isActive && '!text-white')
                               }
                             >
-                              Products
+                              Shoes
                             </NavLink>
                           </li>
                           <li>
@@ -231,13 +231,13 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                           </li>
                           <li>
                             <NavLink
-                              to="tables/styles"
+                              to="tables/models"
                               className={({ isActive }) =>
                                 'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
                                 (isActive && '!text-white')
                               }
                             >
-                              Styles
+                              Models
                             </NavLink>
                           </li>
                           <li>
@@ -279,7 +279,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                     pathname.includes('orders') && 'bg-graydark dark:bg-meta-4'
                   }`}
                 >
-                  <TableCellsIcon class="h-6 w-6 text-gray-500" />
+                  <TableCellsIcon className="h-6 w-6 text-gray-500" />
                   Orders
                 </NavLink>
               </li>
@@ -294,7 +294,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                     'bg-graydark dark:bg-meta-4'
                   }`}
                 >
-                  <Cog8ToothIcon class="h-6 w-6 text-gray-500" />
+                  <Cog8ToothIcon className="h-6 w-6 text-gray-500" />
                   Settings
                 </NavLink>
               </li>
@@ -317,7 +317,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                     pathname.includes('chart') && 'bg-graydark dark:bg-meta-4'
                   }`}
                 >
-                  <PresentationChartLineIcon class="h-6 w-6 text-gray-500" />
+                  <PresentationChartLineIcon className="h-6 w-6 text-gray-500" />
                   Chart
                 </NavLink>
               </li>

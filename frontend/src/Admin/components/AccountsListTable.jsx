@@ -1,111 +1,217 @@
-import { EllipsisHorizontalIcon } from '@heroicons/react/24/outline';
-import ProductOne from '../images/product/product-01.png';
+import AddIcon from '@mui/icons-material/Add';
+import CancelIcon from '@mui/icons-material/Close';
+import DeleteIcon from '@mui/icons-material/DeleteOutlined';
+import EditIcon from '@mui/icons-material/Edit';
+import SaveIcon from '@mui/icons-material/Save';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import {
+  DataGrid,
+  GridActionsCellItem,
+  GridRowEditStopReasons,
+  GridRowModes,
+  GridToolbarContainer,
+} from '@mui/x-data-grid';
+import * as React from 'react';
+import { useState } from 'react';
 
-const AccountsListTable = () => {
-  return (
-    <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-      <div className="py-6 px-4 md:px-6 xl:px-7.5">
-        <h4 className="text-xl font-semibold text-black dark:text-white">
-          Accounts (7)
-        </h4>
-        <label>Manage Account for Shoepee</label>
-      </div>
-
-      <div className="grid grid-cols-7 border-t gap-x-4 border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-9 md:px-6 2xl:px-7.5">
-        <div className="col-span-2 flex items-center">
-          <p className="font-medium">Full Name</p>
-        </div>
-        <div className="col-span-2 flex items-center">
-          <p className="font-medium">Email</p>
-        </div>
-        <div className="col-span-1 flex items-center">
-          <p className="font-medium">Phone</p>
-        </div>
-        <div className="col-span-1 hidden items-center sm:flex">
-          <p className="font-medium">Address</p>
-        </div>
-        <div className="col-span-1 hidden items-center sm:flex">
-          <p className="font-medium">Role</p>
-        </div>
-        <div className="col-span-1 hidden items-center sm:flex">
-          <p className="font-medium">Date</p>
-        </div>
-        <div className="col-span-1 flex items-center">
-          <p className="font-medium"></p>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-7 border-t gap-x-4 border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-9 md:px-6 2xl:px-7.5">
-        <div className="col-span-2 flex items-center">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-            <div className="h-12.5 w-15 rounded-md">
-              <img src={ProductOne} alt="Product" />
-            </div>
-            <p className="text-sm text-black dark:text-white">Le Quoc Khanh</p>
-          </div>
-        </div>
-        <div className="col-span-2 flex items-center">
-          <p className="text-sm text-meta-3">khanhlqse170317@fpt.edu.vn</p>
-        </div>
-        <div className="col-span-1 flex items-center">
-          <p className="text-sm text-black dark:text-white">Gucci</p>
-        </div>
-        <div className="col-span-1 hidden items-center sm:flex">
-          <p className="text-sm text-black dark:text-white">
-            Clogs, Technical Trainers, Chelsea Boots
-          </p>
-        </div>
-        <div className="col-span-1 hidden items-center sm:flex">
-          <p className="text-sm text-black dark:text-white">41, 42, 43</p>
-        </div>
-        <div className="col-span-1 hidden items-center sm:flex">
-          <p className="text-sm text-black dark:text-white">
-            October 26th, 2023
-          </p>
-        </div>
-        <div className="col-span-1 flex items-center">
-          <p className="text-sm text-meta-5">
-            <EllipsisHorizontalIcon class="h-6 w-6" />
-          </p>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-7 border-t gap-x-4 border-stroke py-4.5 px-4 dark:border-strokedark sm:grid-cols-9 md:px-6 2xl:px-7.5">
-        <div className="col-span-2 flex items-center">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-            <div className="h-12.5 w-15 rounded-md">
-              <img src={ProductOne} alt="Product" />
-            </div>
-            <p className="text-sm text-black dark:text-white">Le Quoc Khanh</p>
-          </div>
-        </div>
-        <div className="col-span-2 flex items-center">
-          <p className="text-sm text-meta-3">khanhlqse170317@fpt.edu.vn</p>
-        </div>
-        <div className="col-span-1 flex items-center">
-          <p className="text-sm text-black dark:text-white">Gucci</p>
-        </div>
-        <div className="col-span-1 hidden items-center sm:flex">
-          <p className="text-sm text-black dark:text-white">
-            Clogs, Technical Trainers, Chelsea Boots
-          </p>
-        </div>
-        <div className="col-span-1 hidden items-center sm:flex">
-          <p className="text-sm text-black dark:text-white">41, 42, 43</p>
-        </div>
-        <div className="col-span-1 hidden items-center sm:flex">
-          <p className="text-sm text-black dark:text-white">
-            October 26th, 2023
-          </p>
-        </div>
-        <div className="col-span-1 flex items-center">
-          <p className="text-sm text-meta-5">
-            <EllipsisHorizontalIcon class="h-6 w-6" />
-          </p>
-        </div>
-      </div>
-    </div>
+const roles = ['Admin', 'Customer'];
+function generateUniqueId(userData) {
+  const maxId = userData.reduce(
+    (max, user) => (user.userId > max ? user.userId : max),
+    0
   );
-};
 
-export default AccountsListTable;
+  return maxId + 1;
+}
+
+function EditToolbar(props) {
+  const { setRows, setRowModesModel } = props;
+
+  const addNewRow = () => {
+    const id = 4;
+    const newRow = {
+      id,
+      name: '',
+      email: '',
+      phone: '',
+      address: '',
+      joinDate: '',
+      role: '',
+      isNew: true,
+    };
+    setRows((oldRows) => [...oldRows, newRow]);
+    setRowModesModel((oldModel) => ({
+      ...oldModel,
+      [id]: { mode: GridRowModes.Edit, fieldToFocus: 'username' },
+    }));
+  };
+
+  const handleClick = () => {
+    addNewRow();
+  };
+
+  return (
+    <GridToolbarContainer>
+      <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
+        Add record
+      </Button>
+    </GridToolbarContainer>
+  );
+}
+
+export default function AccountsListTable({ userData }) {
+  const [rows, setRows] = useState(userData);
+  const [rowModesModel, setRowModesModel] = useState({});
+  // ID
+  const dataWithIds = userData.map((user, index) => ({
+    ...user,
+    id: user.userId || index + 1,
+  }));
+
+  const handleRowEditStop = (params, event) => {
+    if (params.reason === GridRowEditStopReasons.rowFocusOut) {
+      event.defaultMuiPrevented = true;
+    }
+  };
+
+  const handleEditClick = (id) => () => {
+    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
+  };
+
+  const handleSaveClick = (id) => () => {
+    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
+  };
+
+  const handleDeleteClick = (id) => () => {
+    setRows(rows.filter((row) => row.id !== id));
+  };
+
+  const handleCancelClick = (id) => () => {
+    setRowModesModel({
+      ...rowModesModel,
+      [id]: { mode: GridRowModes.View, ignoreModifications: true },
+    });
+
+    const editedRow = rows.find((row) => row.id === id);
+    if (editedRow.isNew) {
+      setRows(rows.filter((row) => row.id !== id));
+    }
+  };
+
+  const processRowUpdate = (newRow) => {
+    const updatedRow = { ...newRow, isNew: false };
+    setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
+    return updatedRow;
+  };
+
+  const handleRowModesModelChange = (newRowModesModel) => {
+    setRowModesModel(newRowModesModel);
+  };
+
+  const columns = [
+    { field: 'userId', headerName: 'ID', width: 80, editable: true },
+    { field: 'username', headerName: 'User Name', width: 180, editable: true },
+    { field: 'email', headerName: 'Email', width: 280, editable: true },
+    {
+      field: 'phone',
+      headerName: 'Phone',
+      type: 'number',
+      width: 180,
+      editable: true,
+    },
+    { field: 'address', headerName: 'Address', width: 180, editable: true },
+    {
+      field: 'joinDate',
+      headerName: 'Join date',
+      type: 'date',
+      width: 180,
+      editable: true,
+    },
+    {
+      field: 'role',
+      headerName: 'is Admin ?',
+      width: 220,
+      editable: true,
+      type: 'singleSelect',
+      valueOptions: roles,
+    },
+    {
+      field: 'actions',
+      type: 'actions',
+      headerName: 'Actions',
+      width: 100,
+      cellClassName: 'actions',
+      getActions: ({ id }) => {
+        const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
+
+        if (isInEditMode) {
+          return [
+            <GridActionsCellItem
+              icon={<SaveIcon />}
+              label="Save"
+              sx={{
+                color: 'primary.main',
+              }}
+              onClick={handleSaveClick(id)}
+            />,
+            <GridActionsCellItem
+              icon={<CancelIcon />}
+              label="Cancel"
+              className="textPrimary"
+              onClick={handleCancelClick(id)}
+              color="inherit"
+            />,
+          ];
+        }
+
+        return [
+          <GridActionsCellItem
+            icon={<EditIcon />}
+            label="Edit"
+            className="textPrimary"
+            onClick={handleEditClick(id)}
+            color="inherit"
+          />,
+          <GridActionsCellItem
+            icon={<DeleteIcon />}
+            label="Delete"
+            onClick={handleDeleteClick(id)}
+            color="inherit"
+          />,
+        ];
+      },
+    },
+  ];
+
+  return (
+    <Box
+      sx={{
+        height: 500,
+        width: '100%',
+        '& .actions': {
+          color: 'text.secondary',
+        },
+        '& .textPrimary': {
+          color: 'text.primary',
+        },
+      }}
+    >
+      <DataGrid
+        rows={dataWithIds}
+        columns={columns}
+        editMode="row"
+        rowModesModel={rowModesModel}
+        onRowModesModelChange={handleRowModesModelChange}
+        onRowEditStop={handleRowEditStop}
+        processRowUpdate={processRowUpdate}
+        slots={{
+          toolbar: EditToolbar,
+        }}
+        slotProps={{
+          toolbar: { setRows, setRowModesModel },
+        }}
+      />
+    </Box>
+  );
+}
