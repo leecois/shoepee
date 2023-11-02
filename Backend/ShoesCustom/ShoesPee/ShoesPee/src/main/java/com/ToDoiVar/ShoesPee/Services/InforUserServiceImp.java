@@ -3,7 +3,7 @@ package com.ToDoiVar.ShoesPee.Services;
 import com.ToDoiVar.ShoesPee.Exeption.SizeException;
 import com.ToDoiVar.ShoesPee.Exeption.shoeModelNotFounException;
 import com.ToDoiVar.ShoesPee.Models.InforUser;
-import com.ToDoiVar.ShoesPee.Models.ShoeModels;
+//import com.ToDoiVar.ShoesPee.Models.ShoeModels;
 import com.ToDoiVar.ShoesPee.repositiory.InforUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

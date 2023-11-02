@@ -1,7 +1,7 @@
 package com.ToDoiVar.ShoesPee.Controller.RoleUserController;
 
 import com.ToDoiVar.ShoesPee.Models.InforUser;
-import com.ToDoiVar.ShoesPee.Models.ShoeModels;
+//import com.ToDoiVar.ShoesPee.Models.ShoeModels;
 import com.ToDoiVar.ShoesPee.Services.InforUserService;
 import com.ToDoiVar.ShoesPee.repositiory.InforUserRepository;
 import lombok.RequiredArgsConstructor;

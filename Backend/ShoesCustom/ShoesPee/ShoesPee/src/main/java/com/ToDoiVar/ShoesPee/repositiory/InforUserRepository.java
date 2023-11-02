@@ -1,7 +1,7 @@
 package com.ToDoiVar.ShoesPee.repositiory;
 
 import com.ToDoiVar.ShoesPee.Models.InforUser;
-import com.ToDoiVar.ShoesPee.Models.ShoeModels;
+//import com.ToDoiVar.ShoesPee.Models.ShoeModels;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
