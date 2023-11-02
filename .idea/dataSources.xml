@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:mysql://shoespee.cv1mjmcgcifj.ap-southeast-1.rds.amazonaws.com:3306/shoepee</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="birdsystem" uuid="832a4847-56fd-4405-942c-c118f8f68721">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://localhost:3306/birdsystem</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

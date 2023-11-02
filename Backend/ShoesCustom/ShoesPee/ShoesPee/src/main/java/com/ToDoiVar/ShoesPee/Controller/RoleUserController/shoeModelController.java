@@ -41,7 +41,7 @@ public class shoeModelController {
 //    @GetMapping("/getshoemodelbyid/{id}")
 //    public ShoeModels getShoeModelById(@PathVariable int id){
 //        return shoeModelService.getShoeModelById(id);
-//    }
+//    }\\`
 //    @PutMapping("/editshoemode/{id}")
 //    public ShoeModels editShoeModel(@PathVariable int id,@RequestBody ShoeModels editShoeModel){
 //        return shoeModelService.updateShoeModel(id,editShoeModel);
