@@ -3,7 +3,7 @@ import axiosClient from './axiosClient';
 const modelApi = {
   async getAll(params) {
     try {
-      const response = await axiosClient.get('/auth/shoes', {
+      const response = await axiosClient.get('/auth/shoemodels', {
         params: {
           ...params,
           _start:
@@ -25,9 +25,9 @@ const modelApi = {
       throw error;
     }
   },
-  async get(productId) {
+  async get(modelname) {
     try {
-      const response = await axiosClient.get(`/products/${productId}`);
+      const response = await axiosClient.get(`/auth/getshoemodelbyname/${modelname}`);
       return response;
     } catch (error) {
       throw error;

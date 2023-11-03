@@ -13,7 +13,7 @@ const coreRoutes = [
     component: ProductPage,
   },
   {
-    path: '/products/:productId',
+    path: '/products/:modelname',
     title: 'Products Details',
     component: ProductDetailPage,
   },

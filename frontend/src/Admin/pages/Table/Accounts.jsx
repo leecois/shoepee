@@ -3,7 +3,7 @@ import AccountsListTable from '../../components/AccountsListTable';
 import Breadcrumb from '../../components/Breadcrumb';
 
 const Accounts = () => {
-  const { userData, error } = useUserData();
+  const { userData } = useUserData();
   return (
     <>
       <Breadcrumb pageName="Accounts" />

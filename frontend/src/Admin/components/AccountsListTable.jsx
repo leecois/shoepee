@@ -29,7 +29,7 @@ function EditToolbar(props) {
   const { setRows, setRowModesModel } = props;
 
   const addNewRow = () => {
-    const id = 4;
+    const id = generateUniqueId;
     const newRow = {
       id,
       name: '',
@@ -43,7 +43,7 @@ function EditToolbar(props) {
     setRows((oldRows) => [...oldRows, newRow]);
     setRowModesModel((oldModel) => ({
       ...oldModel,
-      [id]: { mode: GridRowModes.Edit, fieldToFocus: 'username' },
+      [id]: { mode: GridRowModes.Edit, fieldToFocus: 'email' },
     }));
   };
 
@@ -198,6 +198,7 @@ export default function AccountsListTable({ userData }) {
       }}
     >
       <DataGrid
+        className="dark:bg-boxdark dark:text-white"
         rows={dataWithIds}
         columns={columns}
         editMode="row"

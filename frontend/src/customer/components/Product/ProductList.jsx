@@ -10,7 +10,7 @@ function ProductList({ data }) {
     <div className="col-span-full md:col-span-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 pl-4">
       {data?.map((model) => (
         <div key={model.id}>
-          <Link to={`/products/${model.id}`} className="block group">
+          <Link to={`/products/${model.modelname}`} className="block group">
             <img
               src={model.imageurl}
               alt={model.modelname}

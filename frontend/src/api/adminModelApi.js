@@ -1,9 +1,9 @@
 import axiosClient from './axiosClient';
 
-const productApi = {
+const adminModelApi = {
   async getAll(params) {
     try {
-      const response = await axiosClient.get('/auth/getallshoe', {
+      const response = await axiosClient.get('/admin/shoemodels', {
         params: {
           ...params,
           _start:
@@ -27,7 +27,7 @@ const productApi = {
   },
   async get(productId) {
     try {
-      const response = await axiosClient.get(`/auth/getshoemodelbyname/${productId}`);
+      const response = await axiosClient.get(`/products/${productId}`);
       return response;
     } catch (error) {
       throw error;
@@ -51,7 +51,7 @@ const productApi = {
   },
   remove: async (id) => {
     try {
-      const response = await axiosClient.delete(`/products/${id}`);
+      const response = await axiosClient.delete(`/shoemodels/${id}`);
       return response;
     } catch (error) {
       throw error;
@@ -59,4 +59,4 @@ const productApi = {
   },
 };
 
-export default productApi;
+export default adminModelApi;

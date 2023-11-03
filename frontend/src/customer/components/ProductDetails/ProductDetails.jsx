@@ -12,6 +12,8 @@ import { addToCart } from '../../../containers/Cart/cartSlice';
 
 const ProductDetails = ({ product }) => {
   const [quantity] = useState(0);
+  const [selectedShoe, setSelectedShoe] = useState(null);
+  const [selectedShoeImages, setSelectedShoeImages] = useState([]);
 
   const handleAddToCart = () => {
     const action = addToCart({
@@ -29,6 +31,10 @@ const ProductDetails = ({ product }) => {
     const customizeUrl = '/customize';
     window.location.href = customizeUrl;
   };
+  const handleShoeButtonClick = (shoe) => {
+    setSelectedShoe(shoe);
+    setSelectedShoeImages(shoe.imageUrls);
+  };
   const [selectedSize, setSelectedSize] = useState(null);
 
   const dispatch = useDispatch();
@@ -41,17 +47,22 @@ const ProductDetails = ({ product }) => {
     <div className="mx-auto py-8 px-4 w-full max-w-7xl bg-white">
       <div className="mx-auto max-w-2xl lg:max-w-none grid grid-cols-1 lg:grid-cols-2 gap-5">
         <div className="order-2 lg:order-1 relative rounded-sm">
-          <div className="grid grid-cols-2 gap-2 lg:grid-cols-2 lg:gap-2">
-            {product.pictures?.map((picture, index) => (
-              <div key={index}>
-                <img
-                  src={picture}
-                  alt={'data.alt'}
-                  className="object-contain w-full h-full rounded-sm"
-                />
-              </div>
-            ))}
-          </div>
+          {/* Image of single shoe */}
+          {selectedShoeImages && selectedShoeImages.length > 0 ? (
+            <div className="grid grid-cols-2 gap-2 lg:grid-cols-2 lg:gap-2">
+              {selectedShoeImages.map((image, index) => (
+                <div key={index}>
+                  <img
+                    src={image}
+                    alt={`Shoe Imag`}
+                    className="object-contain w-full h-full rounded-sm"
+                  />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p>No images available for the selected shoe.</p>
+          )}
         </div>
 
         <div className="order-1 lg:order-2 col-span-full lg:col-span-1 lg:max-w-xl flex flex-col items-start">
@@ -117,6 +128,26 @@ const ProductDetails = ({ product }) => {
           {/* Inspiration */}
           <div className="mt-4 w-full">
             <h3 className="text-sm text-gray-700 font-semibold">Inspiration</h3>
+            <div className="flex">
+              {product.shoe?.map((shoe) => (
+                <button
+                  key={shoe}
+                  type="button"
+                  className={` inline-flex flex-col items-center mx-2 mt-4 space-y-2 rounded-3xl border-2 ${
+                    selectedShoe === shoe
+                      ? 'border border-red-400'
+                      : 'border border-gray-200'
+                  } text-left`}
+                  onClick={() => handleShoeButtonClick(shoe)}
+                >
+                  <img
+                    src={shoe.imageUrl}
+                    alt={shoe.alt}
+                    className="object-cover p-1 w-22 h-22 rounded-3xl"
+                  />
+                </button>
+              ))}
+            </div>
 
             <div className="mt-2 grid grid-cols-2 lg:grid-cols-2 gap-2">
               {product.sizes?.map((size) => (
@@ -137,7 +168,7 @@ const ProductDetails = ({ product }) => {
               ))}
             </div>
           </div>
-          
+
           {/* Size */}
           <div className="mt-4 w-full">
             <h3 className="text-sm text-gray-700 font-semibold">Size</h3>

@@ -12,35 +12,40 @@ import {
   GridRowModes,
   GridToolbarContainer,
 } from '@mui/x-data-grid';
-import { randomId } from '@mui/x-data-grid-generator';
-import React, { useState } from 'react';
-
+import {
+  randomId
+} from '@mui/x-data-grid-generator';
+import * as React from 'react';
+import { useEffect, useState } from 'react';
 
 function EditToolbar(props) {
   const { setRows, setRowModesModel } = props;
 
   const handleClick = () => {
-    const brandId = randomId();
-    const newRow = { brandId, brandName: '', isNew: true };
-    setRows((oldRows) => [...oldRows, newRow]);
+    const id = randomId();
+    setRows((oldRows) => [...oldRows, { id, brandName: '', imageUrl: '', isNew: true }]);
     setRowModesModel((oldModel) => ({
       ...oldModel,
-      [brandId]: { mode: GridRowModes.Edit, fieldToFocus: 'brandName' },
+      [id]: { mode: GridRowModes.Edit, fieldToFocus: 'brandName' },
     }));
   };
 
   return (
     <GridToolbarContainer>
-      <Button color="primary" startIcon={<AddIcon />} onClick={handleClick}>
-        Add Brands
+      <Button color="inherit" startIcon={<AddIcon />} onClick={handleClick}>
+        Add brand
       </Button>
     </GridToolbarContainer>
   );
 }
 
-export default function BrandListTable({ brandData }) {
-  const [rows, setRows] = useState(brandData);
+export default function BrandsListTable({ brandList, updateBrand }) {
+  const [rows, setRows] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
+
+  useEffect(() => {
+    setRows(brandList.map((item) => ({ ...item })));
+  }, [brandList]);
 
   const handleRowEditStop = (params, event) => {
     if (params.reason === GridRowEditStopReasons.rowFocusOut) {
@@ -48,33 +53,35 @@ export default function BrandListTable({ brandData }) {
     }
   };
 
-  const handleEditClick = (brandId) => () => {
-    setRowModesModel({ ...rowModesModel, [brandId]: { mode: GridRowModes.Edit } });
+  const handleEditClick = (id) => () => {
+    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
   };
 
-  const handleSaveClick = (brandId) => () => {
-    setRowModesModel({ ...rowModesModel, [brandId]: { mode: GridRowModes.View } });
+  const handleSaveClick = (id) => () => {
+    const updatedRow = rows.find((row) => row.id === id);
+    updateBrand(updatedRow.id, updatedRow);
+    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
   };
 
-  const handleDeleteClick = (brandId) => () => {
-    setRows(rows.filter((row) => row.brandId !== brandId));
+  const handleDeleteClick = (id) => () => {
+    setRows(rows.filter((row) => row.id !== id));
   };
 
-  const handleCancelClick = (brandId) => () => {
+  const handleCancelClick = (id) => () => {
     setRowModesModel({
       ...rowModesModel,
-      [brandId]: { mode: GridRowModes.View, ignoreModifications: true },
+      [id]: { mode: GridRowModes.View, ignoreModifications: true },
     });
 
-    const editedRow = rows.find((row) => row.brandId === brandId);
+    const editedRow = rows.find((row) => row.id === id);
     if (editedRow.isNew) {
-      setRows(rows.filter((row) => row.brandId !== brandId));
+      setRows(rows.filter((row) => row.id !== id));
     }
   };
 
   const processRowUpdate = (newRow) => {
     const updatedRow = { ...newRow, isNew: false };
-    setRows(rows.map((row) => (row.brandId === newRow.brandId ? updatedRow : row)));
+    setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
     return updatedRow;
   };
 
@@ -83,16 +90,17 @@ export default function BrandListTable({ brandData }) {
   };
 
   const columns = [
-    { field: 'brandId', headerName: 'brandId', width: 180, editable: true },
-    { field: 'brandName', headerName: 'Brand', width: 180, editable: true },
+    { field: 'id', headerName: 'ID', width: 70 },
+    { field: 'brandName', headerName: 'Brand Name', width: 130, editable: true},
+    { field: 'imageUrl', headerName: 'Image URL', width: 500, editable: true},
     {
       field: 'actions',
       type: 'actions',
       headerName: 'Actions',
-      width: 100,
+      width: 200,
       cellClassName: 'actions',
-      getActions: ({ brandId }) => {
-        const isInEditMode = rowModesModel[brandId]?.mode === GridRowModes.Edit;
+      getActions: ({ id }) => {
+        const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
 
         if (isInEditMode) {
           return [
@@ -102,13 +110,13 @@ export default function BrandListTable({ brandData }) {
               sx={{
                 color: 'primary.main',
               }}
-              onClick={handleSaveClick(brandId)}
+              onClick={handleSaveClick(id)}
             />,
             <GridActionsCellItem
               icon={<CancelIcon />}
               label="Cancel"
               className="textPrimary"
-              onClick={handleCancelClick(brandId)}
+              onClick={handleCancelClick(id)}
               color="inherit"
             />,
           ];
@@ -116,16 +124,16 @@ export default function BrandListTable({ brandData }) {
 
         return [
           <GridActionsCellItem
-            icon={<EditIcon />}
+            icon={<EditIcon className='transparent dark:text-gray-300'/>}
             label="Edit"
             className="textPrimary"
-            onClick={handleEditClick(brandId)}
+            onClick={handleEditClick(id)}
             color="inherit"
           />,
           <GridActionsCellItem
-            icon={<DeleteIcon />}
+            icon={<DeleteIcon className='transparent dark:text-gray-300'/>}
             label="Delete"
-            onClick={handleDeleteClick(brandId)}
+            onClick={handleDeleteClick(id)}
             color="inherit"
           />,
         ];
@@ -135,6 +143,7 @@ export default function BrandListTable({ brandData }) {
 
   return (
     <Box
+    className='dark:bg-graydark'
       sx={{
         height: 500,
         width: '100%',
@@ -149,9 +158,9 @@ export default function BrandListTable({ brandData }) {
       <DataGrid
         rows={rows}
         columns={columns}
-        getRowId={(row) => row.brandId}  // Sử dụng prop getRowId để xác định trường id
         editMode="row"
         rowModesModel={rowModesModel}
+        className='dark:text-white'
         onRowModesModelChange={handleRowModesModelChange}
         onRowEditStop={handleRowEditStop}
         processRowUpdate={processRowUpdate}

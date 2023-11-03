@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import modelApi from '../api/modelApi';
 
-export default function useProductDetail(productId) {
+export default function useProductDetail(modelname) {
   const [product, setProduct] = useState({});
   const [loading, setLoading] = useState(false);
 
@@ -9,7 +9,7 @@ export default function useProductDetail(productId) {
     (async () => {
       try {
         setLoading(true);
-        const response = await modelApi.get(productId);
+        const response = await modelApi.get(modelname);
         setProduct(response);
         console.log(response);
       } catch (error) {
@@ -17,7 +17,7 @@ export default function useProductDetail(productId) {
       }
       setLoading(false);
     })();
-  }, [productId]);
+  }, [modelname]);
 
   return { product, loading};
 }

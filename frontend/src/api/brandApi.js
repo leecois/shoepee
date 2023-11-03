@@ -13,9 +13,9 @@ const brandApi = {
     const url = `/brands`;
     return axiosClient.post(url, data);
   },
-  update: (data) => {
-    const url = `/brands/${data.id}`;
-    return axiosClient.patch(url, data);
+  update: (id) => {
+    const url = `/brands/${id}`;
+    return axiosClient.patch(url, id);
   },
   remove: (id) => {
     const url = `/brands/${id}`;

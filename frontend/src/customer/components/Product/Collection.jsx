@@ -16,7 +16,7 @@ const Collection = () => {
 
         <div className="overflow-y-auto max-h-[500px] ">
           <div className="grid gap-6 mb-4 sm:grid-cols-2 lg:grid-cols-3">
-            <a href="/product/productdetail" className="block group">
+            <a href="/auth/productdetail" className="block group">
               <img
                 src={''}
                 alt={'rg'}

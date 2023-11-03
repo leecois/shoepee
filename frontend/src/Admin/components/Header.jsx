@@ -7,7 +7,7 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
 const Header = (props) => {
   return (
-    <header className="sticky top-0 z-10 flex w-full bg-white drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none">
+    <header className="sticky top-0 z-10 flex w-full bg-white drop-shadow-1 dark:glass dark:drop-shadow-none">
       <div className="flex flex-grow items-center justify-between py-4 px-4 shadow-2 md:px-6 2xl:px-11">
         <div className="flex items-center gap-2 sm:gap-4 lg:hidden">
           {/* <!-- Hamburger Toggle BTN --> */}
@@ -58,15 +58,15 @@ const Header = (props) => {
         </div>
 
         <div className="hidden sm:block">
-          <form action="https://formbold.com/s/unique_form_id" method="POST">
+          <form action="#" method="POST">
             <div className="relative">
               <button className="absolute top-1/2 left-0 -translate-y-1/2">
-                <MagnifyingGlassIcon className="h-5 w-5 text-gray-500 hover:fill-primary dark:fill-bodydark dark:hover:fill-primary" />
+                <MagnifyingGlassIcon className="h-5 w-5 hover:fill-primary dark:fill-bodydark dark:hover:fill-primary" />
               </button>
               <input
                 type="text"
                 placeholder="Type to search..."
-                className="w-full bg-transparent pr-4 pl-9 border-transparent border-0 focus:ring-0 focus:outline-none"
+                className="w-full bg-transparent placeholder:text-gray-400 pr-4 pl-9 border-transparent border-0 focus:ring-0 focus:outline-none"
               />
             </div>
           </form>
