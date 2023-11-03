@@ -13,13 +13,13 @@ import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/v1/auth")
-@PreAuthorize("hasRole('USER')")
+//@PreAuthorize("hasRole('USER')")
 public class CartController {
 
     @Autowired
     private CartService cartService;
 
-    @PostMapping("/cart")
+        @PostMapping("/addcart")
     public ResponseEntity<CartDto> addtoCart(@RequestBody ItemRequest itemRequest, Principal principal){
         if (principal == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED); // Hoặc mã lỗi tùy chọn

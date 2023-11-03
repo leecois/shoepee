@@ -20,10 +20,10 @@ public class Brand {
     private String brandName;
     @Column(name = "imageurl")
     private String imageUrl;
-    @OneToMany(mappedBy = "brand",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "brand", cascade = CascadeType.ALL)
     private Set<ShoeModel> shoeModel  = new HashSet<>();
 
-    public Set<ShoeModel> getShoeModel() {
+    public Set<ShoeModel> getShoeModel(Set<ShoeModel> shoeModel) {
         return shoeModel;
     }
 

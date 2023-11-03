@@ -1,7 +1,6 @@
 package com.ToDoiVar.ShoesPee.dto;
 
 import com.ToDoiVar.ShoesPee.Models.Brand;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ShoeModelDto {
 
-    private int modelId;
+    private int id;
 //    private int brandId;
     private String modelname;
     private String imageurl;

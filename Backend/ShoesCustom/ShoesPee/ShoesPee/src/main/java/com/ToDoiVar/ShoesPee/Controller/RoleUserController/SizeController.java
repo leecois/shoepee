@@ -29,4 +29,8 @@ public class SizeController {
     public Size getSizeById(@PathVariable int id){
         return sizeService.getSizeById(id);
     }
+    @GetMapping("/sizes")
+    public ResponseEntity<List<Size>> getAllSize(){
+        return new ResponseEntity<List<Size>>(sizeService.getAllSize(),HttpStatus.OK);
+    }
 }

@@ -87,7 +87,7 @@ public class ShoeModelServiceImpl implements ShoeModelService{
     }
     private ShoeModel toEntity(ShoeModelDto shoeModelDto){
         ShoeModel sm = new ShoeModel();
-        sm.setModelId(shoeModelDto.getModelId());
+        sm.setId(shoeModelDto.getId());
 //        sm.setBrandId(shoeModelDto.getBrandId());
         sm.setModelname(shoeModelDto.getModelname());
         sm.setImageurl(shoeModelDto.getImageurl());
@@ -96,7 +96,7 @@ public class ShoeModelServiceImpl implements ShoeModelService{
     }
     private ShoeModelDto toDto(ShoeModel shoeModel){
         ShoeModelDto sto = new ShoeModelDto();
-        sto.setModelId(shoeModel.getModelId());
+        sto.setId(shoeModel.getId());
 //        sto.setBrandId(shoeModel.getBrandId());
         sto.setModelname(shoeModel.getModelname());
         sto.setImageurl(shoeModel.getImageurl());

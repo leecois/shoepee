@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -18,7 +16,7 @@ import java.util.Set;
 public class ShoeModel {
     @Id
         @Column(name = "modelid")
-    private int modelId;
+    private int id;
 //    @Column(name = "brandid")
 //    private int brandId;
     @Column(name = "modelname")
@@ -28,7 +26,7 @@ public class ShoeModel {
     @Column(name = "price")
     private double price;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne()
     @JoinColumn(name = "brand_brandid")
     @JsonIgnore
     private Brand brand;

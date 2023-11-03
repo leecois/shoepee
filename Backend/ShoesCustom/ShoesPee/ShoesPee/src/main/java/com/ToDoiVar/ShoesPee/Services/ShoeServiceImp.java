@@ -77,7 +77,7 @@ public class ShoeServiceImp implements ShoeService{
         st.setPrice(shoe.getPrice());
         st.setImageUrl(shoe.getImageUrl());
         ShoeModel smdt = new ShoeModel();
-        smdt.setModelId(shoe.getShoeModel().getModelId());
+        smdt.setId(shoe.getShoeModel().getId());
         smdt.setModelname(shoe.getShoeModel().getModelname());
         smdt.setImageurl(shoe.getShoeModel().getImageurl());
         smdt.setPrice(shoe.getShoeModel().getPrice());
