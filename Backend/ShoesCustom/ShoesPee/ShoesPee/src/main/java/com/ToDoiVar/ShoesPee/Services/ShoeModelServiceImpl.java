@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
 @Service
 public class ShoeModelServiceImpl implements ShoeModelService{
     @Autowired
@@ -53,6 +55,12 @@ public class ShoeModelServiceImpl implements ShoeModelService{
     public ShoeModels getShoeModelByName(String name) {
         return shoeModelRepository.getShoeModelsByModelname(name).orElseThrow(() -> new shoeModelNotFounException("Sorry, this shoemodel could be not found"));
     }
+
+    @Override
+    public Optional<List<ShoeModels>> getShoeModelByBrandId(int id) {
+        return shoeModelRepository.getShoeModelsByBrandId(id);
+    }
+
     private boolean shoeModelExisted(String modelName) {
         return shoeModelRepository.getShoeModelsByModelname(modelName).isPresent();
     }

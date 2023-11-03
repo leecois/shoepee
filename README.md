@@ -1,4 +1,4 @@
-[![CI with GitHub Actions | © 2023 by minhchan](https://github.com/leecois/shoepee/actions/workflows/CI-BE.yml/badge.svg)](https://github.com/leecois/shoepee/actions/workflows/CI-BE.yml)
+[![CI/CD with GitHub Actions | © 2023 by minhchan](https://github.com/ieecois/shoepee/actions/workflows/CI-CD-BE.yml/badge.svg)](https://github.com/ieecois/shoepee/actions/workflows/CI-CD-BE.yml)
 
 # Shoe Stylise
 

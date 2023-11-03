@@ -1,7 +1,7 @@
 package com.ToDoiVar.ShoesPee.Controller;
 
 import org.springframework.web.bind.annotation.*;
-
+@CrossOrigin("*")
 @RestController
 @RequestMapping("api/v1/management")
 public class ManagementController {
