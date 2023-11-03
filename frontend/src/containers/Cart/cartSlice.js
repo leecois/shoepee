@@ -37,10 +37,6 @@ export const cartSlice = createSlice({
       state.cartItems = state.cartItems.filter((x) => x.id !== idNeedToRemove);
       localStorage.setItem('cart', JSON.stringify(state.cartItems));
     },
-    resetCart: (state) => {
-      state.cartItems = [];
-      localStorage.removeItem('cart');
-    },
   },
 });
 

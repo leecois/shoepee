@@ -9,17 +9,44 @@ import Collection from '../Product/Collection';
 import AddToCartForm from '../Cart/AddToCartForm';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../../../containers/Cart/cartSlice';
+import axios from 'axios';
+import { useEffect } from 'react';
 
 const ProductDetails = ({ product }) => {
   const [quantity] = useState(0);
   const [selectedShoe, setSelectedShoe] = useState(null);
+  useEffect(() => {
+    if (product && product.shoe && product.shoe.length > 0) {
+      setSelectedShoe(product.shoe[0]);
+    }
+  }, [product]);
+
   const [selectedShoeImages, setSelectedShoeImages] = useState([]);
+  // Function to fetch shoe images based on shoe ID using Axios
+  const fetchShoeImages = async (shoeId) => {
+    try {
+      const response = await axios.get(
+        `http://3.1.85.78/api/v1/auth/getimageshoe/${shoeId}`
+      );
+      if (response.status === 200) {
+        setSelectedShoeImages(response.data);
+      }
+    } catch (error) {
+      console.error('Error fetching shoe images:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (selectedShoe) {
+      fetchShoeImages(selectedShoe.id);
+    }
+  }, [selectedShoe]);
 
   const handleAddToCart = () => {
     const action = addToCart({
       id: product.id,
-      name: product.name,
-      image: product.pictures[0],
+      name: product.modelname,
+      image: product.imageurl,
       price: product.price,
       size: selectedSize,
       quantity: quantity + 1,
@@ -53,7 +80,7 @@ const ProductDetails = ({ product }) => {
               {selectedShoeImages.map((image, index) => (
                 <div key={index}>
                   <img
-                    src={image}
+                    src={image.imageUrl}
                     alt={`Shoe Imag`}
                     className="object-contain w-full h-full rounded-sm"
                   />
@@ -131,7 +158,7 @@ const ProductDetails = ({ product }) => {
             <div className="flex">
               {product.shoe?.map((shoe) => (
                 <button
-                  key={shoe}
+                  key={shoe.id}
                   type="button"
                   className={` inline-flex flex-col items-center mx-2 mt-4 space-y-2 rounded-3xl border-2 ${
                     selectedShoe === shoe
@@ -145,25 +172,6 @@ const ProductDetails = ({ product }) => {
                     alt={shoe.alt}
                     className="object-cover p-1 w-22 h-22 rounded-3xl"
                   />
-                </button>
-              ))}
-            </div>
-
-            <div className="mt-2 grid grid-cols-2 lg:grid-cols-2 gap-2">
-              {product.sizes?.map((size) => (
-                <button
-                  key={size}
-                  type="button"
-                  className={`p-3 inline-flex flex-col items-center space-y-2 rounded-lg border-2 ${
-                    selectedSize === size
-                      ? 'border border-red-400'
-                      : 'border border-gray-200'
-                  } text-left`}
-                  onClick={() => setSelectedSize(size)}
-                >
-                  <span className="text-base text-gray-700 font-semibold">
-                    {size}
-                  </span>
                 </button>
               ))}
             </div>
