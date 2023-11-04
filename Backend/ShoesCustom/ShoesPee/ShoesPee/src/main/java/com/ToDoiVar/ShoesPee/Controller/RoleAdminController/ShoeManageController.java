@@ -18,7 +18,7 @@ public class ShoeManageController {
     private ShoeService shoeService;
     @GetMapping("/shoes")
     public ResponseEntity<List<Shoe>> getAllShoe(){
-        return new ResponseEntity<List<Shoe>>(shoeService.getAllShoe(), HttpStatus.FOUND);
+        return new ResponseEntity<List<Shoe>>(shoeService.getAllShoe(), HttpStatus.OK);
     }
     @GetMapping("/getshoebyshoemodelid/{id}")
     public ResponseEntity<List<ShoeDto>> getShoeByShoemodelId(@PathVariable int id){

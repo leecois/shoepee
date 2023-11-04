@@ -10,6 +10,6 @@ import java.util.Optional;
 public interface InforUserRepository extends JpaRepository<InforUser,Integer> {
 
 
-    Optional<List<InforUser>> getInforUserById(int id);
+//    Optional<List<InforUser>> getInforUserById(int id);
 
 }

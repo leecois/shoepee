@@ -1,46 +1,31 @@
 package com.ToDoiVar.ShoesPee.dto;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class CartDto {
-    private int cartId;
-    private Set<CartItemDto> items= new HashSet<>();
-    private UserDto user;
-    private String errorMessage;
+    private List<CartItemDto> cartItems;
+    private double totalCost;
 
-    // Thêm constructor cho thông điệp lỗi
-    public CartDto(String errorMessage) {
-        this.errorMessage = errorMessage;
+    public CartDto(List<CartItemDto> cartItemDtoList, double totalCost) {
+        this.cartItems = cartItemDtoList;
+        this.totalCost = totalCost;
     }
 
-    // Các phương thức và trường khác ở đây...
-
-    // Getter và setter cho errorMessage
-    public String getErrorMessage() {
-        return errorMessage;
+    public List<CartItemDto> getcartItems() {
+        return cartItems;
     }
 
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
-    }
-    public int getCartId() {
-        return cartId;
-    }
-    public void setCartId(int cartId) {
-        this.cartId = cartId;
-    }
-    public Set<CartItemDto> getItems() {
-        return items;
-    }
-    public void setItems(Set<CartItemDto> items) {
-        this.items = items;
-    }
-    public UserDto getUser() {
-        return user;
-    }
-    public void setUser(UserDto user) {
-        this.user = user;
+    public void setCartItems(List<CartItemDto> cartItemDtoList) {
+        this.cartItems = cartItemDtoList;
     }
 
+    public double getTotalCost() {
+        return totalCost;
+    }
+
+    public void setTotalCost(int totalCost) {
+        this.totalCost = totalCost;
+    }
 }

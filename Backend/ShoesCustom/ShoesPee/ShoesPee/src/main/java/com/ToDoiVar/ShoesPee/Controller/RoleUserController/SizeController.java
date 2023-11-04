@@ -21,7 +21,7 @@ import java.util.Optional;
 public class SizeController {
     @Autowired
     private SizeService sizeService;
-    @PostMapping("/size/add")
+    @PostMapping("/addsize")
     public ResponseEntity<Size> addSize(@RequestBody Size newSize) {
         return new ResponseEntity<>(sizeService.addSize(newSize), HttpStatus.OK);
     }

@@ -1,5 +1,6 @@
 package com.ToDoiVar.ShoesPee.Models;
 
+import com.ToDoiVar.ShoesPee.dto.ShoeDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -43,5 +44,11 @@ public class Shoe {
 
     public void setImageShoes(Set<ImageShoe> imageShoes) {
         this.imageShoes = imageShoes;
+    }
+    public Shoe(ShoeDto shoeDto,ShoeModel shoeModel){
+        this.price = shoeDto.getPrice();
+        this.description = shoeDto.getDescription();
+        this.imageUrl = shoeDto.getImageUrl();
+        this.shoeModel = shoeModel;
     }
 }

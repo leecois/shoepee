@@ -1,45 +1,89 @@
 package com.ToDoiVar.ShoesPee.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Date;
 
+@Getter
+@Setter
 @Entity
+@Table(name = "cart")
 public class Cart {
 
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int cartId;
+    private Integer id;
 
-//Relationship with other table
 
-    @OneToMany(mappedBy = "cart",cascade = CascadeType.ALL,orphanRemoval = true)
-    private Set<CartItem> items= new HashSet<>();
-    @OneToOne
+    @Column(name = "created_date")
+    private Date createdDate;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id", referencedColumnName = "shoeid")
+    private Shoe shoe;
+
+    @JsonIgnore
+    @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
+    @JoinColumn(nullable = false, name = "userid")
     private User user;
-    public int getCartId() {
-        return cartId;
+
+
+    private int quantity;
+
+    public Cart() {
     }
-    public void setCartId(int cartId) {
-        this.cartId = cartId;
+
+    public Cart(Shoe shoe, int quantity, User user){
+        this.user = user;
+        this.shoe = shoe;
+        this.quantity = quantity;
+        this.createdDate = new Date();
     }
-    public Set<CartItem> getItems() {
-        return items;
+
+    public Integer getId() {
+        return id;
     }
-    public void setItems(Set<CartItem> items) {
-        this.items = items;
+
+    public void setId(Integer id) {
+        this.id = id;
     }
+
     public User getUser() {
         return user;
     }
+
     public void setUser(User user) {
         this.user = user;
     }
 
+    public Date getCreatedDate() {
+        return createdDate;
+    }
 
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Shoe getShoe() {
+        return shoe;
+    }
+
+    public void setShoe(Shoe product) {
+        this.shoe = product;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 
 
 

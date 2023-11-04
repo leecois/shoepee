@@ -1,86 +1,44 @@
 package com.ToDoiVar.ShoesPee.dto;
 
+import com.ToDoiVar.ShoesPee.Models.Order;
+import com.ToDoiVar.ShoesPee.Models.OrderItem;
+import com.ToDoiVar.ShoesPee.Models.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class OrderDto {
 
-    private int orderId;
-    private String orderStatus;
-    private String paymentStatus;
-    private Date orderDelivered;
-    private double orderAmt;
-    private String billingAddress;
+    private Integer id;
+    private @NotNull Integer userId;
 
-    private UserDto user;
-
-    private Set<OrderItemDto> orderItem=new HashSet<>();
-
-    public int getOrderId() {
-        return orderId;
+    public OrderDto() {
     }
 
-    public void setOrderId(int orderId) {
-        this.orderId = orderId;
+    public OrderDto(Order order) {
+        this.setId(order.getId());
+        //this.setUserId(order.getUserId());
     }
 
-    public String getOrderStatus() {
-        return orderStatus;
+    public Integer getId() {
+        return id;
     }
 
-    public void setOrderStatus(String orderStatus) {
-        this.orderStatus = orderStatus;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public String getPaymentStatus() {
-        return paymentStatus;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setPaymentStatus(String paymentStatus) {
-        this.paymentStatus = paymentStatus;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
-
-    public Date getOrderDelivered() {
-        return orderDelivered;
-    }
-
-    public void setOrderDelivered(Date orderDelivered) {
-        this.orderDelivered = orderDelivered;
-    }
-
-    public double getOrderAmt() {
-        return orderAmt;
-    }
-
-    public void setOrderAmt(double orderAmt) {
-        this.orderAmt = orderAmt;
-    }
-
-    public String getBillingAddress() {
-        return billingAddress;
-    }
-
-    public void setBillingAddress(String billingAddress) {
-        this.billingAddress = billingAddress;
-    }
-
-    public UserDto getUser() {
-        return user;
-    }
-
-    public void setUser(UserDto user) {
-        this.user = user;
-    }
-
-    public Set<OrderItemDto> getOrderItem() {
-        return orderItem;
-    }
-
-    public void setOrderItem(Set<OrderItemDto> orderItem) {
-        this.orderItem = orderItem;
-    }
-
-
 
 }

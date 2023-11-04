@@ -35,6 +35,12 @@ public class ShoeServiceImp implements ShoeService{
         return this.mapper.map(shoe,ShoeDto.class);
     }
 
+    @Override
+    public Shoe findById(int id) {
+       return this.shoeRepository.findById(id).orElseThrow(() -> new shoeNotFoundException("shoe not found"));
+
+    }
+
 
     @Override
     public ShoeDto addShoe(ShoeDto newShoe) {

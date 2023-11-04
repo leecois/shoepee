@@ -1,7 +1,5 @@
 package com.ToDoiVar.ShoesPee.dto;
 
-import com.ToDoiVar.ShoesPee.Models.Cart;
-import com.ToDoiVar.ShoesPee.Models.Shoe;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,26 +9,23 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class CartItemDto {
+public class AddToCartDto {
     private Integer id;
+    private @NotNull Integer productId;
     private @NotNull Integer quantity;
-    private @NotNull Shoe shoe;
 
-    public CartItemDto() {
+    public AddToCartDto() {
     }
 
-    public CartItemDto(Cart cart) {
-        this.setId(cart.getId());
-        this.setQuantity(cart.getQuantity());
-        this.setShoe(cart.getShoe());
-    }
+
 
     @Override
     public String toString() {
         return "CartDto{" +
                 "id=" + id +
+                ", productId=" + productId +
                 ", quantity=" + quantity +
-                '}';
+                ",";
     }
 
     public Integer getId() {
@@ -41,6 +36,15 @@ public class CartItemDto {
         this.id = id;
     }
 
+
+    public Integer getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Integer productId) {
+        this.productId = productId;
+    }
+
     public Integer getQuantity() {
         return quantity;
     }
@@ -48,13 +52,5 @@ public class CartItemDto {
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
-    public Shoe getShoe() {
-        return shoe;
-    }
-
-    public void setShoe(Shoe shoe) {
-        this.shoe = shoe;
-    }
-
 
 }
