@@ -15,13 +15,13 @@ public class ShoeModelDto {
     private String modelname;
     private String imageurl;
     private double price;
-    private Brand brand;
-
-    public Brand getBrand() {
-        return brand;
-    }
-
-    public void setBrand(Brand brand) {
-        this.brand = brand;
-    }
+//    private Brand brand;
+//
+//    public Brand getBrand() {
+//        return brand;
+//    }
+//
+//    public void setBrand(Brand brand) {
+//        this.brand = brand;
+//    }
 }

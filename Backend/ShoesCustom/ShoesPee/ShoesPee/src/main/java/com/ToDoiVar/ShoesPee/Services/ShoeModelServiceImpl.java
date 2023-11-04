@@ -102,11 +102,11 @@ public class ShoeModelServiceImpl implements ShoeModelService{
         sto.setImageurl(shoeModel.getImageurl());
         sto.setPrice(shoeModel.getPrice());
 
-        Brand brandDto = new Brand();
-        brandDto.setId(shoeModel.getBrand().getId());
-        brandDto.setBrandName(shoeModel.getBrand().getBrandName());
-        brandDto.setImageUrl(shoeModel.getBrand().getImageUrl());
-        sto.setBrand(brandDto);
+//        Brand brandDto = new Brand();
+////        brandDto.setId(shoeModel.getBrand().getId());
+//        brandDto.setBrandName(shoeModel.getBrand().getBrandName());
+//        brandDto.setImageUrl(shoeModel.getBrand().getImageUrl());
+//        sto.setBrand(brandDto);
         return sto;
     }
 }

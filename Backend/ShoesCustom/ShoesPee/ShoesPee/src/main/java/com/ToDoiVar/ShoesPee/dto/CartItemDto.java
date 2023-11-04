@@ -1,60 +1,53 @@
 package com.ToDoiVar.ShoesPee.dto;
 
-import com.ToDoiVar.ShoesPee.Models.Cart;
 import com.ToDoiVar.ShoesPee.Models.Shoe;
-import jakarta.validation.constraints.NotNull;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.JoinColumn;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
-@AllArgsConstructor
+
 public class CartItemDto {
-    private Integer id;
-    private @NotNull Integer quantity;
-    private @NotNull Shoe shoe;
+    private int cartItemId;
+    private int quantity;
+    private double totalprice;
+    @JsonIgnore
+    private CartDto cart;
 
-    public CartItemDto() {
+    private Shoe shoeDto;
+    public int getCartItemId() {
+        return cartItemId;
     }
-
-    public CartItemDto(Cart cart) {
-        this.setId(cart.getId());
-        this.setQuantity(cart.getQuantity());
-        this.setShoe(cart.getShoe());
+    public void setCartItemId(int cartItemId) {
+        this.cartItemId = cartItemId;
     }
-
-    @Override
-    public String toString() {
-        return "CartDto{" +
-                "id=" + id +
-                ", quantity=" + quantity +
-                '}';
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
-
-    public void setQuantity(Integer quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
-    public Shoe getShoe() {
-        return shoe;
+    public double getTotalprice() {
+        return totalprice;
+    }
+    public void setTotalprice(double totalprice) {
+        this.totalprice = totalprice;
     }
 
-    public void setShoe(Shoe shoe) {
-        this.shoe = shoe;
+    public CartDto getCart() {
+        return cart;
     }
+    public void setCart(CartDto cart) {
+        this.cart = cart;
+    }
+    public Shoe getShoeDto() {
+        return shoeDto;
+    }
+    public void setShoeDto(Shoe shoeDto) {
+        this.shoeDto = shoeDto;
+    }
+
 
 
 }

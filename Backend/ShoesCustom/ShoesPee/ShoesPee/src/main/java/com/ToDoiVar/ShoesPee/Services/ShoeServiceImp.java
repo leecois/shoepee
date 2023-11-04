@@ -82,13 +82,13 @@ public class ShoeServiceImp implements ShoeService{
         st.setDescription(shoe.getDescription());
         st.setPrice(shoe.getPrice());
         st.setImageUrl(shoe.getImageUrl());
-        ShoeModel smdt = new ShoeModel();
-        smdt.setId(shoe.getShoeModel().getId());
-        smdt.setModelname(shoe.getShoeModel().getModelname());
-        smdt.setImageurl(shoe.getShoeModel().getImageurl());
-        smdt.setPrice(shoe.getShoeModel().getPrice());
-//        smdt.setBrand(shoe.getBrand().getBrand());
-        st.setShoeModel(smdt);
+//        ShoeModel smdt = new ShoeModel();
+//        smdt.setId(shoe.getShoeModel().getId());
+//        smdt.setModelname(shoe.getShoeModel().getModelname());
+//        smdt.setImageurl(shoe.getShoeModel().getImageurl());
+//        smdt.setPrice(shoe.getShoeModel().getPrice());
+////        smdt.setBrand(shoe.getBrand().getBrand());
+//        st.setShoeModel(smdt);
         return st;
     }
 

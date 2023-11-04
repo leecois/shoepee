@@ -38,39 +38,35 @@ public class CartController {
     private ShoeService shoeService;
 
 
-        @PostMapping("/add")
-        public ResponseEntity<ApiResponse> addToCart(@RequestBody AddToCartDto addToCartDto,
-                @RequestParam("token") String token) throws AuthenticationFailException, shoeNotFoundException {
-            String nameUser = jwtService.extractUsername(token);
-            User user = userService.getUserByEmail(nameUser);
-            Shoe product = shoeService.findById(addToCartDto.getProductId());
-            cartService.addToCart(addToCartDto, product, user);
-            return new ResponseEntity<ApiResponse>(new ApiResponse("Added to cart", true), HttpStatus.CREATED);
+    @PostMapping("/addcart")
+    public ResponseEntity<CartDto> addtoCart(@RequestBody ItemRequest itemRequest,Principal principal){
+        String email=principal.getName();
+        System.out.println(email);
+        CartDto addItem = this.cartService.addItem(itemRequest,principal.getName());
 
-        }
-        @GetMapping("/getcartitem")
-        public ResponseEntity<CartDto> getCartItems(@RequestParam("token") String token) throws AuthenticationFailException {
-            String nameUser = jwtService.extractUsername(token);
-            User user = userService.getUserByEmail(nameUser);
-            CartDto cartDto = cartService.listCartItems(user);
-            return new ResponseEntity<CartDto>(cartDto,HttpStatus.OK);
-        }
-        @PutMapping("/update/{cartItemId}")
-        public ResponseEntity<ApiResponse> updateCartItem(@RequestBody @Valid AddToCartDto cartDto,
-                @RequestParam("token") String token) throws AuthenticationFailException, shoeNotFoundException {
-            String nameUser = jwtService.extractUsername(token);
-            User user = userService.getUserByEmail(nameUser);
-            Shoe product = shoeService.findById(cartDto.getProductId());
-            cartService.updateCartItem(cartDto, user,product);
-            return new ResponseEntity<ApiResponse>(new ApiResponse("Product has been updated", true), HttpStatus.OK);
-        }
+        return new ResponseEntity<CartDto>(addItem,HttpStatus.OK);
+    }
 
-        @DeleteMapping("/delete/{cartItemId}")
-        public ResponseEntity<ApiResponse> deleteCartItem(@PathVariable("cartItemId") int itemID,@RequestParam("token") String token) throws AuthenticationFailException, CartItemNotExistException {
-            String nameUser = jwtService.extractUsername(token);
-            User user = userService.getUserByEmail(nameUser);
-//            int userId = userService.getUser(token).getId();
-            cartService.deleteCartItem(itemID, user.getUserId());
-            return new ResponseEntity<ApiResponse>(new ApiResponse("Item has been removed", true), HttpStatus.OK);
-        }
+
+    //create method for getting cart
+    @GetMapping("/getcart")
+    public ResponseEntity<CartDto>getAllCart(Principal principal){
+        CartDto getcartAll = this.cartService.getcartAll(principal.getName());
+        return new ResponseEntity<CartDto>(getcartAll,HttpStatus.ACCEPTED);
+    }
+    @GetMapping("/{cartId}")
+    public ResponseEntity<CartDto>getCartById(@PathVariable  int cartId){
+
+        System.out.println(cartId);
+        CartDto cartByID = this.cartService.getCartByID(cartId);
+        return new ResponseEntity<CartDto>(cartByID,HttpStatus.OK);
+    }
+
+    @DeleteMapping("/delete/{pid}")
+    public ResponseEntity<CartDto>deleteCartItemFromCart(@PathVariable int pid,Principal p){
+
+        CartDto remove = this.cartService.removeCartItemFromCart(p.getName(),pid);
+        return new ResponseEntity<CartDto>(remove,HttpStatus.UPGRADE_REQUIRED);
+    }
+
 }

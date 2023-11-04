@@ -5,27 +5,25 @@ import java.util.List;
 import java.util.Set;
 
 public class CartDto {
-    private List<CartItemDto> cartItems;
-    private double totalCost;
-
-    public CartDto(List<CartItemDto> cartItemDtoList, double totalCost) {
-        this.cartItems = cartItemDtoList;
-        this.totalCost = totalCost;
+    private int cartId;
+    private	Set<CartItemDto> items= new HashSet<>();
+    private UserDto user;
+    public int getCartId() {
+        return cartId;
     }
-
-    public List<CartItemDto> getcartItems() {
-        return cartItems;
+    public void setCartId(int cartId) {
+        this.cartId = cartId;
     }
-
-    public void setCartItems(List<CartItemDto> cartItemDtoList) {
-        this.cartItems = cartItemDtoList;
+    public Set<CartItemDto> getItems() {
+        return items;
     }
-
-    public double getTotalCost() {
-        return totalCost;
+    public void setItems(Set<CartItemDto> items) {
+        this.items = items;
     }
-
-    public void setTotalCost(int totalCost) {
-        this.totalCost = totalCost;
+    public UserDto getUser() {
+        return user;
+    }
+    public void setUser(UserDto user) {
+        this.user = user;
     }
 }

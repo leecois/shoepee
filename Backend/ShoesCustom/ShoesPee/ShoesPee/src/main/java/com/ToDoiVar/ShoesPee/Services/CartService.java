@@ -1,73 +1,128 @@
 package com.ToDoiVar.ShoesPee.Services;
 
-import com.ToDoiVar.ShoesPee.Exeption.CartItemNotExistException;
+import com.ToDoiVar.ShoesPee.Exeption.ResourceNotFoundException;
 import com.ToDoiVar.ShoesPee.Models.*;
-import com.ToDoiVar.ShoesPee.dto.AddToCartDto;
 import com.ToDoiVar.ShoesPee.dto.CartDto;
-import com.ToDoiVar.ShoesPee.dto.CartItemDto;
 import com.ToDoiVar.ShoesPee.repositiory.CartRepository;
+import com.ToDoiVar.ShoesPee.repositiory.ShoeRepository;
+import com.ToDoiVar.ShoesPee.repositiory.UserRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 @Service
 public class CartService {
     @Autowired
-    private  CartRepository cartRepository;
+    private UserRepository userRepo;
+    @Autowired
+    private ShoeRepository shoeRepository;
 
-    public CartService(){}
+    @Autowired
+    private CartRepository cartRepo;
+    @Autowired
+    private ModelMapper modelMapper;
 
-    public CartService(CartRepository cartRepository) {
-        this.cartRepository = cartRepository;
-    }
+    public CartDto addItem(ItemRequest item,String username){
+        int productId=item.getShoeId();
+        int quantity=item.getQuantity();
+        //fetch user
+        User user = this.userRepo.findByEmail(username).orElseThrow(()->new ResourceNotFoundException("User not found"));
+        //fetch Product
+        Shoe shoe=this.shoeRepository.findById(productId).orElseThrow(()->new ResourceNotFoundException("Product Not Found"));
 
-    public void addToCart(AddToCartDto addToCartDto, Shoe shoe, User user){
-        Cart cart = new Cart(shoe, addToCartDto.getQuantity(), user);
-        cartRepository.save(cart);
-    }
+        //here we are checking product stock
 
 
-    public CartDto listCartItems(User user) {
-        List<Cart> cartList = cartRepository.findAllByUserOrderByCreatedDateDesc(user);
-        List<CartItemDto> cartItems = new ArrayList<>();
-        for (Cart cart:cartList){
-            CartItemDto cartItemDto = getDtoFromCart(cart);
-            cartItems.add(cartItemDto);
+        // create cartItem with productId and Qnt
+
+        CartItem cartItem=new CartItem();
+        cartItem.setShoe(shoe);
+        cartItem.setQuantity(quantity);
+        double totaleprice=shoe.getPrice()*quantity;
+        cartItem.setTotalprice(totaleprice);
+
+        //getting cart from user
+        Cart cart=user.getCart();
+
+        if(cart==null) {
+            cart=new Cart();
+            //
+            cart.setUser(user);
         }
-        double totalCost = 0;
-        for (CartItemDto cartItemDto :cartItems){
-            totalCost += (cartItemDto.getShoe().getPrice()* cartItemDto.getQuantity());
+
+        cartItem.setCart(cart);
+
+        Set<CartItem> items = cart.getItems();
+
+        // here we check item is available in CartItem or not
+        // if CartItem is availabe then we inc Qnt only else
+        // add new product in cartItem
+        //
+        // by default false
+        AtomicReference<Boolean> flag=new AtomicReference<>(false);
+
+        Set<CartItem> newproduct = items.stream().map((i)->{
+            if(i.getShoe().getId()==shoe.getId()) {
+                i.setQuantity(quantity);
+                i.setTotalprice(totaleprice);
+                flag.set(true);
+            }
+            return i;
+
+        }).collect(Collectors.toSet());
+
+        if(flag.get()){
+            items.clear();
+            items.addAll(newproduct);
+
+        }else {
+            cartItem.setCart(cart);
+            items.add(cartItem);
         }
-        return new CartDto(cartItems,totalCost);
+
+        Cart saveCart = this.cartRepo.save(cart);
+
+
+
+        return  this.modelMapper.map(saveCart,CartDto.class);
     }
 
 
-    public static CartItemDto getDtoFromCart(Cart cart) {
-        return new CartItemDto(cart);
-    }
+    public CartDto getcartAll(String email){
+        //find user
+        User user = this.userRepo.findByEmail(email).orElseThrow(()->new ResourceNotFoundException("User Not Found"));
+        //find cart
+        Cart cart= this.cartRepo.findByUser(user).orElseThrow(()->new ResourceNotFoundException("There is no cart"));
 
-
-    public void updateCartItem(AddToCartDto cartDto, User user,Shoe product){
-        Cart cart = cartRepository.getOne(cartDto.getId());
-        cart.setQuantity(cartDto.getQuantity());
-        cart.setCreatedDate(new Date());
-        cartRepository.save(cart);
-    }
-
-    public void deleteCartItem(int id,int userId) throws CartItemNotExistException {
-        if (!cartRepository.existsById(id))
-            throw new CartItemNotExistException("Cart id is invalid : " + id);
-        cartRepository.deleteById(id);
+        return this.modelMapper.map(cart,CartDto.class);
 
     }
 
-    public void deleteCartItems(int userId) {
-        cartRepository.deleteAll();
+    // get cart by CartId
+
+
+    public CartDto getCartByID(int cartId){
+
+        //User user=this.userRepo.findByEmail(username).orElseThrow(()->new ResourceNotFoundException("User Not found"));
+
+        Cart findByUserAndcartId = this.cartRepo.findById(cartId).orElseThrow(()->new ResourceNotFoundException("Cart not Found"));
+
+        return this.modelMapper.map(findByUserAndcartId,CartDto.class);
     }
 
+    public CartDto removeCartItemFromCart(String userName, int ProductId){
+        User user=this.userRepo.findByEmail(userName).orElseThrow(()->new ResourceNotFoundException("User Not found"));
 
-    public void deleteUserCartItems(User user) {
-        cartRepository.deleteByUser(user);
+        Cart cart=user.getCart();
+        Set<CartItem> items = cart.getItems();
+
+        boolean removeIf = items.removeIf((i)->i.getShoe().getId()==ProductId);
+        Cart save = this.cartRepo.save(cart);
+        System.out.println(removeIf);
+        return this.modelMapper.map(save,CartDto.class);
     }
 }

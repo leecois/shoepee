@@ -14,31 +14,79 @@ import java.util.Set;
 
 public class OrderDto {
 
-    private Integer id;
-    private @NotNull Integer userId;
+    private int orderId;
+    private String orderStatus;
+    private String paymentStatus;
+    private Date orderDelivered;
+    private double orderAmt;
+    private String billingAddress;
 
-    public OrderDto() {
+    private UserDto user;
+
+    private Set<OrderItemDto> orderItem=new HashSet<>();
+
+    public int getOrderId() {
+        return orderId;
     }
 
-    public OrderDto(Order order) {
-        this.setId(order.getId());
-        //this.setUserId(order.getUserId());
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
     }
 
-    public Integer getId() {
-        return id;
+    public String getOrderStatus() {
+        return orderStatus;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setOrderStatus(String orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public String getPaymentStatus() {
+        return paymentStatus;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setPaymentStatus(String paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
+    public Date getOrderDelivered() {
+        return orderDelivered;
+    }
+
+    public void setOrderDelivered(Date orderDelivered) {
+        this.orderDelivered = orderDelivered;
+    }
+
+    public double getOrderAmt() {
+        return orderAmt;
+    }
+
+    public void setOrderAmt(double orderAmt) {
+        this.orderAmt = orderAmt;
+    }
+
+    public String getBillingAddress() {
+        return billingAddress;
+    }
+
+    public void setBillingAddress(String billingAddress) {
+        this.billingAddress = billingAddress;
+    }
+
+    public UserDto getUser() {
+        return user;
+    }
+
+    public void setUser(UserDto user) {
+        this.user = user;
+    }
+
+    public Set<OrderItemDto> getOrderItem() {
+        return orderItem;
+    }
+
+    public void setOrderItem(Set<OrderItemDto> orderItem) {
+        this.orderItem = orderItem;
     }
 
 }

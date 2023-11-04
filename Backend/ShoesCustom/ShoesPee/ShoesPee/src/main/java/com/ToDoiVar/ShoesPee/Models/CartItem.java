@@ -12,10 +12,10 @@ public class CartItem {
     //Relationship with other table
 
     @ManyToOne
-    @JoinColumn(name = "cart_id")
-    @JsonIgnore
     private Cart cart;
     @OneToOne
+    @JoinColumn(name = "shoe_shoeid")
+    @JsonIgnore
     private Shoe shoe;
     public int getCartItemId() {
         return cartItemId;
@@ -44,10 +44,9 @@ public class CartItem {
     public Shoe getShoe() {
         return shoe;
     }
-    public void setShoe(Shoe shoe) {
-        this.shoe = shoe;
+    public void setShoe(Shoe product) {
+        this.shoe = product;
     }
-
 
 
 }

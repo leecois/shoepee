@@ -34,10 +34,14 @@ public class User implements UserDetails {
     @JoinColumn()
     private Role role;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "user",
-            fetch = FetchType.LAZY)
-    private List<Order> orders;
+    @OneToOne(mappedBy = "user")
+    private Cart cart;
+    public Cart getCart() {
+        return cart;
+    }
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
 
 
 
