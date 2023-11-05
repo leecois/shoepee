@@ -1,19 +1,14 @@
 import { useEffect, useState } from 'react';
-import shoeApi from '../api/shoeApi';
+import sizeApi from '../api/sizeApi';
 
-const useProductData = () => {
-  const [shoeList, setShoeList] = useState([]);
-  const [page] = useState(1);
-  const [limit] = useState(12);
+const useSizeData = () => {
+  const [sizeList, setSizeList] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await shoeApi.getAll({
-          _page: page,
-          _limit: limit,
-        });
-        setShoeList(data);
+        const data = await sizeApi.getAll();
+        setSizeList(data);
         console.log(data);
       } catch (error) {
         if (error.response && error.response.status) {
@@ -25,9 +20,9 @@ const useProductData = () => {
     };
 
     fetchData();
-  }, [page, limit]);
+  }, []);
 
-  return { shoeList };
+  return { sizeList };
 };
 
-export default useProductData;
+export default useSizeData;

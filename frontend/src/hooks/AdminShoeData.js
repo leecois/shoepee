@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import shoeApi from '../api/shoeApi';
+import adminShoeApi from '../api/adminShoeApi';
 
 const useProductData = () => {
   const [shoeList, setShoeList] = useState([]);
@@ -9,7 +9,7 @@ const useProductData = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await shoeApi.getAll({
+        const { data } = await adminShoeApi.getAll({
           _page: page,
           _limit: limit,
         });

@@ -7,7 +7,7 @@ import StorageKeys from './constants/storage-keys';
 import ErrorPage from './customer/pages/ErrorPage'; // Import the ErrorPage component
 
 const App = () => {
-  const userRole = JSON.parse(localStorage.getItem(StorageKeys.USER));
+  const userRole = JSON.parse(localStorage.getItem(StorageKeys.USER)) || ''; 
 
   return (
     <div className="">

@@ -1,28 +1,49 @@
 import {
   CheckIcon,
-  QuestionMarkCircleIcon,
   ShieldCheckIcon,
   XMarkIcon,
 } from '@heroicons/react/24/outline';
-import React, { useState } from 'react';
-import Collection from '../Product/Collection';
-import AddToCartForm from '../Cart/AddToCartForm';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../../../containers/Cart/cartSlice';
-import axios from 'axios';
-import { useEffect } from 'react';
+import AddToCartForm from '../Cart/AddToCartForm';
+import Collection from '../Product/Collection';
+import Inspiration from './Inspiration';
+import Size from './Size';
+import YourDesign from './YourDesign';
+import StorageKeys from '../../../constants/storage-keys';
 
 const ProductDetails = ({ product }) => {
   const [quantity] = useState(0);
   const [selectedShoe, setSelectedShoe] = useState(null);
+  const [selectedShoeImages, setSelectedShoeImages] = useState([]);
+  const [selectedSize, setSelectedSize] = useState(null);
+  const [showInspiration, setShowInspiration] = useState(true);
+  const dispatch = useDispatch();
+
   useEffect(() => {
     if (product && product.shoe && product.shoe.length > 0) {
       setSelectedShoe(product.shoe[0]);
     }
   }, [product]);
+  const postCartData = async (cartData) => {
+    const url = `http://3.1.85.78/api/v1/auth/add?token=${localStorage.getItem(
+      StorageKeys.TOKEN
+    )}`;
+    try {
+      const response = await axios.post(url, cartData);
+      if (response.status === 200) {
+        console.log('Cart data posted successfully:', response.data);
+        // Handle the response data or perform any necessary actions
+      } else {
+        console.error('Error posting cart data:', response.data);
+      }
+    } catch (error) {
+      console.error('Error posting cart data:', error);
+    }
+  };
 
-  const [selectedShoeImages, setSelectedShoeImages] = useState([]);
-  // Function to fetch shoe images based on shoe ID using Axios
   const fetchShoeImages = async (shoeId) => {
     try {
       const response = await axios.get(
@@ -43,28 +64,33 @@ const ProductDetails = ({ product }) => {
   }, [selectedShoe]);
 
   const handleAddToCart = () => {
-    const action = addToCart({
-      id: product.id,
+    const cartItem = {
+      productId: product.id,
       name: product.modelname,
       image: product.imageurl,
       price: product.price,
       size: selectedSize,
+      shoe: selectedShoe,
       quantity: quantity + 1,
-    });
+    };
+
+    // Dispatch the action to update the cart state
+    const action = addToCart(cartItem);
     dispatch(action);
-    console.log(action);
+
+    // Post the cart data to the API
+    postCartData([cartItem]);
   };
+
   const handleCustomizeClick = () => {
     const customizeUrl = '/customize';
     window.location.href = customizeUrl;
   };
+
   const handleShoeButtonClick = (shoe) => {
     setSelectedShoe(shoe);
     setSelectedShoeImages(shoe.imageUrls);
   };
-  const [selectedSize, setSelectedSize] = useState(null);
-
-  const dispatch = useDispatch();
 
   if (!product) {
     return <div>Loading...</div>;
@@ -74,18 +100,25 @@ const ProductDetails = ({ product }) => {
     <div className="mx-auto py-8 px-4 w-full max-w-7xl bg-white">
       <div className="mx-auto max-w-2xl lg:max-w-none grid grid-cols-1 lg:grid-cols-2 gap-5">
         <div className="order-2 lg:order-1 relative rounded-sm">
-          {/* Image of single shoe */}
           {selectedShoeImages && selectedShoeImages.length > 0 ? (
             <div className="grid grid-cols-2 gap-2 lg:grid-cols-2 lg:gap-2">
               {selectedShoeImages.map((image, index) => (
                 <div key={index}>
                   <img
                     src={image.imageUrl}
-                    alt={`Shoe Imag`}
+                    alt={`Shoe Images ${index}`}
                     className="object-contain w-full h-full rounded-sm"
                   />
                 </div>
               ))}
+            </div>
+          ) : selectedShoe ? (
+            <div>
+              <img
+                src={selectedShoe.imageUrl}
+                alt="Shoe Images"
+                className="object-contain w-full h-full rounded-sm"
+              />
             </div>
           ) : (
             <p>No images available for the selected shoe.</p>
@@ -97,45 +130,12 @@ const ProductDetails = ({ product }) => {
             {product.modelname}
           </h1>
           <div className="mt-5 flex items-center">
-            <p className="pr-5 border-r border-gray-200 text-2xl text-gray-700 font-normal">
+            <p className="pr-5 border-r border-gray-200 text-2xl text-gray-700 font-sans">
               ${product.price}
             </p>
             <div className="pl-5 pr-3 flex items-center">
-              <div className="flex items-center space-x-1">
-                <span className="flex-shrink-0">
-                  <svg
-                    className="w-4 h-4 text-yellow-400 fill-current"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" />
-                  </svg>
-                </span>
-                {product.rating % 1 !== 0 && (
-                  <span className="flex-shrink-0">
-                    <svg
-                      className="w-4 h-4 text-yellow-400 fill-current"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M12 5.173l2.335 4.817 5.305.732-3.861 3.71.942 5.27-4.721-2.524v-12.005zm0-4.586l-3.668 7.568-8.332 1.151 6.064 5.828-1.48 8.279 7.416-3.967 7.416 3.966-1.48-8.279 6.064-5.827-8.332-1.15-3.668-7.569z" />
-                    </svg>
-                  </span>
-                )}
-
-                <span className="flex-shrink-0">
-                  <svg
-                    className="w-4 h-4 text-gray-300 fill-current"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z" />
-                  </svg>
-                </span>
-              </div>
               <span className="ml-2 text-sm text-gray-400 font-medium">
-                {product.reviewsNbr}
-                {' reviews'}
+                Custom Shoes
               </span>
             </div>
           </div>
@@ -152,64 +152,48 @@ const ProductDetails = ({ product }) => {
               </p>
             )}
           </div>
-          {/* Inspiration */}
-          <div className="mt-4 w-full">
-            <h3 className="text-sm text-gray-700 font-semibold">Inspiration</h3>
-            <div className="flex">
-              {product.shoe?.map((shoe) => (
-                <button
-                  key={shoe.id}
-                  type="button"
-                  className={` inline-flex flex-col items-center mx-2 mt-4 space-y-2 rounded-3xl border-2 ${
-                    selectedShoe === shoe
-                      ? 'border border-red-400'
-                      : 'border border-gray-200'
-                  } text-left`}
-                  onClick={() => handleShoeButtonClick(shoe)}
-                >
-                  <img
-                    src={shoe.imageUrl}
-                    alt={shoe.alt}
-                    className="object-cover p-1 w-22 h-22 rounded-3xl"
-                  />
-                </button>
-              ))}
-            </div>
+          <div className="mt-4">
+            <button
+              onClick={() => setShowInspiration(true)}
+              className={`mr-4 text-xl font-semibold border-b-4 ${
+                showInspiration ? 'border-red-600' : ''
+              }`}
+            >
+              Inspiration
+            </button>
+            <button
+              onClick={() => setShowInspiration(false)}
+              className={`text-xl font-semibold border-b-4 ${
+                !showInspiration ? 'border-red-600' : ''
+              }`}
+            >
+              Your Designs
+            </button>
           </div>
+
+          {/* Toggle between Inspiration and YourDesign */}
+          {showInspiration ? (
+            <Inspiration
+              product={product}
+              selectedShoe={selectedShoe}
+              handleShoeButtonClick={handleShoeButtonClick}
+            />
+          ) : (
+            <YourDesign
+              selectedShoeImages={selectedShoeImages}
+              handleShoeButtonClick={handleShoeButtonClick}
+            />
+          )}
 
           {/* Size */}
-          <div className="mt-4 w-full">
-            <h3 className="text-sm text-gray-700 font-semibold">Size</h3>
+          <Size
+            product={product}
+            selectedSize={selectedSize}
+            setSelectedSize={setSelectedSize}
+          />
 
-            <div className="mt-2 grid grid-cols-2 lg:grid-cols-2 gap-2">
-              {product.sizes?.map((size) => (
-                <button
-                  key={size}
-                  type="button"
-                  className={`p-3 inline-flex flex-col items-center space-y-2 rounded-lg border-2 ${
-                    selectedSize === size
-                      ? 'border border-red-400'
-                      : 'border border-gray-200'
-                  } text-left`}
-                  onClick={() => setSelectedSize(size)}
-                >
-                  <span className="text-base text-gray-700 font-semibold">
-                    {size}
-                  </span>
-                </button>
-              ))}
-            </div>
-
-            <a
-              href="#sizeGuide"
-              className="mt-5 inline-flex items-center text-sm text-gray-400 font-medium hover:text-gray-700"
-            >
-              What size should I buy?
-              <QuestionMarkCircleIcon className="ml-2 w-4 h-4" />
-            </a>
-          </div>
           {/* TODO: Add to cart form */}
-          <div className="mt-10 py-2 w-full inline-block rounded-md bg-red-600 hover:bg-red-700 text-base transition delay-150 text-white font-semibold tracking-wide ">
+          <div className="mt-10 py-2 w-full inline-block rounded-md bg-red-600 hover:bg-red-700 text-base text-white font-semibold tracking-wide ">
             <AddToCartForm onAddToCart={handleAddToCart} />
           </div>
           <button

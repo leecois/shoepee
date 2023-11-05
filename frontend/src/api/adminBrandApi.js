@@ -11,7 +11,7 @@ const adminBrandApi = {
     return axiosClient.get(url);
   },
   add: (data) => {
-    const url = '/admin/brands';
+    const url = '/admin/addbrand';
     return axiosClient.post(url, data);
   },
   update: (id, data) => { 

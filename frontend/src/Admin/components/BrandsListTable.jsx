@@ -12,22 +12,22 @@ import {
   GridRowModes,
   GridToolbarContainer,
 } from '@mui/x-data-grid';
-import {
-  randomId
-} from '@mui/x-data-grid-generator';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 
 function EditToolbar(props) {
-  const { setRows, setRowModesModel } = props;
+  const { rows, setRows, setRowModesModel, addBrand } = props;
 
   const handleClick = () => {
-    const id = randomId();
-    setRows((oldRows) => [...oldRows, { id, brandName: '', imageUrl: '', isNew: true }]);
+    const maxId = Math.max(...rows.map((row) => row.id), 0);
+    const id = maxId + 1;
+    const newBrand = { id, brandName: '', imageUrl: '', isNew: true };
+    setRows((oldRows) => [...oldRows, newBrand]);
     setRowModesModel((oldModel) => ({
       ...oldModel,
       [id]: { mode: GridRowModes.Edit, fieldToFocus: 'brandName' },
     }));
+    addBrand(newBrand);
   };
 
   return (
@@ -39,12 +39,12 @@ function EditToolbar(props) {
   );
 }
 
-export default function BrandsListTable({ brandList, updateBrand }) {
+export default function BrandsListTable({ brandList, updateBrand, addBrand }) {
   const [rows, setRows] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
 
   useEffect(() => {
-    setRows(brandList.map((item) => ({ ...item })));
+    setRows(brandList?.map((item) => ({ ...item })));
   }, [brandList]);
 
   const handleRowEditStop = (params, event) => {
@@ -59,7 +59,11 @@ export default function BrandsListTable({ brandList, updateBrand }) {
 
   const handleSaveClick = (id) => () => {
     const updatedRow = rows.find((row) => row.id === id);
-    updateBrand(updatedRow.id, updatedRow);
+    if (updatedRow.isNew) {
+      addBrand(updatedRow);
+    } else {
+      updateBrand(updatedRow.id, updatedRow);
+    }
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
   };
 
@@ -91,8 +95,13 @@ export default function BrandsListTable({ brandList, updateBrand }) {
 
   const columns = [
     { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'brandName', headerName: 'Brand Name', width: 130, editable: true},
-    { field: 'imageUrl', headerName: 'Image URL', width: 500, editable: true},
+    {
+      field: 'brandName',
+      headerName: 'Brand Name',
+      width: 130,
+      editable: true,
+    },
+    { field: 'imageUrl', headerName: 'Image URL', width: 500, editable: true },
     {
       field: 'actions',
       type: 'actions',
@@ -124,14 +133,14 @@ export default function BrandsListTable({ brandList, updateBrand }) {
 
         return [
           <GridActionsCellItem
-            icon={<EditIcon className='transparent dark:text-gray-300'/>}
+            icon={<EditIcon className="transparent dark:text-gray-300" />}
             label="Edit"
             className="textPrimary"
             onClick={handleEditClick(id)}
             color="inherit"
           />,
           <GridActionsCellItem
-            icon={<DeleteIcon className='transparent dark:text-gray-300'/>}
+            icon={<DeleteIcon className="transparent dark:text-gray-300" />}
             label="Delete"
             onClick={handleDeleteClick(id)}
             color="inherit"
@@ -143,7 +152,7 @@ export default function BrandsListTable({ brandList, updateBrand }) {
 
   return (
     <Box
-    className='dark:bg-graydark'
+      className="dark:bg-graydark"
       sx={{
         height: 500,
         width: '100%',
@@ -160,7 +169,7 @@ export default function BrandsListTable({ brandList, updateBrand }) {
         columns={columns}
         editMode="row"
         rowModesModel={rowModesModel}
-        className='dark:text-white'
+        className="dark:text-white"
         onRowModesModelChange={handleRowModesModelChange}
         onRowEditStop={handleRowEditStop}
         processRowUpdate={processRowUpdate}
@@ -168,7 +177,7 @@ export default function BrandsListTable({ brandList, updateBrand }) {
           toolbar: EditToolbar,
         }}
         slotProps={{
-          toolbar: { setRows, setRowModesModel },
+          toolbar: { rows, setRows, setRowModesModel, addBrand },
         }}
       />
     </Box>

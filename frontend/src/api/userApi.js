@@ -17,7 +17,7 @@ const createUser = (user) => {
 
 const getUserById = (userId) => {
   const jwt = localStorage.getItem(StorageKeys.TOKEN);
-  return axiosClient.get(`users/${userId}`, {
+  return axiosClient.get(`auth/users/${userId}`, {
     headers: {
       Authorization: `Bearer ${jwt}`,
     },

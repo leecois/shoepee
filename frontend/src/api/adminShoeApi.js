@@ -1,9 +1,9 @@
 import axiosClient from './axiosClient';
 
-const shoeApi = {
+const adminShoeApi = {
   async getAll(params) {
     try {
-      const response = await axiosClient.get('/admin/shoes', {
+      const response = await axiosClient.get('/auth/shoes', {
         params: {
           ...params,
           _start:
@@ -59,4 +59,4 @@ const shoeApi = {
   },
 };
 
-export default shoeApi;
+export default adminShoeApi;

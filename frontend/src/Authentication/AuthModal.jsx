@@ -35,37 +35,35 @@ const AuthModal = ({ handleClickOpen, handleClose }) => {
       !email ||
       !email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)
     ) {
-      setEmailError('This field is required');
+      setEmailError('This field is required. Please enter a valid email.');
       return;
     } else {
       setEmailError('');
     }
 
     setEnteredEmail(email);
-    let emailExists = false; // Mặc định là false
-    let isCheckEmailSuccess = false; // Mặc định là false
-    setIsLoading(true); // Bắt đầu loading
+    let emailExists = false;
+    let isCheckEmailSuccess = false;
+    setIsLoading(true);
 
     axios
       .get(`${API_BASE_URL}/auth/existuser/${email}`)
       .then((response) => {
         emailExists = response.data.email;
-        isCheckEmailSuccess = true; // Đã kiểm tra email thành công
+        isCheckEmailSuccess = true;
       })
       .catch((error) => {
-        isCheckEmailSuccess = true; // Đã kiểm tra email với lỗi
+        isCheckEmailSuccess = true;
       })
       .finally(() => {
-        setIsLoading(false); // Kết thúc loading
+        setIsLoading(false);
 
         if (isCheckEmailSuccess) {
           if (emailExists) {
-            // Xử lý khi email tồn tại
             setShowInitialScreen(false);
             setIsSignInVisible(true);
             setIsSignUpVisible(false);
           } else {
-            // Xử lý khi email không tồn tại
             setShowInitialScreen(false);
             setIsSignInVisible(false);
             setIsSignUpVisible(true);
@@ -88,7 +86,7 @@ const AuthModal = ({ handleClickOpen, handleClose }) => {
     setIsSignInVisible(false);
   };
   const handleSignInSuccess = () => {
-    handleClose(); 
+    handleClose();
   };
   const handleSignUpSuccess = () => {
     setHasSignedUp(true);
@@ -186,7 +184,7 @@ const AuthModal = ({ handleClickOpen, handleClose }) => {
             <SignUp
               goBack={handleBackToAuthModal}
               enteredEmail={enteredEmail}
-              handleCloseSuccess={handleSignUpSuccess} 
+              handleCloseSuccess={handleSignUpSuccess}
             />
           ) : hasSignedUp ? (
             <div>

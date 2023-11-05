@@ -6,10 +6,12 @@ import AuthModal from '../../Authentication/AuthModal';
 import StorageKeys from '../../constants/storage-keys';
 import { clearUserData } from '../../containers/User/userSlice';
 import {
-  cartItemsCountSelector
+  cartItemsCountSelector,
+  cartTotalSelector,
 } from '../../containers/selectors';
 
 export default function Navigation() {
+  const cartTotal = useSelector(cartTotalSelector);
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const navigate = useNavigate();
   const handleCartClick = () => {
@@ -25,7 +27,7 @@ export default function Navigation() {
     user = JSON.parse(localStorage.getItem(StorageKeys.USER));
   }
 
-  const userId = user ? user.userId : null; 
+  const userId = user ? user.userId : null;
 
   const cartItemsCount = useSelector(cartItemsCountSelector);
   const [openAuthModal, setOpenAuthModal] = useState(false);
@@ -134,12 +136,9 @@ export default function Navigation() {
                 <li>
                   <Link to={`profile/${userId}`} className="justify-between">
                     Profile
-                    <span className="badge">New</span>
                   </Link>
                 </li>
-                <li>
-                  <button>Settings</button>
-                </li>
+
                 <li>
                   <button onClick={handleLogout}>Logout</button>
                 </li>
@@ -187,7 +186,7 @@ export default function Navigation() {
                 <span className="font-bold text-lg">
                   {cartItemsCount} Items
                 </span>
-                <span className="text-info">Subtotal: $999</span>
+                <span className="text-info">Subtotal: ${cartTotal}</span>
                 <div className="card-actions">
                   <button
                     className="btn btn-primary btn-block"
@@ -201,10 +200,7 @@ export default function Navigation() {
           </div>
         </div>
       </div>
-      <img
-        src="/assets/clp-hero-top.webp"
-        alt="Colorful"
-      />
+      <img src="/assets/clp-hero-top.webp" alt="Colorful" />
       {openAuthModal && (
         <div className="modal active">
           <div className="modal-overlay"></div>

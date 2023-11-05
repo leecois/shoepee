@@ -24,40 +24,42 @@ const Cart = ({ cartItems }) => {
       <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
         <thead className="ltr:text-left rtl:text-right">
           <tr>
-            <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+            <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-left">
               Item description
             </th>
-            <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-              Style
+            <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-left">
+              Quantity
             </th>
-            <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+            <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-left">
               Price
             </th>
           </tr>
         </thead>
 
         {cartItems?.map((item) => (
-          <tbody className="divide-y divide-gray-200">
+          <tbody key={item.id} className="divide-y divide-gray-200">
             <tr className="hover:bg-gray-100">
               <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
                 <div className="flex items-center">
                   <img
                     className="h-full w-32 object-contain mr-4"
-                    src={item.image}
+                    src={item.imageUrl}
                     alt="cartImage"
                   />
                   <div>
                     <div className="font-bold">{item.name}</div>
-                    <div className="text-sm">SIZE: {item.price}</div>
+                    <div className="text-sm">SIZE: {item.size}</div>
                     <button onClick={() => handleRemoveFromCart(item.id)}>
                       Remove from Cart
                     </button>
                   </div>
                 </div>
               </td>
-              <td className="whitespace-nowrap px-4 py-2 text-gray-700"></td>
               <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                {item.size}
+                {item.quantity}
+              </td>
+              <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                ${item.price}.00
               </td>
             </tr>
           </tbody>

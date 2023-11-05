@@ -2,7 +2,7 @@ import { Disclosure } from '@headlessui/react';
 import {
   ChevronRightIcon,
   MagnifyingGlassIcon,
-  XCircleIcon
+  XCircleIcon,
 } from '@heroicons/react/24/outline';
 
 import React, { useEffect, useState } from 'react';
@@ -71,12 +71,14 @@ const Filters = () => {
         { value: '5tr', label: 'Over 5,000,000', checked: false },
       ],
     },
-    {id: 'brand',
-    name: 'Brand',
-    options: brandList.map((brand) => ({
-      value: brand.brandName,
-      label: brand.brandName,
-      checked: false,
+    {
+      id: 'brand',
+      name: 'Brand',
+      options: brandList.map((brand) => ({
+        key: brand.id,
+        value: brand.brandName,
+        label: brand.brandName,
+        checked: false,
       })),
     },
   ];
@@ -167,7 +169,7 @@ const Filters = () => {
                   {section.id === 'color' && (
                     <Disclosure.Panel className="mt-5 flex flex-wrap items-center">
                       {section.options.map((option) => (
-                        <div className="m-2">
+                        <div key={option.key} className="m-2">
                           <label
                             htmlFor={option.label}
                             className="sr-only"
@@ -186,28 +188,28 @@ const Filters = () => {
                   )}
                   {section.id !== 'color' && (
                     <Disclosure.Panel className="mt-5 flex flex-col">
-                    {section.options.map((option) => (
-                      <div className="m-1 flex items-center space-x-3">
-                        <div>
-                          <label
-                            htmlFor={option.label}
-                            className="sr-only"
-                          >{`Color ${option.label}`}</label>
-                          <input
-                            type="checkbox"
-                            name={option.label}
-                            id={option.label}
-                            defaultValue={option.value}
-                            defaultChecked={option.checked}
-                            className="checkbox"
-                          />
+                      {section.options.map((option) => (
+                        <div key={option.key} className="m-1 flex items-center space-x-3">
+                          <div>
+                            <label
+                              htmlFor={option.label}
+                              className="sr-only"
+                            >{`Color ${option.label}`}</label>
+                            <input
+                              type="checkbox"
+                              name={option.label}
+                              id={option.label}
+                              defaultValue={option.value}
+                              defaultChecked={option.checked}
+                              className="checkbox"
+                            />
+                          </div>
+                          <span className="text-base text-gray-700">
+                            {option.label}
+                          </span>
                         </div>
-                        <span className="text-base text-gray-700">
-                          {option.label}
-                        </span>
-                      </div>
-                    ))}
-                  </Disclosure.Panel>
+                      ))}
+                    </Disclosure.Panel>
                   )}
                 </div>
               )}

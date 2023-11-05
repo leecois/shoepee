@@ -9,7 +9,7 @@ function AddToCartForm({ onAddToCart }) {
     <div>
       <button
         onClick={handleAddToCart}
-        className="w-full inline-block rounded-md bg-red-600 text-white font-semibold hover:bg-red-700 tracking-wide"
+        className="w-full inline-block rounded-md bg-red-600 text-white font-semibold hover:bg-red-700"
       >
         Add to Cart
       </button>

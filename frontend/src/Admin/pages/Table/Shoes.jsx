@@ -1,15 +1,15 @@
-import ShoeListTable from '../../components/ShoeListTable';
+import AdminShoeData from '../../../hooks/AdminShoeData';
 import Breadcrumb from '../../components/Breadcrumb';
-import useShoeData from '../../../hooks/useShoeData';
+import ShoeListTable from '../../components/ShoeListTable';
 
 const Shoes = () => {
-  const { shoeList } = useShoeData();
+  const { shoeList } = AdminShoeData();
   return (
     <>
       <Breadcrumb pageName="Shoes" />
 
       <div className="flex flex-col gap-10">
-        <ShoeListTable data={shoeList} />
+        <ShoeListTable shoeList={shoeList} />
       </div>
     </>
   );

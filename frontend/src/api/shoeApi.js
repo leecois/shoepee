@@ -1,9 +1,9 @@
 import axiosClient from './axiosClient';
 
-const productApi = {
+const shoeApi = {
   async getAll(params) {
     try {
-      const response = await axiosClient.get('/auth/getallshoe', {
+      const response = await axiosClient.get('/auth/shoes', {
         params: {
           ...params,
           _start:
@@ -27,7 +27,9 @@ const productApi = {
   },
   async get(productId) {
     try {
-      const response = await axiosClient.get(`/auth/getshoemodelbyname/${productId}`);
+      const response = await axiosClient.get(
+        `/auth/getshoemodelbyname/${productId}`
+      );
       return response;
     } catch (error) {
       throw error;
@@ -59,4 +61,4 @@ const productApi = {
   },
 };
 
-export default productApi;
+export default shoeApi;

@@ -1,8 +1,8 @@
 import { Button } from '@mui/material';
-import React, { useEffect, useRef, useState } from 'react';
-import productApi from '../../../api/productApi';
+import React, { useRef, useState } from 'react';
 import OptionModal from './OptionModal';
 import RadioCheck from './RadioCheck';
+import useModelData from '../../../hooks/useModelData';
 
 const FullModal = ({ handleClickOpen, handleClose }) => {
   const [brandList, setBrandList] = useState([]);
@@ -10,27 +10,11 @@ const FullModal = ({ handleClickOpen, handleClose }) => {
   const [selectedBrand, setSelectedBrand] = useState('Vans');
   const [selectedShoe, setSelectedShoe] = useState(null);
   const [optionModalOpen, setOptionModalOpen] = useState(false);
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(12);
 
   const trigger = useRef(null);
   const modal = useRef(null);
 
-  useEffect(() => {
-    const fetchBrandData = async () => {
-      try {
-        const { data } = await productApi.getAll({
-          _page: page,
-          _limit: limit,
-        });
-        setBrandList(data);
-        console.log('Brand List:', data);
-      } catch (error) {
-        console.log('Non-response Error:', error.message);
-      }
-    };
-    fetchBrandData();
-  }, []);
+  const { modelList } = useModelData();
 
   const openModal = () => {
     setModalOpen(true);
@@ -43,7 +27,7 @@ const FullModal = ({ handleClickOpen, handleClose }) => {
   };
 
   const filteredShoes = brandList.filter(
-    (shoe) => shoe.brand.name === selectedBrand && shoe.type === "blank"
+    (modelList) => modelList.brand.name === selectedBrand && modelList.type === 'blank'
   );
 
   const openOptionModal = (shoeId) => {
@@ -115,7 +99,7 @@ const FullModal = ({ handleClickOpen, handleClose }) => {
               </header>
               <div className="overflow-y-auto max-h-[500px] bg-light-yellow">
                 <ul className="grid gap-4 mb-4 sm:grid-cols-2 lg:grid-cols-3">
-                  {filteredShoes.map((shoe) => (
+                  {filteredShoes?.map((shoe) => (
                     <li key={shoe.id}>
                       <button
                         onClick={() => openOptionModal(shoe.id)}
