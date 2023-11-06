@@ -89,9 +89,9 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+            <configuration>
                 <mainClass>${start.class}</mainClass>
                 <layout>ZIP</layout>
             </configuration>
@@ -102,7 +102,7 @@
                     </goals>
                 </execution>
             </executions>
-			</plugin>
+        </plugin>
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
