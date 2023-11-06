@@ -45,7 +45,6 @@ export default function ShoeListTable({ shoeList, updateShoe }) {
   const [rowModesModel, setRowModesModel] = useState({});
 
   useEffect(() => {
-    console.log(shoeList);
     if (shoeList) {
       setRows(shoeList.map((item) => ({ ...item })));
     }

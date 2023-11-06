@@ -8,11 +8,9 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { addToCart } from '../../../containers/Cart/cartSlice';
 import AddToCartForm from '../Cart/AddToCartForm';
-import Collection from '../Product/Collection';
 import Inspiration from './Inspiration';
 import Size from './Size';
 import YourDesign from './YourDesign';
-import StorageKeys from '../../../constants/storage-keys';
 
 const ProductDetails = ({ product }) => {
   const [quantity] = useState(0);
@@ -28,8 +26,7 @@ const ProductDetails = ({ product }) => {
     }
   }, [product]);
   const postCartData = async (cartData) => {
-    const url = `http://3.1.85.78/api/v1/auth/add?token=${localStorage.getItem(
-      StorageKeys.TOKEN
+    const url = `http://3.1.85.78/api/v1/auth/addcart'
     )}`;
     try {
       const response = await axios.post(url, cartData);
@@ -83,7 +80,7 @@ const ProductDetails = ({ product }) => {
   };
 
   const handleCustomizeClick = () => {
-    const customizeUrl = '/customize';
+    const customizeUrl = `/customize?modelname=${product.modelname}`;
     window.location.href = customizeUrl;
   };
 
@@ -212,7 +209,7 @@ const ProductDetails = ({ product }) => {
       <p className="mt-2 text-md text-gray-500 font-medium">
         {product.description}
       </p>
-      <Collection />
+      {/* <Collection /> */}
     </div>
   );
 };

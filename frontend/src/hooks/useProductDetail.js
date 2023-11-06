@@ -11,7 +11,6 @@ export default function useProductDetail(modelname) {
         setLoading(true);
         const response = await modelApi.get(modelname);
         setProduct(response);
-        console.log(response);
       } catch (error) {
         console.log('Failed to fetch product', error);
       }

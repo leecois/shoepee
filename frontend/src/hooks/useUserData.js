@@ -11,7 +11,6 @@ const useUserData = () => {
         const response = await userApi.getAll();
 
         setUserData(response);
-        console.log(response);
       } catch (error) {
         setError('Error fetching user data: ' + error);
       }

@@ -1,14 +1,26 @@
+import { Skeleton } from '@mui/material';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-function ProductList({ data }) {
-  if (!data) {
-    return <span className="loading loading-dots loading-lg"></span>;
+function ProductList({ modelList }) {
+  if (modelList.length === 0 || !modelList) {
+    return (
+      <div className="w-full col-span-full md:col-span-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 pl-4">
+        {[...Array(12)].map((_, index) => (
+          <div key={index}>
+            <Skeleton variant="rectangular" width="100%" height={400} />
+            <Skeleton variant="text" />
+            <Skeleton variant="text" />
+            <Skeleton variant="text" />
+          </div>
+        ))}
+      </div>
+    );
   }
 
   return (
     <div className="col-span-full md:col-span-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 pl-4">
-      {data?.map((model) => (
+      {modelList?.map((model) => (
         <div key={model.id}>
           <Link to={`/products/${model.modelname}`} className="block group">
             <img
@@ -24,9 +36,7 @@ function ProductList({ data }) {
                 {model.modelname}
               </div>
               <div className="flex justify-between mt-3 text-sm">
-                <h3 className="text-gray-500 font-bold">
-                  {model.brandId}
-                </h3>
+                <h3 className="text-gray-500 font-bold">{model.brandId}</h3>
                 <p className="text-black pl-4 text-md font-semibold">
                   ${model.price}
                 </p>

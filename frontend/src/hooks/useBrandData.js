@@ -9,7 +9,6 @@ const useBrandData = () => {
       try {
         const data = await brandApi.getAll();
         setBrandList(data);
-        console.log(data);
       } catch (error) {
         if (error.response && error.response.status) {
           console.log('Error fetching product list: ' + error.message);

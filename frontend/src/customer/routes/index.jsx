@@ -6,6 +6,7 @@ const CartPage = lazy(() => import('../pages/CartPage/CartPage'));
 const CheckoutPage = lazy(() => import('../pages/Checkout/CheckoutPage'));
 const ShoeCustomize = lazy(() => import('../pages/ShoeCustomize'));
 const ProfilePage = lazy(() => import('../pages/ProfilePage'));
+const Location = lazy(() => import('../components/Location/Location'));
 
 const coreRoutes = [
   {
@@ -32,6 +33,11 @@ const coreRoutes = [
     path: '/customize',
     title: 'Customize',
     component: ShoeCustomize,
+  },
+  {
+    path: '/location',
+    title: 'Location',
+    component: Location,
   },
   {
     path: '/profile/:userId',

@@ -5,10 +5,10 @@ import {
   MagnifyingGlassIcon,
   RectangleGroupIcon,
 } from '@heroicons/react/24/outline';
-import React, { useState } from 'react';
+import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-const HeaderProduct = ({ data }) => {
+const HeaderProduct = ({ onSort, openFilter, setOpenFilter }) => {
   const navigate = useNavigate();
   const sortOptions = [
     { name: 'Best Rating', value: 'rating' },
@@ -20,31 +20,17 @@ const HeaderProduct = ({ data }) => {
   const sort = queryParams.get('sort') || 'popularity';
 
   const handleSort = (value) => {
-    sortProducts(value);
+    onSort(value);
     const query = new URLSearchParams(location.search);
     query.set('sort', value);
     navigate(`${location.pathname}?${query.toString()}`);
   };
 
-  const sortProducts = (sortOption) => {
-    let sortedProducts = [...data];
-    switch (sortOption) {
-      case 'rating':
-        sortedProducts.sort((a, b) => b.rating - a.rating);
-        break;
-      case 'price_asc':
-        sortedProducts.sort((a, b) => a.price - b.price);
-        break;
-      case 'price_desc':
-        sortedProducts.sort((a, b) => b.brandId - a.brandId);
-        break;
-      default:
-        break;
-    }
-    // Set the sorted products to your state or update your UI with the sorted data
+  const handleSearch = (event) => {
+    const query = new URLSearchParams(location.search);
+    query.set('q', event.target.value);
+    navigate(`${location.pathname}?${query.toString()}`);
   };
-
-  const [openFilter, setOpenFilter] = useState(true);
 
   return (
     <div className="col-span-full pb-6 flex flex-col sm:flex-row items-center justify-between space-y-5 sm:space-y-0 border-b border-gray-200">
@@ -60,6 +46,7 @@ const HeaderProduct = ({ data }) => {
             name="search"
             placeholder="Search"
             className="form-input pl-11 pr-5 w-44 block shadow-sm rounded-full border-gray-300 bg-gray-50 text-sm placeholder-gray-300 focus:border-blue-300 focus:ring-1 focus:ring-blue-300"
+            onChange={handleSearch}
           />
           <span className="absolute top-1/2 left-3 text-gray-400 transform -translate-y-1/2">
             <MagnifyingGlassIcon className="w-4 h-4" />

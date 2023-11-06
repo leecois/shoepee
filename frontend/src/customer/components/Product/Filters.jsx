@@ -5,11 +5,10 @@ import {
   XCircleIcon,
 } from '@heroicons/react/24/outline';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import useBrandData from '../../../hooks/useBrandData';
 
-const Filters = () => {
-  const [openFilter, setOpenFilter] = useState(true);
+const Filters = ({ openFilter, setOpenFilter }) => {
   const { brandList } = useBrandData();
 
   const subCategories = [
@@ -82,14 +81,6 @@ const Filters = () => {
       })),
     },
   ];
-
-  useEffect(() => {
-    window.addEventListener('resize', () => {
-      if (window.innerWidth >= 1024) {
-        setOpenFilter(true);
-      }
-    });
-  }, []);
 
   return (
     <>
@@ -169,7 +160,7 @@ const Filters = () => {
                   {section.id === 'color' && (
                     <Disclosure.Panel className="mt-5 flex flex-wrap items-center">
                       {section.options.map((option) => (
-                        <div key={option.key} className="m-2">
+                        <div key={option.value} className="m-2">
                           <label
                             htmlFor={option.label}
                             className="sr-only"
@@ -189,7 +180,10 @@ const Filters = () => {
                   {section.id !== 'color' && (
                     <Disclosure.Panel className="mt-5 flex flex-col">
                       {section.options.map((option) => (
-                        <div key={option.key} className="m-1 flex items-center space-x-3">
+                        <div
+                          key={option.value}
+                          className="m-1 flex items-center space-x-3"
+                        >
                           <div>
                             <label
                               htmlFor={option.label}

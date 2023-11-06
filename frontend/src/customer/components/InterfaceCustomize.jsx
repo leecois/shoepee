@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { CustomizationContext } from '../layout/CustomizationContext';
 import CartDrawer from '../components/CartDrawer';
+import useSizeData from '../../hooks/useSizeData';
 
 export default function InterfaceCustomize() {
   const { customization, setCustomization } = useContext(CustomizationContext);

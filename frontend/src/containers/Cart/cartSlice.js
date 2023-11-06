@@ -15,7 +15,13 @@ export const cartSlice = createSlice({
     },
     addToCart: (state, action) => {
       const newItem = action.payload;
-      const index = state.cartItems.findIndex((x) => x.id === newItem.id);  
+      const index = state.cartItems.findIndex(
+        (x) =>
+          x.id === newItem.id &&
+          x.size === newItem.size &&
+          x.shoe === newItem.shoe
+      );
+
       if (index >= 0) {
         // Increase quantity
         state.cartItems[index].quantity += newItem.quantity;
@@ -33,8 +39,10 @@ export const cartSlice = createSlice({
       }
     },
     removeFromCart: (state, action) => {
-      const idNeedToRemove = action.payload;
-      state.cartItems = state.cartItems.filter((x) => x.id !== idNeedToRemove);
+      const { id, size } = action.payload;
+      state.cartItems = state.cartItems.filter(
+        (x) => x.id !== id || x.size !== size
+      );
       localStorage.setItem('cart', JSON.stringify(state.cartItems));
     },
   },

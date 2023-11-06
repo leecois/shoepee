@@ -27,8 +27,6 @@ const SignUp = ({ goBack, enteredEmail, handleCloseSuccess }) => {
       const resultAction = await dispatch(action);
       const user = unwrapResult(resultAction);
 
-      console.log("New user", user);
-
       // Close modal on successful registration
       handleCloseSuccess();
     } catch (error) {

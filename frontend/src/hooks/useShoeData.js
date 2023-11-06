@@ -14,7 +14,6 @@ const useProductData = () => {
           _limit: limit,
         });
         setShoeList(data);
-        console.log(data);
       } catch (error) {
         if (error.response && error.response.status) {
           console.log('Error fetching product list: ' + error.message);

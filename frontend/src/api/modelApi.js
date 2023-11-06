@@ -6,18 +6,13 @@ const modelApi = {
       const response = await axiosClient.get('/auth/shoemodels', {
         params: {
           ...params,
-          _start:
-            !params._page || params._page <= 1
-              ? 0
-              : (params._page - 1) * (params._limit || 50),
         },
       });
 
       return {
         data: response,
         pagination: {
-          page: params._page,
-          limit: params._limit,
+          q: params.q,
           total: response.length,
         },
       };
@@ -27,7 +22,9 @@ const modelApi = {
   },
   async get(modelname) {
     try {
-      const response = await axiosClient.get(`/auth/getshoemodelbyname/${modelname}`);
+      const response = await axiosClient.get(
+        `/auth/getshoemodelbyname/${modelname}`
+      );
       return response;
     } catch (error) {
       throw error;

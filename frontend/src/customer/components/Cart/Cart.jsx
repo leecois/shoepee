@@ -15,8 +15,8 @@ const Cart = ({ cartItems }) => {
     );
   }
 
-  const handleRemoveFromCart = (id) => {
-    dispatch(removeFromCart(id));
+  const handleRemoveFromCart = (id, size) => {
+    dispatch(removeFromCart({ id, size }));
   };
 
   return (
@@ -43,13 +43,15 @@ const Cart = ({ cartItems }) => {
                 <div className="flex items-center">
                   <img
                     className="h-full w-32 object-contain mr-4"
-                    src={item.imageUrl}
+                    src={item.shoe?.imageUrl || item.image}
                     alt="cartImage"
                   />
                   <div>
                     <div className="font-bold">{item.name}</div>
                     <div className="text-sm">SIZE: {item.size}</div>
-                    <button onClick={() => handleRemoveFromCart(item.id)}>
+                    <button
+                      onClick={() => handleRemoveFromCart(item.id, item.size)}
+                    >
                       Remove from Cart
                     </button>
                   </div>

@@ -11,7 +11,7 @@ const HomePage = () => {
       <Hero />
       <StepCustomize />
       <HeroMessage />
-      <Collection />
+      {/* <Collection /> */}
       <Testimonial />
     </>
   );
