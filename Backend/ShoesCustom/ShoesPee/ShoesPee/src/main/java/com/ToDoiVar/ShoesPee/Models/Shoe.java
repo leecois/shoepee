@@ -31,8 +31,6 @@ public class Shoe {
     private String imageUrl;
 
     @ManyToOne()
-    @JoinColumn(name = "shoe_model_modelid")
-    @JsonIgnore
     private ShoeModel shoeModel;
 //    @OneToOne()
 //    @JsonManagedReference

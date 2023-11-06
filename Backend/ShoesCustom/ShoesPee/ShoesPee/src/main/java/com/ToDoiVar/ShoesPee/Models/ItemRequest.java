@@ -3,6 +3,7 @@ package com.ToDoiVar.ShoesPee.Models;
 public class ItemRequest {
     private int shoeId;
     private int quantity;
+    private int size;
     public int getShoeId() {
         return shoeId;
     }
@@ -25,4 +26,11 @@ public class ItemRequest {
         // TODO Auto-generated constructor stub
     }
 
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
 }

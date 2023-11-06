@@ -1,6 +1,7 @@
 package com.ToDoiVar.ShoesPee.Models;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 @Entity
 public class CartItem {
@@ -10,8 +11,8 @@ public class CartItem {
     private int cartItemId;
     private int quantity;
     private double totalprice;
+    private int size;
     //Relationship with other table
-
     @ManyToOne
     private Cart cart;
     @OneToOne()
@@ -47,5 +48,11 @@ public class CartItem {
         this.shoe = product;
     }
 
+    public int getSize() {
+        return size;
+    }
 
+    public void setSize(int size) {
+        this.size = size;
+    }
 }

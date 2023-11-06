@@ -39,45 +39,34 @@ public class CartController {
 
 
     @PostMapping("/addcart")
-    public ResponseEntity<ApiResponse> addtoCart(@RequestBody AddToCartDto addToCartDto,Principal principal){
+    public ResponseEntity<CartDto> addtoCart(@RequestBody ItemRequest itemRequest,Principal principal){
         String email=principal.getName();
-        User user = userService.getUserByEmail(email);
-        Shoe shoe = shoeService.findById(addToCartDto.getProductId());
-        this.cartService.addToCart(addToCartDto,user);
+        System.out.println(email);
+        CartDto addItem = this.cartService.addItem(itemRequest,principal.getName());
 
-        return new ResponseEntity<ApiResponse>(new ApiResponse("Added to cart", true), HttpStatus.CREATED);
+        return new ResponseEntity<CartDto>(addItem,HttpStatus.OK);
     }
 
 
     //create method for getting cart
     @GetMapping("/getcart")
     public ResponseEntity<CartDto>getAllCart(Principal principal){
-        String email=principal.getName();
-        User user = userService.getUserByEmail(email);
-        CartDto getcartAll = this.cartService.listCartItems(user);
-        return new ResponseEntity<>(getcartAll,HttpStatus.OK);
+        CartDto getcartAll = this.cartService.getcartAll(principal.getName());
+        return new ResponseEntity<CartDto>(getcartAll,HttpStatus.ACCEPTED);
     }
-//    @GetMapping("/{cartId}")
-//    public ResponseEntity<CartDto>getCartById(@PathVariable  int cartId){
-//
-//        System.out.println(cartId);
-//        CartDto cartByID = this.cartService.getCartByID(cartId);
-//        return new ResponseEntity<CartDto>(cartByID,HttpStatus.OK);
-//    }
+    @GetMapping("/{cartId}")
+    public ResponseEntity<CartDto>getCartById(@PathVariable  int cartId){
+
+        System.out.println(cartId);
+        CartDto cartByID = this.cartService.getCartByID(cartId);
+        return new ResponseEntity<CartDto>(cartByID,HttpStatus.OK);
+    }
 
     @DeleteMapping("/delete/{pid}")
-    public ResponseEntity<ApiResponse>deleteCartItem(@PathVariable int pid,Principal p){
-        String email=p.getName();
-        User user = userService.getUserByEmail(email);
-        this.cartService.deleteCartItem(pid,user);
-        return new ResponseEntity<>(new ApiResponse("Item has been removed", true), HttpStatus.OK);
-    }
-    @GetMapping("/getcartitem")
-    public ResponseEntity<CartDto> getCartItems(Principal principal) throws AuthenticationFailException {
-        String email=principal.getName();
-        User user = userService.getUserByEmail(email);
-        CartDto cartDto = cartService.listCartItems(user);
-        return new ResponseEntity<CartDto>(cartDto,HttpStatus.OK);
+    public ResponseEntity<CartDto>deleteCartItemFromCart(@PathVariable int pid,Principal p){
+
+        CartDto remove = this.cartService.removeCartItemFromCart(p.getName(),pid);
+        return new ResponseEntity<CartDto>(remove,HttpStatus.UPGRADE_REQUIRED);
     }
 
 }

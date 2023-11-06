@@ -13,26 +13,26 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 
 @RestController
-    @RequestMapping("/api/v1/auth/order")
+@RequestMapping("/api/v1/auth")
 public class OrderController {
     @Autowired
     private OrderService orderService;
     //create order
 
-        @PostMapping("/placeorder")
+    @PostMapping("/placeorder")
     public ResponseEntity<OrderDto> createOrder(@RequestBody OrderRequest orderReq, Principal p) {
         String username=p.getName();
         OrderDto order=this.orderService.orderCreate(orderReq,username);
         return new ResponseEntity<OrderDto>(order, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{orderId}")
+    @DeleteMapping("/deleteorder/{orderId}")
     public ResponseEntity<?> cancelOrderById(@PathVariable int orderId){
         this.orderService.CancelOrder(orderId);
         return new ResponseEntity<ApiResponse>(new ApiResponse("Order deleted",true),HttpStatus.OK);
     }
 
-    @GetMapping("/{orderId}")
+    @GetMapping("/getorderbyid/{orderId}")
     public ResponseEntity<OrderDto>findById(@PathVariable int orderId){
         OrderDto orderDto = this.orderService.findById(orderId);
         return new ResponseEntity<OrderDto>(orderDto,HttpStatus.ACCEPTED);

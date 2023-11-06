@@ -38,7 +38,9 @@ public class ShoeModel {
         this.brand = brand;
     }
 
-    @OneToMany(mappedBy = "shoeModel",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "shoeModel",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JsonIgnore
+
     private Set<Shoe> shoe = new HashSet<>();
 
 
