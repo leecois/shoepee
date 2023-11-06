@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.ToDoiVar.ShoesPee</groupId>
 	<artifactId>shoepee</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0</version>
 	<name>ShoesPee</name>
 	<description>Project service shoes</description>
 	<properties>
