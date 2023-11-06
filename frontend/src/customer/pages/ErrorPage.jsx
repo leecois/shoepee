@@ -4,7 +4,7 @@ import ErrorContent from '../components/ErrorContent';
 const ErrorPage = () => {
   return (
     <section className="bg-white dark:bg-gray-900">
-      <div className="container flex items-center min-h-screen px-6 py-12 mx-auto">
+      <div className="grid h-screen px-4 bg-white place-content-center">
         <ErrorContent />
       </div>
     </section>

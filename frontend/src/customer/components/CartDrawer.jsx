@@ -26,6 +26,7 @@ export default function CartDrawer() {
       image: product.imageurl,
       price: product.price,
       size: selectedSize,
+      shoe: product.shoe[0],
       quantity: quantity + 1,
     };
 

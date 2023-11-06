@@ -24,6 +24,7 @@
     "axios": "^1.5.1",
     "formik": "^2.4.5",
     "html2canvas": "^1.4.1",
+    "keen-slider": "^6.8.6",
     "notistack": "^3.0.1",
     "nth-check": "^2.1.1",
     "postcss": "^8.4.31",
