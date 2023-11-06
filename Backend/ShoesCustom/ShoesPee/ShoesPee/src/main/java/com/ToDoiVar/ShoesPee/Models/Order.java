@@ -1,16 +1,18 @@
 package com.ToDoiVar.ShoesPee.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity(name = "orders")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int orderId;
     private String orderStatus;
     private String paymentStatus;
     private Date orderDelivered;
@@ -34,10 +36,10 @@ public class Order {
         // TODO Auto-generated constructor stub
     }
 
-    public Order(int id, String orderStatus, String paymentStatus, Date orderDelivered, double orderAmt,
+    public Order(int orderId, String orderStatus, String paymentStatus, Date orderDelivered, double orderAmt,
                  String billingAddress, Date orderCreateAt, User user, Set<OrderItem> orderItem) {
         super();
-        this.id = id;
+        this.orderId = orderId;
         this.orderStatus = orderStatus;
         this.paymentStatus = paymentStatus;
         this.orderDelivered = orderDelivered;
@@ -57,12 +59,12 @@ public class Order {
     }
 
     //Getter && Setter
-    public int getId() {
-        return id;
+    public int getOrderId() {
+        return orderId;
     }
 
-    public void setId(int orderId) {
-        this.id = orderId;
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
     }
     public String getOrderStatus() {
         return orderStatus;

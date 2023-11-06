@@ -1,12 +1,13 @@
 package com.ToDoiVar.ShoesPee.dto;
 
+import com.ToDoiVar.ShoesPee.Models.Shoe;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class OrderItemDto {
 
     private int orderItemId;
 
-    private ShoeDto shoeDto;
+    private ShoeDto shoe;
 
     private double totalProductprice;
     @JsonIgnore
@@ -20,12 +21,12 @@ public class OrderItemDto {
         this.orderItemId = orderItemId;
     }
 
-    public ShoeDto getShoeDto() {
-        return shoeDto;
+    public ShoeDto getShoe() {
+        return shoe;
     }
 
-    public void setShoeDto(ShoeDto shoeDto) {
-        this.shoeDto = shoeDto;
+    public void setShoe(ShoeDto shoe) {
+        this.shoe = shoe;
     }
 
     public double getTotalProductprice() {

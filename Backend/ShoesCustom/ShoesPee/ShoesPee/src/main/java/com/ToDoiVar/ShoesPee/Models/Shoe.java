@@ -2,10 +2,12 @@ package com.ToDoiVar.ShoesPee.Models;
 
 import com.ToDoiVar.ShoesPee.dto.ShoeDto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -32,19 +34,23 @@ public class Shoe {
     @JoinColumn(name = "shoe_model_modelid")
     @JsonIgnore
     private ShoeModel shoeModel;
-
-
-
-    @OneToMany(mappedBy = "shoe",cascade = CascadeType.ALL)
-    private Set<ImageShoe> imageShoes = new HashSet<>();
-
-    public Set<ImageShoe> getImageShoes() {
-        return imageShoes;
-    }
-
-    public void setImageShoes(Set<ImageShoe> imageShoes) {
-        this.imageShoes = imageShoes;
-    }
+//    @OneToOne()
+//    @JsonManagedReference
+//    private CartItem cartItem;
+//
+//    @OneToMany(mappedBy = "shoe",cascade = CascadeType.ALL)
+//    private Set<ImageShoe> imageShoes = new HashSet<>();
+//
+//    public Set<ImageShoe> getImageShoes() {
+//        return imageShoes;
+//    }
+//
+//    public void setImageShoes(Set<ImageShoe> imageShoes) {
+//        this.imageShoes = imageShoes;
+//    }
+//@JsonIgnore
+//@OneToMany(fetch = FetchType.LAZY, mappedBy = "shoe")
+//private List<Cart> carts;
     public Shoe(ShoeDto shoeDto,ShoeModel shoeModel){
         this.price = shoeDto.getPrice();
         this.description = shoeDto.getDescription();

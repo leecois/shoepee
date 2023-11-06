@@ -1,87 +1,64 @@
 package com.ToDoiVar.ShoesPee.Models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-
-import java.util.Date;
 
 @Entity
+@Table(name = "orderitems")
 public class OrderItem {
-
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
-
-    @Column(name = "quantity")
-    private @NotNull int quantity;
-
-    @Column(name = "price")
-    private @NotNull double price;
-
-
-    @Column(name = "created_date")
-    private Date createdDate;
-
-    @ManyToOne
-    @JsonIgnore
-    @JoinColumn( name = "order_id", referencedColumnName = "id")
-    private Order order;
-
+    private int orderItemId;
     @OneToOne
-    @JoinColumn(name = "shoe_id", referencedColumnName = "shoeid")
     private Shoe shoe;
 
-    public OrderItem(){}
+    private double totalProductprice;
 
-    public OrderItem(Order order, @NotNull Shoe shoe, @NotNull int quantity, @NotNull double price) {
-        this.shoe = shoe;
-        this.quantity = quantity;
-        this.price = price;
-        this.order= order;
-        this.createdDate = new Date();
+    private int productQuantity;
+    @ManyToOne
+    private Order order;
+
+
+
+    public int getProductQuantity() {
+        return productQuantity;
     }
-
+    public void setProductQuantity(int productQuantity) {
+        this.productQuantity = productQuantity;
+    }
+    public OrderItem(int orderItemId, Shoe shoe, double totalProductprice, int productQuantity, Order order) {
+        super();
+        this.orderItemId = orderItemId;
+        this.shoe = shoe;
+        this.totalProductprice = totalProductprice;
+        this.productQuantity = productQuantity;
+        this.order = order;
+    }
+    public OrderItem() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+    public int getOrderItemId() {
+        return orderItemId;
+    }
+    public void setOrderItemId(int orderItemId) {
+        this.orderItemId = orderItemId;
+    }
     public Shoe getShoe() {
         return shoe;
     }
-
     public void setShoe(Shoe product) {
         this.shoe = product;
     }
-
-
-    public int getQuantity() {
-        return quantity;
+    public double getTotalProductprice() {
+        return totalProductprice;
     }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setTotalProductprice(double totalProductprice) {
+        this.totalProductprice = totalProductprice;
     }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
     public Order getOrder() {
         return order;
     }
-
     public void setOrder(Order order) {
         this.order = order;
     }

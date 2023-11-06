@@ -1,53 +1,46 @@
-package com.ToDoiVar.ShoesPee.dto;
+    package com.ToDoiVar.ShoesPee.dto;
 
-import com.ToDoiVar.ShoesPee.Models.Shoe;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.JoinColumn;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+    import com.ToDoiVar.ShoesPee.Models.Cart;
+    import com.ToDoiVar.ShoesPee.Models.Shoe;
+    import lombok.Data;
 
+    public class CartItemDto {
+    private Integer id;
+    private Integer quantity;
+    private Shoe shoe;
 
-public class CartItemDto {
-    private int cartItemId;
-    private int quantity;
-    private double totalprice;
-    @JsonIgnore
-    private CartDto cart;
-
-    private Shoe shoeDto;
-    public int getCartItemId() {
-        return cartItemId;
+    public CartItemDto() {
     }
-    public void setCartItemId(int cartItemId) {
-        this.cartItemId = cartItemId;
+
+    public Integer getId() {
+        return id;
     }
-    public int getQuantity() {
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getQuantity() {
         return quantity;
     }
-    public void setQuantity(int quantity) {
+
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
-    public double getTotalprice() {
-        return totalprice;
-    }
-    public void setTotalprice(double totalprice) {
-        this.totalprice = totalprice;
+
+    public Shoe getShoe() {
+        return shoe;
     }
 
-    public CartDto getCart() {
-        return cart;
+    public void setShoe(Shoe shoe) {
+        this.shoe = shoe;
     }
-    public void setCart(CartDto cart) {
-        this.cart = cart;
-    }
-    public Shoe getShoeDto() {
-        return shoeDto;
-    }
-    public void setShoeDto(Shoe shoeDto) {
-        this.shoeDto = shoeDto;
+
+    public CartItemDto(Cart cart) {
+        this.id = cart.getId();
+        this.quantity = cart.getQuantity();
+        this.setShoe(cart.getShoe());
     }
 
 
-
-}
+    }

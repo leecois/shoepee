@@ -27,7 +27,6 @@ public class ShoeModel {
     private double price;
 
     @ManyToOne()
-    @JoinColumn(name = "brand_brandid")
     @JsonIgnore
     private Brand brand;
 

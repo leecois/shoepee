@@ -1,4 +1,5 @@
 package com.ToDoiVar.ShoesPee.Models;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 @Entity
@@ -13,9 +14,7 @@ public class CartItem {
 
     @ManyToOne
     private Cart cart;
-    @OneToOne
-    @JoinColumn(name = "shoe_shoeid")
-    @JsonIgnore
+    @OneToOne()
     private Shoe shoe;
     public int getCartItemId() {
         return cartItemId;
