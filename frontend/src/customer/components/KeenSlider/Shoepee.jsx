@@ -2,10 +2,11 @@ import React from 'react';
 import { useKeenSlider } from 'keen-slider/react';
 import 'keen-slider/keen-slider.min.css';
 import './styles.css';
+import { useState } from 'react';
 
 export default function Shoepee() {
-  const [rotation, setRotation] = React.useState({});
-  const [lastProgress, setLastProgress] = React.useState(0);
+  const [rotation, setRotation] = useState({});
+  const [lastProgress, setLastProgress] = useState(0);
 
   const [sliderRef] = useKeenSlider({
     slides: 2,

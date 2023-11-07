@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
+import cartReducer from '../containers/Cart/cartSlice'; 
 import counterReducer from '../containers/Counter/counterSlice';
 import userReducer from '../containers/User/userSlice';
-import cartReducer, { addToCart } from '../containers/Cart/cartSlice'; // Import addToCart action if necessary
 
 const initialCartState = JSON.parse(localStorage.getItem('cart')) || [];
 

@@ -1,8 +1,4 @@
-import {
-  CheckIcon,
-  ShieldCheckIcon,
-  XMarkIcon,
-} from '@heroicons/react/24/outline';
+import { ShieldCheckIcon } from '@heroicons/react/24/outline';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -21,13 +17,12 @@ const ProductDetails = ({ product }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (product && product.shoe && product.shoe.length > 0) {
-      setSelectedShoe(product.shoe[0]);
+    if (product && product.shoes && product.shoes.length > 0) {
+      setSelectedShoe(product.shoes[0]);
     }
   }, [product]);
   const postCartData = async (cartData) => {
-    const url = `http://3.1.85.78/api/v1/auth/addcart'
-    )}`;
+    const url = 'https://3.1.85.78/api/v1/auth/addcart';
     try {
       const response = await axios.post(url, cartData);
       if (response.status === 200) {
@@ -44,7 +39,7 @@ const ProductDetails = ({ product }) => {
   const fetchShoeImages = async (shoeId) => {
     try {
       const response = await axios.get(
-        `http://3.1.85.78/api/v1/auth/getimageshoe/${shoeId}`
+        `https://3.1.85.78/api/v1/auth/getimageshoe/${shoeId}`
       );
       if (response.status === 200) {
         setSelectedShoeImages(response.data);
@@ -62,12 +57,8 @@ const ProductDetails = ({ product }) => {
 
   const handleAddToCart = () => {
     const cartItem = {
-      productId: product.id,
-      name: product.modelname,
-      image: product.imageurl,
-      price: product.price,
+      shoeId: selectedShoe.id,
       size: selectedSize,
-      shoe: selectedShoe,
       quantity: quantity + 1,
     };
 

@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import axiosClient from '../../api/axiosClient';
 
 export const cartSlice = createSlice({
   name: 'cart',
@@ -21,15 +22,33 @@ export const cartSlice = createSlice({
           x.size === newItem.size &&
           x.shoe === newItem.shoe
       );
-
-      if (index >= 0) {
-        // Increase quantity
-        state.cartItems[index].quantity += newItem.quantity;
+    
+      // Retrieve token from localStorage
+      const token = localStorage.getItem('token');
+    
+      // Check if token exists
+      if (token) {
+        if (index >= 0) {
+          // Increase quantity
+          state.cartItems[index].quantity += newItem.quantity;
+        } else {
+          // Add to cart
+          state.cartItems.push(newItem);
+        }
+        localStorage.setItem('cart', JSON.stringify(state.cartItems));
+    
+        // Post the cart data to the API
+        axiosClient.cart.addToCart(newItem)
+          .then(response => {
+            console.log('Item added to cart successfully');
+          })
+          .catch(error => {
+            console.error('Error adding item to cart', error);
+          });
       } else {
-        // Add to cart
-        state.cartItems.push(newItem);
+        // Redirect to login page or show an error message
+        console.error('You must be logged in to add items to the cart');
       }
-      localStorage.setItem('cart', JSON.stringify(state.cartItems));
     },
     setSize(state, action) {
       const { id, size } = action.payload;

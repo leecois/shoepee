@@ -4,7 +4,7 @@ const Inspiration = ({ product, selectedShoe, handleShoeButtonClick }) => {
   return (
     <div className="mt-4 w-full">
       <div className="flex">
-        {product.shoe?.map((shoe) => (
+        {product.shoes?.map((shoe) => (
           <button
             key={shoe.id}
             type="button"
