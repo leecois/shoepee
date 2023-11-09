@@ -39,7 +39,7 @@ const Testimonial = () => {
   ];
 
   return (
-    <div className="relative mx-auto py-5 my-10 px-4 w-full max-w-7xl bg-gray-100 text-gray-700">
+    <div className="mx-auto py-5 my-10 px-4 w-full max-w-7xl bg-gray-100 text-gray-700">
       <div className="flex flex-col items-center">
         {/* TITLE CONTAINER */}
         <div className="mb-8 px-4">

@@ -1,37 +1,56 @@
-import axios from "axios";
+import axios from 'axios';
+import { API_BASE_URL } from '../constants/index';
+import StorageKeys from '../constants/storage-keys';
 
-const axiosClient = axios.create({
-  baseURL: "https://0615-42-113-184-116.ngrok-free.app/shoepee/user",
+// Define your common axios configuration
+const axiosConfig = {
+  baseURL: API_BASE_URL,
   headers: {
-    "Content-Type": "application/json",
+    'Content-Type': 'application/json',
   },
+};
+
+// Create an axios instance with the common configuration
+const axiosClient = axios.create(axiosConfig);
+
+// Define an axios interceptor for successful responses
+axiosClient.interceptors.response.use((response) => {
+  // Handle successful responses from the server
+  return response.data;
 });
 
-// Interceptors
-// Add a request interceptor
-axios.interceptors.request.use(
-  function (config) {
-    // Do something before request is sent
+// Define an axios interceptor for error responses
+axiosClient.interceptors.response.use(undefined, function (error) {
+  // Handle errors for responses from the server
+  const { status, data } = error.response;
+
+  if (status === 400) {
+    const errorList = data.data || [];
+    const firstError = errorList[0] || {};
+    const messageList = firstError.messages || [];
+    const firstMessage = messageList[0] || {};
+    return Promise.reject(new Error(firstMessage.message));
+  }
+
+  return Promise.reject(error);
+});
+
+// Add an interceptor to include the Authorization header with the token
+axiosClient.interceptors.request.use(
+  (config) => {
+    // Get the token from local storage or where it's stored
+    const token = localStorage.getItem(StorageKeys.TOKEN);
+
+    // Add the token to the Authorization header
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
     return config;
   },
-  function (error) {
-    // Do something with request error
+  (error) => {
     return Promise.reject(error);
   }
 );
-
-// Add a response interceptor
-axios.interceptors.response.use(
-  function (response) {
-    // Any status code that lie within the range of 2xx cause this function to trigger
-    // Do something with response data
-    return response;
-  },
-  function (error) {
-    // Any status codes that falls outside the range of 2xx cause this function to trigger
-    // Do something with response error
-    return Promise.reject(error);
-  }
-);      
 
 export default axiosClient;

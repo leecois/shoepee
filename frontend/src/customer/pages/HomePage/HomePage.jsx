@@ -1,24 +1,28 @@
-import React from "react";
-import Hero from "../../components/Hero/Hero";
-import Billboard from "../../components/Billboard/Billboard";
-import HeroMessage from "../../components/Hero/HeroMessage";
-import StepCustomize from "../../components/Steps/stepsCustomize";
-import CleaningSection from "../../components/Sections/CleaningSection";
-import Testimonial from "../../components/Testimonial/testimonial";
-import Collection from "../../components/Product/Collection";
+import React from 'react';
+import useBrandData from '../../../hooks/useBrandData';
+import Hero from '../../components/Hero/Hero';
+import Shoepee from '../../components/KeenSlider/Shoepee';
+import Stacked from '../../components/Stacked/Stacked';
+import Stacked2 from '../../components/Stacked/Stacked2';
+import StackedCenter from '../../components/Stacked/StackedCenter';
+import StepCustomize from '../../components/Steps/stepsCustomize';
+import Testimonial from '../../components/Testimonial/testimonial';
+import useModelData from '../../../hooks/useModelData';
 
 const HomePage = () => {
+  const { brandList } = useBrandData();
+  const { modelList } = useModelData();
+
   return (
-    <div>
+    <>
       <Hero />
-      <Billboard />
       <StepCustomize />
-      <HeroMessage />
-      <CleaningSection />
-      <Collection />
+      {modelList.length > 0 && <Stacked2 modelList={modelList} />}
+      {brandList.length > 0 && <StackedCenter brandList={brandList} />}
+      {modelList.length > 0 && <Stacked modelList2={modelList} />}
       <Testimonial />
-    </div>
+      <Shoepee />
+    </>
   );
 };
-
 export default HomePage;

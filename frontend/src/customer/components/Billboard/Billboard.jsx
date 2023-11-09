@@ -1,7 +1,6 @@
-import { BillboardData } from "./BillboardData";
 import AliceCarousel from "react-alice-carousel";
-import React from "react";
 import "react-alice-carousel/lib/alice-carousel.css";
+import { BillboardData } from "./BillboardData";
 
 const Billboard = () => {
   const items = BillboardData.map((item) => (
@@ -12,9 +11,6 @@ const Billboard = () => {
         src={item.image}
         alt=""
       />
-      <div className="absolute bottom-0 left-0 bg-black bg-opacity-50 right-0 p-4 text-white text-center">
-        <h2 className="text-xl font-semibold">{item.title}</h2>
-      </div>
     </div>
   ));
 
