@@ -1,29 +1,14 @@
 package com.ToDoiVar.ShoesPee.dto;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class CartDto {
     private int cartId;
-    private Set<CartItemDto> items= new HashSet<>();
+    private	Set<CartItemDto> items= new HashSet<>();
     private UserDto user;
-    private String errorMessage;
 
-    // Thêm constructor cho thông điệp lỗi
-    public CartDto(String errorMessage) {
-        this.errorMessage = errorMessage;
-    }
-
-    // Các phương thức và trường khác ở đây...
-
-    // Getter và setter cho errorMessage
-    public String getErrorMessage() {
-        return errorMessage;
-    }
-
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
-    }
     public int getCartId() {
         return cartId;
     }
@@ -42,5 +27,4 @@ public class CartDto {
     public void setUser(UserDto user) {
         this.user = user;
     }
-
 }

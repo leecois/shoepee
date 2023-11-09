@@ -15,5 +15,6 @@ public interface UserService {
 //    String addUser(UserDto userDto);
     User getUserByEmail(String email);
     User getRoleUser(String name);
+
 //    LoginMesage loginUser(LoginDto loginDto);
 }

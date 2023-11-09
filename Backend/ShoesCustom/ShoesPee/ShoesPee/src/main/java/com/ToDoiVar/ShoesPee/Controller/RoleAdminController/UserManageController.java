@@ -2,6 +2,7 @@ package com.ToDoiVar.ShoesPee.Controller.RoleAdminController;
 
 import com.ToDoiVar.ShoesPee.Models.User;
 import com.ToDoiVar.ShoesPee.Services.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,13 +15,14 @@ import java.util.Optional;
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/api/v1/admin")
+@RequiredArgsConstructor
 public class UserManageController {
     @Autowired
     private UserService userService;
     @GetMapping("/users")
-
     public ResponseEntity<List<User>> getALlUser(){
-        return new ResponseEntity<List<User>>(userService.getAllUser(), HttpStatus.OK);
+        List<User>  user = this.userService.getAllUser();
+        return new ResponseEntity<List<User>>(user, HttpStatus.OK);
     }
     @GetMapping("/getuserbyid/{id}")
     public Optional<User> getUserById(@PathVariable int id){

@@ -8,4 +8,5 @@ import java.util.List;
 public interface SizeService {
     Size addSize(Size size);
     Size getSizeById(int id);
+    List<Size> getAllSize();
 }

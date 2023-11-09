@@ -4,10 +4,12 @@ import com.ToDoiVar.ShoesPee.Exeption.ResourceNotFoundException;
 import com.ToDoiVar.ShoesPee.Models.*;
 import com.ToDoiVar.ShoesPee.dto.OrderDto;
 import com.ToDoiVar.ShoesPee.repositiory.CartRepository;
+import com.ToDoiVar.ShoesPee.repositiory.OrderItemsRepository;
 import com.ToDoiVar.ShoesPee.repositiory.OrderRepository;
 import com.ToDoiVar.ShoesPee.repositiory.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,24 +23,25 @@ import java.util.stream.Collectors;
 @Service
 public class OrderService {
     @Autowired
-    private UserRepository userRepository;
+    private	UserRepository userRepo;
     @Autowired
-    private CartRepository cartRepository;
+    private CartRepository cartRepo;
     @Autowired
-    private ModelMapper modelMapper;
+    private  ModelMapper modelMapper;
+
     @Autowired
-    private OrderRepository orderRepository;
+    private OrderRepository orderReop;
 
     //order Create method
 
-    public OrderDto orderCreate(OrderRequest request, String username) {
+    public OrderDto orderCreate(OrderRequest request,String username) {
 
-        User user = this.userRepository.findByEmail(username).orElseThrow(()->new ResourceNotFoundException("User not found"));
+        User user = this.userRepo.findByEmail(username).orElseThrow(()->new ResourceNotFoundException("User not found"));
 
         int cartId=request.getCartId();
         String orderAddress=request.getOrderAddress();
         //find cart
-        Cart cart= this.cartRepository.findById(cartId).orElseThrow(()->new ResourceNotFoundException("Cart Not Found"));
+        Cart cart= this.cartRepo.findById(cartId).orElseThrow(()->new ResourceNotFoundException("Cart Not Found"));
         //getting CartItem
         Set<CartItem> items  = cart.getItems();
         Order order=new Order();
@@ -53,16 +56,17 @@ public class OrderService {
 
             //set productQty in orderItem
 
-            orderItem.setShoeQuantity(cartItem.getQuantity());
+            orderItem.setProductQuantity(cartItem.getQuantity());
 
-            orderItem.setTotalShoeprice(cartItem.getTotalprice());
+            orderItem.setTotalProductprice(cartItem.getTotalprice());
             orderItem.setOrder(order);
 
-            totalOrderPrice.set(totalOrderPrice.get()+ orderItem.getTotalShoeprice());
-            int shoeId=orderItem.getShoe().getId();
+            totalOrderPrice.set(totalOrderPrice.get()+ orderItem.getTotalProductprice());
+            int productId=orderItem.getShoe().getId();
 
             return orderItem;
         }).collect(Collectors.toSet());
+
         order.setBillingAddress(orderAddress);
         order.setOrderDelivered(null);
         order.setOrderStatus("CREATED");
@@ -73,9 +77,9 @@ public class OrderService {
         order.setOrderCreateAt(new Date());
         Order save;
         if(order.getOrderAmt()>0){
-            save = this.orderRepository.save(order);
+            save = this.orderReop.save(order);
             cart.getItems().clear();
-            this.cartRepository.save(cart);
+            this.cartRepo.save(cart);
             System.out.println("Hello");
         }else {
             System.out.println(order.getOrderAmt());
@@ -87,13 +91,13 @@ public class OrderService {
     }
 
     public void CancelOrder(int orderId){
-        Order order = this.orderRepository.findById(orderId).orElseThrow(()->new ResourceNotFoundException("Order not Found"));
-        this.orderRepository.delete(order);
+        Order order = this.orderReop.findById(orderId).orElseThrow(()->new ResourceNotFoundException("Order not Found"));
+        this.orderReop.delete(order);
     }
 
 
     public OrderDto findById(int orderId){
-        Order order = this.orderRepository.findById(orderId).orElseThrow(()->new ResourceNotFoundException("order not found"));
+        Order order = this.orderReop.findById(orderId).orElseThrow(()->new ResourceNotFoundException("order not found"));
         return this.modelMapper.map(order,OrderDto.class);
     }
 
@@ -101,8 +105,8 @@ public class OrderService {
 
     public OrderResponse findAllOrders(int pageNumber,int pageSize ){
 
-        Pageable pageable= PageRequest.of(pageNumber, pageSize);
-        Page<Order> findAll=this.orderRepository.findAll(pageable);
+        Pageable pageable=PageRequest.of(pageNumber, pageSize);
+        Page<Order> findAll=this.orderReop.findAll(pageable);
         List<Order> content = findAll.getContent();
 
         //change order to orderDto

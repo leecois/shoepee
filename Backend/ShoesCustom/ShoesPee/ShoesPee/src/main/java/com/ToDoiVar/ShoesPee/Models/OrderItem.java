@@ -3,8 +3,8 @@ package com.ToDoiVar.ShoesPee.Models;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "orderitems")
 public class OrderItem {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,26 +12,26 @@ public class OrderItem {
     @OneToOne
     private Shoe shoe;
 
-    private double totalShoeprice;
+    private double totalProductprice;
 
-    private int shoeQuantity;
+    private int productQuantity;
     @ManyToOne
     private Order order;
 
 
 
-    public int getShoeQuantity() {
-        return shoeQuantity;
+    public int getProductQuantity() {
+        return productQuantity;
     }
-    public void setShoeQuantity(int shoeQuantity) {
-        this.shoeQuantity = shoeQuantity;
+    public void setProductQuantity(int productQuantity) {
+        this.productQuantity = productQuantity;
     }
-    public OrderItem(int orderItemId, Shoe shoe, double totalShoeprice, int shoeQuantity, Order order) {
+    public OrderItem(int orderItemId, Shoe shoe, double totalProductprice, int productQuantity, Order order) {
         super();
         this.orderItemId = orderItemId;
         this.shoe = shoe;
-        this.totalShoeprice = totalShoeprice;
-        this.shoeQuantity = shoeQuantity;
+        this.totalProductprice = totalProductprice;
+        this.productQuantity = productQuantity;
         this.order = order;
     }
     public OrderItem() {
@@ -47,14 +47,14 @@ public class OrderItem {
     public Shoe getShoe() {
         return shoe;
     }
-    public void setShoe(Shoe shoe) {
-        this.shoe = shoe;
+    public void setShoe(Shoe product) {
+        this.shoe = product;
     }
-    public double getTotalShoeprice() {
-        return totalShoeprice;
+    public double getTotalProductprice() {
+        return totalProductprice;
     }
-    public void setTotalShoeprice(double totalShoeprice) {
-        this.totalShoeprice = totalShoeprice;
+    public void setTotalProductprice(double totalProductprice) {
+        this.totalProductprice = totalProductprice;
     }
     public Order getOrder() {
         return order;
@@ -62,7 +62,5 @@ public class OrderItem {
     public void setOrder(Order order) {
         this.order = order;
     }
-
-
 
 }

@@ -1,8 +1,20 @@
 package com.ToDoiVar.ShoesPee.Controller.RoleUserController;
 
+import com.ToDoiVar.ShoesPee.Exeption.AuthenticationFailException;
+import com.ToDoiVar.ShoesPee.Exeption.CartItemNotExistException;
+import com.ToDoiVar.ShoesPee.Exeption.shoeNotFoundException;
 import com.ToDoiVar.ShoesPee.Models.ItemRequest;
+import com.ToDoiVar.ShoesPee.Models.Shoe;
+import com.ToDoiVar.ShoesPee.Models.User;
+import com.ToDoiVar.ShoesPee.Security.config.JwtService;
 import com.ToDoiVar.ShoesPee.Services.CartService;
+import com.ToDoiVar.ShoesPee.Services.ShoeService;
+import com.ToDoiVar.ShoesPee.Services.UserService;
+import com.ToDoiVar.ShoesPee.dto.AddToCartDto;
 import com.ToDoiVar.ShoesPee.dto.CartDto;
+import com.ToDoiVar.ShoesPee.dto.ShoeDto;
+import com.ToDoiVar.ShoesPee.payload.response.ApiResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,37 +25,42 @@ import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/v1/auth")
-@PreAuthorize("hasRole('USER')")
+//@PreAuthorize("hasRole('USER')")
 public class CartController {
 
     @Autowired
     private CartService cartService;
+    @Autowired
+    private JwtService jwtService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private ShoeService shoeService;
 
-    @PostMapping("/cart")
-    public ResponseEntity<CartDto> addtoCart(@RequestBody ItemRequest itemRequest, Principal principal){
-        if (principal == null) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED); // Hoặc mã lỗi tùy chọn
-        }
-        String email=principal.getName();
-        System.out.println(email);
-        CartDto addItem = this.cartService.addItem(itemRequest,principal.getName());
 
-        return new ResponseEntity<CartDto>(addItem, HttpStatus.OK);
+    @PostMapping("/addcart")
+    public ResponseEntity<CartDto> addtoCart(@RequestBody ItemRequest itemRequest,@RequestHeader("Authorization") String bearertoken){
+
+//        String email=principal.getName();
+//        System.out.println(email);
+        String token = bearertoken.substring(7);
+       String username =  jwtService.extractUsername(token);
+        CartDto addItem = this.cartService.addItem(itemRequest,username);
+
+        return new ResponseEntity<CartDto>(addItem,HttpStatus.OK);
     }
 
 
     //create method for getting cart
-    @GetMapping("/cart")
-    public ResponseEntity<CartDto>getAllCart(Principal principal){
-        if (principal != null) {
-            CartDto getcartAll = this.cartService.getcartAll(principal.getName());
-            return new ResponseEntity<CartDto>(getcartAll, HttpStatus.ACCEPTED);
-        } else {
-            String errorMessage = "Can't take information user";
-            return new ResponseEntity<>(new CartDto(errorMessage), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    @GetMapping("/getcart")
+    public ResponseEntity<CartDto>getAllCart(@RequestHeader("Authorization") String bearertoken){
+
+        String token = bearertoken.substring(7);
+        String username =  jwtService.extractUsername(token);
+        CartDto getcartAll = this.cartService.getcartAll(username);
+        return new ResponseEntity<CartDto>(getcartAll,HttpStatus.ACCEPTED);
     }
-    @GetMapping("/cart/{cartId}")
+    @GetMapping("/{cartId}")
     public ResponseEntity<CartDto>getCartById(@PathVariable  int cartId){
 
         System.out.println(cartId);
@@ -51,7 +68,7 @@ public class CartController {
         return new ResponseEntity<CartDto>(cartByID,HttpStatus.OK);
     }
 
-    @DeleteMapping("/cart/{pid}")
+    @DeleteMapping("/delete/{pid}")
     public ResponseEntity<CartDto>deleteCartItemFromCart(@PathVariable int pid,Principal p){
 
         CartDto remove = this.cartService.removeCartItemFromCart(p.getName(),pid);

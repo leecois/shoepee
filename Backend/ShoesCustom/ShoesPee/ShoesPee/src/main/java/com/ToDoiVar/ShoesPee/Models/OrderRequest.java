@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class OrderRequest {
-
+    private String customerName;
     private String orderAddress;
     private String orderPhone;
     private int cartId;

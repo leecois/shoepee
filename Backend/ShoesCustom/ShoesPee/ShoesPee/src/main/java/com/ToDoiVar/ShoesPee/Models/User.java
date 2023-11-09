@@ -1,6 +1,7 @@
 package com.ToDoiVar.ShoesPee.Models;
 
 import com.ToDoiVar.ShoesPee.Models.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -33,15 +34,15 @@ public class User implements UserDetails {
     @JoinColumn()
     private Role role;
 
-    @OneToOne(mappedBy = "user")
-    private Cart cart;
-    public Cart getCart() {
-        return cart;
-    }
-    public void setCart(Cart cart) {
-        this.cart = cart;
-    }
-
+        @OneToOne(mappedBy = "user")
+        @JsonIgnore
+        private Cart cart;
+        public Cart getCart() {
+            return cart;
+        }
+        public void setCart(Cart cart) {
+            this.cart = cart;
+        }
 
 
 
