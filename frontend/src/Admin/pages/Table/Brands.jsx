@@ -3,7 +3,7 @@ import BrandsListTable from '../../components/BrandsListTable';
 import Breadcrumb from '../../components/Breadcrumb';
 
 const Brands = () => {
-  const { brandList, updateBrand, addBrand } = AdminBrandData();
+  const { brandList, updateBrand, addBrand, deleteBrand } = AdminBrandData();
   return (
     <>
       <Breadcrumb pageName="Brands" />
@@ -13,6 +13,7 @@ const Brands = () => {
           brandList={brandList}
           updateBrand={updateBrand}
           addBrand={addBrand}
+          deleteBrand={deleteBrand}
         />
       </div>
     </>

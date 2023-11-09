@@ -1,6 +1,7 @@
 import React from 'react';
 import Breadcrumb from '../../components/Breadcrumb';
 import Checkout from '../../components/Checkout/Checkout';
+import Payment from '../../components/Checkout/Payment';
 import CartSummary from '../../components/Cart/CartSummary';
 import { useSelector } from 'react-redux';
 
@@ -21,24 +22,32 @@ const CheckoutPage = () => {
             Join Now / Sign-In.
           </button>
           <Checkout />
+          <Payment />
         </div>
         <div className="h-full rounded-lg ">
           <details className="collapse border border-glass">
             <summary className="collapse-title text-md font-medium">
-              Cart (1)
+              Cart 
             </summary>
             {cartItems?.map((item) => (
               <div key={item.id} className="collapse-content">
                 <div className="flex items-center justify-start py-6 px-4 border-b border-stroke">
-                  <img src={item.imageUrl} alt="Product" className="w-20" />
+                  <img
+                    src={item.shoe?.imageUrl || item.image}
+                    alt="Product"
+                    className="w-20"
+                  />
 
                   <div className="ml-4">
                     <h4 className="font-semibold text-black dark:text-white">
-                      {item.modelname}
+                      {item.name}
                     </h4>
+                    <h3 className="text-sm text-black dark:text-white">
+                      Size: {item.size}
+                    </h3>
                     <div className="flex gap-2.5">
                       <span className="text-sm text-black dark:text-white">
-                        {item.price}
+                        ${item.price}
                       </span>
                       <span className="text-sm text-black dark:text-white">
                         x {item.quantity}

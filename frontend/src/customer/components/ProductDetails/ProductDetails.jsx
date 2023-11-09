@@ -1,8 +1,4 @@
-import {
-  CheckIcon,
-  ShieldCheckIcon,
-  XMarkIcon,
-} from '@heroicons/react/24/outline';
+import { ShieldCheckIcon } from '@heroicons/react/24/outline';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -21,13 +17,12 @@ const ProductDetails = ({ product }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (product && product.shoe && product.shoe.length > 0) {
-      setSelectedShoe(product.shoe[0]);
+    if (product && product.shoes && product.shoes.length > 0) {
+      setSelectedShoe(product.shoes[0]);
     }
   }, [product]);
   const postCartData = async (cartData) => {
-    const url = `http://3.1.85.78/api/v1/auth/addcart'
-    )}`;
+    const url = 'https://3.1.85.78/api/v1/auth/addcart';
     try {
       const response = await axios.post(url, cartData);
       if (response.status === 200) {
@@ -44,7 +39,7 @@ const ProductDetails = ({ product }) => {
   const fetchShoeImages = async (shoeId) => {
     try {
       const response = await axios.get(
-        `http://3.1.85.78/api/v1/auth/getimageshoe/${shoeId}`
+        `https://3.1.85.78/api/v1/auth/getimageshoe/${shoeId}`
       );
       if (response.status === 200) {
         setSelectedShoeImages(response.data);
@@ -62,12 +57,8 @@ const ProductDetails = ({ product }) => {
 
   const handleAddToCart = () => {
     const cartItem = {
-      productId: product.id,
-      name: product.modelname,
-      image: product.imageurl,
-      price: product.price,
+      shoeId: selectedShoe.id,
       size: selectedSize,
-      shoe: selectedShoe,
       quantity: quantity + 1,
     };
 
@@ -136,19 +127,6 @@ const ProductDetails = ({ product }) => {
               </span>
             </div>
           </div>
-          <div className="mt-5">
-            {product.inStock ? (
-              <p className="flex items-center space-x-1 text-sm text-gray-700 font-semibold">
-                <CheckIcon className="mr-2 w-5 h-5 text-green-500" />
-                In stock and ready to ship
-              </p>
-            ) : (
-              <p className="flex items-center space-x-1 text-sm text-gray-700 font-semibold">
-                <XMarkIcon className="mr-2 w-5 h-5 text-red-500" />
-                Unavailable for the moment
-              </p>
-            )}
-          </div>
           <div className="mt-4">
             <button
               onClick={() => setShowInspiration(true)}
@@ -190,9 +168,11 @@ const ProductDetails = ({ product }) => {
           />
 
           {/* TODO: Add to cart form */}
-          <div className="mt-10 py-2 w-full inline-block rounded-md bg-red-600 hover:bg-red-700 text-base text-white font-semibold tracking-wide ">
-            <AddToCartForm onAddToCart={handleAddToCart} />
-          </div>
+          {selectedSize && selectedShoe ? (
+            <div className="mt-10 py-2 w-full inline-block rounded-md bg-red-600 hover:bg-red-700 text-base text-white font-semibold tracking-wide ">
+              <AddToCartForm onAddToCart={handleAddToCart} />
+            </div>
+          ) : null}
           <button
             onClick={handleCustomizeClick}
             className="mt-4 py-2 w-full inline-block rounded-md border-2 outline-8 transition delay-150 text-base text-red font-semibold tracking-wide hover:text-red-600"
@@ -205,7 +185,7 @@ const ProductDetails = ({ product }) => {
           </p>
         </div>
       </div>
-      <h3 className="mt-10 text-lg text-gray-700 font-semibold">Overview</h3>
+      {/* <h3 className="mt-10 text-lg text-gray-700 font-semibold">Overview</h3> */}
       <p className="mt-2 text-md text-gray-500 font-medium">
         {product.description}
       </p>

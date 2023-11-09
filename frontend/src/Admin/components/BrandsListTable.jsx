@@ -3,6 +3,13 @@ import CancelIcon from '@mui/icons-material/Close';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import {
@@ -39,9 +46,16 @@ function EditToolbar(props) {
   );
 }
 
-export default function BrandsListTable({ brandList, updateBrand, addBrand }) {
+export default function BrandsListTable({
+  brandList,
+  updateBrand,
+  addBrand,
+  deleteBrand,
+}) {
   const [rows, setRows] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
+  const [openDialog, setOpenDialog] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
 
   useEffect(() => {
     setRows(brandList?.map((item) => ({ ...item })));
@@ -66,9 +80,19 @@ export default function BrandsListTable({ brandList, updateBrand, addBrand }) {
     }
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
   };
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
 
   const handleDeleteClick = (id) => () => {
-    setRows(rows.filter((row) => row.id !== id));
+    setDeleteId(id);
+    setOpenDialog(true);
+  };
+  const handleConfirmDelete = () => {
+    deleteBrand(deleteId).then(() => {
+      setRows(rows.filter((row) => row.id !== deleteId));
+      handleCloseDialog();
+    });
   };
 
   const handleCancelClick = (id) => () => {
@@ -180,6 +204,27 @@ export default function BrandsListTable({ brandList, updateBrand, addBrand }) {
           toolbar: { rows, setRows, setRowModesModel, addBrand },
         }}
       />
+      <Dialog
+        open={openDialog}
+        onClose={handleCloseDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{'Delete Brand'}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to delete this brand?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleConfirmDelete} color="primary" autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }

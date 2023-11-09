@@ -93,7 +93,7 @@ export default function ModelsTable({ modelList, updateModel }) {
     { field: 'id', headerName: 'ID', width: 70 },
     { field: 'modelname', headerName: 'Model Name', width: 130, editable: true},
     {
-      field: 'shoe',
+      field: 'shoes',
       headerName: 'Shoe',
       width: 343,
       renderCell: (params) => (

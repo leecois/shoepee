@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import brandApi from  '../api/brandApi';
+import brandApi from '../api/brandApi';
 
 const useBrandData = () => {
   const [brandList, setBrandList] = useState([]);

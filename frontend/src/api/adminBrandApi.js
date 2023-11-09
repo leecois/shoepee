@@ -19,7 +19,7 @@ const adminBrandApi = {
     return axiosClient.put(url, data); 
   },
   remove: (id) => {
-    const url = `/admin/brands/${id}`;
+    const url = `/admin/deletebrand/${id}`;
     return axiosClient.delete(url);
   },
 };

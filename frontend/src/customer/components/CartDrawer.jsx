@@ -26,6 +26,7 @@ export default function CartDrawer() {
       image: product.imageurl,
       price: product.price,
       size: selectedSize,
+      shoe: product.shoe[0],
       quantity: quantity + 1,
     };
 
@@ -44,7 +45,7 @@ export default function CartDrawer() {
     setSnackbarOpen(false);
   };
   const postCartData = async (cartData) => {
-    const url = `http://3.1.85.78/api/v1/auth/add?token=${localStorage.getItem(
+    const url = `https://3.1.85.78/api/v1/auth/add?token=${localStorage.getItem(
       StorageKeys.TOKEN
     )}`;
     try {

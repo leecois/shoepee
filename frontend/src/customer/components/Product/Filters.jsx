@@ -21,48 +21,6 @@ const Filters = ({ openFilter, setOpenFilter }) => {
 
   const filters = [
     {
-      id: 'color',
-      name: 'Color',
-      options: [
-        {
-          value: 'black',
-          label: 'Black',
-          class: 'bg-black text-black',
-          checked: false,
-        },
-        {
-          value: 'yellow',
-          label: 'Yellow',
-          class: 'bg-yellow-400 text-yellow-400',
-          checked: false,
-        },
-        {
-          value: 'blue',
-          label: 'Blue',
-          class: 'bg-blue-400 text-blue-400',
-          checked: true,
-        },
-        {
-          value: 'purple',
-          label: 'Purple',
-          class: 'bg-purple-400 text-purple-400',
-          checked: false,
-        },
-        {
-          value: 'green',
-          label: 'Green',
-          class: 'bg-green-400 text-green-400',
-          checked: false,
-        },
-        {
-          value: 'red',
-          label: 'Red',
-          class: 'bg-red-400 text-red-400',
-          checked: false,
-        },
-      ],
-    },
-    {
       id: 'price',
       name: 'Shop By Price',
       options: [
@@ -157,26 +115,6 @@ const Filters = ({ openFilter, setOpenFilter }) => {
                       }`}
                     />
                   </Disclosure.Button>
-                  {section.id === 'color' && (
-                    <Disclosure.Panel className="mt-5 flex flex-wrap items-center">
-                      {section.options.map((option) => (
-                        <div key={option.value} className="m-2">
-                          <label
-                            htmlFor={option.label}
-                            className="sr-only"
-                          >{`Color ${option.label}`}</label>
-                          <input
-                            type="checkbox"
-                            name={option.label}
-                            id={option.label}
-                            defaultValue={option.value}
-                            defaultChecked={option.checked}
-                            className={`form-checkbox w-6 h-6 rounded-full border-none ${option.class} focus:ring-gray-200`}
-                          />
-                        </div>
-                      ))}
-                    </Disclosure.Panel>
-                  )}
                   {section.id !== 'color' && (
                     <Disclosure.Panel className="mt-5 flex flex-col">
                       {section.options.map((option) => (
