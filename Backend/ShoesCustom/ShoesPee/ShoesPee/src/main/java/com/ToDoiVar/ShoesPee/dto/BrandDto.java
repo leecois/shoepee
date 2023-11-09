@@ -11,6 +11,7 @@ public class BrandDto {
     private int id;
     private String brandName;
     private String imageUrl;
+    private String status;
 //    private List<ShoeModel> shoeModel;
 
 //    public List<ShoeModel> getShoeModel() {

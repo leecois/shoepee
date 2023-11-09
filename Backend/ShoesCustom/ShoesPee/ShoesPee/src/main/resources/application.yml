@@ -1,0 +1,8 @@
+server:
+  port: 443
+  ssl:
+    key-alias: shoepee-https
+    key-store-password: 130224
+    key-store: classpath:javatechie.jks
+    key-store-type: JKS
+    key-password: passoword

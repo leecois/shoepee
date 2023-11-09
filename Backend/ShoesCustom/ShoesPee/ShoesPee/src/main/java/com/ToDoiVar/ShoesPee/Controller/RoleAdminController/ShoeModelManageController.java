@@ -25,9 +25,9 @@ public class ShoeModelManageController {
         return new ResponseEntity<ShoeModelDto>(newShoemodel,HttpStatus.CREATED);
     }
     @GetMapping("/shoemodels")
-    public ResponseEntity<List<ShoeModel>> getAllShoeModel(){
-        List<ShoeModel> viewall = shoeModelService.getAllShoeModel();
-        return new ResponseEntity<List<ShoeModel>>(viewall,HttpStatus.OK);
+    public ResponseEntity<List<ShoeModelDto>> getAllShoeModel(){
+        List<ShoeModelDto> viewall = shoeModelService.getAllShoeModel();
+        return new ResponseEntity<List<ShoeModelDto>>(viewall,HttpStatus.OK);
     }
 
     @GetMapping("/getshoemodelbyname/{name}")

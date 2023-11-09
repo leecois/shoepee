@@ -1,6 +1,9 @@
 package com.ToDoiVar.ShoesPee.Models;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,6 +16,9 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+//@JsonIdentityInfo(
+//        generator = ObjectIdGenerators.PropertyGenerator.class,
+//        property = "id")
 public class ShoeModel {
     @Id
         @Column(name = "modelid")
@@ -38,10 +44,8 @@ public class ShoeModel {
         this.brand = brand;
     }
 
-    @OneToMany(mappedBy = "shoeModel",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    @JsonIgnore
-
-    private Set<Shoe> shoe = new HashSet<>();
-
+    @OneToMany(mappedBy = "shoeModel",cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private Set<Shoe> shoes = new HashSet<>();
 
 }

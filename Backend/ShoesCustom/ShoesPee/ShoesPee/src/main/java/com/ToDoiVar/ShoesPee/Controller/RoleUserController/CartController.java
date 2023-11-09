@@ -39,10 +39,13 @@ public class CartController {
 
 
     @PostMapping("/addcart")
-    public ResponseEntity<CartDto> addtoCart(@RequestBody ItemRequest itemRequest,Principal principal){
-        String email=principal.getName();
-        System.out.println(email);
-        CartDto addItem = this.cartService.addItem(itemRequest,principal.getName());
+    public ResponseEntity<CartDto> addtoCart(@RequestBody ItemRequest itemRequest,@RequestHeader("Authorization") String bearertoken){
+
+//        String email=principal.getName();
+//        System.out.println(email);
+        String token = bearertoken.substring(7);
+       String username =  jwtService.extractUsername(token);
+        CartDto addItem = this.cartService.addItem(itemRequest,username);
 
         return new ResponseEntity<CartDto>(addItem,HttpStatus.OK);
     }
@@ -50,8 +53,11 @@ public class CartController {
 
     //create method for getting cart
     @GetMapping("/getcart")
-    public ResponseEntity<CartDto>getAllCart(Principal principal){
-        CartDto getcartAll = this.cartService.getcartAll(principal.getName());
+    public ResponseEntity<CartDto>getAllCart(@RequestHeader("Authorization") String bearertoken){
+
+        String token = bearertoken.substring(7);
+        String username =  jwtService.extractUsername(token);
+        CartDto getcartAll = this.cartService.getcartAll(username);
         return new ResponseEntity<CartDto>(getcartAll,HttpStatus.ACCEPTED);
     }
     @GetMapping("/{cartId}")

@@ -18,8 +18,8 @@ public class ShoeController {
     @Autowired
     private ShoeService shoeService;
     @GetMapping("/shoes")
-    public ResponseEntity<List<Shoe>> getAllShoe(){
-        return new ResponseEntity<List<Shoe>>(shoeService.getAllShoe(),HttpStatus.OK);
+    public ResponseEntity<List<ShoeDto>> getAllShoe(){
+        return new ResponseEntity<List<ShoeDto>>(shoeService.getAllShoe(),HttpStatus.OK);
     }
     @GetMapping("/getshoebyshoemodelid/{id}")
     public ResponseEntity<List<ShoeDto>> getShoeByShoemodelId(@PathVariable int id){

@@ -39,9 +39,9 @@ public class BrandManageController {
     public ResponseEntity<BrandDto> editBrand(@PathVariable int id,@RequestBody BrandDto editBrand){
         return new ResponseEntity<BrandDto>(brandService.editBrand(id,editBrand),HttpStatus.OK);
     }
-    @DeleteMapping("/deletebrand/{id}")
-    public ResponseEntity<String> deleteBrand(@PathVariable int id){
-        brandService.deleteBrand(id);
-        return new ResponseEntity<String>("Delete Sucessful",HttpStatus.OK);
+    @PutMapping("/deletebrand/{id}")
+    public ResponseEntity<Brand> deleteBrand(@PathVariable int id){
+        Brand brand = brandService.deleteBrand(id);
+        return new ResponseEntity<Brand>(brand,HttpStatus.OK);
     }
 }

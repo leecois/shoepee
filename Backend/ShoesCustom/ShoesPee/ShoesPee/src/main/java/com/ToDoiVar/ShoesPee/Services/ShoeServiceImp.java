@@ -5,6 +5,7 @@ import com.ToDoiVar.ShoesPee.Exeption.shoeNotFoundException;
 import com.ToDoiVar.ShoesPee.Models.Shoe;
 import com.ToDoiVar.ShoesPee.Models.ShoeModel;
 import com.ToDoiVar.ShoesPee.dto.ShoeDto;
+import com.ToDoiVar.ShoesPee.dto.ShoeModelDto;
 import com.ToDoiVar.ShoesPee.repositiory.ShoeModelRepository;
 import com.ToDoiVar.ShoesPee.repositiory.ShoeRepository;
 import org.modelmapper.ModelMapper;
@@ -23,10 +24,10 @@ public class ShoeServiceImp implements ShoeService{
     @Autowired
     public ShoeModelRepository shoeModelRepository;
     @Override
-    public List<Shoe> getAllShoe() {
+    public List<ShoeDto> getAllShoe() {
         List<Shoe> allShoe =  this.shoeRepository.findAll();
-//        List<ShoeDto> getALlShoe = allShoe.stream().map(shoe -> this.toDto(shoe)).collect(Collectors.toList());
-        return allShoe;
+        List<ShoeDto> getALlShoe = allShoe.stream().map(shoe -> this.toDto(shoe)).collect(Collectors.toList());
+        return getALlShoe;
     }
 
     @Override
@@ -82,13 +83,13 @@ public class ShoeServiceImp implements ShoeService{
         st.setDescription(shoe.getDescription());
         st.setPrice(shoe.getPrice());
         st.setImageUrl(shoe.getImageUrl());
-//        ShoeModel smdt = new ShoeModel();
-//        smdt.setId(shoe.getShoeModel().getId());
-//        smdt.setModelname(shoe.getShoeModel().getModelname());
-//        smdt.setImageurl(shoe.getShoeModel().getImageurl());
-//        smdt.setPrice(shoe.getShoeModel().getPrice());
-////        smdt.setBrand(shoe.getBrand().getBrand());
-//        st.setShoeModel(smdt);
+        ShoeModelDto smdt = new ShoeModelDto();
+        smdt.setId(shoe.getShoeModel().getId());
+        smdt.setModelname(shoe.getShoeModel().getModelname());
+        smdt.setImageurl(shoe.getShoeModel().getImageurl());
+        smdt.setPrice(shoe.getShoeModel().getPrice());
+//        smdt.setBrandDto(shoe.get);
+        st.setShoeModelDto(smdt);
         return st;
     }
 

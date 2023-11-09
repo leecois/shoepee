@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ShoeService {
-    List<Shoe> getAllShoe();
+    List<ShoeDto> getAllShoe();
     ShoeDto getShoeById(int id);
     Shoe findById(int id);
     ShoeDto addShoe(ShoeDto newShoe);

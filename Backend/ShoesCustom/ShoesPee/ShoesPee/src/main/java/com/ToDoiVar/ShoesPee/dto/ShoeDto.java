@@ -13,14 +13,14 @@ public class ShoeDto {
     private double price;
     private String description;
     private String imageUrl;
-    private ShoeModel shoeModel;
+    private ShoeModelDto shoeModelDto;
 
-    public ShoeModel getShoeModel() {
-        return shoeModel;
+    public ShoeModelDto getShoeModelDto() {
+        return shoeModelDto;
     }
 
-    public void setShoeModel(ShoeModel shoeModel) {
-        this.shoeModel = shoeModel;
+    public void setShoeModelDto(ShoeModelDto shoeModelDto) {
+        this.shoeModelDto = shoeModelDto;
     }
 
 }

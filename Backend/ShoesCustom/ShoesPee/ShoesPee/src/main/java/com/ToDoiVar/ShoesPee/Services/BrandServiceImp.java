@@ -61,11 +61,10 @@ public class BrandServiceImp implements BrandService{
     }
 
     @Override
-    public void deleteBrand(int id) {
-        if (!brandRepository.existsById(id)){
-            throw new BrandExistedException("This brand could not found");
-        }
-        brandRepository.deleteById(id);
+    public Brand deleteBrand(int id) {
+        Brand deleBrand = this.brandRepository.findById(id).orElseThrow(() -> new BrandNotFoundException("Brand not found"));
+        deleBrand.setStatus("unavailble");
+        return deleBrand;
     }
 
     @Override
@@ -75,5 +74,13 @@ public class BrandServiceImp implements BrandService{
        oldBrand.setImageUrl(editBrand.getImageUrl());
        Brand save =  this.brandRepository.save(oldBrand);
        return this.mapper.map(save,BrandDto.class);
+    }
+    public BrandDto toDto(Brand brand){
+        BrandDto bt = new BrandDto();
+        bt.setId(brand.getId());
+        bt.setBrandName(brand.getBrandName());
+        bt.setImageUrl(brand.getImageUrl());
+        bt.setStatus(brand.getStatus());
+        return bt;
     }
 }

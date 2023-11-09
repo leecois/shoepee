@@ -15,6 +15,7 @@ public class ShoeModelDto {
     private String modelname;
     private String imageurl;
     private double price;
+    private BrandDto brandDto;
 //    private Brand brand;
 //
 //    public Brand getBrand() {

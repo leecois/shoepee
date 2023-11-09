@@ -10,6 +10,6 @@ public interface BrandService {
      BrandDto getBrandById(int id);
      BrandDto getBrandByName(String name);
      BrandDto addBrand(BrandDto newBrand);
-     void deleteBrand(int id);
+     Brand deleteBrand(int id);
      BrandDto editBrand(int id,BrandDto editBrand);
 }

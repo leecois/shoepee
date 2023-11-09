@@ -5,6 +5,7 @@ import com.ToDoiVar.ShoesPee.Exeption.shoeModelExistedException;
 import com.ToDoiVar.ShoesPee.Exeption.shoeModelNotFounException;
 import com.ToDoiVar.ShoesPee.Models.Brand;
 import com.ToDoiVar.ShoesPee.Models.ShoeModel;
+import com.ToDoiVar.ShoesPee.dto.BrandDto;
 import com.ToDoiVar.ShoesPee.dto.ShoeModelDto;
 import com.ToDoiVar.ShoesPee.repositiory.BrandRepository;
 import com.ToDoiVar.ShoesPee.repositiory.ShoeModelRepository;
@@ -37,10 +38,10 @@ public class ShoeModelServiceImpl implements ShoeModelService{
     }
 
     @Override
-    public List<ShoeModel> getAllShoeModel() {
+    public List<ShoeModelDto> getAllShoeModel() {
         List<ShoeModel> getAllShoemodel = shoeModelRepository.findAll();
-//        List<ShoeModelDto> getAllShoemodelDto =getAllShoemodel.stream().map(shoe -> this.toDto(shoe)).collect(Collectors.toList());
-        return getAllShoemodel;
+        List<ShoeModelDto> getAllShoemodelDto =getAllShoemodel.stream().map(shoe -> this.toDto(shoe)).collect(Collectors.toList());
+        return getAllShoemodelDto;
     }
 
     @Override
@@ -101,7 +102,12 @@ public class ShoeModelServiceImpl implements ShoeModelService{
         sto.setModelname(shoeModel.getModelname());
         sto.setImageurl(shoeModel.getImageurl());
         sto.setPrice(shoeModel.getPrice());
-
+        BrandDto brandDto = new BrandDto();
+        brandDto.setId(shoeModel.getBrand().getId());
+        brandDto.setBrandName(shoeModel.getBrand().getBrandName());
+        brandDto.setImageUrl(shoeModel.getBrand().getImageUrl());
+        brandDto.setStatus(shoeModel.getBrand().getStatus());
+        sto.setBrandDto(brandDto);
 //        Brand brandDto = new Brand();
 ////        brandDto.setId(shoeModel.getBrand().getId());
 //        brandDto.setBrandName(shoeModel.getBrand().getBrandName());

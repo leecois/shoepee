@@ -20,6 +20,8 @@ public class Brand {
     private String brandName;
     @Column(name = "imageurl")
     private String imageUrl;
+    @Column(name = "status")
+    private String status ;
     @OneToMany(mappedBy = "brand", cascade = CascadeType.ALL)
     private Set<ShoeModel> shoeModel  = new HashSet<>();
 

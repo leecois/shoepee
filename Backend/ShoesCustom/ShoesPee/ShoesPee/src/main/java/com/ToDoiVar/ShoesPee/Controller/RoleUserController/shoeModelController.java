@@ -24,9 +24,9 @@ public class shoeModelController {
 //        return new ResponseEntity<>(shoeModelService.addShoeModel(newShoeModel),HttpStatus.OK);
 //    }
         @GetMapping("/shoemodels")
-    public ResponseEntity<List<ShoeModel>> getAllShoeModel(){
-        List<ShoeModel> getALlShoeModel = shoeModelService.getAllShoeModel();
-        return new ResponseEntity<List<ShoeModel>>(getALlShoeModel, HttpStatus.OK);
+    public ResponseEntity<List<ShoeModelDto>> getAllShoeModel(){
+        List<ShoeModelDto> getALlShoeModel = shoeModelService.getAllShoeModel();
+        return new ResponseEntity<List<ShoeModelDto>>(getALlShoeModel, HttpStatus.OK);
     }
 
     @GetMapping("/getshoemodelbyname/{name}")

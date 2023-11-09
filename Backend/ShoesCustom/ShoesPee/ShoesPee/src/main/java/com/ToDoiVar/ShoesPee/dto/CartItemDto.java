@@ -9,6 +9,7 @@
         @JsonIgnore
         private CartDto cart;
         private ShoeDto shoe;
+        private int size;
         public int getCartItemId() {
             return cartItemId;
         }
@@ -40,6 +41,12 @@
         public void setShoe(ShoeDto shoe) {
             this.shoe = shoe;
         }
+        public int getSize() {
+            return size;
+        }
 
+        public void setSize(int size) {
+            this.size = size;
+        }
 
     }

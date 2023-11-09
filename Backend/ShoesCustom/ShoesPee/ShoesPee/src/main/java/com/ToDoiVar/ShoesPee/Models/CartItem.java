@@ -14,8 +14,10 @@ public class CartItem {
     private int size;
     //Relationship with other table
     @ManyToOne
+    @JsonIgnore
     private Cart cart;
-    @OneToOne()
+    @ManyToOne
+    @JoinColumn(name = "shoeid")
     private Shoe shoe;
     public int getCartItemId() {
         return cartItemId;

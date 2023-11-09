@@ -1,8 +1,7 @@
 package com.ToDoiVar.ShoesPee.Models;
 
 import com.ToDoiVar.ShoesPee.dto.ShoeDto;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,12 +10,15 @@ import java.util.List;
 import java.util.Set;
 
 @Getter
+@Setter
 @Entity
 @Table(name = "tblshoe")
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Shoe {
     @Id
     @Column(name = "shoeid")
@@ -30,12 +32,14 @@ public class Shoe {
     @Column(name = "imageurl")
     private String imageUrl;
 
-    @ManyToOne()
+    @ManyToOne
+    @JsonBackReference
+    @JoinColumn(name = "shoe_model_modelid") // ensure this is the correct column name for the foreign key
+
     private ShoeModel shoeModel;
 //    @OneToOne()
-//    @JsonManagedReference
 //    private CartItem cartItem;
-//
+
 //    @OneToMany(mappedBy = "shoe",cascade = CascadeType.ALL)
 //    private Set<ImageShoe> imageShoes = new HashSet<>();
 //
