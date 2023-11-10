@@ -60,15 +60,14 @@ const getCart = () => {
   });
 };
 
-const markItemAsUnavailable = async(cartItemId) => {
+const removeFromCartByShoeId = (shoeId) => {
   const jwt = localStorage.getItem(StorageKeys.TOKEN);
-  return axiosClient.put(`/delete/${cartItemId}`, {
+  return axiosClient.delete(`/auth/delete/${shoeId}`, {
     headers: {
       Authorization: `Bearer ${jwt}`,
     },
   });
 };
-
 
 const userApi = {
   register: createApiRequest('register'),
@@ -79,7 +78,7 @@ const userApi = {
   update: updateUser,
   addToCart,
   getCart,
-  markItemAsUnavailable,
+  removeFromCartByShoeId,
 };
 
 export default userApi;

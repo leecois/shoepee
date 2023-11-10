@@ -26,44 +26,34 @@ export const getCartAsync = createAsyncThunk(
 );
 // Asynchronous thunk for marking an item as unavailable in the cart
 export const removeFromCartAsync = createAsyncThunk(
-  'cart/removeFromCartAsync',
-  async ({ cartItemId }, thunkAPI) => {
+  'cart/removeFromCart',
+  async (shoeId, { rejectWithValue }) => {
     try {
-      // Call the existing API to mark the item as unavailable
-      const response = await userApi.markItemAsUnavailable(cartItemId);
-      if (response.status === 200) {
-        // Return the cartItemId to identify which item was updated
-        return { cartItemId };
-      } else {
-        // Handle any responses that indicate failure
-        return thunkAPI.rejectWithValue('Could not update the item status.');
-      }
+      const response = await userApi.removeFromCartByShoeId(shoeId);
+      return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
+      return rejectWithValue(error.response.data);
     }
   }
 );
-
-
-
 
 export const cartSlice = createSlice({
   name: 'cart',
   initialState: {
     showMiniCart: false,
     cartItems: [],
-    isLoading: false, // Added to track loading state
-    error: null, // Added to track error state
+    isLoading: false, 
+    error: null, 
   },
   reducers: {
-    // Here you can still have your other reducers like showMiniCart, hideMiniCart, etc.
+
     showMiniCart: (state) => {
       state.showMiniCart = true;
     },
     hideMiniCart: (state) => {
       state.showMiniCart = false;
     },
-    // You might want to remove `addToCart` if you're replacing it with the async thunk
+
   },
   extraReducers: (builder) => {
     builder
@@ -92,8 +82,7 @@ export const cartSlice = createSlice({
         }
         state.isLoading = false;
       })
-      
-      
+
       .addCase(addToCartAsync.rejected, (state, action) => {
         // Here you handle any errors, e.g., displaying an error message in your UI
         state.isLoading = false;
@@ -105,7 +94,6 @@ export const cartSlice = createSlice({
       })
       // Handle the getCartAsync fulfilled state
       .addCase(getCartAsync.fulfilled, (state, action) => {
-        
         if (action.payload) {
           state.cartItems = action.payload.items;
           state.isLoading = false;
@@ -123,15 +111,10 @@ export const cartSlice = createSlice({
         state.error = null;
       })
       .addCase(removeFromCartAsync.fulfilled, (state, action) => {
-        const updatedItem = action.payload;
-        // Find the item in the cart and update its status
-        const index = state.cartItems.findIndex(
-          (item) => item.cartItemId === updatedItem.cartItemId
+        const cartItemId = action.payload;
+        state.cartItems = state.cartItems.filter(
+          (item) => item.shoe.id !== cartItemId
         );
-        if (index !== -1) {
-          state.cartItems[index].shoe.status = 'unavailable';
-        }
-        state.cartItems = state.cartItems.filter(item => item.shoe.status === 'available');
         state.isLoading = false;
       })
       .addCase(removeFromCartAsync.rejected, (state, action) => {

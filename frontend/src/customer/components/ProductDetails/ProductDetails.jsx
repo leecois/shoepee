@@ -1,7 +1,7 @@
 import { ShieldCheckIcon } from '@heroicons/react/24/outline';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { addToCartAsync } from '../../../containers/Cart/cartSlice';
+import { addToCartAsync, getCartAsync } from '../../../containers/Cart/cartSlice';
 import { fetchShoeImages } from '../../../hooks/CartData';
 import AddToCartForm from '../Cart/AddToCartForm';
 import Inspiration from './Inspiration';
@@ -43,34 +43,31 @@ const ProductDetails = ({ product, userLoggedIn }) => {
       setIsAlertOpen(true);
       return;
     }
-
+  
     const cartItem = {
       shoeId: selectedShoe.id,
       size: selectedSize,
       quantity: 1,
     };
-
-    dispatch(addToCartAsync(cartItem))
-      .then(() => {
-        window.location.reload();
-      })
-      .catch((error) => {
-        console.error('Error adding to cart:', error);
-      });
+  
+    dispatch(addToCartAsync(cartItem)).then((action) => {
+      if (!action.error) {
+        // Refetch the cart data
+        dispatch(getCartAsync());
+      }
+    });
   };
+  
 
   if (!product) {
     return <div>Loading...</div>;
   }
 
-  // Split out complex JSX blocks into smaller, more manageable components if needed
   const renderShoeImages = () => {
     if (!selectedShoeImages.length)
       return <p>No images available for the selected shoe.</p>;
     return selectedShoeImages.map((image, index) => (
       <div key={image.id || index}>
-        {' '}
-        {/* Use image ID if available */}
         <img
           src={image.imageUrl}
           alt={`Shoe Images ${index}`}
@@ -158,7 +155,7 @@ const ProductDetails = ({ product, userLoggedIn }) => {
           {/* TODO: Add to cart form */}
 
           {selectedSize && selectedShoe ? (
-            <div className="mt-10 py-2 w-full flex justify-center rounded-md bg-red-600 hover:bg-red-700 text-base text-white font-semibold tracking-wide ">
+            <div className="mt-4 py-2 w-full inline-block rounded-md border-2 bg-black-2 outline-8 transition delay-150 text-base text-red font-semibold tracking-wide hover:bg-black">
               <Alert
                 isOpen={isAlertOpen}
                 onClose={() => setIsAlertOpen(false)}

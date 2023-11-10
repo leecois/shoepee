@@ -2,34 +2,28 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   getCartAsync,
-  removeFromCartAsync
+  removeFromCartAsync,
 } from '../../../containers/Cart/cartSlice';
 
 const Cart = () => {
   const dispatch = useDispatch();
-  const cartState = useSelector((state) => state.cart);
-  const { cartItems, isLoading, error } = cartState;
+  const cartItems = useSelector((state) => state.cart.cartItems);
 
   useEffect(() => {
     dispatch(getCartAsync());
   }, [dispatch]);
 
   const handleRemoveFromCart = (cartItemId) => {
-    dispatch(removeFromCartAsync({ cartItemId }));
+    dispatch(removeFromCartAsync(cartItemId))
+      .then(() => {
+        dispatch(getCartAsync());
+      })
+      .catch((error) => {
+        console.error('Error removing item from cart:', error);
+      });
   };
 
-  // Filter out items that are not available
-  const availableCartItems = cartItems.filter(item => item.shoe.status === 'available');
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
-  if (!availableCartItems || availableCartItems.length === 0) {
+  if (!cartItems || cartItems.length === 0) {
     return (
       <div className="flex justify-center items-center h-full">
         <p className="text-lg font-bold text-gray-700">
@@ -62,7 +56,7 @@ const Cart = () => {
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200">
-          {availableCartItems?.map((item) => (
+          {cartItems?.map((item) => (
             <tr key={item.cartItemId} className="hover:bg-gray-100">
               <td className="whitespace-nowrap flex items-center px-4 py-2 font-medium text-gray-900">
                 <div className="flex items-center">
@@ -85,7 +79,7 @@ const Cart = () => {
               </td>
               <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                 <button
-                  onClick={() => handleRemoveFromCart(item.cartItemId)}
+                  onClick={() => handleRemoveFromCart(item.shoe?.id)}
                   className="text-red-500 hover:text-red-700"
                 >
                   Remove from Cart
