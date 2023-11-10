@@ -69,11 +69,10 @@ const ProductPage = () => {
           {noSearchResults ? (
             <div
               role="alert"
-              class="rounded w-screen h-[620px] border-s-4 border-red-500 bg-red-50 p-4"
+              className="rounded w-full h-32 p-4 flex items-center justify-center text-center"
             >
-              <strong class="block font-medium text-red-800">
-                {' '}
-                No products found for "{searchKey}"{' '}
+              <strong className="block font-bold text-xl text-red-800">
+                NO PRODUCTS FOUND FOR "{searchKey}"
               </strong>
             </div>
           ) : (

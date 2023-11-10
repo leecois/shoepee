@@ -50,7 +50,7 @@ const Filters = ({
         }`}
       />
       <div
-        className={`col-span-1 min-h-screen absolute top-0 right-0 lg:inset-0 lg:relative w-full h-full max-h-full max-w-xs overflow-y-scroll lg:overflow-auto bg-gray-50 transition-all duration-300 ease-in-out ${
+        className={`col-span-1 min-h-screen absolute top-0 right-0 lg:inset-0 lg:relative w-full h-full max-h-full max-w-xs overflow-y-scroll lg:overflow-auto transition-all duration-300 ease-in-out ${
           openFilter ? 'left-0 opacity-100' : '-left-full opacity-0'
         }`}
       >
@@ -102,7 +102,7 @@ const Filters = ({
               {({ open }) => (
                 <div
                   className={`py-5 pl-5 pr-3 flex flex-col ${
-                    open && 'bg-blue-50'
+                    open && 'border-t border-gray-200'
                   }`}
                 >
                   <Disclosure.Button className="group flex items-center justify-between">
@@ -130,7 +130,7 @@ const Filters = ({
                             }
                             className={`text-base ${
                               selectedBrands.includes(option.value)
-                                ? 'text-blue-500 font-semibold'
+                                ? 'text-black-2 font-semibold'
                                 : 'text-gray-700'
                             }`}
                           >

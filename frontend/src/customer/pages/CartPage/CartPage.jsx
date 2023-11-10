@@ -17,9 +17,9 @@ const CartPage = () => {
   return (
     <>
       <Breadcrumb items={breadcrumbItems} />
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8 m-8">
+      <div className="min-h-screen grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8 m-8">
         <div className="h-full rounded-lg  lg:col-span-2">
-          <Cart  />
+          <Cart />
         </div>
         <div className="h-full rounded-lg ">
           <CartSummary />
