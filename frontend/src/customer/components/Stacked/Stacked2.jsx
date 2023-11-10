@@ -2,6 +2,7 @@ import React from 'react';
 import KeenSlider from 'keen-slider';
 import 'keen-slider/keen-slider.min.css';
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const Stacked2 = ({ modelList }) => {
   useEffect(() => {
@@ -9,14 +10,14 @@ const Stacked2 = ({ modelList }) => {
       loop: true,
       slides: {
         origin: 'center',
-        perView: 0.25,
+        perView: 1.25,
         spacing: 16,
       },
       breakpoints: {
         '(min-width: 1024px)': {
           slides: {
             origin: 'auto',
-            perView: 1.5,
+            perView: 2.5,
             spacing: 32,
           },
         },
@@ -35,13 +36,18 @@ const Stacked2 = ({ modelList }) => {
   return (
     <>
       <section>
-        <div className="mx-auto max-w-[1340px] px-4 py-12 sm:px-6 lg:me-0 lg:py-16 lg:pe-0 lg:ps-8 xl:py-24">
+        <div className="mx-auto max-w-[1840px] px-4 py-12 sm:px-6 lg:me-0 lg:py-16 lg:pe-0 lg:ps-8 xl:py-24">
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:items-center lg:gap-8">
             <div className="max-w-xl text-center ltr:sm:text-left rtl:sm:text-right">
               <div className="flex flex-col items-center justify-center lg:mt-8">
                 <h2 className="max-w-xl text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
                   Trending
                 </h2>
+                <p className="mt-4 text-lg text-gray-500">
+                  Discover the latest trending styles from Shoepee and bring some
+                  refreshing changes to your wardrobe this season. 
+                  
+                </p>
 
                 <div className="flex gap-4 mt-4">
                   <button
@@ -92,7 +98,7 @@ const Stacked2 = ({ modelList }) => {
             <div className="-mx-6 border shadow-xl lg:col-span-2 lg:mx-0">
               <div id="keen-slider-2" className="keen-slider">
                 {modelList?.map((model) => (
-                  <div key={model.id} className="keen-slider__slide">
+                  <Link to={`/products/${model.modelname}`} key={model.id} className="keen-slider__slide">
                     <blockquote className="flex h-full flex-col justify-between bg-white p-6 shadow-sm sm:p-8 lg:p-12">
                       <div>
                         <div className="flex text-lg font-semibold gap-0.5 text-yellow-700">
@@ -120,13 +126,12 @@ const Stacked2 = ({ modelList }) => {
                             </div>
                           </div>
                           <p className="text-xl font-semibold text-gray-900">
-                            ${model.price}
+                            ${model.shoes[0]?.price}
                           </p>
                         </div>
                       </div>
-
                     </blockquote>
-                  </div>
+                  </Link>
                 ))}
               </div>
             </div>

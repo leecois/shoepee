@@ -92,20 +92,7 @@ export default function ModelsTable({ modelList, updateModel }) {
   const columns = [
     { field: 'id', headerName: 'ID', width: 70 },
     { field: 'modelname', headerName: 'Model Name', width: 130, editable: true},
-    {
-      field: 'shoes',
-      headerName: 'Shoe',
-      width: 343,
-      renderCell: (params) => (
-        <div className='flex justify-between space-x-2'>
-          {params.value.map((shoe) => (
-            <div key={shoe.id}>
-              <p>ID: {shoe.id}</p>
-            </div>
-          ))}
-        </div>
-      ),
-    },
+
     { field: 'imageurl', headerName: 'Image URL', width: 400, editable: true},
     { field: 'price', headerName: 'Price', width: 100, editable: true},
     {

@@ -1,39 +1,48 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { unwrapResult } from "@reduxjs/toolkit";
-import { SnackbarProvider, useSnackbar } from "notistack";
-import { login } from "../containers/User/userSlice";
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import { unwrapResult } from '@reduxjs/toolkit';
+import { login } from '../containers/User/userSlice';
+import { useSnackbar } from 'notistack';
 
 const SignIn = ({ goBack, enteredEmail, handleCloseSuccess }) => {
-  const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      const data = new FormData(event.currentTarget);
-      const userData = {
-        email: enteredEmail,
-        password: data.get("password"),
-      };
-      // Auto set username = email
-      userData.username = userData.email;
-      setIsLoading(true);
+  // Validation schema using Yup
+  const validationSchema = Yup.object({
+    password: Yup.string().required('Password is required'),
+  });
 
-      const action = login(userData);
-      const resultAction = await dispatch(action);
-      const user = unwrapResult(resultAction);
+  // Formik setup
+  const formik = useFormik({
+    initialValues: {
+      email: enteredEmail,
+      password: '',
+    },
+    validationSchema,
+    onSubmit: async (values) => {
+      try {
+        setIsLoading(true);
+        const action = login(values);
+        const resultAction = await dispatch(action);
+        unwrapResult(resultAction);
 
-      // Close modal on successful login
-      handleCloseSuccess();
-    } catch (error) {
-      console.log("Failed to login:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+        enqueueSnackbar('Login Successful!', { variant: 'success' });
+        handleCloseSuccess();
+        window.location.reload();
+      } catch (error) {
+        enqueueSnackbar('Failed to login: ' + error.message, {
+          variant: 'error',
+        });
+        console.log('Failed to login:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+  });
 
   return (
     <div>
@@ -54,10 +63,14 @@ const SignIn = ({ goBack, enteredEmail, handleCloseSuccess }) => {
         </svg>
       </button>
       <div className="flex justify-center mb-4">
-        <img src="/logoshoepee.png" alt="Shoepee" className="w-16 h-16" />
+        <img
+          src="https://i.ibb.co/h9qBfDY/logoshoepee.png"
+          alt="Shoepee"
+          className="w-16 h-16"
+        />
       </div>
-      <form className="space-y-6" onSubmit={handleSubmit}>
-        <h3 className="text-xl font-medium text-white dark:text-black">
+      <form className="space-y-6" onSubmit={formik.handleSubmit}>
+        <h3 className="text-xl font-medium text-black dark:text-black">
           HELLO! WELCOME TO SHOEPEE
         </h3>
         <p className="text-gray-700 dark:text-gray-700">
@@ -65,43 +78,44 @@ const SignIn = ({ goBack, enteredEmail, handleCloseSuccess }) => {
         </p>
         <div className="text-left">
           <label
-            htmlFor="Email"
-            className="relative block rounded-md border border-gray-200 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
+            htmlFor="email"
+            className="relative mb-4 block rounded-md border border-gray-200 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
           >
             <input
               type="email"
-              name="email"
               id="email"
-              value={enteredEmail}
+              name="email"
               className="peer w-full border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0"
-              required=""
+              value={formik.values.email}
+              onChange={formik.handleChange}
               readOnly
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
               Email
             </span>
           </label>
-        </div>
-        <div className="text-left">
           <label
-            htmlFor="Password"
+            htmlFor="password"
             className="relative block rounded-md border border-gray-200 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
           >
             <input
               type="password"
-              name="password"
               id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              name="password"
               className="peer w-full border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0"
-              required=""
+              value={formik.values.password}
+              onChange={formik.handleChange}
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
               Password
             </span>
           </label>
+          {formik.errors.password ? (
+            <div className="text-sm text-gray-500">
+              {formik.errors.password}
+            </div>
+          ) : null}
         </div>
-
         <div className="flex justify-between">
           <div className="flex items-start">
             <div className="flex items-center h-5">
@@ -129,16 +143,13 @@ const SignIn = ({ goBack, enteredEmail, handleCloseSuccess }) => {
             Lost Password?
           </a>
         </div>
-        <SnackbarProvider>
-          <button
-            type="submit"
-            onClick={() => enqueueSnackbar("Login Success!")}
-            className="w-full text-white bg-red-900 hover:bg-black focus:ring-4 focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-800 dark:hover-bg-red-700 dark:focus-ring-blue-800"
-            disabled={isLoading}
-          >
-            {isLoading ? "Loading..." : "SIGN IN"}
-          </button>
-        </SnackbarProvider>
+        <button
+          type="submit"
+          disabled={isLoading}
+          className="w-full text-white bg-red-900 hover:bg-black focus:ring-4 focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-800 dark:hover-bg-red-700 dark:focus-ring-blue-800"
+        >
+          {isLoading ? 'Loading...' : 'Sign In'}
+        </button>
       </form>
     </div>
   );

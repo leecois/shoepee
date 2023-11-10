@@ -16,11 +16,11 @@ const HomePage = () => {
   return (
     <>
       <Hero />
-      <StepCustomize />
+
       {modelList.length > 0 && <Stacked2 modelList={modelList} />}
       {brandList.length > 0 && <StackedCenter brandList={brandList} />}
       {modelList.length > 0 && <Stacked modelList2={modelList} />}
-      <Testimonial />
+      <StepCustomize />
       <Shoepee />
     </>
   );

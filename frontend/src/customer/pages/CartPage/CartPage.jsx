@@ -1,12 +1,10 @@
 import React from 'react';
-import { useLocalStorageData } from '../../../containers/selectors';
 import Breadcrumb from '../../components/Breadcrumb';
 import Cart from '../../components/Cart/Cart';
 import CartSummary from '../../components/Cart/CartSummary';
 import { useNavigate } from 'react-router-dom';
 
 const CartPage = () => {
-  const cartItems = useLocalStorageData('cart');
   const navigate = useNavigate();
   const handleCheckoutClick = () => {
     navigate('/checkout');
@@ -21,7 +19,7 @@ const CartPage = () => {
       <Breadcrumb items={breadcrumbItems} />
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8 m-8">
         <div className="h-full rounded-lg  lg:col-span-2">
-          <Cart cartItems={cartItems} />
+          <Cart  />
         </div>
         <div className="h-full rounded-lg ">
           <CartSummary />

@@ -11,6 +11,7 @@ import {
 } from '../../containers/selectors';
 
 export default function Navigation() {
+  const cartItemsCount = useSelector(cartItemsCountSelector);
   const cartTotal = useSelector(cartTotalSelector);
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const navigate = useNavigate();
@@ -29,7 +30,6 @@ export default function Navigation() {
 
   const userId = user ? user.userId : null;
 
-  const cartItemsCount = useSelector(cartItemsCountSelector);
   const [openAuthModal, setOpenAuthModal] = useState(false);
 
   const [prevScrollPos, setPrevScrollPos] = useState(0);
@@ -186,7 +186,7 @@ export default function Navigation() {
                 <span className="font-bold text-lg">
                   {cartItemsCount} Items
                 </span>
-                <span className="text-info">Subtotal: ${cartTotal}</span>
+                <span className="text-info">Subtotal: {cartTotal}</span>
                 <div className="card-actions">
                   <button
                     className="btn btn-primary btn-block"

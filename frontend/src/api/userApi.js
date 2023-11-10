@@ -42,6 +42,34 @@ const updateUser = (userId, updatedUserData) => {
   });
 };
 
+const addToCart = (cartItem) => {
+  const jwt = localStorage.getItem(StorageKeys.TOKEN);
+  return axiosClient.post('auth/addcart', cartItem, {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  });
+};
+
+const getCart = () => {
+  const jwt = localStorage.getItem(StorageKeys.TOKEN);
+  return axiosClient.get('auth/getcart', {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  });
+};
+
+const markItemAsUnavailable = async(cartItemId) => {
+  const jwt = localStorage.getItem(StorageKeys.TOKEN);
+  return axiosClient.put(`/delete/${cartItemId}`, {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  });
+};
+
+
 const userApi = {
   register: createApiRequest('register'),
   login: createApiRequest('login'),
@@ -49,6 +77,9 @@ const userApi = {
   getById: getUserById,
   getAll: getAllUsers,
   update: updateUser,
+  addToCart,
+  getCart,
+  markItemAsUnavailable,
 };
 
 export default userApi;

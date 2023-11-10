@@ -1,15 +1,19 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { cartTotalSelector } from '../../../containers/selectors';
+import { useEffect } from 'react';
 
 const CartSummary = () => {
   const cartTotal = useSelector(cartTotalSelector);
+  useEffect(() => {
+    console.log('Cart items:', cartTotal);
+  }, [cartTotal]);
   return (
     <div className="bg-glass shadow-lg p-8">
       <h2 className="text-xl font-bold text-center mb-4">ORDER SUMMARY</h2>
       <div className="flex justify-between mb-2">
         <div className="text-gray-600 font-semibold">SUBTOTAL</div>
-        <div className="text-gray-800">${cartTotal}.00</div>
+        <div className="text-gray-800">${cartTotal}</div>
       </div>
       <div className="flex justify-between mb-2">
         <div className="text-gray-600 font-semibold">SHIPPING</div>
@@ -21,7 +25,7 @@ const CartSummary = () => {
       </div>
       <div className="flex justify-between mb-4">
         <div className="text-gray-600 font-semibold">ORDER TOTAL</div>
-        <div className="text-gray-800">${cartTotal}.00</div>
+        <div className="text-gray-800">${cartTotal}</div>
       </div>
     </div>
   );

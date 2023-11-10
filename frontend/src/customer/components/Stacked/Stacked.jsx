@@ -2,6 +2,7 @@ import React from 'react';
 import KeenSlider from 'keen-slider';
 import 'keen-slider/keen-slider.min.css';
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 const Stacked = ({ modelList2 }) => {
   useEffect(() => {
@@ -17,7 +18,7 @@ const Stacked = ({ modelList2 }) => {
         '(min-width: 1024px)': {
           slides: {
             origin: 'auto',
-            perView: 2.5,
+            perView: 3.5,
             spacing: 32,
           },
         },
@@ -40,10 +41,10 @@ const Stacked = ({ modelList2 }) => {
   return (
     <div>
       <section>
-        <div className="my-auto max-w-[1340px] py-12 lg:me-0 lg:py-16  xl:py-24">
-          <div className="max-w-7xl flex items-center justify-end sm:pe-6 lg:pe-8">
-            <h2 className="max-w-xl mb-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-              Newest
+        <div className="my-auto max-w-full py-12 lg:me-0 lg:py-16 xl:py-24">
+          <div className="max-w-7xl ml-16 flex justify-start sm:pe-6 lg:pe-8">
+            <h2 className="max-w-xl mb-2 text-xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+              You Might Also Like
             </h2>
             <div className="ml-10 flex gap-4 lg:mt-0 mr-8 ">
               <button
@@ -92,43 +93,42 @@ const Stacked = ({ modelList2 }) => {
 
           <div className="-mx-6 mt-8 border shadow-xl lg:col-span-2 lg:mx-0">
             <div id="keen-slider-1" className="keen-slider">
-            {modelList2?.map((model) => (
-                  <div key={model.id} className="keen-slider__slide">
-                    <blockquote className="flex h-full flex-col justify-between bg-white p-6 shadow-sm sm:p-8 lg:p-12">
-                      <div>
-                        <div className="flex text-lg font-semibold gap-0.5 text-yellow-700">
-                          CUSTOMIZE
-                        </div>
-
-                        <div className="mt-4">
-                          <img
-                            src={model.imageurl}
-                            alt={model.modelname}
-                            className="h-100 w-full rounded-lg object-cover object-center dark:bg-gray-500"
-                          />
-                        </div>
+              {modelList2?.map((model) => (
+                <Link to={`/products/${model.modelname}`} key={model.id} className="keen-slider__slide">
+                  <blockquote className="flex h-full flex-col justify-between bg-white p-6 shadow-sm sm:p-8 lg:p-12">
+                    <div>
+                      <div className="flex text-lg font-semibold gap-0.5 text-yellow-700">
+                        CUSTOMIZE
                       </div>
-                      <div className="mt-8">
-                        <div className="flex justify-between">
-                          <div className="flex items-center">
-                            <div className="flex flex-col">
-                              <div className="text-2xl font-bold text-gray-900">
-                                {model.modelname}
-                              </div>
-                              <div className="text-sm font-medium text-gray-500">
-                                {model.brandId}
-                              </div>
+
+                      <div className="mt-4">
+                        <img
+                          src={model.imageurl}
+                          alt={model.modelname}
+                          className="h-100 w-full rounded-lg object-cover object-center dark:bg-gray-500"
+                        />
+                      </div>
+                    </div>
+                    <div className="mt-8">
+                      <div className="flex justify-between">
+                        <div className="flex items-center">
+                          <div className="flex flex-col">
+                            <div className="text-2xl font-bold text-gray-900">
+                              {model.modelname}
+                            </div>
+                            <div className="text-sm font-medium text-gray-500">
+                              {model.brandId}
                             </div>
                           </div>
-                          <p className="text-xl font-semibold text-gray-900">
-                            ${model.price}
-                          </p>
                         </div>
+                        <p className="text-xl font-semibold text-gray-900">
+                          ${model.shoes[0]?.price}
+                        </p>
                       </div>
-
-                    </blockquote>
-                  </div>
-                ))}
+                    </div>
+                  </blockquote>
+                </Link>
+              ))}
             </div>
           </div>
         </div>

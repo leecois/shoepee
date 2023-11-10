@@ -4,10 +4,14 @@ import { useKeenSlider } from 'keen-slider/react';
 import React, { useLayoutEffect } from 'react';
 import { carousel } from './carousel';
 import './styles.css';
+import { Link, useNavigate } from 'react-router-dom';
 
-const Slide = ({ brand }) => (
-  <div className="carousel__cell">
-    <a href={brand.url || '#'} className="block w-full h-full">
+const Slide = ({ brand, onClick }) => (
+  <div className="carousel__cell" onClick={onClick}>
+    <Link
+      to={`/products?brand=${brand.brandName}`}
+      className="block w-full h-full"
+    >
       <img
         alt={brand.brandName}
         src={brand.imageUrl}
@@ -21,15 +25,18 @@ const Slide = ({ brand }) => (
         <h3 className="text-2xl font-bold text-white sm:text-3xl lg:text-4xl drop-shadow-md">
           {brand.brandName}
         </h3>
-        <p className="text-white text-opacity-80 mt-2">
-          {brand.description}
-        </p>
+        <p className="text-white text-opacity-80 mt-2">{brand.description}</p>
       </div>
-    </a>
+    </Link>
   </div>
 );
 
 export default function StackedCenter({ brandList }) {
+  const navigate = useNavigate();
+
+  const handleBrandClick = (brandName) => {
+    navigate(`/products?brand=${brandName}`);
+  };
   const [sliderRef, slider] = useKeenSlider(
     {
       loop: true,
@@ -37,7 +44,7 @@ export default function StackedCenter({ brandList }) {
       renderMode: 'custom',
       mode: 'free-snap',
     },
-    [carousel] 
+    [carousel]
   );
 
   useLayoutEffect(() => {
@@ -49,19 +56,21 @@ export default function StackedCenter({ brandList }) {
 
       const degree = 360 / totalSlides;
       slider.slides.forEach((element, idx) => {
-        element.style.transform = `rotateY(${degree * idx}deg) translateZ(${z}px)`;
+        element.style.transform = `rotateY(${
+          degree * idx
+        }deg) translateZ(${z}px)`;
       });
     } else {
       console.warn('Slider not initialized or track details unavailable');
     }
-  }, [slider, brandList.length]); 
+  }, [slider, brandList.length]);
 
   return (
     <div className="wrapper">
       <div className="scene">
         <div className="carousel keen-slider" ref={sliderRef}>
           {brandList.map((brand, index) => (
-            <Slide key={brand.id || index} brand={brand} />
+            <Slide key={brand.id || index} brand={brand} onClick={() => handleBrandClick(brand.brandName)} />
           ))}
         </div>
       </div>

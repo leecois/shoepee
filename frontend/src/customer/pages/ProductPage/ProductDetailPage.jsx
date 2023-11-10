@@ -5,10 +5,20 @@ import ProductDetails from '../../components/ProductDetails/ProductDetails';
 
 import useProductDetail from '../../../hooks/useProductDetail.js';
 import { Skeleton } from '@mui/material';
+import Stacked from '../../components/Stacked/Stacked.jsx';
+import useModelData from '../../../hooks/useModelData.js';
+import StorageKeys from '../../../constants/storage-keys.js';
 
 const ProductDetailPage = () => {
+  const { modelList } = useModelData();
   const { modelname } = useParams();
   const { product, loading } = useProductDetail(modelname);
+
+  const isUserLoggedIn = () => {
+    const token = localStorage.getItem(StorageKeys.TOKEN);
+    return !!token; // returns true if token exists, false otherwise
+  };
+  const userLoggedIn = isUserLoggedIn();
 
   const breadcrumbItems = [
     { label: 'Products', url: '/products' },
@@ -43,7 +53,8 @@ const ProductDetailPage = () => {
   return (
     <div>
       <Breadcrumb items={breadcrumbItems} />
-      <ProductDetails product={product} />
+      <ProductDetails product={product} userLoggedIn={userLoggedIn} />
+      {modelList.length > 0 && <Stacked modelList2={modelList} />}
     </div>
   );
 };

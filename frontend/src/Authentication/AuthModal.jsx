@@ -132,7 +132,7 @@ const AuthModal = ({ handleClickOpen, handleClose }) => {
             <div>
               <div className="flex justify-center mb-4">
                 <img
-                  src="./logoshoepee.png"
+                  src="https://i.ibb.co/h9qBfDY/logoshoepee.png"
                   alt="Your Logo"
                   className="w-16 h-16"
                 />
