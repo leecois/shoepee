@@ -50,7 +50,7 @@ const Filters = ({
         }`}
       />
       <div
-        className={`col-span-1 min-h-screen absolute top-0 right-0 lg:inset-0 lg:relative w-full h-full max-h-full max-w-xs overflow-y-scroll lg:overflow-auto transition-all duration-300 ease-in-out ${
+        className={`col-span-1 bg-white min-h-screen absolute top-0 right-0 lg:inset-0 lg:relative w-full h-full max-h-full max-w-xs overflow-y-scroll lg:overflow-auto transition-all duration-300 ease-in-out ${
           openFilter ? 'left-0 opacity-100' : '-left-full opacity-0'
         }`}
       >
