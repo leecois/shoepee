@@ -31,6 +31,8 @@ public class ShoeModel {
     private String imageurl;
     @Column(name = "price")
     private double price;
+    @Column(name = "status")
+    private String status;
 
     @ManyToOne()
     @JsonIgnore

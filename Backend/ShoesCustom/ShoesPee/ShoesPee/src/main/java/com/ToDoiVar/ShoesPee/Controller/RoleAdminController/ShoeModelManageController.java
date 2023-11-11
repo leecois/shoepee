@@ -1,5 +1,6 @@
 package com.ToDoiVar.ShoesPee.Controller.RoleAdminController;
 
+import com.ToDoiVar.ShoesPee.Models.Brand;
 import com.ToDoiVar.ShoesPee.Models.ShoeModel;
 import com.ToDoiVar.ShoesPee.Services.ShoeModelService;
 import com.ToDoiVar.ShoesPee.dto.ShoeModelDto;
@@ -25,8 +26,8 @@ public class ShoeModelManageController {
         return new ResponseEntity<ShoeModelDto>(newShoemodel,HttpStatus.CREATED);
     }
     @GetMapping("/shoemodels")
-    public ResponseEntity<List<ShoeModelDto>> getAllShoeModel(){
-        List<ShoeModelDto> viewall = shoeModelService.getAllShoeModel();
+    public ResponseEntity<List<ShoeModelDto>> getAllShoeModel(@RequestParam(defaultValue = "")String searchKey){
+        List<ShoeModelDto> viewall = shoeModelService.getAllShoeModel(searchKey);
         return new ResponseEntity<List<ShoeModelDto>>(viewall,HttpStatus.OK);
     }
 
@@ -47,10 +48,10 @@ public class ShoeModelManageController {
     public ResponseEntity<ShoeModel> editShoeModel(@PathVariable int id, @RequestBody ShoeModel editShoeModel){
         return new ResponseEntity<>(shoeModelService.updateShoeModel(id,editShoeModel),HttpStatus.OK);
     }
-    @DeleteMapping("/deleteshoemodel/{id}")
-    public ResponseEntity<String> removeShoeModel(@PathVariable int id){
-       shoeModelService.removeShoeModel(id);
-       return new ResponseEntity<String>("Delete sucessful",HttpStatus.OK);
+    @PutMapping("/deleteshoemodel/{id}")
+    public ResponseEntity<ShoeModel> removeShoeModel(@PathVariable int id){
+        ShoeModel shoeModel = shoeModelService.removeShoeModel(id);
+       return new ResponseEntity<ShoeModel>(shoeModel,HttpStatus.OK);
     }
 
 }

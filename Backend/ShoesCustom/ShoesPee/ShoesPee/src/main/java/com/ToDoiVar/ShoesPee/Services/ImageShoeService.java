@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface ImageShoeService{
     List<ImageShoe> getImageShoeByShoe(int shoeId);
-    ImageDto addImageShoe(ImageDto newImageShoe);
+    ImageDto addImageShoe(ImageDto newImageShoe,int shoeId);
     void deleteImageShoe(int shoeId);
 }

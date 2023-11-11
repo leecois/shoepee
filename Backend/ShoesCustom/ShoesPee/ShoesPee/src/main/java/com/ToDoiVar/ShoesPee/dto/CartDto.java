@@ -8,7 +8,15 @@ public class CartDto {
     private int cartId;
     private	Set<CartItemDto> items= new HashSet<>();
     private UserDto user;
+    private double totalPrice;
 
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
     public int getCartId() {
         return cartId;
     }

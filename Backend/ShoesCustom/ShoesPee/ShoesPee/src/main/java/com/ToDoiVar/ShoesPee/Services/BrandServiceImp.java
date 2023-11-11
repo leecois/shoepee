@@ -64,7 +64,8 @@ public class BrandServiceImp implements BrandService{
     public Brand deleteBrand(int id) {
         Brand deleBrand = this.brandRepository.findById(id).orElseThrow(() -> new BrandNotFoundException("Brand not found"));
         deleBrand.setStatus("unavailble");
-        return deleBrand;
+        Brand save = this.brandRepository.save(deleBrand);
+        return save;
     }
 
     @Override
