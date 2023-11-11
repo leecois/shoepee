@@ -1,12 +1,12 @@
 import React from 'react';
-import { useLocalStorageData } from '../../../containers/selectors';
+import { useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 import Breadcrumb from '../../components/Breadcrumb';
 import Cart from '../../components/Cart/Cart';
 import CartSummary from '../../components/Cart/CartSummary';
-import { useNavigate } from 'react-router-dom';
 
 const CartPage = () => {
-  const cartItems = useLocalStorageData('cart');
+  const cartItems = useSelector((state) => state.cart.cartItems);
   const navigate = useNavigate();
   const handleCheckoutClick = () => {
     navigate('/checkout');
@@ -16,10 +16,25 @@ const CartPage = () => {
     { label: 'Products', url: '/products' },
     { label: 'Cart' },
   ];
+  if (!cartItems || cartItems.length === 0) {
+    return (
+      <div className="min-h-screen flex flex-col justify-center items-center space-y-4 bg-gray-100">
+        <p className="text-2xl font-bold text-gray-700">
+          THERE ARE NO ITEMS IN YOUR CART.
+        </p>
+        <Link 
+          to={'/products'} 
+          className="btn btn-active btn-neutral"
+        >
+          Shop Now
+        </Link>
+      </div>
+    );
+  }
   return (
     <>
       <Breadcrumb items={breadcrumbItems} />
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8 m-8">
+      <div className="min-h-screen grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8 m-8">
         <div className="h-full rounded-lg  lg:col-span-2">
           <Cart cartItems={cartItems} />
         </div>

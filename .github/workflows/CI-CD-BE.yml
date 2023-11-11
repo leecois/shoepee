@@ -27,6 +27,8 @@ jobs:
      
       - name: Build project with Maven
         run: mvn -B package --file Backend/ShoesCustom/ShoesPee/ShoesPee/pom.xml
+
+
       
       # - name: Distribute jar-war file 
       #   run: mkdir staging && cp target/*.jar staging     

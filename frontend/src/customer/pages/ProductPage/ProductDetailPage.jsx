@@ -5,10 +5,20 @@ import ProductDetails from '../../components/ProductDetails/ProductDetails';
 
 import useProductDetail from '../../../hooks/useProductDetail.js';
 import { Skeleton } from '@mui/material';
+import Stacked from '../../components/Stacked/Stacked.jsx';
+import useModelData from '../../../hooks/useModelData.js';
+import StorageKeys from '../../../constants/storage-keys.js';
 
 const ProductDetailPage = () => {
+  const { modelList } = useModelData();
   const { modelname } = useParams();
   const { product, loading } = useProductDetail(modelname);
+
+  const isUserLoggedIn = () => {
+    const token = localStorage.getItem(StorageKeys.TOKEN);
+    return !!token; // returns true if token exists, false otherwise
+  };
+  const userLoggedIn = isUserLoggedIn();
 
   const breadcrumbItems = [
     { label: 'Products', url: '/products' },
@@ -17,7 +27,7 @@ const ProductDetailPage = () => {
 
   if (loading) {
     return (
-      <div className="mx-auto py-8 px-4 w-full max-w-7xl bg-white">
+      <div className="min-h-screen mx-auto py-8 px-4 w-full max-w-7xl bg-white">
         <div className="mx-auto max-w-2xl lg:max-w-none grid grid-cols-1 lg:grid-cols-2 gap-5">
           <div className="order-2 lg:order-1 relative rounded-sm">
             <Skeleton variant="rectangular" width="100%" height={630} />
@@ -43,7 +53,8 @@ const ProductDetailPage = () => {
   return (
     <div>
       <Breadcrumb items={breadcrumbItems} />
-      <ProductDetails product={product} />
+      <ProductDetails product={product} userLoggedIn={userLoggedIn} />
+      {modelList.length > 0 && <Stacked modelList2={modelList} />}
     </div>
   );
 };

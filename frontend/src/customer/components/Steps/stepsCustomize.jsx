@@ -1,8 +1,8 @@
 import React from 'react';
 import FullModal from '../Modal/FullModal';
+import { Link } from 'react-router-dom';
 
 export const StepCustomize = () => {
-
   return (
     <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
       <div className="max-w-xl mb-10 md:mx-auto sm:text-center lg:max-w-2xl md:mb-12">
@@ -124,8 +124,13 @@ export const StepCustomize = () => {
           </p>
         </div>
       </div>
-      <div className="text-center">
-        <FullModal />
+      <div className="mt-10 flex flex-col text-center">
+        <Link
+          to={`/products`}
+          className=" transition ease-in-out delay-150  hover:-translate-z-1 hover:scale-110 hover:background-color: #EF4444; duration-300 m-1.5 py-2.5 px-5 rounded-md bg-black text-white font-semibold uppercase hover:bg-red-800"
+        >
+          Start your customize
+        </Link>
       </div>
     </div>
   );

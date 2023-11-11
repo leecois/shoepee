@@ -74,4 +74,3 @@ const { reducer, actions } = userSlice;
 export const { clearUserData } = actions;
 
 export default reducer;
-

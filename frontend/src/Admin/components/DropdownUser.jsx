@@ -47,7 +47,7 @@ const DropdownUser = () => {
           <span className="block text-sm font-medium text-black dark:text-white">
             Admin
           </span>
-          <span className="block text-xs">UX Designer</span>
+          <span className="block text-xs">ID: 12</span>
         </span>
 
         <span className="h-12 w-12 rounded-full overflow-hidden">

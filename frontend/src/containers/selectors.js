@@ -7,25 +7,15 @@ const cartItemsSelector = (state) => state.cart.cartItems;
 // Count number of cart items
 export const cartItemsCountSelector = createSelector(
   cartItemsSelector,
-  (cartItems) => cartItems.reduce((count, item) => count + item.quantity, 0)
+  (cartItems) => cartItems.reduce((count, item) => count + item?.quantity, 0)
 );
 
-// Calculate total cart items
+// Calculate total cart items with two decimal places
 export const cartTotalSelector = createSelector(
   cartItemsSelector,
   (cartItems) =>
-    cartItems.reduce((total, item) => total + item.price * item.quantity, 0)
+    cartItems
+      .reduce((total, item) => total + (item?.totalprice ?? 0), 0)
+      .toFixed(2) // This will convert the total to a string with 2 decimal places
 );
 
-export const useLocalStorageData = (key) => {
-  const [data, setData] = useState(null);
-
-  useEffect(() => {
-    const storedData = localStorage.getItem(key);
-    if (storedData) {
-      setData(JSON.parse(storedData));
-    }
-  }, [key]);
-
-  return data;
-};

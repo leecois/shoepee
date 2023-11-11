@@ -28,7 +28,7 @@ const HeaderProduct = ({ onSort, openFilter, setOpenFilter }) => {
 
   const handleSearch = (event) => {
     const query = new URLSearchParams(location.search);
-    query.set('q', event.target.value);
+    query.set('searchKey', event.target.value);
     navigate(`${location.pathname}?${query.toString()}`);
   };
 

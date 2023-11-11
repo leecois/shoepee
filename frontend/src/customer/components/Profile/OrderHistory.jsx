@@ -1,42 +1,46 @@
 import React from 'react';
 
 const OrderHistory = () => {
+  // Assuming you fetch this data from an API or your Redux store
+  const userOrders = [
+    {
+      orderId: '12345',
+      orderDate: '2021-12-01',
+      products: [{ name: 'Shoe Model A', quantity: 1 }],
+      status: 'Delivered',
+      totalAmount: '100.00'
+    },
+    // ... other orders
+  ];
+
   return (
     <div className="overflow-x-auto">
-        <h1 className="text-3xl font-semibold text-black dark:text-white">RECENT ORDERS</h1>
+      <h1 className="text-3xl font-semibold text-black dark:text-white">RECENT ORDERS</h1>
       <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
         <table className="table">
-          {/* head */}
           <thead>
             <tr>
-              <th></th>
+              <th>Order ID</th>
+              <th>Order Date</th>
               <th>Products</th>
               <th>Status</th>
-              <th>Favorite Color</th>
+              <th>Total Amount</th>
             </tr>
           </thead>
           <tbody>
-            {/* row 1 */}
-            <tr>
-              <th>1</th>
-              <td>Cy Ganderton</td>
-              <td>Quality Control Specialist</td>
-              <td>Blue</td>
-            </tr>
-            {/* row 2 */}
-            <tr>
-              <th>2</th>
-              <td>Hart Hagerty</td>
-              <td>Desktop Support Technician</td>
-              <td>Purple</td>
-            </tr>
-            {/* row 3 */}
-            <tr>
-              <th>3</th>
-              <td>Brice Swyre</td>
-              <td>Tax Accountant</td>
-              <td>Red</td>
-            </tr>
+            {userOrders.map((order) => (
+              <tr key={order.orderId}>
+                <td>{order.orderId}</td>
+                <td>{order.orderDate}</td>
+                <td>
+                  {order.products.map((product, index) => (
+                    <div key={index}>{product.name} (x{product.quantity})</div>
+                  ))}
+                </td>
+                <td>{order.status}</td>
+                <td>${order.totalAmount}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

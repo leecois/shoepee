@@ -10,7 +10,7 @@ const ProfilePage = () => {
   const { userId } = useParams();
   const profileData = useProfileData(userId);
   return (
-    <div>
+    <div className="h-screen">
       <Breadcrumb items={breadcrumbItems} />
       <div>
         <Profile profileData={profileData} />
