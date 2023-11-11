@@ -15,7 +15,7 @@ private String allowedOrigin;
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("https://localhost:8080","http://localhost:3000","https://3.1.85.78")
+                        .allowedOrigins("https://localhost:8080","http://localhost:3000","https://3.1.85.78","https://shoepee.vercel.app")
                         .allowedMethods("GET", "POST", "PUT", "DELETE")
                         .allowedHeaders("*");
             }

@@ -2,12 +2,15 @@ package com.ToDoiVar.ShoesPee.Models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
+@Getter
+@Setter
 @Entity(name = "orders")
 public class Order {
     @Id
@@ -18,8 +21,10 @@ public class Order {
     private Date orderDelivered;
     private double orderAmt;
     private String billingAddress;
+    private String phoneNumber;
+    private String fullName;
     private Date orderCreateAt;
-    @OneToOne
+    @ManyToOne
     private User user;
     @OneToMany(mappedBy = "order",cascade = CascadeType.ALL)
     private Set<OrderItem> orderItem=new HashSet<>();

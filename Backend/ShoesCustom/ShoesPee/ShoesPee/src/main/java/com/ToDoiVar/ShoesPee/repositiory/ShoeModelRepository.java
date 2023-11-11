@@ -10,5 +10,6 @@ import java.util.Optional;
 public interface ShoeModelRepository extends JpaRepository<ShoeModel,Integer> {
     Optional <ShoeModel> getShoeModelsByModelname(String modeName);
     List<ShoeModel> findShoeModelByBrand(Brand brand);
+    List<ShoeModel> findShoeModelByModelnameContainingIgnoreCase(String searchKey);
 
 }

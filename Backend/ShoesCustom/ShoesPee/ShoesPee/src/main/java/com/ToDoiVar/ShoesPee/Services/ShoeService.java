@@ -10,8 +10,8 @@ public interface ShoeService {
     List<ShoeDto> getAllShoe();
     ShoeDto getShoeById(int id);
     Shoe findById(int id);
-    ShoeDto addShoe(ShoeDto newShoe);
+    ShoeDto addShoe(ShoeDto newShoe,int shoeModelsId);
     ShoeDto editShoe(int id,ShoeDto editShoe);
     List<ShoeDto> getShoeByShoeModel(int shoeModelId);
-    void deleteShoe(int id);
+    Shoe deleteShoe(int id);
 }

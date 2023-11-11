@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+import java.util.Set;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,7 +18,9 @@ public class ShoeModelDto {
     private String modelname;
     private String imageurl;
     private double price;
+    private String status;
     private BrandDto brandDto;
+    private List<ShoeDto> shoes;
 //    private Brand brand;
 //
 //    public Brand getBrand() {

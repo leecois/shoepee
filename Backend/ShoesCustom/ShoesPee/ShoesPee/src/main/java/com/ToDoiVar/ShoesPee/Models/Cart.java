@@ -26,6 +26,15 @@ public class Cart {
     private Set<CartItem> items= new HashSet<>();
     @OneToOne
     private User user;
+    private double totalPrice;
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
     public int getId() {
         return id;
     }

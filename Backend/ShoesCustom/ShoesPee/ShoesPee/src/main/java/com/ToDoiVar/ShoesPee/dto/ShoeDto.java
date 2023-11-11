@@ -9,10 +9,10 @@ import lombok.*;
 @NoArgsConstructor
 public class ShoeDto {
     private int id;
-    private int modelId;
     private double price;
     private String description;
     private String imageUrl;
+    private String status;
     private ShoeModelDto shoeModelDto;
 
     public ShoeModelDto getShoeModelDto() {

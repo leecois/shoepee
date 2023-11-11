@@ -31,12 +31,16 @@ public class Shoe {
     private String description;
     @Column(name = "imageurl")
     private String imageUrl;
-
+    @Column(name = "status")
+    private String status;
     @ManyToOne
     @JsonBackReference
     @JoinColumn(name = "shoe_model_modelid") // ensure this is the correct column name for the foreign key
-
     private ShoeModel shoeModel;
+
+    @OneToMany(mappedBy = "shoe")
+    @JsonIgnore
+    private Set<OrderItem> orderItems;
 //    @OneToOne()
 //    private CartItem cartItem;
 

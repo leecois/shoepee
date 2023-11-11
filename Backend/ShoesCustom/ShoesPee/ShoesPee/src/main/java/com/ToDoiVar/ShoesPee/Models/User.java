@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.SimpleTimeZone;
 
 @Getter
@@ -43,7 +44,9 @@ public class User implements UserDetails {
         public void setCart(Cart cart) {
             this.cart = cart;
         }
-
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private Set<Order> orders;
 
 
     @Override

@@ -9,7 +9,7 @@ public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderItemId;
-    @OneToOne
+    @ManyToOne
     private Shoe shoe;
 
     private double totalProductprice;
