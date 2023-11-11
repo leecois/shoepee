@@ -69,9 +69,9 @@ const removeFromCartByShoeId = (shoeId) => {
   });
 };
 
-const order = () => {
+const order = (orderData) => {
   const jwt = localStorage.getItem(StorageKeys.TOKEN);
-  return axiosClient.post('auth/placeorder', {
+  return axiosClient.post('auth/placeorder', orderData, {
     headers: {
       Authorization: `Bearer ${jwt}`,
     },

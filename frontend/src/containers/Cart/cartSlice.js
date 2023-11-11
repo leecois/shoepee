@@ -54,6 +54,7 @@ export const cartSlice = createSlice({
   initialState: {
     user: {},
     cartId: null,
+    orderPlaced: false,
     showMiniCart: false,
     cartItems: [],
     isLoading: false,
@@ -140,9 +141,11 @@ export const cartSlice = createSlice({
         state.error = null;
       })
 
-      .addCase(placeOrderAsync.fulfilled, (state) => {
+      .addCase(placeOrderAsync.fulfilled, (state, action) => {
         state.isLoading = false;
         state.orderPlaced = true;
+        // Assuming the API returns the order data you want to store
+        state.orderDetails = action.payload; // or however you want to store it
       })
       // Handle placeOrderAsync rejected state
       .addCase(placeOrderAsync.rejected, (state, action) => {
