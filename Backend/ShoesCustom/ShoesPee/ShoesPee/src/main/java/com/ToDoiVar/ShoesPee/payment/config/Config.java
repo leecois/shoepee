@@ -1,6 +1,7 @@
 package com.ToDoiVar.ShoesPee.payment.config;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.context.annotation.Configuration;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -12,7 +13,7 @@ import java.util.*;
 
 public class Config {
     public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-//    public static String vnp_ReturnUrl = "http://localhost:8080/vnpay_jsp/vnpay_return.jsp";
+//    public static String vnp_ReturnUrl = "https://localhost:8080/vnpay_jsp/vnpay_return.jsp";
     public static String vnp_TmnCode = "GVQT45Y9";
     public static String vnp_Version = "2.1.0";
     public static String vnp_Command = "pay";

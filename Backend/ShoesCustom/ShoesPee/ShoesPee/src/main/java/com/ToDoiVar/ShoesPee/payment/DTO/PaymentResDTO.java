@@ -12,4 +12,5 @@ public class PaymentResDTO implements Serializable {
     private String message;
     private String URL;
 
+
 }
