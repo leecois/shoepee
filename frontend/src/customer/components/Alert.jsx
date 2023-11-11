@@ -25,13 +25,10 @@ const Alert = ({ isOpen, onClose }) => {
 
           <div className="mt-4 flex gap-2">
             <button
-              href="#"
+              onClick={handleClickOpen}
               className="inline-flex items-center gap-2 rounded-lg bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700"
             >
-              <button className="text-sm" onClick={handleClickOpen}>
-                {' '}
-                Sign In{' '}
-              </button>
+              <button className="text-sm"> Sign In </button>
 
               <svg
                 xmlns="http://www.w3.org/2000/svg"

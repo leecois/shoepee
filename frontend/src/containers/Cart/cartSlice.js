@@ -18,13 +18,13 @@ export const getCartAsync = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const response = await userApi.getCart();
-      return response; // Make sure you return the whole response object if needed
+      return response;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);
     }
   }
 );
-// Asynchronous thunk for marking an item as unavailable in the cart
+
 export const removeFromCartAsync = createAsyncThunk(
   'cart/removeFromCart',
   async (shoeId, { rejectWithValue }) => {
@@ -37,28 +37,39 @@ export const removeFromCartAsync = createAsyncThunk(
   }
 );
 
+export const placeOrderAsync = createAsyncThunk(
+  'cart/placeOrder',
+  async (orderData, { rejectWithValue }) => {
+    try {
+      const response = await userApi.order(orderData);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const cartSlice = createSlice({
   name: 'cart',
   initialState: {
+    user: {},
+    cartId: null,
     showMiniCart: false,
     cartItems: [],
-    isLoading: false, 
-    error: null, 
+    isLoading: false,
+    error: null,
   },
   reducers: {
-
     showMiniCart: (state) => {
       state.showMiniCart = true;
     },
     hideMiniCart: (state) => {
       state.showMiniCart = false;
     },
-
   },
   extraReducers: (builder) => {
     builder
       .addCase(addToCartAsync.pending, (state) => {
-        // Here you handle the pending state, e.g., showing a loading spinner in your UI
         state.isLoading = true;
         state.error = null;
       })
@@ -96,6 +107,8 @@ export const cartSlice = createSlice({
       .addCase(getCartAsync.fulfilled, (state, action) => {
         if (action.payload) {
           state.cartItems = action.payload.items;
+          state.cartId = action.payload.cartId;
+          state.user = action.payload.user;
           state.isLoading = false;
         } else {
           console.error('Payload is undefined');
@@ -112,6 +125,7 @@ export const cartSlice = createSlice({
       })
       .addCase(removeFromCartAsync.fulfilled, (state, action) => {
         const cartItemId = action.payload;
+
         state.cartItems = state.cartItems.filter(
           (item) => item.shoe.id !== cartItemId
         );
@@ -120,6 +134,21 @@ export const cartSlice = createSlice({
       .addCase(removeFromCartAsync.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
+      })
+      .addCase(placeOrderAsync.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+
+      .addCase(placeOrderAsync.fulfilled, (state) => {
+        state.isLoading = false;
+        state.orderPlaced = true;
+      })
+      // Handle placeOrderAsync rejected state
+      .addCase(placeOrderAsync.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+        state.orderPlaced = false;
       });
   },
 });

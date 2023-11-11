@@ -69,6 +69,15 @@ const removeFromCartByShoeId = (shoeId) => {
   });
 };
 
+const order = () => {
+  const jwt = localStorage.getItem(StorageKeys.TOKEN);
+  return axiosClient.post('auth/placeorder', {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  });
+};
+
 const userApi = {
   register: createApiRequest('register'),
   login: createApiRequest('login'),
@@ -79,6 +88,7 @@ const userApi = {
   addToCart,
   getCart,
   removeFromCartByShoeId,
+  order,
 };
 
 export default userApi;

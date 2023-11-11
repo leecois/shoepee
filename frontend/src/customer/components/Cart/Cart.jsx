@@ -5,9 +5,8 @@ import {
   removeFromCartAsync,
 } from '../../../containers/Cart/cartSlice';
 
-const Cart = () => {
+const Cart = ({ cartItems }) => {
   const dispatch = useDispatch();
-  const cartItems = useSelector((state) => state.cart.cartItems);
 
   useEffect(() => {
     dispatch(getCartAsync());
@@ -23,15 +22,7 @@ const Cart = () => {
       });
   };
 
-  if (!cartItems || cartItems.length === 0) {
-    return (
-      <div className="flex justify-center items-center h-full">
-        <p className="text-lg font-bold text-gray-700">
-          THERE ARE NO ITEMS IN YOUR CART.
-        </p>
-      </div>
-    );
-  }
+
 
   return (
     <div className="overflow-x-auto">

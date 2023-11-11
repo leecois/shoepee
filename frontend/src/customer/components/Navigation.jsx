@@ -44,6 +44,7 @@ export default function Navigation() {
 
   const handleLogout = () => {
     dispatch(clearUserData());
+    window.location.reload();
   };
 
   // Function to close the sign-in modal

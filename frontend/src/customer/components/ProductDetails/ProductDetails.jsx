@@ -1,13 +1,15 @@
 import { ShieldCheckIcon } from '@heroicons/react/24/outline';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { addToCartAsync, getCartAsync } from '../../../containers/Cart/cartSlice';
+import {
+  addToCartAsync,
+  getCartAsync,
+} from '../../../containers/Cart/cartSlice';
 import { fetchShoeImages } from '../../../hooks/CartData';
-import AddToCartForm from '../Cart/AddToCartForm';
+import Alert from '../Alert';
 import Inspiration from './Inspiration';
 import Size from './Size';
 import YourDesign from './YourDesign';
-import Alert from '../Alert';
 
 const ProductDetails = ({ product, userLoggedIn }) => {
   const [isAlertOpen, setIsAlertOpen] = useState(false);
@@ -43,13 +45,13 @@ const ProductDetails = ({ product, userLoggedIn }) => {
       setIsAlertOpen(true);
       return;
     }
-  
+
     const cartItem = {
       shoeId: selectedShoe.id,
       size: selectedSize,
       quantity: 1,
     };
-  
+
     dispatch(addToCartAsync(cartItem)).then((action) => {
       if (!action.error) {
         // Refetch the cart data
@@ -57,7 +59,6 @@ const ProductDetails = ({ product, userLoggedIn }) => {
       }
     });
   };
-  
 
   if (!product) {
     return <div>Loading...</div>;
@@ -155,15 +156,29 @@ const ProductDetails = ({ product, userLoggedIn }) => {
           {/* TODO: Add to cart form */}
 
           {selectedSize && selectedShoe ? (
-            <div className="mt-4 py-2 w-full inline-block rounded-md border-2 bg-black-2 outline-8 transition delay-150 text-base text-red font-semibold tracking-wide hover:bg-black">
+            <div className="mt-4 py-2 w-full inline-block rounded-md outline-8 transition delay-150 text-base text-red-300 font-semibold tracking-wide ">
               <Alert
                 isOpen={isAlertOpen}
                 onClose={() => setIsAlertOpen(false)}
               />
 
-              <AddToCartForm onAddToCart={handleAddToCart} />
+              <button
+                onClick={handleAddToCart}
+                className="w-full btn inline-block btn-neutral btn-active rounded-md font-semibold"
+              >
+                Add to Cart
+              </button>
             </div>
-          ) : null}
+          ) : (
+            <div className="mt-4 py-2 w-full inline-block rounded-md outline-8 transition delay-150 text-base text-red-300 font-semibold tracking-wide ">
+              <button
+                disabled="disabled"
+                className="w-full btn inline-block rounded-md text-black-2 font-semibold"
+              >
+                Add to Cart
+              </button>
+            </div>
+          )}
           <button
             onClick={handleCustomizeClick}
             className="mt-4 py-2 w-full inline-block rounded-md border-2 outline-8 transition delay-150 text-base text-red font-semibold tracking-wide hover:text-red-600"
