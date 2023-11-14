@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Profile = (profileData) => {
+const Profile = () => {
   return (
     <div className="grid m-8 grid-cols-3 gap-8">
       <div className="col-span-5 xl:col-span-3">
@@ -10,6 +10,7 @@ const Profile = (profileData) => {
               Personal Information
             </h3>
           </div>
+
           <div className="p-7">
             <form action="#">
               <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">

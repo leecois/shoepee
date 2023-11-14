@@ -14,13 +14,12 @@ const Alert = ({ isOpen, onClose }) => {
   return (
     <div
       role="alert"
-      className="rounded-xl absolute border border-gray-100 bg-white p-4 justify-between items-center shadow-md"
+      className="rounded-xl relative border border-gray-100 bg-white p-4 justify-between items-center shadow-md"
     >
       <div className="flex items-start gap-4">
         <div className="flex-1">
           <strong className="block font-medium text-gray-900">
-            {' '}
-            Login to your account to add to cart and more.{' '}
+            Login to your account to add to cart and more.
           </strong>
 
           <div className="mt-4 flex gap-2">
