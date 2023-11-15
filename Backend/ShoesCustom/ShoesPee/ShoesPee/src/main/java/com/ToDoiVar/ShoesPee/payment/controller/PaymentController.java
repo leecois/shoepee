@@ -1,5 +1,7 @@
     package com.ToDoiVar.ShoesPee.payment.controller;
 
+    import com.ToDoiVar.ShoesPee.Models.Order;
+    import com.ToDoiVar.ShoesPee.Models.OrderResponse;
     import com.ToDoiVar.ShoesPee.Models.User;
     import com.ToDoiVar.ShoesPee.Security.config.JwtService;
     import com.ToDoiVar.ShoesPee.Services.OrderService;
@@ -110,15 +112,13 @@
         }
 
         @GetMapping("/cre-payment")
-        public ResponseEntity<?> crePayment(@RequestHeader("Authorization") String bearertoken) throws UnsupportedEncodingException {
+        public ResponseEntity<?> crePayment(@RequestHeader("Authorization") String bearertoken){
             String token = bearertoken.substring(7);
             String username =  jwtService.extractUsername(token);
-
             User user = this.userService.getUserByName(username);
-            OrderDto orderDto = this.orderService.findBy()
-            orderDto.getOrderAmt();
-            orderDto.setPaymentStatus("Paided");
-            return ResponseEntity.status(HttpStatus.OK).body(orderDto);
+            OrderResponse order = this.orderService.findOrdersByUserId(user.getUserId());
+            order.getTotalPrice();
+            order.setOrderStatusForContent("PAIDED");
+            return ResponseEntity.status(HttpStatus.OK).body(order);
         }
-
     }

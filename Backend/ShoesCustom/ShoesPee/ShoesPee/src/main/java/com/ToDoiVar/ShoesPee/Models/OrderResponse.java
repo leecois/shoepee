@@ -49,5 +49,24 @@ public class OrderResponse {
         this.isLastPage = isLastPage;
     }
 
+    public double getTotalPrice() {
+        double totalPrice = 0.0;
+
+        if (content != null) {
+            for (OrderDto orderDto : content) {
+                totalPrice += orderDto.getOrderAmt();
+            }
+        }
+
+        return totalPrice;
+    }
+    public void setOrderStatusForContent(String orderStatus) {
+        if (content != null) {
+            for (OrderDto orderDto : content) {
+                orderDto.setOrderStatus(orderStatus);
+            }
+        }
+    }
+
 }
 
