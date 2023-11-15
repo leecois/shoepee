@@ -47,7 +47,8 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private Set<Order> orders;
-
+    @OneToOne(mappedBy = "user")
+    private InforUser inforUser;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

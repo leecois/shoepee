@@ -49,7 +49,7 @@ public class OrderController {
 
     @GetMapping("/findAll")
     public OrderResponse findAllOrders(
-            @RequestParam(defaultValue = "2",value = "pageSize") int pageSize
+            @RequestParam(defaultValue = "100",value = "pageSize") int pageSize
             ,@RequestParam(defaultValue = "0" ,value ="pageNumber" ) int pageNumber
     )
 
@@ -67,7 +67,7 @@ public class OrderController {
         String username =  jwtService.extractUsername(token);
         User user = userService.getUserByEmail(username);
 
-        OrderResponse orderResponse = orderService.findOrdersByUserId(user.getUserId(), page, size);
+        OrderResponse orderResponse = orderService.findOrdersByUserId(user.getUserId());
         return new ResponseEntity<>(orderResponse, HttpStatus.OK);
     }
 }

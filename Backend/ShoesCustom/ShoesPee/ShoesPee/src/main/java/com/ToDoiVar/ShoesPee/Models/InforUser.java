@@ -21,4 +21,6 @@ public class InforUser {
     private String address;
     @Column(name = "phone")
     private String phone;
+    @OneToOne
+    private User user;
 }
