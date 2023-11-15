@@ -6,10 +6,16 @@ import HomePage from '../customer/pages/HomePage/HomePage';
 import routes from '../customer/routes';
 import ShoeCustomize from '../customer/pages/ShoeCustomize';
 import ErrorPage from '../customer/pages/ErrorPage';
+import { getCartAsync } from '../containers/Cart/cartSlice';
+import { useDispatch } from 'react-redux';
 
 const DefaultLayout = lazy(() => import('../customer/layout/DefaultLayout'));
 
 const CustomerRouters = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getCartAsync());
+  }, [dispatch]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     setTimeout(() => setLoading(false), 1000);

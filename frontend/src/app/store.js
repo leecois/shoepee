@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
-import cartReducer from '../containers/Cart/cartSlice'; 
+import cartReducer from '../containers/Cart/cartSlice';
+import ordersReducer from '../containers/Cart/orderSlice';
 import counterReducer from '../containers/Counter/counterSlice';
 import userReducer from '../containers/User/userSlice';
 
@@ -9,6 +10,7 @@ const rootReducer = {
   counter: counterReducer,
   user: userReducer,
   cart: cartReducer,
+  orders: ordersReducer,
 };
 
 const store = configureStore({
@@ -19,6 +21,5 @@ const store = configureStore({
     },
   },
 });
-
 
 export default store;

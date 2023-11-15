@@ -5,37 +5,21 @@ import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import useProductDetail from '../../hooks/useProductDetail';
 import useSizeData from '../../hooks/useSizeData';
-import { addToCart } from '../../containers/Cart/cartSlice';
-import { useDispatch } from 'react-redux';
-import StorageKeys from '../../constants/storage-keys';
-import axios from 'axios';
+
 import { Snackbar } from '@mui/material';
+import { useDispatch } from 'react-redux';
+import { addToCartAsync } from '../../containers/Cart/cartSlice';
 
 export default function CartDrawer() {
-  const [quantity] = useState(0);
   const dispatch = useDispatch();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const handleAddToCart = () => {
-    if (!selectedSize) {
-      alert('Please select a size before adding to cart.');
-      return;
-    }
+  const handleAddToCart = async () => {
     const cartItem = {
-      productId: product.id,
-      name: product.modelname,
-      image: product.imageurl,
-      price: product.price,
+      shoeId: product.shoes[0]?.id,
       size: selectedSize,
-      shoe: product.shoe[0],
-      quantity: quantity + 1,
+      quantity: 1,
     };
-
-    // Dispatch the action to update the cart state
-    const action = addToCart(cartItem);
-    dispatch(action);
-    // Post the cart data to the API
-    postCartData([cartItem]);
-    setSnackbarOpen(true);
+    dispatch(addToCartAsync(cartItem));
   };
   const handleSnackbarClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -43,22 +27,6 @@ export default function CartDrawer() {
     }
 
     setSnackbarOpen(false);
-  };
-  const postCartData = async (cartData) => {
-    const url = `https://3.1.85.78/api/v1/auth/add?token=${localStorage.getItem(
-      StorageKeys.TOKEN
-    )}`;
-    try {
-      const response = await axios.post(url, cartData);
-      if (response.status === 200) {
-        console.log('Cart data posted successfully:', response.data);
-        // Handle the response data or perform any necessary actions
-      } else {
-        console.error('Error posting cart data:', response.data);
-      }
-    } catch (error) {
-      console.error('Error posting cart data:', error);
-    }
   };
   const { sizeList } = useSizeData();
   const [state, setState] = useState({

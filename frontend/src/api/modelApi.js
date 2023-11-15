@@ -12,7 +12,7 @@ const modelApi = {
       return {
         data: response,
         pagination: {
-          q: params.q,
+          searchKey: params.searchKey,
           total: response.length,
         },
       };

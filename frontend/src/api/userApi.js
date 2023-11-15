@@ -42,6 +42,58 @@ const updateUser = (userId, updatedUserData) => {
   });
 };
 
+const addToCart = (cartItem) => {
+  const jwt = localStorage.getItem(StorageKeys.TOKEN);
+  return axiosClient.post('auth/addcart', cartItem, {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  });
+};
+const addToCartCustomization = (cartItem) => {
+  const jwt = localStorage.getItem(StorageKeys.TOKEN);
+  return axiosClient.post('auth/addcartcustomize', cartItem, {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  });
+};
+
+const getCart = () => {
+  const jwt = localStorage.getItem(StorageKeys.TOKEN);
+  return axiosClient.get('auth/getcart', {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  });
+};
+
+const removeFromCartByShoeId = (shoeId) => {
+  const jwt = localStorage.getItem(StorageKeys.TOKEN);
+  return axiosClient.delete(`/auth/delete/${shoeId}`, {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  });
+};
+
+const order = (orderData) => {
+  const jwt = localStorage.getItem(StorageKeys.TOKEN);
+  return axiosClient.post('auth/placeorder', orderData, {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  });
+};
+const getOrderById = () => {
+  const jwt = localStorage.getItem(StorageKeys.TOKEN);
+  return axiosClient.get('auth/getorderbyuserid', {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  });
+};
+
 const userApi = {
   register: createApiRequest('register'),
   login: createApiRequest('login'),
@@ -49,6 +101,12 @@ const userApi = {
   getById: getUserById,
   getAll: getAllUsers,
   update: updateUser,
+  addToCart,
+  getCart,
+  removeFromCartByShoeId,
+  order,
+  addToCartCustomization,
+  getOrderById,
 };
 
 export default userApi;

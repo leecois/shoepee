@@ -1,6 +1,8 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import { placeOrderAsync } from '../../../containers/Cart/cartSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 const validationSchema = Yup.object({
   firstName: Yup.string().required('Required'),
@@ -13,17 +15,26 @@ const validationSchema = Yup.object({
 });
 
 const Checkout = () => {
+  const dispatch = useDispatch();
+  const cartId = useSelector((state) => state.cart.cartId);
+  const cartEmail = useSelector((state) => state.cart.user.email);
   const initialValues = {
     firstName: '',
     lastName: '',
-    email: '',
+    email: cartEmail,
     address: '',
     phone: '',
   };
 
-  const handleSubmit = (values) => {
-    // Handle form submission (e.g., sending data to the server)
-    console.log('Form values:', values);
+  const handleSubmit = async (values, { setSubmitting }) => {
+    const orderData = {
+      customerName: `${values.firstName} ${values.lastName}`,
+      orderAddress: values.address,
+      orderPhone: values.phone,
+      cartId,
+    };
+    dispatch(placeOrderAsync(orderData));
+    setSubmitting(false);
   };
 
   return (

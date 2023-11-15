@@ -1,40 +1,43 @@
-import { Checkbox } from "@mui/material";
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { register } from "../containers/User/userSlice";
-import { unwrapResult } from "@reduxjs/toolkit";
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import { Checkbox } from '@mui/material';
+import { register } from '../containers/User/userSlice';
+import { unwrapResult } from '@reduxjs/toolkit';
+import { useState } from 'react';
 
 const SignUp = ({ goBack, enteredEmail, handleCloseSuccess }) => {
-  const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      const data = new FormData(event.currentTarget);
-      const userData = {
-        email: enteredEmail,
-        password: data.get("password"),
-        address: data.get("address"),
-        username: data.get("username") || enteredEmail, // Auto set username to email
-        phone: 123123123,
-      };
-
-      setIsLoading(true);
-
-      const action = register(userData);
-      const resultAction = await dispatch(action);
-      const user = unwrapResult(resultAction);
-
-      // Close modal on successful registration
-      handleCloseSuccess();
-    } catch (error) {
-      console.log("Failed to register:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const formik = useFormik({
+    initialValues: {
+      email: enteredEmail,
+      password: '',
+      phone: '',
+      address: '',
+      username: enteredEmail,
+    },
+    validationSchema: Yup.object({
+      password: Yup.string()
+        .required('Password is required')
+        .min(6, 'Password must be at least 6 characters long'),
+    }),
+    onSubmit: async (values) => {
+      try {
+        setIsLoading(true);
+        const action = register(values);
+        const resultAction = await dispatch(action);
+        unwrapResult(resultAction);
+        handleCloseSuccess();
+      } catch (error) {
+        console.log('Failed to register:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+  });
 
   return (
     <div>
@@ -55,10 +58,14 @@ const SignUp = ({ goBack, enteredEmail, handleCloseSuccess }) => {
         </svg>
       </button>
       <div className="flex justify-center mb-4">
-        <img src="logoshoepee.png" alt="Your Logo" className="w-16 h-16" />
+        <img
+          src="https://i.ibb.co/h9qBfDY/logoshoepee.png"
+          alt="Your Logo"
+          className="w-16 h-16"
+        />
       </div>
-      <form className="space-y-6" onSubmit={handleSubmit}>
-        <h3 className="text-xl font-medium text-white dark:text-black">
+      <form className="space-y-6" onSubmit={formik.handleSubmit}>
+        <h3 className="text-xl font-medium text-dark dark:text-black">
           HELLO! WELCOME TO SHOEPEE
         </h3>
         <p className="text-gray-700 dark:text-gray-500">
@@ -85,44 +92,34 @@ const SignUp = ({ goBack, enteredEmail, handleCloseSuccess }) => {
         </div>
         <div className="text-left">
           <label
-            htmlFor="Username"
+            htmlFor="Password"
             className="relative block rounded-md border border-gray-200 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
           >
             <input
               type="password"
               name="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.password}
               className="peer w-full border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0"
-              required=""
             />
+
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
               Password
             </span>
           </label>
+          {formik.touched.password && formik.errors.password ? (
+            <div className='text-sm text-gray-500'>{formik.errors.password}</div>
+          ) : null}
         </div>
-        <div className="text-left">
-          <div className="flex items-center">
-            <Checkbox className="text-white dark:text-black" />
-            <label className="text-sm">I have read the Shoepee Terms</label>
-          </div>
-          <div className="flex items-center">
-            <Checkbox className="text-white dark:text-black" />
-            <label className="text-sm">
-              I have read and agree to the Privacy Policy
-            </label>
-          </div>
-        </div>
-        <div className="flex justify-between">
-          <button
-            type="submit"
-            className="w-full text-white bg-red-900 hover:bg-black focus:ring-4 focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-800 dark:hover-bg-red-700 dark:focus-ring-blue-800"
-            disabled={isLoading}
-          >
-            {isLoading ? "Loading..." : "SIGN UP"}
-          </button>
-        </div>
+
+        <button
+          type="submit"
+          className="w-full text-white bg-red-900 hover:bg-black focus:ring-4 focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-800 dark:hover-bg-red-700 dark:focus-ring-blue-800"
+          disabled={isLoading || !formik.isValid}
+        >
+          {isLoading ? 'Loading...' : 'SIGN UP'}
+        </button>
       </form>
     </div>
   );

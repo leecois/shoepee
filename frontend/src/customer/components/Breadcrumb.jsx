@@ -1,5 +1,6 @@
 // Breadcrumb.jsx
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Breadcrumb = ({ items }) => {
   return (
@@ -41,12 +42,12 @@ const Breadcrumb = ({ items }) => {
               </svg>
             </li>
             <li>
-              <a
-                href={item.url || '#'}
+              <Link
+                to={item.url || '#'}
                 className="block transition hover:text-gray-700"
               >
                 {item.label}
-              </a>
+              </Link>
             </li>
           </React.Fragment>
         ))}

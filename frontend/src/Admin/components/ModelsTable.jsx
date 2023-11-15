@@ -12,18 +12,20 @@ import {
   GridRowModes,
   GridToolbarContainer,
 } from '@mui/x-data-grid';
-import {
-  randomId
-} from '@mui/x-data-grid-generator';
+import { randomId } from '@mui/x-data-grid-generator';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function EditToolbar(props) {
   const { setRows, setRowModesModel } = props;
 
   const handleClick = () => {
     const id = randomId();
-    setRows((oldRows) => [...oldRows, { id, brandName: '', imageUrl: '', isNew: true }]);
+    setRows((oldRows) => [
+      ...oldRows,
+      { id, brandName: '', imageUrl: '', isNew: true },
+    ]);
     setRowModesModel((oldModel) => ({
       ...oldModel,
       [id]: { mode: GridRowModes.Edit, fieldToFocus: 'brandName' },
@@ -40,6 +42,10 @@ function EditToolbar(props) {
 }
 
 export default function ModelsTable({ modelList, updateModel }) {
+  const navigate = useNavigate();
+  const handleAddShoeClick = (modelId) => () => {
+    navigate(`/admin/tables/add-shoe/${modelId}`);
+  };
   const [rows, setRows] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
 
@@ -91,30 +97,22 @@ export default function ModelsTable({ modelList, updateModel }) {
 
   const columns = [
     { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'modelname', headerName: 'Model Name', width: 130, editable: true},
     {
-      field: 'shoes',
-      headerName: 'Shoe',
-      width: 343,
-      renderCell: (params) => (
-        <div className='flex justify-between space-x-2'>
-          {params.value.map((shoe) => (
-            <div key={shoe.id}>
-              <p>ID: {shoe.id}</p>
-            </div>
-          ))}
-        </div>
-      ),
+      field: 'modelname',
+      headerName: 'Model Name',
+      width: 130,
+      editable: true,
     },
-    { field: 'imageurl', headerName: 'Image URL', width: 400, editable: true},
-    { field: 'price', headerName: 'Price', width: 100, editable: true},
+
+    { field: 'imageurl', headerName: 'Image URL', width: 400, editable: true },
+    { field: 'price', headerName: 'Price', width: 100, editable: true },
     {
       field: 'actions',
       type: 'actions',
       headerName: 'Actions',
       width: 200,
       cellClassName: 'actions',
-      getActions: ({ id }) => {
+      getActions: ({ id, row }) => {
         const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
 
         if (isInEditMode) {
@@ -139,16 +137,22 @@ export default function ModelsTable({ modelList, updateModel }) {
 
         return [
           <GridActionsCellItem
-            icon={<EditIcon className='transparent dark:text-gray-300'/>}
+            icon={<EditIcon className="transparent dark:text-gray-300" />}
             label="Edit"
             className="textPrimary"
             onClick={handleEditClick(id)}
             color="inherit"
           />,
           <GridActionsCellItem
-            icon={<DeleteIcon className='transparent dark:text-gray-300'/>}
+            icon={<DeleteIcon className="transparent dark:text-gray-300" />}
             label="Delete"
             onClick={handleDeleteClick(id)}
+            color="inherit"
+          />,
+          <GridActionsCellItem
+            icon={<AddIcon />}
+            label="Add Shoe"
+            onClick={handleAddShoeClick(id)}
             color="inherit"
           />,
         ];
@@ -158,7 +162,7 @@ export default function ModelsTable({ modelList, updateModel }) {
 
   return (
     <Box
-    className='dark:bg-graydark'
+      className="dark:bg-graydark"
       sx={{
         height: 500,
         width: '100%',
@@ -175,7 +179,7 @@ export default function ModelsTable({ modelList, updateModel }) {
         columns={columns}
         editMode="row"
         rowModesModel={rowModesModel}
-        className='dark:text-white'
+        className="dark:text-white"
         onRowModesModelChange={handleRowModesModelChange}
         onRowEditStop={handleRowEditStop}
         processRowUpdate={processRowUpdate}

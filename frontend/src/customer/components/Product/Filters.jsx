@@ -4,30 +4,33 @@ import {
   MagnifyingGlassIcon,
   XCircleIcon,
 } from '@heroicons/react/24/outline';
-
 import React from 'react';
 import useBrandData from '../../../hooks/useBrandData';
 
-const Filters = ({ openFilter, setOpenFilter }) => {
+const Filters = ({
+  openFilter,
+  setOpenFilter,
+  selectedBrands,
+  setSelectedBrands,
+}) => {
   const { brandList } = useBrandData();
 
   const subCategories = [
     { name: 'Sneaker', href: '#' },
-    { name: 'Women Shoe', href: '#' },
-    { name: 'Men Shoe', href: '#' },
-    { name: 'Running', href: '#' },
     { name: 'Black Friday', href: '#' },
   ];
 
+  const handleBrandFilterChange = (brandName) => {
+    setSelectedBrands((prevSelectedBrands) => {
+      if (prevSelectedBrands.includes(brandName)) {
+        return prevSelectedBrands.filter((brand) => brand !== brandName);
+      } else {
+        return [...prevSelectedBrands, brandName];
+      }
+    });
+  };
+
   const filters = [
-    {
-      id: 'price',
-      name: 'Shop By Price',
-      options: [
-        { value: '2tr', label: '2,000,001 - 4,999,999', checked: false },
-        { value: '5tr', label: 'Over 5,000,000', checked: false },
-      ],
-    },
     {
       id: 'brand',
       name: 'Brand',
@@ -35,7 +38,6 @@ const Filters = ({ openFilter, setOpenFilter }) => {
         key: brand.id,
         value: brand.brandName,
         label: brand.brandName,
-        checked: false,
       })),
     },
   ];
@@ -48,7 +50,7 @@ const Filters = ({ openFilter, setOpenFilter }) => {
         }`}
       />
       <div
-        className={`col-span-1 absolute top-0 right-0 lg:inset-0 lg:relative w-full h-full max-h-full max-w-xs overflow-y-scroll lg:overflow-auto bg-gray-50 transition-all duration-300 ease-in-out ${
+        className={`col-span-1 bg-white min-h-screen absolute top-0 right-0 lg:inset-0 lg:relative w-full h-full max-h-full max-w-xs overflow-y-scroll lg:overflow-auto transition-all duration-300 ease-in-out ${
           openFilter ? 'left-0 opacity-100' : '-left-full opacity-0'
         }`}
       >
@@ -100,7 +102,7 @@ const Filters = ({ openFilter, setOpenFilter }) => {
               {({ open }) => (
                 <div
                   className={`py-5 pl-5 pr-3 flex flex-col ${
-                    open && 'bg-blue-50'
+                    open && 'border-t border-gray-200'
                   }`}
                 >
                   <Disclosure.Button className="group flex items-center justify-between">
@@ -115,30 +117,25 @@ const Filters = ({ openFilter, setOpenFilter }) => {
                       }`}
                     />
                   </Disclosure.Button>
-                  {section.id !== 'color' && (
+                  {section.id === 'brand' && (
                     <Disclosure.Panel className="mt-5 flex flex-col">
                       {section.options.map((option) => (
                         <div
                           key={option.value}
                           className="m-1 flex items-center space-x-3"
                         >
-                          <div>
-                            <label
-                              htmlFor={option.label}
-                              className="sr-only"
-                            >{`Color ${option.label}`}</label>
-                            <input
-                              type="checkbox"
-                              name={option.label}
-                              id={option.label}
-                              defaultValue={option.value}
-                              defaultChecked={option.checked}
-                              className="checkbox"
-                            />
-                          </div>
-                          <span className="text-base text-gray-700">
+                          <button
+                            onClick={() =>
+                              handleBrandFilterChange(option.value)
+                            }
+                            className={`text-base ${
+                              selectedBrands.includes(option.value)
+                                ? 'text-black-2 font-semibold'
+                                : 'text-gray-700'
+                            }`}
+                          >
                             {option.label}
-                          </span>
+                          </button>
                         </div>
                       ))}
                     </Disclosure.Panel>

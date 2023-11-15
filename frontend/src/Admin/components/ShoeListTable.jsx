@@ -12,23 +12,15 @@ import {
   GridRowModes,
   GridToolbarContainer,
 } from '@mui/x-data-grid';
-import { randomId } from '@mui/x-data-grid-generator';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-function EditToolbar(props) {
-  const { setRows, setRowModesModel } = props;
+function EditToolbar() {
+  const navigate = useNavigate();
 
   const handleClick = () => {
-    const id = randomId();
-    setRows((oldRows) => [
-      ...oldRows,
-      { id, brandName: '', imageUrl: '', isNew: true },
-    ]);
-    setRowModesModel((oldModel) => ({
-      ...oldModel,
-      [id]: { mode: GridRowModes.Edit, fieldToFocus: 'brandName' },
-    }));
+    navigate('/admin/tables/add-shoe');
   };
 
   return (
@@ -100,7 +92,11 @@ export default function ShoeListTable({ shoeList, updateShoe }) {
       width: 170,
       editable: true,
       renderCell: (params) => (
-        <img src={params.value} alt="Shoe" style={{ width: '50px', height: '50px' }} />
+        <img
+          src={params.value}
+          alt="Shoe"
+          style={{ width: '50px', height: '50px' }}
+        />
       ),
     },
     {
@@ -183,9 +179,6 @@ export default function ShoeListTable({ shoeList, updateShoe }) {
         processRowUpdate={processRowUpdate}
         slots={{
           toolbar: EditToolbar,
-        }}
-        slotProps={{
-          toolbar: { setRows, setRowModesModel },
         }}
       />
     </Box>

@@ -1,45 +1,101 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import OrderDetailModal from './OrderDetailModal';
 
-const OrderHistory = () => {
+const OrderHistory = ({ orders }) => {
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleProductClick = (order) => {
+    setSelectedOrder(order);
+    setIsModalOpen(true);
+  };
+
+  const handlePaymentClick = (orderId) => {
+    // Navigate to the payment page with the orderId
+    navigate(`/payment/${orderId}`);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedOrder(null);
+  };
+
   return (
     <div className="overflow-x-auto">
-        <h1 className="text-3xl font-semibold text-black dark:text-white">RECENT ORDERS</h1>
-      <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
-        <table className="table">
-          {/* head */}
-          <thead>
+      <h1 className="text-3xl font-semibold text-black dark:text-white">
+        RECENT ORDERS
+      </h1>
+      <div className="border-b border-gray-300 py-4 px-7">
+        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-              <th></th>
-              <th>Products</th>
-              <th>Status</th>
-              <th>Favorite Color</th>
+              <th scope="col" className="py-3 px-6">
+                Order ID
+              </th>
+              <th scope="col" className="py-3 px-6">
+                Order Status
+              </th>
+              <th scope="col" className="py-3 px-6">
+                Payment Status
+              </th>
+              <th scope="col" className="py-3 px-6">
+                Delivered
+              </th>
+              <th scope="col" className="py-3 px-6">
+                Total Amount
+              </th>
+              <th scope="col" className="py-3 px-6">
+                Billing Address
+              </th>
+              <th scope="col" className="py-3 px-6">
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody>
-            {/* row 1 */}
-            <tr>
-              <th>1</th>
-              <td>Cy Ganderton</td>
-              <td>Quality Control Specialist</td>
-              <td>Blue</td>
-            </tr>
-            {/* row 2 */}
-            <tr>
-              <th>2</th>
-              <td>Hart Hagerty</td>
-              <td>Desktop Support Technician</td>
-              <td>Purple</td>
-            </tr>
-            {/* row 3 */}
-            <tr>
-              <th>3</th>
-              <td>Brice Swyre</td>
-              <td>Tax Accountant</td>
-              <td>Red</td>
-            </tr>
+            {orders.map((order) => (
+              <tr
+                key={order.orderId}
+                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+              >
+                <td className="py-4 px-6">{order.orderId}</td>
+                <td className="py-4 px-6">{order.orderStatus}</td>
+                <td className="py-4 px-6">
+                  {order.paymentStatus}{' '}
+                  {order.paymentStatus === 'NOT PAID' && (
+                    <button
+                      onClick={() => handlePaymentClick(order.orderId)}
+                      className="text-red-600 hover:underline"
+                    >
+                      (Pay Now)
+                    </button>
+                  )}
+                </td>
+                <td className="py-4 px-6">
+                  {order.orderDelivered ? 'Yes' : 'No'}
+                </td>
+                <td className="py-4 px-6">${order.orderAmt.toFixed(2)}</td>
+                <td className="py-4 px-6">{order.billingAddress}</td>
+                <td className="py-4 px-6">
+                  <button
+                    onClick={() => handleProductClick(order)}
+                    className="text-blue-600 hover:underline mr-3"
+                  >
+                    Detail
+                  </button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
+      <OrderDetailModal
+        order={selectedOrder}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      />
     </div>
   );
 };
