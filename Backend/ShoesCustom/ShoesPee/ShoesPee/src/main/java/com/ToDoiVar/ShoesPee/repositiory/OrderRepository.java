@@ -10,5 +10,5 @@ import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Order,Integer> {
 //    List<Order> findAllByUserOrderByCreatedDateDesc(User user);
-    Page<Order> findByUser_UserId(int userid, Pageable pageable);
+    List<Order> findByUser_UserId(int userid);
 }

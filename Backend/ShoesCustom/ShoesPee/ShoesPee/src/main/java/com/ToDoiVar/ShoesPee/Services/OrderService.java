@@ -158,13 +158,13 @@ public class OrderService {
 
         return response;
     }
-    public OrderResponse findOrdersByUserId(int userId, int pageNumber, int pageSize) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        Page<Order> orderPage = this.orderReop.findByUser_UserId(userId, pageable); // Use the new repository method
-        List<Order> content = orderPage.getContent();
+    public OrderResponse findOrdersByUserId(int userId) {
+//        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        List<Order> orderPage = this.orderReop.findByUser_UserId(userId); // Use the new repository method
+//        List<Order> content = orderPage.getContent();
 
         // Map orders to DTOs
-        List<OrderDto> collect = content.stream().map(order -> {
+        List<OrderDto> collect = orderPage.stream().map(order -> {
             OrderDto orderDto = modelMapper.map(order, OrderDto.class);
 
             Set<OrderItemDto> orderItemDtos = order.getOrderItem().stream().map(orderItem -> {
@@ -184,11 +184,11 @@ public class OrderService {
 
         OrderResponse response = new OrderResponse();
         response.setContent(collect);
-        response.setPageNumber(orderPage.getNumber());
-        response.setLastPage(orderPage.isLast());
-        response.setPageSize(orderPage.getSize());
-        response.setTotalPage(orderPage.getTotalPages());
-        response.setTotalElemet(orderPage.getTotalElements());
+//        response.setPageNumber(orderPage.getNumber());
+//        response.setLastPage(orderPage.isLast());
+//        response.setPageSize(orderPage.getSize());
+//        response.setTotalPage(orderPage.getTotalPages());
+//        response.setTotalElemet(orderPage.getTotalElements());
 
         return response;
     }
