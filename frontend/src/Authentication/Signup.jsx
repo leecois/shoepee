@@ -17,6 +17,7 @@ const SignUp = ({ goBack, enteredEmail, handleCloseSuccess }) => {
       password: '',
       phone: '',
       address: '',
+      username: enteredEmail,
     },
     validationSchema: Yup.object({
       password: Yup.string()

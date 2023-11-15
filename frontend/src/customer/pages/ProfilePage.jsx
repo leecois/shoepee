@@ -4,8 +4,16 @@ import Profile from '../components/Profile/Profile';
 import OrderHistory from '../components/Profile/OrderHistory';
 import useProfileData from '../../hooks/useProfileData';
 import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { fetchOrders } from '../../containers/Cart/orderSlice';
 
 const ProfilePage = () => {
+  const dispatch = useDispatch();
+  const orders = useSelector((state) => state.orders.content);
+  useEffect(() => {
+    dispatch(fetchOrders());
+  }, [dispatch]);
   const breadcrumbItems = [{ label: 'Profile' }];
   const { userId } = useParams();
   const profileData = useProfileData(userId);
@@ -16,7 +24,7 @@ const ProfilePage = () => {
         <Profile profileData={profileData} />
       </div>
       <div className="m-8">
-        <OrderHistory />
+        <OrderHistory orders={orders} />
       </div>
     </div>
   );

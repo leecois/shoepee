@@ -1,18 +1,25 @@
+import { Switch } from '@headlessui/react';
 import { ShieldCheckIcon } from '@heroicons/react/24/outline';
+import CloseIcon from '@mui/icons-material/Close';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import { Alert, Collapse, IconButton } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {
   addToCartAsync,
+  addToCartCustomizationAsync,
   getCartAsync,
 } from '../../../containers/Cart/cartSlice';
 import { fetchShoeImages } from '../../../hooks/CartData';
-import Alert from '../Alert';
+import AlertSign from '../AlertSign';
 import Inspiration from './Inspiration';
 import Size from './Size';
 import YourDesign from './YourDesign';
 
 const ProductDetails = ({ product, userLoggedIn }) => {
+  const [hasShoe, setHasShoe] = useState(false);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
+  const [isToastOpen, setIsToastOpen] = useState(false);
   const [selectedShoe, setSelectedShoe] = useState(null);
   const [selectedShoeImages, setSelectedShoeImages] = useState([]);
   const [selectedSize, setSelectedSize] = useState(null);
@@ -40,9 +47,32 @@ const ProductDetails = ({ product, userLoggedIn }) => {
     }
   }, [selectedShoe]);
 
+  const handleBuyCustomization = async () => {
+    if (!userLoggedIn) {
+      setIsAlertOpen(true);
+      return;
+    }
+    const customizationItem = {
+      shoeId: selectedShoe.id,
+      quantity: 1,
+    };
+
+    dispatch(addToCartCustomizationAsync(customizationItem)).then((action) => {
+      if (!action.error) {
+        dispatch(getCartAsync());
+      }
+    });
+  };
+
   const handleAddToCart = async () => {
     if (!userLoggedIn) {
       setIsAlertOpen(true);
+      return;
+    }
+
+    if (!selectedSize) {
+      setIsToastOpen(true);
+      setTimeout(() => setIsToastOpen(false), 3000);
       return;
     }
 
@@ -58,6 +88,20 @@ const ProductDetails = ({ product, userLoggedIn }) => {
         dispatch(getCartAsync());
       }
     });
+  };
+
+  const handleBuyClick = () => {
+    if (hasShoe) {
+      handleBuyCustomization();
+    } else {
+      handleAddToCart();
+    }
+  };
+
+  const handleToggle = () => {
+    setHasShoe(!hasShoe);
+    // Cập nhật giá cả nếu cần
+    // ...
   };
 
   if (!product) {
@@ -113,6 +157,23 @@ const ProductDetails = ({ product, userLoggedIn }) => {
               </span>
             </div>
           </div>
+          <div className="flex gap-2 items-center justify-between mt-4">
+            <Switch
+              checked={hasShoe}
+              onChange={handleToggle}
+              className={`toggle`}
+            >
+              <span
+                className={`${hasShoe ? 'translate-x-6' : 'translate-x-1'}`}
+              />
+            </Switch>
+            <div
+              className="tooltip tooltip-right"
+              data-tip="I already own this shoe model"
+            >
+              <InfoOutlinedIcon viewBox="0 0 24 26" />
+            </div>
+          </div>
           <div className="mt-4">
             <button
               onClick={() => setShowInspiration(true)}
@@ -140,48 +201,54 @@ const ProductDetails = ({ product, userLoggedIn }) => {
               handleShoeButtonClick={handleShoeButtonClick}
             />
           ) : (
-            <YourDesign
-              selectedShoeImages={selectedShoeImages}
-              handleShoeButtonClick={handleShoeButtonClick}
+            <YourDesign />
+          )}
+
+          {!hasShoe && (
+            <Size
+              product={product}
+              selectedSize={selectedSize}
+              setSelectedSize={setSelectedSize}
             />
           )}
 
-          {/* Size */}
-          <Size
-            product={product}
-            selectedSize={selectedSize}
-            setSelectedSize={setSelectedSize}
-          />
-
-          {/* TODO: Add to cart form */}
-
-          {selectedSize && selectedShoe ? (
-            <div className="mt-4 py-2 w-full inline-block rounded-md outline-8 transition delay-150 text-base text-red-300 font-semibold tracking-wide ">
+          <div className="mt-4 py-2 w-full inline-block rounded-md outline-8 transition delay-150 text-base text-red-300 font-semibold tracking-wide ">
+            <AlertSign
+              isOpen={isAlertOpen}
+              onClose={() => setIsAlertOpen(false)}
+            />
+            <Collapse in={isToastOpen}>
               <Alert
-                isOpen={isAlertOpen}
-                onClose={() => setIsAlertOpen(false)}
-              />
+                severity="error"
+                action={
+                  <IconButton
+                    aria-label="close"
+                    color="inherit"
+                    size="small"
+                    onClick={() => {
+                      setIsToastOpen(false);
+                    }}
+                  >
+                    <CloseIcon fontSize="inherit" />
+                  </IconButton>
+                }
+                sx={{ mb: 2 }}
+              >
+                Please select a size before adding to cart!
+              </Alert>
+            </Collapse>
 
-              <button
-                onClick={handleAddToCart}
-                className="w-full btn inline-block btn-neutral btn-active rounded-md font-semibold"
-              >
-                Add to Cart
-              </button>
-            </div>
-          ) : (
-            <div className="mt-4 py-2 w-full inline-block rounded-md outline-8 transition delay-150 text-base text-red-300 font-semibold tracking-wide ">
-              <button
-                disabled="disabled"
-                className="w-full btn inline-block rounded-md text-black-2 font-semibold"
-              >
-                Add to Cart
-              </button>
-            </div>
-          )}
+            <button
+              onClick={handleBuyClick}
+              className="w-full btn inline-block btn-neutral btn-active rounded-md font-semibold"
+            >
+              {hasShoe ? 'Buy Customization' : 'Buy Shoe + Customization'}
+            </button>
+          </div>
+
           <button
             onClick={handleCustomizeClick}
-            className="mt-4 py-2 w-full inline-block rounded-md border-2 outline-8 transition delay-150 text-base text-red font-semibold tracking-wide hover:text-red-600"
+            className="mt-4 py-2 w-full inline-block rounded-md border-2 border-black outline-8 transition delay-150 text-base font-semibold tracking-wide hover:bg-black hover:text-white"
           >
             CUSTOMIZE
           </button>

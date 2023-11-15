@@ -50,6 +50,14 @@ const addToCart = (cartItem) => {
     },
   });
 };
+const addToCartCustomization = (cartItem) => {
+  const jwt = localStorage.getItem(StorageKeys.TOKEN);
+  return axiosClient.post('auth/addcartcustomize', cartItem, {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  });
+};
 
 const getCart = () => {
   const jwt = localStorage.getItem(StorageKeys.TOKEN);
@@ -77,6 +85,14 @@ const order = (orderData) => {
     },
   });
 };
+const getOrderById = () => {
+  const jwt = localStorage.getItem(StorageKeys.TOKEN);
+  return axiosClient.get('auth/getorderbyuserid', {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  });
+};
 
 const userApi = {
   register: createApiRequest('register'),
@@ -89,6 +105,8 @@ const userApi = {
   getCart,
   removeFromCartByShoeId,
   order,
+  addToCartCustomization,
+  getOrderById,
 };
 
 export default userApi;

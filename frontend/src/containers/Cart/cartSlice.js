@@ -13,6 +13,18 @@ export const addToCartAsync = createAsyncThunk(
   }
 );
 
+export const addToCartCustomizationAsync = createAsyncThunk(
+  'cart/addToCartCustomizationAsync',
+  async (cartItem, thunkAPI) => {
+    try {
+      const response = await userApi.addToCartCustomization(cartItem);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
+
 export const getCartAsync = createAsyncThunk(
   'cart/getCartAsync',
   async (_, thunkAPI) => {
@@ -59,6 +71,7 @@ export const cartSlice = createSlice({
     cartItems: [],
     isLoading: false,
     error: null,
+    content: [],
   },
   reducers: {
     showMiniCart: (state) => {
@@ -145,7 +158,7 @@ export const cartSlice = createSlice({
         state.isLoading = false;
         state.orderPlaced = true;
         // Assuming the API returns the order data you want to store
-        state.orderDetails = action.payload; // or however you want to store it
+        state.content = action.payload; // or however you want to store it
       })
       // Handle placeOrderAsync rejected state
       .addCase(placeOrderAsync.rejected, (state, action) => {

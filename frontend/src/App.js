@@ -7,7 +7,7 @@ import StorageKeys from './constants/storage-keys';
 import ErrorPage from './customer/pages/ErrorPage'; // Import the ErrorPage component
 
 const App = () => {
-  const userRole = JSON.parse(localStorage.getItem(StorageKeys.USER)) || ''; 
+  const userRole = JSON.parse(localStorage.getItem(StorageKeys.USER)) || '';
 
   return (
     <div className="">
@@ -16,7 +16,7 @@ const App = () => {
         {userRole && userRole.role === 'ADMIN' ? (
           <Route path="/admin/*" element={<AdminRouters />} />
         ) : (
-          <Route path="/admin/*" element={<ErrorPage />} /> 
+          <Route path="/*" element={<ErrorPage />} />
         )}
       </Routes>
     </div>
