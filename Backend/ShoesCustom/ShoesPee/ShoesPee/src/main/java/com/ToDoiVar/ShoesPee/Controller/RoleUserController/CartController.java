@@ -45,16 +45,26 @@ public class CartController {
 //        System.out.println(email);
         String token = bearertoken.substring(7);
        String username =  jwtService.extractUsername(token);
+        CartDto addItem = this.cartService.addItemWithShoemodel(itemRequest,username);
+
+        return new ResponseEntity<CartDto>(addItem,HttpStatus.OK);
+    }
+    @PostMapping("/addcartcustomize")
+    public ResponseEntity<CartDto> addtoCartWithShoeModel(@RequestBody ItemRequest itemRequest,@RequestHeader("Authorization") String bearertoken){
+
+//        String email=principal.getName();
+//        System.out.println(email);
+        String token = bearertoken.substring(7);
+        String username =  jwtService.extractUsername(token);
         CartDto addItem = this.cartService.addItem(itemRequest,username);
 
         return new ResponseEntity<CartDto>(addItem,HttpStatus.OK);
     }
 
-
     //create method for getting cart
     @GetMapping("/getcart")
+//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CartDto>getAllCart(@RequestHeader("Authorization") String bearertoken){
-
         String token = bearertoken.substring(7);
         String username =  jwtService.extractUsername(token);
         CartDto getcartAll = this.cartService.getcartAll(username);
@@ -69,9 +79,10 @@ public class CartController {
     }
 
     @DeleteMapping("/delete/{pid}")
-    public ResponseEntity<CartDto>deleteCartItemFromCart(@PathVariable int pid,Principal p){
-
-        CartDto remove = this.cartService.removeCartItemFromCart(p.getName(),pid);
+    public ResponseEntity<CartDto>deleteCartItemFromCart(@PathVariable int pid,@RequestHeader("Authorization") String bearertoken){
+        String token = bearertoken.substring(7);
+        String username =  jwtService.extractUsername(token);
+        CartDto remove = this.cartService.removeCartItemFromCart(username,pid);
         return new ResponseEntity<CartDto>(remove,HttpStatus.UPGRADE_REQUIRED);
     }
 

@@ -9,10 +9,10 @@ import java.util.Optional;
 
 public interface ShoeModelService {
      ShoeModelDto addShoeModel(ShoeModelDto shoeModel,int brandid);
-     List<ShoeModelDto> getAllShoeModel();
+     List<ShoeModelDto> getAllShoeModel(String searchKey);
      ShoeModel getShoeModelById(int id);
      ShoeModel updateShoeModel(int id, ShoeModel updateShoeModel);
-     void removeShoeModel(int id);
+     ShoeModel removeShoeModel(int id);
      ShoeModel getShoeModelByName(String name);
      List<ShoeModelDto> getShoeModelByBrand(int brand);
 }

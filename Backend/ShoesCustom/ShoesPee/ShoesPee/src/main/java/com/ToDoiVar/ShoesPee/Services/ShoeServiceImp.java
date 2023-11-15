@@ -44,8 +44,12 @@ public class ShoeServiceImp implements ShoeService{
 
 
     @Override
-    public ShoeDto addShoe(ShoeDto newShoe) {
+    public ShoeDto addShoe(ShoeDto newShoe,int shoeModelId) {
+        ShoeModel shoeModel = this.shoeModelRepository.findById(shoeModelId).orElseThrow(() -> new shoeModelNotFounException("shoe model not found"));
+
         Shoe shoe = this.mapper.map(newShoe,Shoe.class);
+        shoe.setStatus("available");
+        shoe.setShoeModel(shoeModel);
         Shoe save = this.shoeRepository.save(shoe);
         return this.mapper.map(save,ShoeDto.class);
     }
@@ -71,11 +75,11 @@ public class ShoeServiceImp implements ShoeService{
 
 
     @Override
-    public void deleteShoe(int id) {
-        if (!shoeRepository.existsById(id)){
-            throw new shoeNotFoundException("shoe not found");
-        }
-        shoeRepository.deleteById(id);
+    public Shoe deleteShoe(int id) {
+        Shoe shoe = this.shoeRepository.findById(id).orElseThrow(() -> new shoeNotFoundException("shoe not found"));
+        shoe.setStatus("unavailble");
+        Shoe save = this.shoeRepository.save(shoe);
+        return save;
     }
     private ShoeDto toDto(Shoe shoe){
         ShoeDto st = new ShoeDto();
@@ -83,11 +87,13 @@ public class ShoeServiceImp implements ShoeService{
         st.setDescription(shoe.getDescription());
         st.setPrice(shoe.getPrice());
         st.setImageUrl(shoe.getImageUrl());
+        st.setStatus(shoe.getStatus());
         ShoeModelDto smdt = new ShoeModelDto();
         smdt.setId(shoe.getShoeModel().getId());
         smdt.setModelname(shoe.getShoeModel().getModelname());
         smdt.setImageurl(shoe.getShoeModel().getImageurl());
         smdt.setPrice(shoe.getShoeModel().getPrice());
+        smdt.setStatus(shoe.getShoeModel().getStatus());
 //        smdt.setBrandDto(shoe.get);
         st.setShoeModelDto(smdt);
         return st;

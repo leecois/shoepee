@@ -24,18 +24,18 @@ public class ShoeManageController {
     public ResponseEntity<List<ShoeDto>> getShoeByShoemodelId(@PathVariable int id){
         return new ResponseEntity<List<ShoeDto>>(shoeService.getShoeByShoeModel(id),HttpStatus.OK);
     }
-    @PostMapping("/addshoe")
-    public ResponseEntity<ShoeDto> addShoe(@RequestBody ShoeDto newShoe){
-        return new ResponseEntity<ShoeDto>(shoeService.addShoe(newShoe),HttpStatus.OK);
+    @PostMapping("/addshoe/{shoemodelid}")
+    public ResponseEntity<ShoeDto> addShoe(@RequestBody ShoeDto newShoe,@PathVariable int shoemodelid){
+        return new ResponseEntity<ShoeDto>(shoeService.addShoe(newShoe,shoemodelid),HttpStatus.OK);
     }
     @PutMapping("/editshoe/{id}")
     public ResponseEntity<ShoeDto> editShoe(@PathVariable int id,@RequestBody ShoeDto editshoe){
         return new ResponseEntity<ShoeDto>(shoeService.editShoe(id,editshoe),HttpStatus.OK);
     }
-    @DeleteMapping("/deleteshe/{id}")
-        public ResponseEntity<String> deleteShoe(@PathVariable int id){
-            shoeService.deleteShoe(id);
-            return new ResponseEntity<String>("Delete sucessful",HttpStatus.OK);
+    @PutMapping("/deleteshe/{id}")
+        public ResponseEntity<Shoe> deleteShoe(@PathVariable int id){
+           Shoe shoe = shoeService.deleteShoe(id);
+            return new ResponseEntity<Shoe>(shoe,HttpStatus.OK);
     }
 
 }
