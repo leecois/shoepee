@@ -13,7 +13,13 @@ const AdminShoeData = () => {
           _page: page,
           _limit: limit,
         });
-        setShoeList(data);
+
+        // Filter out shoes that are not available
+        const availableShoes = data.filter(
+          (shoe) => shoe.status === 'available'
+        );
+
+        setShoeList(availableShoes);
       } catch (error) {
         if (error.response && error.response.status) {
           console.log('Error fetching product list: ' + error.message);
@@ -26,12 +32,23 @@ const AdminShoeData = () => {
     fetchData();
   }, [page, limit]);
 
-  return { shoeList };
+  const deleteShoe = async (id) => {
+    try {
+      await adminShoeApi.remove(id);
+      setShoeList((prevShoeList) =>
+        prevShoeList.filter((shoe) => shoe.id !== id)
+      );
+    } catch (error) {
+      console.error('Error deleting shoe: ' + error.message);
+    }
+  };
+
+  return { shoeList, deleteShoe };
 };
 export const addShoeInformation = async (shoeInfo) => {
-   try {
+  try {
     const response = await adminShoeApi.add(shoeInfo);
-    return response.data; // Assuming the API response contains the shoeId
+    return response.data; 
   } catch (error) {
     throw error;
   }

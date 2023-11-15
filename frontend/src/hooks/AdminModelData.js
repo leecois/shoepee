@@ -13,20 +13,54 @@ const AdminModelData = () => {
           _page: page,
           _limit: limit,
         });
-        setModelList(data);
+
+        // Filtering logic
+        const filteredData = data.filter((model) => {
+          // Filter out entire model if the brand status is unavailable
+          if (model.brandDto && model.brandDto.status === 'unavailble') {
+            return false;
+          }
+
+          // Filter individual shoes within the model
+          if (model.shoes && model.shoes.length) {
+            model.shoes = model.shoes.filter(
+              (shoe) => shoe.status === 'available'
+            );
+          }
+
+          return true;
+        });
+
+        setModelList(filteredData);
       } catch (error) {
-        if (error.response && error.response.status) {
-          console.log('Error fetching product list: ' + error.message);
-        } else {
-          console.log('Error fetching product list: Unexpected error');
-        }
+        console.error('Error fetching product list:', error.message);
       }
     };
 
     fetchData();
   }, [page, limit]);
 
-  return { modelList };
+  const deleteModel = async (id) => {
+    try {
+      await adminModelApi.remove(id);
+      setModelList((prevModelList) =>
+        prevModelList.filter((model) => model.id !== id)
+      );
+    } catch (error) {
+      console.error('Error deleting model: ' + error.message);
+    }
+  };
+
+  const addModel = async (id) => {
+    try {
+      const response = await adminModelApi.add(id);
+      return response.data;
+    } catch (error) {
+      console.error('Error adding model: ' + error.message);
+    }
+  };
+
+  return { modelList, deleteModel, addModel };
 };
 
 export default AdminModelData;

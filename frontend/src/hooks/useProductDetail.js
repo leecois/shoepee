@@ -10,13 +10,20 @@ export default function useProductDetail(modelname) {
       try {
         setLoading(true);
         const response = await modelApi.get(modelname);
-        setProduct(response);
+
+        const availableShoes =
+          response.shoes?.filter((shoe) => shoe.status === 'available') || [];
+
+        const updatedProduct = { ...response, shoes: availableShoes };
+
+        setProduct(updatedProduct);
       } catch (error) {
         console.log('Failed to fetch product', error);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     })();
   }, [modelname]);
 
-  return { product, loading};
+  return { product, loading };
 }

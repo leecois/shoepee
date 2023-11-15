@@ -6,7 +6,10 @@ const Brands = lazy(() => import('../pages/Table/Brands'));
 const Sizes = lazy(() => import('../pages/Table/Sizes'));
 const Accounts = lazy(() => import('../pages/Table/Accounts'));
 const ShoeModels = lazy(() => import('../pages/Table/ShoeModels'));
-const ShoeAdditionManager = lazy(() => import('../pages/ShoeAdditionManager'));
+const ShoeAdditionManager = lazy(() =>
+  import('../pages/Manager/ShoeAdditionManager')
+);
+const ModelAddManager = lazy(() => import('../pages/Manager/ModelAddManager'));
 const Profile = lazy(() => import('../pages/Profile'));
 const Settings = lazy(() => import('../pages/Settings'));
 const Orders = lazy(() => import('../pages/Orders'));
@@ -26,6 +29,12 @@ const coreRoutes = [
     path: 'tables/add-shoe/:modelId',
     title: 'Add Shoe',
     component: ShoeAdditionManager,
+  },
+
+  {
+    path: 'tables/add-model/:brandId',
+    title: 'Add Shoe Model',
+    component: ModelAddManager,
   },
 
   {

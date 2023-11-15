@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import ShoeForm from '../components/Shoes/ShoeForm';
-import ImageUploadForm from '../components/Shoes/ImageUploadForm';
-
+import ShoeForm from '../../components/Shoes/ShoeForm';
+import ImageUploadForm from '../../components/Shoes/ImageUploadForm';
 
 function ShoeAdditionManager() {
   const [shoeAdded, setShoeAdded] = useState(false);

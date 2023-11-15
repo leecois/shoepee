@@ -21,6 +21,7 @@ import {
 } from '@mui/x-data-grid';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function EditToolbar(props) {
   const { rows, setRows, setRowModesModel, addBrand } = props;
@@ -52,6 +53,10 @@ export default function BrandsListTable({
   addBrand,
   deleteBrand,
 }) {
+  const navigate = useNavigate();
+  const handleAddModelClick = (brandId) => () => {
+    navigate(`/admin/tables/add-model/${brandId}`);
+  };
   const [rows, setRows] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
   const [openDialog, setOpenDialog] = useState(false);
@@ -80,6 +85,7 @@ export default function BrandsListTable({
     }
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
   };
+  
   const handleCloseDialog = () => {
     setOpenDialog(false);
   };
@@ -167,6 +173,12 @@ export default function BrandsListTable({
             icon={<DeleteIcon className="transparent dark:text-gray-300" />}
             label="Delete"
             onClick={handleDeleteClick(id)}
+            color="inherit"
+          />,
+          <GridActionsCellItem
+            icon={<AddIcon />}
+            label="Add Shoe"
+            onClick={handleAddModelClick(id)}
             color="inherit"
           />,
         ];

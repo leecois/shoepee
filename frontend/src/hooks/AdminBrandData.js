@@ -6,7 +6,19 @@ const AdminBrandData = () => {
 
   const fetchData = async () => {
     try {
-      const data = await adminBrandApi.getAll();
+      let data = await adminBrandApi.getAll();
+
+      data = data
+        .map((brand) => ({
+          ...brand,
+          shoeModel: brand.shoeModel
+            ? brand.shoeModel.filter((model) => model.status === 'available')
+            : [],
+        }))
+        .filter(
+          (brand) => brand.status === 'available'
+        );
+
       setBrandList(data);
     } catch (error) {
       console.error('Error fetching product list: ' + error.message);

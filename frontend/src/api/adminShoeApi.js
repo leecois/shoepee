@@ -59,7 +59,7 @@ const adminShoeApi = {
   },
   remove: async (id) => {
     try {
-      const response = await axiosClient.delete(`/admin/shoes/${id}`);
+      const response = await axiosClient.put(`/admin/deleteshe/${id}`);
       return response;
     } catch (error) {
       throw error;

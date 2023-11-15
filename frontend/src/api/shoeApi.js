@@ -53,7 +53,7 @@ const shoeApi = {
   },
   remove: async (id) => {
     try {
-      const response = await axiosClient.delete(`/products/${id}`);
+      const response = await axiosClient.put(`/products/${id}`);
       return response;
     } catch (error) {
       throw error;

@@ -20,17 +20,30 @@ const useModelData = (searchKey, brandFilter) => {
         }
 
         const { data } = await modelApi.getAll(params);
-        setModelList(data);
+        const filteredData = data.filter((model) => {
+          // Filter out entire model if the brand status is unavailable
+          if (model.brandDto && model.brandDto.status === 'unavailble') {
+            return false;
+          }
+
+          // Filter individual shoes within the model
+          if (model.shoes && model.shoes.length) {
+            model.shoes = model.shoes.filter(
+              (shoe) => shoe.status === 'available'
+            );
+          }
+
+          return true;
+        });
+
+        setModelList(filteredData);
       } catch (error) {
-        const errorMsg = error.response && error.response.status 
-          ? 'Error fetching product list: ' + error.message
-          : 'Error fetching product list: Unexpected error';
-        console.log(errorMsg);
+        console.error('Error fetching product list:', error.message);
       }
     };
 
     fetchData();
-  }, [page, limit, searchKey, brandFilter]);
+  }, [page, limit]);
 
   return { modelList };
 };
