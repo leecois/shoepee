@@ -22,6 +22,8 @@ import java.util.Set;
 public class ShoeModel {
     @Id
         @Column(name = "modelid")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private int id;
 //    @Column(name = "brandid")
 //    private int brandId;

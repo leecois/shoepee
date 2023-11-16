@@ -26,7 +26,7 @@ public class ShoeModelServiceImpl implements ShoeModelService{
     @Autowired
     private BrandRepository brandRepository;
     @Override
-    public ShoeModelDto addShoeModel(ShoeModelDto newShoeModel,int brandid) {
+    public ShoeModel addShoeModel(ShoeModelDto newShoeModel,int brandid) {
         if(shoeModelExisted(newShoeModel.getModelname())){
             throw new shoeModelExistedException(newShoeModel.getModelname() + "ShoeModel has been existed");
         }
@@ -39,7 +39,7 @@ public class ShoeModelServiceImpl implements ShoeModelService{
         //shoemodel to shoemodelDto
         ShoeModelDto dto = toDto(save);
 
-        return dto;
+        return save;
     }
 
     @Override

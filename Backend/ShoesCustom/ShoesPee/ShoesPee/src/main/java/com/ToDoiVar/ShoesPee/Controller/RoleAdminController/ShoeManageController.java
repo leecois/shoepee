@@ -25,8 +25,8 @@ public class ShoeManageController {
         return new ResponseEntity<List<ShoeDto>>(shoeService.getShoeByShoeModel(id),HttpStatus.OK);
     }
     @PostMapping("/addshoe/{shoemodelid}")
-    public ResponseEntity<ShoeDto> addShoe(@RequestBody ShoeDto newShoe,@PathVariable int shoemodelid){
-        return new ResponseEntity<ShoeDto>(shoeService.addShoe(newShoe,shoemodelid),HttpStatus.OK);
+    public ResponseEntity<Shoe> addShoe(@RequestBody ShoeDto newShoe,@PathVariable int shoemodelid){
+        return new ResponseEntity<Shoe>(shoeService.addShoe(newShoe,shoemodelid),HttpStatus.OK);
     }
     @PutMapping("/editshoe/{id}")
     public ResponseEntity<ShoeDto> editShoe(@PathVariable int id,@RequestBody ShoeDto editshoe){

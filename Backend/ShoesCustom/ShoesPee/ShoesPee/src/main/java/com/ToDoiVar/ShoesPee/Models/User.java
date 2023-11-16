@@ -2,6 +2,7 @@ package com.ToDoiVar.ShoesPee.Models;
 
 import com.ToDoiVar.ShoesPee.Models.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -48,6 +49,7 @@ public class User implements UserDetails {
     @JsonIgnore
     private Set<Order> orders;
     @OneToOne(mappedBy = "user")
+    @JsonManagedReference
     private InforUser inforUser;
 
     @Override

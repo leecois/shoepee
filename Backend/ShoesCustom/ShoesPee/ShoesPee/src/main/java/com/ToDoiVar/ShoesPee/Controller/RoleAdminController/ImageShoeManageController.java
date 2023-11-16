@@ -21,9 +21,9 @@ public class ImageShoeManageController {
     public ResponseEntity<List<ImageShoe>> getImageShoeByShoeId(@PathVariable int id){
         return new ResponseEntity<List<ImageShoe>>(imageShoeService.getImageShoeByShoe(id),HttpStatus.OK);
     }
-    @PostMapping("/addimageshoe/{shoeID}")
-    public ResponseEntity<ImageDto> addImageShoe(@RequestBody ImageDto newImageShoe,@PathVariable int shoeID){
-        return new ResponseEntity<ImageDto>(imageShoeService.addImageShoe(newImageShoe,shoeID), HttpStatus.OK);
+    @PostMapping("/addimageshoe/{shoeId}")
+    public ResponseEntity<ImageShoe> addImageShoe(@RequestBody ImageDto newImageShoe,@PathVariable int shoeId){
+        return new ResponseEntity<ImageShoe>(imageShoeService.addImageShoe(newImageShoe,shoeId), HttpStatus.OK);
     }
     @DeleteMapping("/deleteimageshoe")
     public ResponseEntity<String> deleteImageShoe(@PathVariable int shoeId){

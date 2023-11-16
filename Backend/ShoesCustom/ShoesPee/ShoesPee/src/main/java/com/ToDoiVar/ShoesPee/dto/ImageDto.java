@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class ImageDto {
     private int id;
     private String imageUrl;
+    private ShoeDto shoeDto;
 //    private Shoe shoe;
 
 

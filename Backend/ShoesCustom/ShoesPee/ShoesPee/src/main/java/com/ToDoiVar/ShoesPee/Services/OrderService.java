@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -70,7 +71,7 @@ public class OrderService {
         }).collect(Collectors.toSet());
 
         order.setBillingAddress(orderAddress);
-        order.setOrderDelivered(null);
+        order.setStatus(false);
         order.setFullName(orderFullName);
         order.setPhoneNumber(orderPhoneNumber);
         order.setOrderStatus("CREATED");
@@ -110,9 +111,40 @@ public class OrderService {
     }
 
 
-    public OrderDto findById(int orderId){
+    public OrderResponse findById(int orderId){
         Order order = this.orderReop.findById(orderId).orElseThrow(()->new ResourceNotFoundException("order not found"));
-        return this.modelMapper.map(order,OrderDto.class);
+//      OrderDto orderDto = this.modelMapper.map(order,OrderDto.class);
+        OrderDto orderDto = modelMapper.map(order, OrderDto.class);
+
+        // Custom mapping for each OrderItem to OrderItemDto
+        Set<OrderItemDto> orderItemDtos = order.getOrderItem().stream().map(orderItem -> {
+            OrderItemDto orderItemDto = modelMapper.map(orderItem, OrderItemDto.class);
+
+            // Ensure shoe is properly loaded and mapped
+            if (orderItem.getShoe() != null) {
+                ShoeDto shoeDto = modelMapper.map(orderItem.getShoe(), ShoeDto.class);
+                ShoeModelDto shoeModelDto = modelMapper.map(orderItem.getShoe().getShoeModel(),ShoeModelDto.class);
+                orderItemDto.setShoeDto(shoeDto);
+                orderItemDto.getShoeDto().setShoeModelDto(shoeModelDto);
+            }
+            return orderItemDto;
+        }).collect(Collectors.toSet());
+
+        orderDto.setOrderItem(orderItemDtos);
+
+        // Prepare the response
+        OrderResponse response = new OrderResponse();
+        response.setContent(Collections.singletonList(orderDto));
+        response.setStatus(orderDto.isStatus());
+        response.setOrderCreateAt(orderDto.getOrderCreateAt());
+        // Since it's a single order, these values can be set accordingly
+        response.setPageNumber(0);
+        response.setLastPage(true);
+        response.setPageSize(1);
+        response.setTotalPage(1);
+//        response.setTotalElement(1L);
+
+        return response;
     }
 
 
@@ -193,5 +225,12 @@ public class OrderService {
 //        response.setTotalElemet(orderPage.getTotalElements());
 
         return response;
+    }
+    public OrderDto acceptOrder(int orderid){
+      Order order=  this.orderReop.findById(orderid).orElseThrow(() -> new ResourceNotFoundException("order not found"));
+      order.setStatus(true);
+      Order save = this.orderReop.save(order);
+      OrderDto orderDto = this.modelMapper.map(save,OrderDto.class);
+      return orderDto;
     }
 }

@@ -36,12 +36,14 @@ public class ImageShoeServiceImp implements ImageShoeService{
     }
 
     @Override
-    public ImageDto addImageShoe(ImageDto newImageShoe,int shoeId) {
+    public ImageShoe addImageShoe(ImageDto newImageShoe,int shoeId) {
         Shoe shoe = this.shoeRepository.findById(shoeId).orElseThrow(() -> new shoeNotFoundException("shoe not found"));
         ImageShoe image = this.mapper.map(newImageShoe,ImageShoe.class);
-        ImageShoe save = imageShoeRepository.save(image);
+        image.setShoe(shoe);
+        ImageShoe save = this.imageShoeRepository.save(image);
 
-        return this.mapper.map(save, ImageDto.class);
+        this.mapper.map(save, ImageDto.class);
+        return save;
     }
 
     @Override
