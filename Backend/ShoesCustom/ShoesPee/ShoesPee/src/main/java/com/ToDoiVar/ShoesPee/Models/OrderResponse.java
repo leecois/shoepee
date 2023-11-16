@@ -51,7 +51,6 @@ public class OrderResponse {
 
     public double getTotalPrice() {
         double totalPrice = 0.0;
-
         if (content != null) {
             for (OrderDto orderDto : content) {
                 totalPrice += orderDto.getOrderAmt();

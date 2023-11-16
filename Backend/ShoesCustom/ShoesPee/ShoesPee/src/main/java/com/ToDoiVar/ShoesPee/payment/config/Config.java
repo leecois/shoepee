@@ -1,7 +1,6 @@
 package com.ToDoiVar.ShoesPee.payment.config;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.context.annotation.Configuration;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -12,11 +11,9 @@ import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 public class Config {
-    public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-//    public static String vnp_ReturnUrl = "https://localhost:8080/vnpay_jsp/vnpay_return.jsp";
+	public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
+    public static String vnp_ReturnUrl = "https://assets.materialup.com/uploads/e7bd9647-cb40-42aa-8877-2beef837318a/preview.png";
     public static String vnp_TmnCode = "GVQT45Y9";
-    public static String vnp_Version = "2.1.0";
-    public static String vnp_Command = "pay";
     public static String secretKey = "UKCOFUQZKRXJANEUISXZFPQRQEAFJWQX";
     public static String vnp_ApiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";
 
@@ -76,7 +73,7 @@ public class Config {
         }
         return hmacSHA512(secretKey,sb.toString());
     }
-
+    
     public static String hmacSHA512(final String key, final String data) {
         try {
 
@@ -99,7 +96,7 @@ public class Config {
             return "";
         }
     }
-
+    
     public static String getIpAddress(HttpServletRequest request) {
         String ipAdress;
         try {
