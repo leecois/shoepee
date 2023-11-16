@@ -53,7 +53,7 @@ const coreRoutes = [
     path: '/staff',
     title: 'Staff',
     component: () => (
-      <ProtectedRoute allowedRoles={'MANAGER'}>
+      <ProtectedRoute allowedRoles={['MANAGER']}>
         <StaffPage />
       </ProtectedRoute>
     ),
