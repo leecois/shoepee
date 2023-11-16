@@ -22,6 +22,8 @@ import java.util.Set;
 public class Shoe {
     @Id
     @Column(name = "shoeid")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private int id;
 //    @Column(name = "modelid")
 //    private int modelId;
@@ -44,16 +46,11 @@ public class Shoe {
 //    @OneToOne()
 //    private CartItem cartItem;
 
-//    @OneToMany(mappedBy = "shoe",cascade = CascadeType.ALL)
-//    private Set<ImageShoe> imageShoes = new HashSet<>();
-//
-//    public Set<ImageShoe> getImageShoes() {
-//        return imageShoes;
-//    }
-//
-//    public void setImageShoes(Set<ImageShoe> imageShoes) {
-//        this.imageShoes = imageShoes;
-//    }
+    @OneToMany(mappedBy = "shoe",cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Set<ImageShoe> imageShoes = new HashSet<>();
+
+
 //@JsonIgnore
 //@OneToMany(fetch = FetchType.LAZY, mappedBy = "shoe")
 //private List<Cart> carts;

@@ -1,5 +1,6 @@
 package com.ToDoiVar.ShoesPee.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -10,6 +11,7 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderItemId;
     @ManyToOne
+    @JsonIgnore
     private Shoe shoe;
 
     private double totalProductprice;

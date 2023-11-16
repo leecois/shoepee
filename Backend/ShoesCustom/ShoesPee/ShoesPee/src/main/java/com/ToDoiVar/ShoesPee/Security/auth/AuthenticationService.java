@@ -63,7 +63,23 @@ public class AuthenticationService {
                 .refreshToken(refreshToken)
                 .build();
     }
-
+    public AuthenticationResponse registerStaff(RegisterRequest request) {
+        var user = User.builder()
+                .username(request.getUsername())
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .role(Role.MANAGER)
+                .build();
+        var savedUser = repository.save(user);
+        var jwtToken = jwtService.generateToken(user);
+        var refreshToken = jwtService.generateRefreshToken(user);
+        saveUserToken(savedUser, jwtToken);
+        return AuthenticationResponse.builder()
+                .user(user)
+                .accessToken(jwtToken)
+                .refreshToken(refreshToken)
+                .build();
+    }
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(

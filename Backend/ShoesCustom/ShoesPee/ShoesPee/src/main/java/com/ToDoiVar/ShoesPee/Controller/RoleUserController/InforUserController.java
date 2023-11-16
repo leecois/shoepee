@@ -35,5 +35,9 @@ public class InforUserController {
     public InforUser editInforUser(@PathVariable int id,@RequestBody InforUser editInforUser){
         return inforUserService.updateInforUser(id,editInforUser);
     }
+    @PostMapping("/addinfor/{userid}")
+    public InforUser addInforUser(@PathVariable int userid,@RequestBody InforUser inforUser){
+        return inforUserService.addInforUser(inforUser,userid);
+    }
 
 }

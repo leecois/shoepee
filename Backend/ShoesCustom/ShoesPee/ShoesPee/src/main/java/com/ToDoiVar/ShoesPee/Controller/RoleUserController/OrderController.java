@@ -11,6 +11,7 @@ import com.ToDoiVar.ShoesPee.payload.response.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -41,23 +42,14 @@ public class OrderController {
     }
 
     @GetMapping("/getorderbyid/{orderId}")
-    public ResponseEntity<OrderDto>findById(@PathVariable int orderId){
-        OrderDto orderDto = this.orderService.findById(orderId);
-        return new ResponseEntity<OrderDto>(orderDto,HttpStatus.ACCEPTED);
+
+    public ResponseEntity<OrderResponse>findById(@PathVariable int orderId){
+        OrderResponse orderDto = this.orderService.findById(orderId);
+        return new ResponseEntity<OrderResponse>(orderDto,HttpStatus.ACCEPTED);
     }
 
 
-    @GetMapping("/findAll")
-    public OrderResponse findAllOrders(
-            @RequestParam(defaultValue = "100",value = "pageSize") int pageSize
-            ,@RequestParam(defaultValue = "0" ,value ="pageNumber" ) int pageNumber
-    )
 
-    {
-        OrderResponse findAllOrders = this.orderService.findAllOrders(pageNumber, pageSize);
-
-        return findAllOrders;
-    }
     @GetMapping("/getorderbyuserid")
     public ResponseEntity<OrderResponse> getOrdersByUserId(
             @RequestHeader("Authorization") String bearertoken,

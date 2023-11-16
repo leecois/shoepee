@@ -1,5 +1,6 @@
 package com.ToDoiVar.ShoesPee.Models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,5 +23,7 @@ public class InforUser {
     @Column(name = "phone")
     private String phone;
     @OneToOne
+    @JoinColumn(name = "user_userid")
+    @JsonBackReference
     private User user;
 }

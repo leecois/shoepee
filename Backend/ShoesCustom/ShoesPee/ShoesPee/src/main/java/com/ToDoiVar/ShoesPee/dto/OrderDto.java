@@ -1,26 +1,24 @@
 package com.ToDoiVar.ShoesPee.dto;
 
-import com.ToDoiVar.ShoesPee.Models.Order;
-import com.ToDoiVar.ShoesPee.Models.OrderItem;
-import com.ToDoiVar.ShoesPee.Models.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
-
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class OrderDto {
 
     private int orderId;
     private String orderStatus;
     private String paymentStatus;
-    private Date orderDelivered;
+    private boolean status;
+    private Date orderCreateAt;
     private double orderAmt;
     private String billingAddress;
-
     private UserDto user;
 
     private Set<OrderItemDto> orderItem=new HashSet<>();
@@ -49,12 +47,12 @@ public class OrderDto {
         this.paymentStatus = paymentStatus;
     }
 
-    public Date getOrderDelivered() {
-        return orderDelivered;
+    public boolean isStatus() {
+        return status;
     }
 
-    public void setOrderDelivered(Date orderDelivered) {
-        this.orderDelivered = orderDelivered;
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
     public double getOrderAmt() {
