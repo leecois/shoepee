@@ -1,10 +1,10 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Hero = () => {
   return (
     <div className="relative w-full h-full flex flex-col justify-center items-center bg-white overflow-hidden">
-      <div className="pt-10 sm:pt-20 lg:pt-40 w-full flex flex-col lg:flex-row">
+      <div className="pt-5 sm:pt-15 lg:pt-28 w-full flex flex-col lg:flex-row">
         <div className="w-full lg:w-1/2 flex flex-col justify-center items-center text-black">
           <div className="p-5 flex flex-col justify-center items-center lg:items-start text-center lg:text-left">
             <h1 className="py-10 text-4xl sm:text-6xl font-bold tracking-tighter leading-tight select-none">
@@ -16,7 +16,8 @@ const Hero = () => {
               Starting at $99
             </p>
             <div className="mt-10 flex flex-col sm:flex-row items-center">
-              <Link to={`/products`}
+              <Link
+                to={`/products`}
                 className="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 m-1.5 py-3 px-6 rounded-md bg-black text-white font-semibold uppercase hover:bg-red-600"
               >
                 Shop Now
@@ -24,7 +25,7 @@ const Hero = () => {
             </div>
           </div>
         </div>
-        <div className="relative w-full lg:w-1/2 flex justify-center items-center overflow-hidden">
+        <div className="relative w-full lg:w-1/2 lg:right-16 sm:right-0 flex justify-center items-center overflow-hidden pointer-events-none select-none">
           <img
             src="/assets/publiceye.jpg"
             alt="Featured Shoe"

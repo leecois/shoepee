@@ -3,25 +3,38 @@ import axiosClient from '../api/axiosClient';
 
 const useOrderData = () => {
   const [orderList, setOrderList] = useState([]);
-  const url = `https://3.1.85.78/api/v1/auth/findAll`;
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const url = `https://3.1.85.78/api/v1/admin/findAll`;
 
   const fetchData = async () => {
+    setIsLoading(true);
+    setError(null);
     try {
-      const data = await axiosClient.get(url);
-      setOrderList(data);
+      const response = await axiosClient.get(url);
+      setOrderList(response.data); // Assuming response.data contains the order list
     } catch (error) {
       console.error(
-        'Error fetching product list:',
+        'Error fetching order list:',
         error.message || 'Unexpected error'
       );
+      setError(error.message || 'Unexpected error');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchData();
+    let isMounted = true;
+    if (isMounted) {
+      fetchData();
+    }
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
-  return { orderList };
+  return { orderList, isLoading, error };
 };
 
 export default useOrderData;

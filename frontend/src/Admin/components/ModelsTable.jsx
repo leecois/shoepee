@@ -50,7 +50,10 @@ export default function ModelsTable({ modelList, updateModel, deleteModel }) {
   const [deleteId, setDeleteId] = useState(null);
 
   useEffect(() => {
-    setRows(modelList.map((item) => ({ ...item })));
+    setRows(modelList.map((item) => ({
+      ...item,
+      brandName: item.brandDto?.brandName
+    })));
   }, [modelList]);
 
   const handleRowEditStop = (params, event) => {
@@ -114,7 +117,11 @@ export default function ModelsTable({ modelList, updateModel, deleteModel }) {
       width: 230,
       editable: true,
     },
-
+    {
+      field: 'brandName',
+      headerName: 'Brand Name',
+      width: 230,
+    },
     {
       field: 'imageurl',
       headerName: 'Image',
@@ -125,7 +132,7 @@ export default function ModelsTable({ modelList, updateModel, deleteModel }) {
           src={params.value}
           alt="Shoe"
           style={{ width: '50px', height: '50px' }}
-          className='object-cover'
+          className="object-cover"
         />
       ),
     },

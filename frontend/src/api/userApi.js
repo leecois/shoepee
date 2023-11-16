@@ -15,6 +15,24 @@ const createUser = (user) => {
   });
 };
 
+const getUserInfo = (userId) => {
+  const jwt = localStorage.getItem(StorageKeys.TOKEN);
+  return axiosClient.get(`auth/inforuser/${userId}`, {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  });
+};
+
+const addUserInfo = (userId, newUserData) => {
+  const jwt = localStorage.getItem(StorageKeys.TOKEN);
+  return axiosClient.post(`auth/addinfor/${userId}`, newUserData, {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  });
+};
+
 const getUserById = (userId) => {
   const jwt = localStorage.getItem(StorageKeys.TOKEN);
   return axiosClient.get(`auth/users/${userId}`, {
@@ -107,6 +125,8 @@ const userApi = {
   order,
   addToCartCustomization,
   getOrderById,
+  addUserInfo,
+  getUserInfo,
 };
 
 export default userApi;

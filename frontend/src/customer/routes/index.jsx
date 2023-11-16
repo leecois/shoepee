@@ -1,10 +1,12 @@
 import { lazy } from 'react';
+import ProtectedRoute from '../../Authentication/ProtectedRoute';
 
 const ProductPage = lazy(() => import('../pages/ProductPage/ProductPage'));
 const ProductDetailPage = lazy(() =>
   import('../pages/ProductPage/ProductDetailPage')
 );
 const CartPage = lazy(() => import('../pages/CartPage/CartPage'));
+const StaffPage = lazy(() => import('../pages/StaffPage'));
 const CheckoutPage = lazy(() => import('../pages/Checkout/CheckoutPage'));
 const ShoeCustomize = lazy(() => import('../pages/ShoeCustomize'));
 const ProfilePage = lazy(() => import('../pages/ProfilePage'));
@@ -46,6 +48,15 @@ const coreRoutes = [
     path: '/profile/:userId',
     title: 'Profile',
     component: ProfilePage,
+  },
+  {
+    path: '/staff',
+    title: 'Staff',
+    component: () => (
+      <ProtectedRoute allowedRoles={'MANAGER'}>
+        <StaffPage />
+      </ProtectedRoute>
+    ),
   },
 
   {

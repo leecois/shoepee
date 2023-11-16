@@ -2,6 +2,8 @@
 [![Website](https://img.shields.io/static/v1?label=Website&message=Shoepee&color=blue)](https://shoepee.vercel.app/)
 [![Website](https://img.shields.io/static/v1?label=Facebook&message=Shoepee&color=yellow)](https://www.facebook.com/shoepeefpt)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.asciidoctor/asciidoctor-maven-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.asciidoctor/asciidoctor-maven-plugin)
+[![License](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://github.com/ieecois/shoepee/blob/main/LICENSE)
+
 
 # Shoe Stylise
 

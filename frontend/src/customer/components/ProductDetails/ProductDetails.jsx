@@ -123,7 +123,7 @@ const ProductDetails = ({ product, userLoggedIn }) => {
   };
 
   return (
-    <div className="mx-auto py-8 px-4 w-full max-w-7xl bg-white">
+    <div className="min-h-screen mx-auto py-8 px-4 w-full max-w-7xl bg-white">
       <div className="mx-auto max-w-2xl lg:max-w-none grid grid-cols-1 lg:grid-cols-2 gap-5">
         <div className="order-2 lg:order-1 relative rounded-sm">
           {selectedShoeImages && selectedShoeImages.length > 0 ? (
