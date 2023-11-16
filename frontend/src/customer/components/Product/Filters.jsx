@@ -39,17 +39,21 @@ const Filters = ({
 
   return (
     <>
+      {/* Overlay when filter is open on mobile */}
+      {openFilter && (
+        <div
+          className="fixed inset-0 bg-gray-500 bg-opacity-75 lg:hidden z-40"
+          onClick={() => setOpenFilter(false)}
+        />
+      )}
+      {/* Filters panel */}
       <div
-        className={`lg:hidden absolute inset-0 bg-gray-500 bg-opacity-75 ${
-          openFilter ? 'visible' : 'invisible'
-        }`}
-      />
-      <div
-        className={`col-span-1 bg-white min-h-screen absolute top-0 right-0 lg:inset-0 lg:relative w-full h-full max-h-full max-w-xs overflow-y-scroll lg:overflow-auto transition-all duration-300 ease-in-out ${
-          openFilter ? 'left-0 opacity-100' : '-left-full opacity-0'
-        }`}
+        className={`fixed inset-y-0 right-0 bg-white min-h-screen w-full max-w-xs overflow-y-auto transition-transform transform lg:static lg:max-w-xs lg:translate-x-0 ${
+          openFilter ? 'translate-x-0' : 'translate-x-full'
+        } lg:translate-x-0 z-99`}
       >
-        <div className="lg:hidden py-5 px-5 flex items-center justify-between border-b border-gray-200">
+        {/* Close button and title for mobile */}
+        <div className="py-5 px-5 flex items-center justify-between border-b border-gray-200 lg:hidden">
           <h3 className="text-2xl text-gray-700 font-semibold">Filters</h3>
           <button
             className="text-gray-400 hover:text-gray-700"

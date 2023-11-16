@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { Navigate, useParams } from 'react-router-dom';
 import Breadcrumb from '../../components/Breadcrumb';
 import ProductDetails from '../../components/ProductDetails/ProductDetails';
 
@@ -12,7 +12,7 @@ import StorageKeys from '../../../constants/storage-keys.js';
 const ProductDetailPage = () => {
   const { modelList } = useModelData();
   const { modelname } = useParams();
-  const { product, loading } = useProductDetail(modelname);
+  const { product, loading, notFound } = useProductDetail(modelname);
 
   const isUserLoggedIn = () => {
     const token = localStorage.getItem(StorageKeys.TOKEN);
@@ -85,6 +85,9 @@ const ProductDetailPage = () => {
         </div>
       </div>
     );
+  }
+  if (notFound) {
+    return <Navigate to="/nothing" replace />; 
   }
 
   if (!product) {

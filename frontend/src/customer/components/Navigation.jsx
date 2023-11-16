@@ -14,6 +14,7 @@ export default function Navigation() {
   const cartItemsCount = useSelector(cartItemsCountSelector);
   const cartTotal = useSelector(cartTotalSelector);
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+
   const navigate = useNavigate();
   const handleCartClick = () => {
     navigate('/cart');
@@ -24,8 +25,10 @@ export default function Navigation() {
 
   // Retrieve user information from localStorage if authenticated
   let user = null;
+  let isManager = false;
   if (isAuthenticated) {
     user = JSON.parse(localStorage.getItem(StorageKeys.USER));
+    isManager = user.authorities.some((auth) => auth.authority === 'MANAGER');
   }
 
   const userId = user ? user.userId : null;
@@ -70,7 +73,7 @@ export default function Navigation() {
   return (
     <>
       <div
-        className={`navbar bg-base-200 sticky top-0 z-99999 transition-all duration-300 ${
+        className={`navbar bg-base-200 sticky top-0 z-50 transition-all duration-300 ${
           visible ? 'opacity-100' : 'opacity-0 -translate-y-full'
         }`}
       >
@@ -138,6 +141,12 @@ export default function Navigation() {
                 tabIndex={0}
                 className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
               >
+                {/* Additional Navbar Item for Managers */}
+                {isAuthenticated && isManager && (
+                  <Link to="/staff" className="btn btn-ghost">
+                    Manager Orders
+                  </Link>
+                )}
                 <li>
                   <Link to={`profile/${userId}`} className="justify-between">
                     Profile

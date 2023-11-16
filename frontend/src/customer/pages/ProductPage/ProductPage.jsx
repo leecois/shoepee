@@ -55,32 +55,34 @@ const ProductPage = () => {
   const breadcrumbItems = [{ label: 'Products', url: '/products' }];
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen"> {/* Ensures full page height and column direction */}
       <Breadcrumb items={breadcrumbItems} />
-      <div className=" relative mx-auto py-4 sm:py-8 px-4 w-auto">
-        <HeaderProduct onSort={setSortOption} setOpenFilter={setOpenFilter} />
-        <div className="flex justify-between mt-4">
-          <Filters
-            openFilter={openFilter}
-            setOpenFilter={setOpenFilter}
-            selectedBrands={selectedBrands}
-            setSelectedBrands={setSelectedBrands}
-          />
-          {noSearchResults ? (
-            <div
-              role="alert"
-              className="rounded w-full h-32 p-4 flex items-center justify-center text-center"
-            >
-              <strong className="block font-bold text-xl text-red-800">
-                NO PRODUCTS FOUND FOR "{searchKey}"
-              </strong>
-            </div>
-          ) : (
-            <ProductList modelList={filteredAndSortedModels} />
-          )}
+      <HeaderProduct onSort={setSortOption} setOpenFilter={setOpenFilter} />
+      <div className="flex-grow"> {/* Ensures content below header takes up remaining space */}
+        <div className="mx-auto py-4 sm:py-8 px-4 w-auto">
+          <div className="flex flex-col md:flex-row justify-between mt-4">
+            <Filters
+              openFilter={openFilter}
+              setOpenFilter={setOpenFilter}
+              selectedBrands={selectedBrands}
+              setSelectedBrands={setSelectedBrands}
+            />
+            {noSearchResults ? (
+              <div
+                role="alert"
+                className="rounded w-full h-32 p-4 flex items-center justify-center text-center"
+              >
+                <strong className="block font-bold text-xl text-red-800">
+                  NO PRODUCTS FOUND FOR "{searchKey}"
+                </strong>
+              </div>
+            ) : (
+              <ProductList modelList={filteredAndSortedModels} />
+            )}
+          </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

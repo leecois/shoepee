@@ -34,6 +34,7 @@ const CustomerRouters = () => {
       <Routes>
         <Route path="/customize" element={<ShoeCustomize />} />
         <Route element={<DefaultLayout />}>
+        <Route path="/nothing" element={<ErrorPage />} />
           <Route index element={<HomePage />} />
           {routes.map((route, index) => {
             const { path, component: Component } = route;

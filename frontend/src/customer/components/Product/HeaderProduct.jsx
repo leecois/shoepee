@@ -8,35 +8,33 @@ import {
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-const HeaderProduct = ({ onSort, openFilter, setOpenFilter }) => {
+const HeaderProduct = ({ onSort, setOpenFilter }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
   const sortOptions = [
     { name: 'Best Rating', value: 'rating' },
     { name: 'Price: Low to High', value: 'price_asc' },
     { name: 'Price: High to Low', value: 'price_desc' },
   ];
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const sort = queryParams.get('sort') || 'popularity';
+  const currentSort = queryParams.get('sort');
 
   const handleSort = (value) => {
     onSort(value);
-    const query = new URLSearchParams(location.search);
-    query.set('sort', value);
-    navigate(`${location.pathname}?${query.toString()}`);
+    queryParams.set('sort', value);
+    navigate(`${location.pathname}?${queryParams.toString()}`);
   };
 
   const handleSearch = (event) => {
-    const query = new URLSearchParams(location.search);
-    query.set('searchKey', event.target.value);
-    navigate(`${location.pathname}?${query.toString()}`);
+    queryParams.set('searchKey', event.target.value);
+    navigate(`${location.pathname}?${queryParams.toString()}`);
   };
 
   return (
-    <div className="col-span-full pb-6 flex flex-col sm:flex-row items-center justify-between space-y-5 sm:space-y-0 border-b border-gray-200">
+    <div className="px-4 col-span-full pb-6 flex flex-col sm:flex-row items-center justify-between space-y-5 sm:space-y-0 border-b border-gray-200">
       <h2 className="text-3xl font-bold">Shoepee By You Shoes</h2>
       <div className="flex items-center space-x-5">
-        <div className="hidden lg:inline-block relative">
+        <div className="relative">
           <label htmlFor="search" className="sr-only">
             Search
           </label>
@@ -45,30 +43,23 @@ const HeaderProduct = ({ onSort, openFilter, setOpenFilter }) => {
             id="search"
             name="search"
             placeholder="Search"
-            className="form-input pl-11 pr-5 w-44 block shadow-sm rounded-full border-gray-300 bg-gray-50 text-sm placeholder-gray-300 focus:border-blue-300 focus:ring-1 focus:ring-blue-300"
+            className="form-input pl-10 pr-4 w-44 block shadow-sm rounded-md border-gray-300 bg-gray-50 text-sm placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
             onChange={handleSearch}
           />
-          <span className="absolute top-1/2 left-3 text-gray-400 transform -translate-y-1/2">
-            <MagnifyingGlassIcon className="w-4 h-4" />
-          </span>
+          <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
         </div>
-        <Menu as="div" className="flex-shrink-0 relative">
-          <Menu.Button className="inline-flex items-center text-base text-gray-400 font-semibold hover:text-gray-700">
-            Sort by
-            <ChevronDownIcon className="w-5 h-5" />
+        <Menu as="div" className="relative">
+          <Menu.Button className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900">
+            Sort by <ChevronDownIcon className="ml-2 w-5 h-5" />
           </Menu.Button>
-          <Menu.Items className="absolute right-0 mt-4 p-2 w-40 flex flex-col rounded-md shadow-2xl bg-white origin-top-right">
+          <Menu.Items className="absolute right-0 mt-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-10">
             {sortOptions.map((option) => (
-              <Menu.Item key={option.name}>
+              <Menu.Item key={option.value}>
                 {({ active }) => (
                   <button
-                    className={`p-1 block rounded ${
-                      active
-                        ? 'bg-gray-50'
-                        : sort === option.name
-                        ? 'bg-blue-50 text-blue-500'
-                        : 'bg-transparent text-gray-400'
-                    } text-base font-medium whitespace-nowrap`}
+                    className={`${
+                      active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
+                    } group flex w-full items-center px-4 py-2 text-sm`}
                     onClick={() => handleSort(option.value)}
                   >
                     {option.name}
@@ -78,14 +69,14 @@ const HeaderProduct = ({ onSort, openFilter, setOpenFilter }) => {
             ))}
           </Menu.Items>
         </Menu>
-        <button className="text-gray-400 hover:text-blue-400">
-          <RectangleGroupIcon className="w-6 h-6" />
-        </button>
         <button
-          className="lg:hidden text-gray-400 hover:text-blue-400"
-          onClick={() => setOpenFilter(!openFilter)}
+          className="p-2 text-gray-400 hover:text-gray-500"
+          onClick={() => setOpenFilter(true)}
         >
           <FunnelIcon className="w-6 h-6" />
+        </button>
+        <button className="p-2 text-gray-400 hover:text-gray-500 lg:hidden">
+          <RectangleGroupIcon className="w-6 h-6" />
         </button>
       </div>
     </div>
