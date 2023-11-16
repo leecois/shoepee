@@ -1,13 +1,10 @@
     package com.ToDoiVar.ShoesPee.payment.controller;
 
-    import com.ToDoiVar.ShoesPee.Models.Order;
     import com.ToDoiVar.ShoesPee.Models.OrderResponse;
     import com.ToDoiVar.ShoesPee.Models.User;
     import com.ToDoiVar.ShoesPee.Security.config.JwtService;
     import com.ToDoiVar.ShoesPee.Services.OrderService;
     import com.ToDoiVar.ShoesPee.Services.UserService;
-    import com.ToDoiVar.ShoesPee.dto.OrderDto;
-    import com.ToDoiVar.ShoesPee.dto.UserDto;
     import com.ToDoiVar.ShoesPee.payment.DTO.PaymentResDTO;
     import com.ToDoiVar.ShoesPee.payment.config.Config;
     import org.springframework.beans.factory.annotation.Autowired;
@@ -34,19 +31,24 @@
         @Autowired
         private OrderService orderService;
 
-        @GetMapping("/create-payment")
-        public ResponseEntity<?> createPayment() throws UnsupportedEncodingException {
-
+        @GetMapping("/pay")
+        public String getPay(@RequestHeader("Authorization") String bearertoken) throws UnsupportedEncodingException{
+            String token = bearertoken.substring(7);
+            String username =  jwtService.extractUsername(token);
+            User user = this.userService.getUserByName(username);
+            OrderResponse order = this.orderService.findOrdersByUserId(user.getUserId());
             String vnp_Version = "2.1.0";
             String vnp_Command = "pay";
             String orderType = "other";
-            long amount = 10000;
-
+            long amount = (long) order.getTotalPrice() *240*100;
+            String bankCode = "NCB";
 
             String vnp_TxnRef = Config.getRandomNumber(8);
-
+            String vnp_IpAddr = "127.0.0.1";
 
             String vnp_TmnCode = Config.vnp_TmnCode;
+//            String vnp_CancelUrl = Config.vnp_CancelUrl;
+
 
             Map<String, String> vnp_Params = new HashMap<>();
             vnp_Params.put("vnp_Version", vnp_Version);
@@ -55,17 +57,16 @@
             vnp_Params.put("vnp_Amount", String.valueOf(amount));
             vnp_Params.put("vnp_CurrCode", "VND");
 
-                vnp_Params.put("vnp_BankCode", "NCB");
-
+            vnp_Params.put("vnp_BankCode", bankCode);
             vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
             vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang:" + vnp_TxnRef);
             vnp_Params.put("vnp_OrderType", orderType);
 
-
-                vnp_Params.put("vnp_Locale", "vn");
-
-//            vnp_Params.put("vnp_ReturnUrl", Config.vnp_ReturnUrl);
-
+            vnp_Params.put("vnp_Locale", "vn");
+            vnp_Params.put("vnp_ReturnUrl", Config.vnp_ReturnUrl);
+            order.setOrderStatusForContent("PAIDED");
+            vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
+//            vnp_Params.put("vnp_CancelUrl", Config.vnp_CancelUrl);
 
             Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
             SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -103,12 +104,7 @@
             String vnp_SecureHash = Config.hmacSHA512(Config.secretKey, hashData.toString());
             queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
             String paymentUrl = Config.vnp_PayUrl + "?" + queryUrl;
-
-            PaymentResDTO paymentResDTO = new PaymentResDTO();
-            paymentResDTO.setStatus("Ok");
-            paymentResDTO.setMessage("Successfully");
-            paymentResDTO.setURL(paymentUrl);
-            return ResponseEntity.status(HttpStatus.OK).body(paymentResDTO);
+            return paymentUrl;
         }
 
         @GetMapping("/cre-payment")
