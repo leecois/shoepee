@@ -50,16 +50,16 @@ public class OrderController {
 
 
 
-    @GetMapping("/getorderbyuserid")
-    public ResponseEntity<OrderResponse> getOrdersByUserId(
-            @RequestHeader("Authorization") String bearertoken,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        String token = bearertoken.substring(7);
-        String username =  jwtService.extractUsername(token);
-        User user = userService.getUserByEmail(username);
-
-        OrderResponse orderResponse = orderService.findOrdersByUserId(user.getUserId());
-        return new ResponseEntity<>(orderResponse, HttpStatus.OK);
-    }
+//    @GetMapping("/getorderbyuserid")
+//    public ResponseEntity<OrderResponse> getOrdersByUserId(
+//            @RequestHeader("Authorization") String bearertoken,
+//            @RequestParam(defaultValue = "0") int page,
+//            @RequestParam(defaultValue = "10") int size) {
+//        String token = bearertoken.substring(7);
+//        String username =  jwtService.extractUsername(token);
+//        User user = userService.getUserByEmail(username);
+//
+//        OrderResponse orderResponse = orderService.findOrdersByUserId(user.getUserId());
+//        return new ResponseEntity<>(orderResponse, HttpStatus.OK);
+//    }
 }

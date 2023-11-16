@@ -7,6 +7,7 @@ import com.ToDoiVar.ShoesPee.Models.InforUser;
 //import com.ToDoiVar.ShoesPee.Models.ShoeModels;
 import com.ToDoiVar.ShoesPee.Models.User;
 import com.ToDoiVar.ShoesPee.repositiory.InforUserRepository;
+import com.ToDoiVar.ShoesPee.repositiory.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,8 @@ public class InforUserServiceImp implements InforUserService {
     private InforUserRepository inforUserRepository;
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserRepository userRepository;
 
 
     @Override
@@ -45,10 +48,20 @@ public class InforUserServiceImp implements InforUserService {
 
     @Override
     public InforUser addInforUser(InforUser inforUser, int userId) {
-        User user = userService.getUserById(userId).orElseThrow(()-> new userNotFoundException("User not found"));
-        InforUser inforUser1 = inforUser;
-        inforUser1.setUser(user);
-        return this.inforUserRepository.save(inforUser1);
+        User user = userService.getUserById(userId)
+                .orElseThrow(() -> new userNotFoundException("User not found"));
+
+        // Check if the user already has InforUser
+        if (user.getInforUser() != null) {
+            throw new IllegalStateException("This user already has an associated InforUser");
+        }
+
+        inforUser.setUser(user);
+        user.setInforUser(inforUser); // Set the InforUser to the user as well
+        inforUserRepository.save(inforUser);
+        userRepository.save(user); // Ensure that the user repository is also updated
+
+        return inforUser;
 
     }
 

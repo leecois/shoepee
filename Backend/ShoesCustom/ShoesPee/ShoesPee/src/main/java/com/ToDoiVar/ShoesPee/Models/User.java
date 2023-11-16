@@ -1,6 +1,7 @@
 package com.ToDoiVar.ShoesPee.Models;
 
 import com.ToDoiVar.ShoesPee.Models.Role;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -14,11 +15,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.SimpleTimeZone;
 
-@Getter
+
 @Entity
 @Table(name = "tbluser")
-@Data
 @Builder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class User implements UserDetails {
@@ -35,7 +36,6 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     @JoinColumn()
     private Role role;
-
         @OneToOne(mappedBy = "user")
         @JsonIgnore
         private Cart cart;
@@ -45,13 +45,12 @@ public class User implements UserDetails {
         public void setCart(Cart cart) {
             this.cart = cart;
         }
-    @OneToMany(mappedBy = "user")
-    @JsonIgnore
-    private Set<Order> orders;
-    @OneToOne(mappedBy = "user")
-    @JsonManagedReference
+        @OneToMany(mappedBy = "user")
+        @JsonIgnore
+        private Set<Order> orders;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JsonBackReference
     private InforUser inforUser;
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
@@ -65,6 +64,9 @@ public class User implements UserDetails {
     public String getUsername(){
         return email;
     }
+
+
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
