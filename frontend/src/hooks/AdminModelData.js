@@ -60,7 +60,19 @@ const AdminModelData = () => {
     }
   };
 
-  return { modelList, deleteModel, addModel };
+  const updateModel = async (id, updatedData) => {
+    try {
+      const updateModel = await adminModelApi.update(id, updatedData);
+      const updateModelList = modelList.map((model) =>
+        model.id === id ? updateModel : model
+      );
+      setModelList(updateModelList);
+    } catch (error) {
+      console.error('Error updating brand: ' + error.message);
+    }
+  };
+
+  return { modelList, deleteModel, addModel, updateModel };
 };
 
 export default AdminModelData;

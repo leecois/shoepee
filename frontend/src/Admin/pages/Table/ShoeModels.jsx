@@ -3,7 +3,7 @@ import Breadcrumb from '../../components/Breadcrumb';
 import ModelsTable from '../../components/ModelsTable';
 
 const Styles = () => {
-  const { modelList, deleteModel, addModel } = AdminModelData();
+  const { modelList, deleteModel, addModel, updateModel } = AdminModelData();
   return (
     <>
       <Breadcrumb pageName="Models" />
@@ -13,6 +13,7 @@ const Styles = () => {
           modelList={modelList}
           deleteModel={deleteModel}
           addModel={addModel}
+          updateModel={updateModel}
         />
       </div>
     </>
