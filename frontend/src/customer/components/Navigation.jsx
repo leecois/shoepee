@@ -9,7 +9,6 @@ import {
   cartItemsCountSelector,
   cartTotalSelector,
 } from '../../containers/selectors';
-import { getCartAsync } from '../../containers/Cart/cartSlice';
 
 export default function Navigation() {
   const cartItemsCount = useSelector(cartItemsCountSelector);
@@ -44,9 +43,8 @@ export default function Navigation() {
   const dispatch = useDispatch();
 
   const handleLogout = () => {
-    dispatch(clearUserData()).then(() => {
-      dispatch(getCartAsync());
-    });
+    dispatch(clearUserData());
+    window.location.reload();
   };
 
   // Function to close the sign-in modal
