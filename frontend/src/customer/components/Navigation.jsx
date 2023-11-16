@@ -127,7 +127,11 @@ export default function Navigation() {
                 className="btn btn-ghost justify-center btn-circle avatar"
               >
                 <div className="indicator">
-                  <UserCircleIcon className="h-7 w-7" />
+                  <img
+                    src="https://i.redd.it/snoovatar/avatars/67ec63fa-4e6d-49ff-bd8b-b4ea1341ab4d.png"
+                    alt="User"
+                    className="rounded-full h-7 w-7"
+                  />
                 </div>
               </label>
               <ul

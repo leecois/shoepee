@@ -3,13 +3,17 @@ import Breadcrumb from '../../components/Breadcrumb';
 import ModelsTable from '../../components/ModelsTable';
 
 const Styles = () => {
-  const {modelList} = AdminModelData();
+  const { modelList, deleteModel, addModel } = AdminModelData();
   return (
     <>
       <Breadcrumb pageName="Models" />
 
       <div className="flex flex-col gap-10">
-        <ModelsTable modelList={modelList}/>
+        <ModelsTable
+          modelList={modelList}
+          deleteModel={deleteModel}
+          addModel={addModel}
+        />
       </div>
     </>
   );

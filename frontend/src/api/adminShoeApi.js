@@ -3,7 +3,7 @@ import axiosClient from './axiosClient';
 const adminShoeApi = {
   async getAll(params) {
     try {
-      const response = await axiosClient.get('/auth/shoes', {
+      const response = await axiosClient.get('/admin/shoes', {
         params: {
           ...params,
           _start:
@@ -41,9 +41,9 @@ const adminShoeApi = {
       throw error;
     }
   },
-  addimage: async (data) => {
+  addimage: async (shoeId ,data) => {
     try {
-      const response = await axiosClient.post('/admin/addimageshoe', data);
+      const response = await axiosClient.post(`/admin/addimageshoe/${shoeId}`, data);
       return response;
     } catch (error) {
       throw error;
@@ -59,7 +59,7 @@ const adminShoeApi = {
   },
   remove: async (id) => {
     try {
-      const response = await axiosClient.delete(`/admin/shoes/${id}`);
+      const response = await axiosClient.put(`/admin/deleteshe/${id}`);
       return response;
     } catch (error) {
       throw error;

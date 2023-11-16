@@ -33,9 +33,12 @@ const adminModelApi = {
       throw error;
     }
   },
-  add: async (data) => {
+  add: async (brandId, data) => {
     try {
-      const response = await axiosClient.post('/products', data);
+      const response = await axiosClient.post(
+        `/admin/addShoemodel/${brandId}`,
+        data
+      );
       return response;
     } catch (error) {
       throw error;
@@ -51,7 +54,7 @@ const adminModelApi = {
   },
   remove: async (id) => {
     try {
-      const response = await axiosClient.delete(`/shoemodels/${id}`);
+      const response = await axiosClient.put(`/admin/deleteshoemodel/${id}`);
       return response;
     } catch (error) {
       throw error;

@@ -3,13 +3,14 @@ import Breadcrumb from '../../components/Breadcrumb';
 import ShoeListTable from '../../components/ShoeListTable';
 
 const Shoes = () => {
-  const { shoeList } = AdminShoeData();
+  const { shoeList, deleteShoe } = AdminShoeData();
+  console.log(shoeList);
   return (
     <>
       <Breadcrumb pageName="Shoes" />
 
       <div className="flex flex-col gap-10">
-        <ShoeListTable shoeList={shoeList} />
+        <ShoeListTable shoeList={shoeList} deleteShoe={deleteShoe} />
       </div>
     </>
   );

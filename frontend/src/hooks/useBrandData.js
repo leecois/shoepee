@@ -4,20 +4,28 @@ import brandApi from '../api/brandApi';
 const useBrandData = () => {
   const [brandList, setBrandList] = useState([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await brandApi.getAll();
-        setBrandList(data);
-      } catch (error) {
-        if (error.response && error.response.status) {
-          console.log('Error fetching product list: ' + error.message);
-        } else {
-          console.log('Error fetching product list: Unexpected error');
-        }
-      }
-    };
+  const fetchData = async () => {
+    try {
+      let data = await brandApi.getAll();
 
+      data = data
+        .map((brand) => ({
+          ...brand,
+          shoeModel: brand.shoeModel
+            ? brand.shoeModel.filter((model) => model.status === 'available')
+            : [],
+        }))
+        .filter(
+          (brand) => brand.status === 'available' && brand.shoeModel.length > 0
+        );
+
+      setBrandList(data);
+    } catch (error) {
+      console.error('Error fetching product list: ' + error.message);
+    }
+  };
+
+  useEffect(() => {
     fetchData();
   }, []);
 

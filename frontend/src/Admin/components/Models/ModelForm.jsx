@@ -2,16 +2,16 @@ import React from 'react';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 
-const shoeScheme = Yup.object().shape({
-  description: Yup.string().required('Please enter description'),
+const modelSchema = Yup.object().shape({
+  modelname: Yup.string().required('Please enter model name'),
   price: Yup.number().required('Please enter price'),
-  imageUrl: Yup.string().required('Please enter image url'),
+  imageurl: Yup.string().required('Please enter image url'),
 });
 
-const ShoeForm = ({ initialValues, onSubmit }) => (
+const ModelForm = ({ initialValues, onSubmit }) => (
   <Formik
     initialValues={initialValues}
-    validationSchema={shoeScheme}
+    validationSchema={modelSchema}
     onSubmit={onSubmit}
   >
     {({ isSubmitting, values }) => (
@@ -19,17 +19,17 @@ const ShoeForm = ({ initialValues, onSubmit }) => (
         <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
           <div className="w-full sm:w-1/2">
             <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-              Shoe Description
+              Model Name
             </label>
             <div className="relative">
               <span className="absolute left-4.5 top-4"></span>
               <Field
                 className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus-border-primary"
                 type="text"
-                name="description"
-                placeholder="Lore Ipsum Dolor Sit Amet Consectetur Adipiscing Elit"
+                name="modelname"
+                placeholder="Air"
               />
-              <ErrorMessage name="description" component="div" className="error" />
+              <ErrorMessage name="modelname" component="div" className="error" />
             </div>
           </div>
           <div className="w-full sm:w-1/2">
@@ -48,21 +48,21 @@ const ShoeForm = ({ initialValues, onSubmit }) => (
         {/* Image URL Field */}
         <div className="mb-5.5">
           <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-            Img Thumbnail Url
+            Img Url
           </label>
           <Field
             className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
             type="text"
-            name="imageUrl"
+            name="imageurl"
           />
-          <ErrorMessage name="imageUrl" component="div" className="error" />
+          <ErrorMessage name="imageurl" component="div" className="error" />
         </div>
 
         {/* Image Preview */}
-        {values.imageUrl && (
+        {values.imageurl && (
           <div className="relative mb-5.5 block w-full rounded border-2 border-dashed bg-gray py-4 px-4 dark:bg-meta-4 sm:py-7.5">
             <img
-              src={values.imageUrl}
+              src={values.imageurl}
               alt="Preview"
               className="max-w-full h-auto"
             />
@@ -72,7 +72,7 @@ const ShoeForm = ({ initialValues, onSubmit }) => (
         <div className="flex justify-end gap-4.5">
           <button
             className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-            type="reset"
+            type="submit"
           >
             Cancel
           </button>
@@ -89,4 +89,4 @@ const ShoeForm = ({ initialValues, onSubmit }) => (
   </Formik>
 );
 
-export default ShoeForm;
+export default ModelForm;

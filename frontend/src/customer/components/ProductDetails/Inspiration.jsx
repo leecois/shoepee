@@ -3,7 +3,7 @@ import React from 'react';
 const Inspiration = ({ product, selectedShoe, handleShoeButtonClick }) => {
   return (
     <div className="mt-4 w-full">
-      <div className="flex">
+      <div className="flex flex-wrap">
         {product.shoes?.map((shoe) => (
           <button
             key={shoe.id}
