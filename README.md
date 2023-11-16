@@ -1,5 +1,6 @@
-[![CI/CD with GitHub Actions | © 2023 by minhchan](https://github.com/ieecois/shoepee/actions/workflows/CI-CD-BE.yml/badge.svg)](https://github.com/ieecois/shoepee/actions/workflows/CI-CD-BE.yml)
-
+[![CI/CD with GitHub Actions](https://github.com/ieecois/shoepee/actions/workflows/CI-CD-BE.yml/badge.svg)](https://github.com/ieecois/shoepee/actions/workflows/CI-CD-BE.yml)
+[![Website](https://img.shields.io/static/v1?label=Website&message=Shoepee&color=blue)](https://shoepee.vercel.app/)
+[![Website](https://img.shields.io/static/v1?label=Facebook&message=Shoepee&color=yellow)](https://www.facebook.com/shoepeefpt)
 # Shoe Stylise
 
 ![Shoe Stylise Logo](link_to_logo.png)
