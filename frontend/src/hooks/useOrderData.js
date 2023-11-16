@@ -3,7 +3,7 @@ import axiosClient from '../api/axiosClient';
 
 const useOrderData = () => {
   const [orderList, setOrderList] = useState([]);
-  const url = `https://3.1.85.78/api/v1/auth/findAll`;
+  const url = `https://3.1.85.78/api/v1/admin/findAll`;
 
   const fetchData = async () => {
     try {

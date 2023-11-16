@@ -1,6 +1,30 @@
 import React from 'react';
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import useUserInfoData from '../../../hooks/useUserInfoData';
+import { useState } from 'react';
 
 const Profile = () => {
+  const { userId } = useParams();
+  const { userData, updateUserInfo } = useUserInfoData(userId);
+
+  const [fullname, setFullName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [address, setAddress] = useState('');
+  const [emailAddress, setEmailAddress] = useState('');
+
+  useEffect(() => {
+    if (userData) {
+      setFullName(userData.fullname || '');
+      setPhone(userData.phone || '');
+      setAddress(userData.address || '');
+    }
+  }, [userData]);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    await updateUserInfo({ fullname, phone, address});
+  };
   return (
     <div className="grid m-8 grid-cols-3 gap-8">
       <div className="col-span-5 xl:col-span-3">
@@ -12,12 +36,12 @@ const Profile = () => {
           </div>
 
           <div className="p-7">
-            <form action="#">
+            <form action="#" onSubmit={handleSubmit}>
               <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
                 <div className="w-full sm:w-1/2">
                   <label
                     className="mb-3 block text-sm font-medium text-black dark:text-white"
-                    htmlFor="fullName"
+                    htmlFor="fullname"
                   >
                     Full Name
                   </label>
@@ -26,27 +50,49 @@ const Profile = () => {
                     <input
                       className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus-border-primary"
                       type="text"
-                      name="fullName"
-                      id="fullName"
+                      name="fullname"
+                      id="fullname"
                       placeholder="Lee Cois"
-                      defaultValue="Lee Cois"
+                      value={fullname}
+                      onChange={(e) => setFullName(e.target.value)}
                     />
                   </div>
                 </div>
                 <div className="w-full sm:w-1/2">
                   <label
                     className="mb-3 block text-sm font-medium text-black dark:text-white"
-                    htmlFor="phoneNumber"
+                    htmlFor="phone"
                   >
                     Phone Number
                   </label>
                   <input
                     className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus-border-primary"
                     type="text"
-                    name="phoneNumber"
-                    id="phoneNumber"
+                    name="phone"
+                    id="phone"
                     placeholder="+84 123456789"
-                    defaultValue="+84 337777777"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="mb-5.5">
+                <label
+                  className="mb-3 block text-sm font-medium text-black dark:text-white"
+                  htmlFor="address"
+                >
+                  Address
+                </label>
+                <div className="relative">
+                  <span className="absolute left-4.5 top-4"></span>
+                  <input
+                    className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus-border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus-border-primary"
+                    type="text"
+                    name="address"
+                    id="address"
+                    placeholder="Ho Chi Minh"
+                    value="Ho Chi Minh"
+                    onChange={(e) => setAddress(e.target.value)}
                   />
                 </div>
               </div>
@@ -62,8 +108,6 @@ const Profile = () => {
                   <input
                     className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus-border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus-border-primary"
                     type="email"
-                    name="emailAddress"
-                    id="emailAddress"
                     placeholder="leecois@gmail.com"
                     defaultValue="leecois@gmail.com"
                   />

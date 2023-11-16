@@ -15,11 +15,6 @@ const Filters = ({
 }) => {
   const { brandList } = useBrandData();
 
-  const subCategories = [
-    { name: 'Sneaker', href: '#' },
-    { name: 'Black Friday', href: '#' },
-  ];
-
   const handleBrandFilterChange = (brandName) => {
     setSelectedBrands((prevSelectedBrands) => {
       if (prevSelectedBrands.includes(brandName)) {
@@ -78,20 +73,6 @@ const Filters = ({
             <MagnifyingGlassIcon className="w-4 h-4" />
           </span>
         </div>
-        <div className="mt-5 pb-5 pl-5 border-b border-gray-200">
-          <ul className="flex flex-col items-start space-y-2">
-            {subCategories.map((subcategory) => (
-              <li key={subcategory.name}>
-                <a
-                  href={subcategory.href}
-                  className="text-base text-gray-700 font-semibold hover:text-blue-400"
-                >
-                  {subcategory.name}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
         <div>
           {filters.map((section) => (
             <Disclosure
@@ -119,25 +100,23 @@ const Filters = ({
                   </Disclosure.Button>
                   {section.id === 'brand' && (
                     <Disclosure.Panel className="mt-5 flex flex-col">
-                      {section.options.map((option) => (
-                        <div
-                          key={option.value}
-                          className="m-1 flex items-center space-x-3"
-                        >
+                      <div className=" flex flex-wrap items-center gap-2">
+                        {section.options.map((option) => (
                           <button
+                            key={option.value}
                             onClick={() =>
                               handleBrandFilterChange(option.value)
                             }
                             className={`text-base ${
                               selectedBrands.includes(option.value)
-                                ? 'text-black-2 font-semibold'
-                                : 'text-gray-700'
+                                ? 'btn btn-outline btn-ghost '
+                                : 'btn btn-navy'
                             }`}
                           >
                             {option.label}
                           </button>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
                     </Disclosure.Panel>
                   )}
                 </div>

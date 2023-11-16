@@ -1,11 +1,9 @@
-import React from 'react';
 import {
   DevicePhoneMobileIcon,
-  QuestionMarkCircleIcon,
   EnvelopeIcon,
-  FaceSmileIcon,
+  QuestionMarkCircleIcon,
 } from '@heroicons/react/24/outline';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 
 const Contact = () => {
   useEffect(() => {
@@ -13,7 +11,6 @@ const Contact = () => {
       window.FB.XFBML.parse();
     }
   }, []);
-  const facebookPageUrl = 'https://www.facebook.com/YourPageName';
   return (
     <div className="relative min-h-screen bg-white">
       <div className="container mx-auto py-16 px-6 md:px-12 lg:px-20">
@@ -60,16 +57,19 @@ const Contact = () => {
               </p>
             </div>
           </div>
-          <iframe
-            src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FGuaccGuys&tabs=timeline&width=340&height=331&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId=YOUR_APP_ID"
-            width="340"
-            height="331"
-            style={{ border: 'none', overflow: 'hidden' }}
-            scrolling="no"
-            frameBorder="0"
-            allowFullScreen={true}
-            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-          ></iframe>
+          {/* Facebook Page Plugin */}
+          <div className="mt-10 flex justify-center">
+            <iframe
+              src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fshoepeefpt&width=500&height=300&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true"
+              width="500"
+              height="170"
+              style={{ border: 'none', overflow: 'hidden' }}
+              frameborder="0"
+              allowTransparency="true"
+              allow="encrypted-media"
+              title="Shoepee"
+            ></iframe>
+          </div>
         </div>
       </div>
     </div>

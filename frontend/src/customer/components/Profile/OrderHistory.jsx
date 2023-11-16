@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import OrderDetailModal from './OrderDetailModal';
+import { EyeIcon } from '@heroicons/react/24/outline';
 
 const OrderHistory = ({ orders }) => {
   const [selectedOrder, setSelectedOrder] = useState(null);
@@ -28,7 +29,7 @@ const OrderHistory = ({ orders }) => {
         RECENT ORDERS
       </h1>
       <div className="border-b border-gray-300 py-4 px-7">
-        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <table className="w-full text-sm text-center text-black-2 font-semibold dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th scope="col" className="py-3 px-6">
@@ -67,7 +68,7 @@ const OrderHistory = ({ orders }) => {
                   {order.paymentStatus === 'NOT PAID' && (
                     <button
                       onClick={() => handlePaymentClick(order.orderId)}
-                      className="text-red-600 hover:underline"
+                      className="text-red-600 font-bold hover:underline"
                     >
                       (Pay Now)
                     </button>
@@ -79,12 +80,14 @@ const OrderHistory = ({ orders }) => {
                 <td className="py-4 px-6">${order.orderAmt.toFixed(2)}</td>
                 <td className="py-4 px-6">{order.billingAddress}</td>
                 <td className="py-4 px-6">
-                  <button
-                    onClick={() => handleProductClick(order)}
-                    className="text-blue-600 hover:underline mr-3"
-                  >
-                    Detail
-                  </button>
+                  <div className="tooltip tooltip-right tooltip-info" data-tip="Detail">
+                    <button
+                      onClick={() => handleProductClick(order)}
+                      className="text-blue-600 hover:underline mr-3"
+                    >
+                      <EyeIcon className="h-5 w-5" />
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}

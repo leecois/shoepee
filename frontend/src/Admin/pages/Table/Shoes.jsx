@@ -4,7 +4,6 @@ import ShoeListTable from '../../components/ShoeListTable';
 
 const Shoes = () => {
   const { shoeList, deleteShoe } = AdminShoeData();
-  console.log(shoeList);
   return (
     <>
       <Breadcrumb pageName="Shoes" />

@@ -1,7 +1,10 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import { placeOrderAsync } from '../../../containers/Cart/cartSlice';
+import {
+  getCartAsync,
+  placeOrderAsync,
+} from '../../../containers/Cart/cartSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
 const validationSchema = Yup.object({
@@ -33,7 +36,12 @@ const Checkout = () => {
       orderPhone: values.phone,
       cartId,
     };
-    dispatch(placeOrderAsync(orderData));
+    dispatch(placeOrderAsync(orderData)).then((action) => {
+      if (!action.error) {
+        // Refetch the cart data
+        dispatch(getCartAsync());
+      }
+    });
     setSubmitting(false);
   };
 

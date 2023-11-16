@@ -47,7 +47,12 @@ export default function ShoeListTable({ shoeList, updateShoe, deleteShoe }) {
 
   useEffect(() => {
     if (shoeList) {
-      setRows(shoeList.map((item) => ({ ...item })));
+      setRows(
+        shoeList.map((item) => ({
+          ...item,
+          modelname: item.shoeModelDto?.modelname,
+        }))
+      );
     }
   }, [shoeList]);
 
@@ -104,7 +109,7 @@ export default function ShoeListTable({ shoeList, updateShoe, deleteShoe }) {
     {
       field: 'imageUrl',
       headerName: 'Image',
-      width: 170,
+      width: 90,
       editable: true,
       renderCell: (params) => (
         <img
@@ -119,6 +124,11 @@ export default function ShoeListTable({ shoeList, updateShoe, deleteShoe }) {
       headerName: 'Description',
       width: 500,
       editable: true,
+    },
+    {
+      field: 'modelname',
+      headerName: 'Model Name',
+      width: 170,
     },
     { field: 'price', headerName: 'Price', width: 130, editable: true },
     {

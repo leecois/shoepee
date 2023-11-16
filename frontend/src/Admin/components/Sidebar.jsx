@@ -5,8 +5,7 @@ import {
   PresentationChartLineIcon,
   SquaresPlusIcon,
   TableCellsIcon,
-  UserIcon,
-  XMarkIcon,
+  XMarkIcon
 } from '@heroicons/react/24/outline';
 import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
@@ -240,7 +239,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                               Models
                             </NavLink>
                           </li>
-                          <li>
+                          {/* <li>
                             <NavLink
                               to="tables/sizes"
                               className={({ isActive }) =>
@@ -250,7 +249,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                             >
                               Sizes
                             </NavLink>
-                          </li>
+                          </li> */}
                           <li>
                             <NavLink
                               to="tables/accounts"
