@@ -6,14 +6,12 @@
     import com.ToDoiVar.ShoesPee.Services.OrderService;
     import com.ToDoiVar.ShoesPee.Services.UserService;
     import com.ToDoiVar.ShoesPee.payment.DTO.PaymentResDTO;
+    import com.ToDoiVar.ShoesPee.payment.DTO.TransactionStatusDTO;
     import com.ToDoiVar.ShoesPee.payment.config.Config;
     import org.springframework.beans.factory.annotation.Autowired;
     import org.springframework.http.HttpStatus;
     import org.springframework.http.ResponseEntity;
-    import org.springframework.web.bind.annotation.GetMapping;
-    import org.springframework.web.bind.annotation.RequestHeader;
-    import org.springframework.web.bind.annotation.RequestMapping;
-    import org.springframework.web.bind.annotation.RestController;
+    import org.springframework.web.bind.annotation.*;
 
     import java.io.UnsupportedEncodingException;
     import java.net.URLEncoder;
@@ -117,4 +115,43 @@
             order.setOrderStatusForContent("PAIDED");
             return ResponseEntity.status(HttpStatus.OK).body(order);
         }
+
+        @GetMapping("/payment-infor")
+        public ResponseEntity<?> transaction(@RequestHeader("Authorization") String bearertoken) {
+            String token = bearertoken.substring(7);
+            String username =  jwtService.extractUsername(token);
+            User user = this.userService.getUserByName(username);
+            OrderResponse order = this.orderService.findOrdersByUserId(user.getUserId());
+            order.setOrderStatusForContent("PAIDED");
+            return ResponseEntity.status(HttpStatus.OK).body(order);
+        }
+
+        @GetMapping("/payment-in4")
+        public ResponseEntity<?> transaction2(
+                @RequestParam(value = "vnp Amount") String amount,
+                @RequestParam(value = "ynp BankCode") String bankCode,
+                @RequestParam(value = "vnp OrderInfo") String order,
+                @RequestParam(value = "ynp ResponseCode") String responseCode,
+                @RequestHeader("Authorization") String bearertoken
+        )
+        {
+            String token = bearertoken.substring(7);
+            String username =  jwtService.extractUsername(token);
+            User user = this.userService.getUserByName(username);
+            OrderResponse order2 = this.orderService.findOrdersByUserId(user.getUserId());
+            order2.setOrderStatusForContent("PAIDED");
+
+            TransactionStatusDTO transactionStatusDTO = new TransactionStatusDTO();
+            if (responseCode.equals("00")) {
+                transactionStatusDTO.setStatus("Ok");
+                transactionStatusDTO.setMessage("Successfully");
+                transactionStatusDTO.setData("");
+            } else {
+                transactionStatusDTO.setStatus("No");
+                transactionStatusDTO.setMessage("Failed");
+                transactionStatusDTO.setData("");
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(transactionStatusDTO);
+        }
+
     }

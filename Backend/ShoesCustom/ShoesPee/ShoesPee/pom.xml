@@ -98,7 +98,6 @@
             <scope>compile</scope>
         </dependency>
 		<dependency>
->>>>>>> a8c39bac26f0f5c334ebb80dde05e9a95df52b4b
 			<groupId>org.modelmapper.extensions</groupId>
 			<artifactId>modelmapper-spring</artifactId>
 			<version>3.1.1</version>
