@@ -1,6 +1,8 @@
 [![CI/CD with GitHub Actions](https://github.com/ieecois/shoepee/actions/workflows/CI-CD-BE.yml/badge.svg)](https://github.com/ieecois/shoepee/actions/workflows/CI-CD-BE.yml)
 [![Website](https://img.shields.io/static/v1?label=Website&message=Shoepee&color=blue)](https://shoepee.vercel.app/)
 [![Website](https://img.shields.io/static/v1?label=Facebook&message=Shoepee&color=yellow)](https://www.facebook.com/shoepeefpt)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.asciidoctor/asciidoctor-maven-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.asciidoctor/asciidoctor-maven-plugin)
+
 # Shoe Stylise
 
 ![Shoe Stylise Logo](link_to_logo.png)
