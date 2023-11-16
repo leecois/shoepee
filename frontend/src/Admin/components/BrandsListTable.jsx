@@ -128,15 +128,22 @@ export default function BrandsListTable({
     {
       field: 'brandName',
       headerName: 'Brand Name',
-      width: 130,
+      width: 230,
       editable: true,
     },
-    { field: 'imageUrl', headerName: 'Image URL', width: 500, editable: true },
+    { field: 'imageUrl', headerName: 'Image', width: 130, editable: true, renderCell: (params) => (
+      <img
+        src={params.value}
+        alt="Brand"
+        style={{ width: '50px', height: '50px' }}
+        className='object-cover'
+      />
+    ), },
     {
       field: 'actions',
       type: 'actions',
       headerName: 'Actions',
-      width: 200,
+      width: 400,
       cellClassName: 'actions',
       getActions: ({ id }) => {
         const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
@@ -175,12 +182,14 @@ export default function BrandsListTable({
             onClick={handleDeleteClick(id)}
             color="inherit"
           />,
+          <div className="tooltip tooltip-right" data-tip="Add Shoe Model">
           <GridActionsCellItem
             icon={<AddIcon />}
-            label="Add Shoe"
+            label="Add Shoe Model"
             onClick={handleAddModelClick(id)}
             color="inherit"
-          />,
+          />
+          </div>
         ];
       },
     },

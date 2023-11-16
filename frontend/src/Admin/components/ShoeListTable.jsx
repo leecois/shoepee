@@ -27,13 +27,13 @@ function EditToolbar() {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate('/admin/tables/add-shoe');
+    navigate('/admin/tables/models');
   };
 
   return (
     <GridToolbarContainer>
       <Button color="inherit" startIcon={<AddIcon />} onClick={handleClick}>
-        Add shoe
+        Add Inspiration For Shoe Model
       </Button>
     </GridToolbarContainer>
   );
@@ -55,10 +55,6 @@ export default function ShoeListTable({ shoeList, updateShoe, deleteShoe }) {
     if (params.reason === GridRowEditStopReasons.rowFocusOut) {
       event.defaultMuiPrevented = true;
     }
-  };
-
-  const handleEditClick = (id) => () => {
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
   };
 
   const handleSaveClick = (id) => () => {
@@ -155,19 +151,14 @@ export default function ShoeListTable({ shoeList, updateShoe, deleteShoe }) {
         }
 
         return [
-          <GridActionsCellItem
-            icon={<EditIcon className="transparent dark:text-gray-300" />}
-            label="Edit"
-            className="textPrimary"
-            onClick={handleEditClick(id)}
-            color="inherit"
-          />,
-          <GridActionsCellItem
-            icon={<DeleteIcon className="transparent dark:text-gray-300" />}
-            label="Delete"
-            onClick={handleDeleteClick(id)}
-            color="inherit"
-          />,
+          <div className="tooltip tooltip-right" data-tip="Delete">
+            <GridActionsCellItem
+              icon={<DeleteIcon className="transparent dark:text-gray-300" />}
+              label="Delete"
+              onClick={handleDeleteClick(id)}
+              color="inherit"
+            />
+          </div>,
         ];
       },
     },

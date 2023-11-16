@@ -13,7 +13,7 @@ const OrdersTable = ({ orderList }) => {
           <thead>
             <tr className="bg-gray-2 text-left dark:bg-meta-4">
               <th className="min-w-[220px] py-4 px-4 font-medium text-black dark:text-white xl:pl-11">
-                Products
+                Orders
               </th>
               <th className="min-w-[150px] py-4 px-4 font-medium text-black dark:text-white">
                 Phone
@@ -33,14 +33,15 @@ const OrdersTable = ({ orderList }) => {
             {orderList.orderList.content?.map((order) => (
               <tr key={order.orderId}>
                 <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                  {order.orderItem.map((item, index) => (
-                    <div key={index}>
-                      <h5 className="font-medium text-black dark:text-white">
-                        {item.shoeDto.shoeModelDto.modelname}
-                      </h5>
-                      <p className="text-sm">${item.shoeDto.price}</p>
-                    </div>
-                  ))}
+                  <div>
+                    <h5 className="font-medium text-black dark:text-white">
+                      ID: {order.orderId} - Items: {order.orderItem.length}{' '}
+                    </h5>
+                    <p className="text-sm font-bold">
+                      Total: ${order.orderAmt.toFixed(2)}
+                    </p>
+                    <span className='font-serif text-gray-400'> {order.user.email}</span>
+                  </div>
                 </td>
                 <td className="border-b border-[#eee] py-5 px-4 dark:border-strokedark">
                   <p className="text-black dark:text-white">
