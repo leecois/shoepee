@@ -1,6 +1,9 @@
 package com.ToDoiVar.ShoesPee.payment.config;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -9,10 +12,11 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
-
+@CrossOrigin("*")
+@RestController
 public class Config {
 	public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-    public static String vnp_ReturnUrl = "/api/payment//payment-in4";
+    public static String vnp_ReturnUrl = "/cre-payment";
     public static String vnp_TmnCode = "GVQT45Y9";
     public static String secretKey = "UKCOFUQZKRXJANEUISXZFPQRQEAFJWQX";
     public static String vnp_ApiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";

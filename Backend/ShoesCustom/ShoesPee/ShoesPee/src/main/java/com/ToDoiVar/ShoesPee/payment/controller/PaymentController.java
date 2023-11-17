@@ -35,6 +35,7 @@
             String username =  jwtService.extractUsername(token);
             User user = this.userService.getUserByName(username);
             OrderResponse order = this.orderService.findOrdersByUserId(user.getUserId());
+            order.setOrderStatusForContent("PAIDED");
             String vnp_Version = "2.1.0";
             String vnp_Command = "pay";
             String orderType = "other";
@@ -106,33 +107,33 @@
         }
 
         @GetMapping("/cre-payment")
-        public ResponseEntity<?> crePayment(@RequestHeader("Authorization") String bearertoken){
+        public String crePayment(@RequestHeader("Authorization") String bearertoken){
             String token = bearertoken.substring(7);
             String username =  jwtService.extractUsername(token);
             User user = this.userService.getUserByName(username);
             OrderResponse order = this.orderService.findOrdersByUserId(user.getUserId());
             order.getTotalPrice();
             order.setOrderStatusForContent("PAIDED");
-            return ResponseEntity.status(HttpStatus.OK).body(order);
+            return "redirect:/success";
         }
 
-        @GetMapping("/payment-infor")
-        public ResponseEntity<?> transaction(@RequestHeader("Authorization") String bearertoken) {
-            String token = bearertoken.substring(7);
-            String username =  jwtService.extractUsername(token);
-            User user = this.userService.getUserByName(username);
-            OrderResponse order = this.orderService.findOrdersByUserId(user.getUserId());
-            order.setOrderStatusForContent("PAIDED");
-            return ResponseEntity.status(HttpStatus.OK).body(order);
-        }
+//        @GetMapping("/payment-infor")
+//        public ResponseEntity<?> transaction(@RequestHeader("Authorization") String bearertoken) {
+//            String token = bearertoken.substring(7);
+//            String username =  jwtService.extractUsername(token);
+//            User user = this.userService.getUserByName(username);
+//            OrderResponse order = this.orderService.findOrdersByUserId(user.getUserId());
+//            order.setOrderStatusForContent("PAIDED");
+//            return ResponseEntity.status(HttpStatus.OK).body(order);
+//        }
 
         @GetMapping("/payment-in4")
         public ResponseEntity<?> transaction2(
+                @RequestHeader("Authorization") String bearertoken,
                 @RequestParam(value = "vnp Amount") String amount,
                 @RequestParam(value = "ynp BankCode") String bankCode,
                 @RequestParam(value = "vnp OrderInfo") String order,
-                @RequestParam(value = "ynp ResponseCode") String responseCode,
-                @RequestHeader("Authorization") String bearertoken
+                @RequestParam(value = "ynp ResponseCode") String responseCode
         )
         {
             String token = bearertoken.substring(7);

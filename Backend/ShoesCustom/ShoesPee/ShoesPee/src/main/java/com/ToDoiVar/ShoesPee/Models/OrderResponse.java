@@ -68,10 +68,10 @@ public class OrderResponse {
 
         return totalPrice;
     }
-    public void setOrderStatusForContent(String orderStatus) {
+    public void setOrderStatusForContent(String paymentStatus) {
         if (content != null) {
             for (OrderDto orderDto : content) {
-                orderDto.setOrderStatus(orderStatus);
+                orderDto.setPaymentStatus(paymentStatus);
             }
         }
     }

@@ -52,6 +52,8 @@ public class SecurityConfiguration {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(req ->
                         req
+                                .requestMatchers("https://localhost:8080/vnpay_jsp/**")
+                                .permitAll()
                                 .requestMatchers("/api/v1/auth/**")
                                 .permitAll()
                                 .requestMatchers("/api/v1/admin/**").hasAnyAuthority(ADMIN.name())
