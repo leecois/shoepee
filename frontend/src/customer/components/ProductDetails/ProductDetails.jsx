@@ -145,13 +145,17 @@ const ProductDetails = ({ product, userLoggedIn }) => {
 
         <div className="order-1 lg:order-2 col-span-full lg:col-span-1 lg:max-w-xl flex flex-col items-start">
           <h1 className="text-3xl sm:text-4xl text-gray-700 font-extrabold tracking-wide">
-            {product.modelname}
+            {product.modelname}{' '}
+            <span className="pl-2 border-l border-gray-200 text-2xl text-gray-700 font-sans">
+              ${product.price}
+            </span>
           </h1>
           <div className="mt-5 flex items-center">
             <p className="pr-5 border-r border-gray-200 text-2xl text-gray-700 font-sans">
               ${selectedShoe?.price}
             </p>
-            <div className="pl-5 pr-3 flex items-center">
+
+            <div className="pl-3 pr-3 flex items-center">
               <span className="ml-2 text-sm text-gray-400 font-medium">
                 Custom Shoes
               </span>
@@ -242,7 +246,11 @@ const ProductDetails = ({ product, userLoggedIn }) => {
               onClick={handleBuyClick}
               className="w-full btn inline-block btn-neutral btn-active rounded-md font-semibold"
             >
-              {hasShoe ? 'Buy Customization' : 'Buy Shoe + Customization'}
+              {hasShoe
+                ? 'Buy Customization ( $' + (selectedShoe?.price || 0) + ' )'
+                : 'Buy Shoe + Customization ( $' +
+                  (product.price + selectedShoe?.price || 0) +
+                  ' )'}
             </button>
           </div>
 
