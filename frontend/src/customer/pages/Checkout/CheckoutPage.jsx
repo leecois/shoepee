@@ -17,10 +17,6 @@ const CheckoutPage = () => {
       <Breadcrumb items={breadcrumbItems} />
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-8 m-8">
         <div className="h-full rounded-lg ">
-          <h1 className="pl-6 font-semibold">Have a Shoepee account?</h1>
-          <button className="pl-6 text-sm text-gray-500">
-            Join Now / Sign-In.
-          </button>
           <Checkout />
           <Payment />
         </div>

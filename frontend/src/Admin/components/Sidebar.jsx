@@ -5,7 +5,7 @@ import {
   PresentationChartLineIcon,
   SquaresPlusIcon,
   TableCellsIcon,
-  XMarkIcon
+  XMarkIcon,
 } from '@heroicons/react/24/outline';
 import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
@@ -285,7 +285,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
               {/* <!-- Menu Item Tables --> */}
 
               {/* <!-- Menu Item Settings --> */}
-              <li>
+              {/* <li>
                 <NavLink
                   to="settings"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
@@ -296,7 +296,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                   <Cog8ToothIcon className="h-6 w-6 text-gray-500" />
                   Settings
                 </NavLink>
-              </li>
+              </li> */}
               {/* <!-- Menu Item Settings --> */}
             </ul>
           </div>

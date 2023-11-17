@@ -78,12 +78,12 @@ const Header = (props) => {
             <DarkModeSwitcher />
             {/* <!-- Dark Mode Toggler --> */}
             {/* <!-- Notification Menu Area --> */}
-            <DropdownNotification />
+            {/* <DropdownNotification /> */}
             {/* <!-- Notification Menu Area --> */}
             {/* <!-- Chat Notification Area --> */}
           </ul>
           {/* <!-- User Area --> */}
-          <DropdownUser />
+          {/* <DropdownUser /> */}
           {/* <!-- User Area --> */}
         </div>
       </div>

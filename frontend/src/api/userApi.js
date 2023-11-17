@@ -26,7 +26,7 @@ const getUserInfo = (userId) => {
 
 const addUserInfo = (userId, newUserData) => {
   const jwt = localStorage.getItem(StorageKeys.TOKEN);
-  return axiosClient.post(`auth/addinfor/${userId}`, newUserData, {
+  return axiosClient.put(`auth/inforuser/${userId}`, newUserData, {
     headers: {
       Authorization: `Bearer ${jwt}`,
     },
@@ -53,7 +53,7 @@ const getAllUsers = () => {
 
 const updateUser = (userId, updatedUserData) => {
   const jwt = localStorage.getItem(StorageKeys.TOKEN);
-  return axiosClient.put(`admin/users/${userId}`, updatedUserData, {
+  return axiosClient.put(`/edituser/${userId}`, updatedUserData, {
     headers: {
       Authorization: `Bearer ${jwt}`,
     },

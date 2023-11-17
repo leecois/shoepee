@@ -122,7 +122,7 @@ const Stacked = ({ modelList2 }) => {
                           </div>
                         </div>
                         <p className="text-xl font-semibold text-gray-900">
-                          ${model.shoes[0]?.price}
+                          ${model.price}
                         </p>
                       </div>
                     </div>

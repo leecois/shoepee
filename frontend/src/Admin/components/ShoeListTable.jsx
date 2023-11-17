@@ -50,7 +50,6 @@ export default function ShoeListTable({ shoeList, updateShoe, deleteShoe }) {
       setRows(
         shoeList.map((item) => ({
           ...item,
-          modelId: item.shoeModelDto?.id,
         }))
       );
     }
@@ -141,11 +140,10 @@ export default function ShoeListTable({ shoeList, updateShoe, deleteShoe }) {
       editable: true,
     },
     {
-      field: 'modelId',
+      field: 'modelname',
       headerName: 'Model Name',
       width: 170,
-      editable: true,
-      renderCell: (params) => <span>{params.row.shoeModelDto?.modelname}</span>,
+      renderCell: (params) => <span>{params.row?.shoeModelDto?.modelname}</span>,
     },
 
     { field: 'price', headerName: 'Price', width: 130, editable: true },

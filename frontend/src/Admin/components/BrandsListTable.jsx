@@ -29,7 +29,13 @@ function EditToolbar(props) {
   const handleClick = () => {
     const maxId = Math.max(...rows.map((row) => row.id), 0);
     const id = maxId + 1;
-    const newBrand = { id, brandName: '', imageUrl: '', isNew: true };
+    const newBrand = {
+      id,
+      brandName: '',
+      imageUrl: '',
+      isNew: true,
+      status: 'available',
+    };
     setRows((oldRows) => [...oldRows, newBrand]);
     setRowModesModel((oldModel) => ({
       ...oldModel,

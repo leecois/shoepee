@@ -1,22 +1,31 @@
 import Box from '@mui/material/Box';
+
+import CancelIcon from '@mui/icons-material/Close';
+import EditIcon from '@mui/icons-material/Edit';
+import SaveIcon from '@mui/icons-material/Save';
+
 import {
   DataGrid,
+  GridActionsCellItem,
   GridRowEditStopReasons,
-  GridRowModes
+  GridRowModes,
 } from '@mui/x-data-grid';
 import * as React from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-const roles = ['Admin', 'Customer'];
-
-export default function AccountsListTable({ userData }) {
+export default function AccountsListTable({ userData, updateRole }) {
   const [rows, setRows] = useState(userData);
   const [rowModesModel, setRowModesModel] = useState({});
+  const roles = [...new Set(userData.map((item) => item.role))];
   // ID
-  const dataWithIds = userData.map((user, index) => ({
-    ...user,
-    id: user.userId || index + 1,
-  }));
+  useEffect(() => {
+    setRows(
+      userData.map((item) => ({
+        ...item,
+        id: item.userId,
+      }))
+    );
+  }, [userData]);
 
   const handleRowEditStop = (params, event) => {
     if (params.reason === GridRowEditStopReasons.rowFocusOut) {
@@ -28,12 +37,12 @@ export default function AccountsListTable({ userData }) {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
   };
 
-  const handleSaveClick = (id) => () => {
+  const handleSaveClick = (id) => async () => {
+    const updatedRow = rows.find((row) => row.id === id);
+    try {
+      updateRole(updatedRow.id, updatedRow);
+    } catch (error) {}
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
-  };
-
-  const handleDeleteClick = (id) => () => {
-    setRows(rows.filter((row) => row.id !== id));
   };
 
   const handleCancelClick = (id) => () => {
@@ -48,8 +57,17 @@ export default function AccountsListTable({ userData }) {
     }
   };
 
-  const processRowUpdate = (newRow) => {
+  const processRowUpdate = async (newRow) => {
     const updatedRow = { ...newRow, isNew: false };
+
+    // Call update API
+    try {
+      await updateRole(updatedRow.id, updatedRow);
+    } catch (error) {
+      // Handle error
+      console.error('Error updating role: ' + error.message);
+    }
+
     setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
     return updatedRow;
   };
@@ -59,7 +77,7 @@ export default function AccountsListTable({ userData }) {
   };
 
   const columns = [
-    { field: 'userId', headerName: 'ID', width: 80 },
+    { field: 'id', headerName: 'ID', width: 80 },
     { field: 'username', headerName: 'User Name', width: 180 },
     { field: 'email', headerName: 'Email', width: 280 },
     {
@@ -79,9 +97,50 @@ export default function AccountsListTable({ userData }) {
       field: 'role',
       headerName: 'is Admin ?',
       width: 220,
+      editable: true,
 
       type: 'singleSelect',
       valueOptions: roles,
+    },
+    {
+      field: 'actions',
+      type: 'actions',
+      headerName: 'Actions',
+      width: 400,
+      cellClassName: 'actions',
+      getActions: ({ id, row }) => {
+        const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
+
+        if (isInEditMode) {
+          return [
+            <GridActionsCellItem
+              icon={<SaveIcon />}
+              label="Save"
+              sx={{
+                color: 'primary.main',
+              }}
+              onClick={handleSaveClick(id)}
+            />,
+            <GridActionsCellItem
+              icon={<CancelIcon />}
+              label="Cancel"
+              className="textPrimary"
+              onClick={handleCancelClick(id)}
+              color="inherit"
+            />,
+          ];
+        }
+
+        return [
+          <GridActionsCellItem
+            icon={<EditIcon className="transparent dark:text-gray-300" />}
+            label="Edit"
+            className="textPrimary"
+            onClick={handleEditClick(id)}
+            color="inherit"
+          />,
+        ];
+      },
     },
   ];
 
@@ -99,11 +158,11 @@ export default function AccountsListTable({ userData }) {
       }}
     >
       <DataGrid
-        className="dark:bg-boxdark dark:text-white"
-        rows={dataWithIds}
+        rows={rows}
         columns={columns}
         editMode="row"
         rowModesModel={rowModesModel}
+        className="dark:text-white"
         onRowModesModelChange={handleRowModesModelChange}
         onRowEditStop={handleRowEditStop}
         processRowUpdate={processRowUpdate}

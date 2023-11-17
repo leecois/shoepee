@@ -51,7 +51,7 @@ const Profile = () => {
                       type="text"
                       name="fullname"
                       id="fullname"
-                      placeholder="Lee Cois"
+                      placeholder=""
                       value={fullname}
                       onChange={(e) => setFullName(e.target.value)}
                     />

@@ -64,7 +64,7 @@ const ShoeForm = ({ initialValues, onSubmit }) => (
             <img
               src={values.imageUrl}
               alt="Preview"
-              className="max-w-full h-auto"
+              className="max-w-full w-full h-auto"
             />
           </div>
         )}
