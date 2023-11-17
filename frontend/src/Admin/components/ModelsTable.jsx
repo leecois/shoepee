@@ -50,10 +50,12 @@ export default function ModelsTable({ modelList, updateModel, deleteModel }) {
   const [deleteId, setDeleteId] = useState(null);
 
   useEffect(() => {
-    setRows(modelList.map((item) => ({
-      ...item,
-      brandName: item.brandDto?.brandName
-    })));
+    setRows(
+      modelList.map((item) => ({
+        ...item,
+        brandName: item.brandDto?.brandName,
+      }))
+    );
   }, [modelList]);
 
   const handleRowEditStop = (params, event) => {
@@ -66,9 +68,11 @@ export default function ModelsTable({ modelList, updateModel, deleteModel }) {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
   };
 
-  const handleSaveClick = (id) => () => {
+  const handleSaveClick = (id) => async () => {
     const updatedRow = rows.find((row) => row.id === id);
-    updateModel(updatedRow.id, updatedRow);
+    try {
+      updateModel(updatedRow.id, updatedRow);
+    } catch (error) {}
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
   };
 
@@ -99,8 +103,17 @@ export default function ModelsTable({ modelList, updateModel, deleteModel }) {
     }
   };
 
-  const processRowUpdate = (newRow) => {
+  const processRowUpdate = async (newRow) => {
     const updatedRow = { ...newRow, isNew: false };
+
+    // Call update API
+    try {
+      await updateModel(updatedRow.id, updatedRow);
+    } catch (error) {
+      // Handle error
+      console.error('Error updating model: ' + error.message);
+    }
+
     setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
     return updatedRow;
   };

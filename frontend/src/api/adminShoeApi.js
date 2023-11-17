@@ -49,9 +49,9 @@ const adminShoeApi = {
       throw error;
     }
   },
-  update: async (data) => {
+  update: async (id, data) => {
     try {
-      const response = await axiosClient.patch(`/admin/shoes/${data.id}`, data);
+      const response = await axiosClient.put(`/admin/editshoe/${id}`, data);
       return response;
     } catch (error) {
       throw error;

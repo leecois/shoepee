@@ -44,9 +44,9 @@ const adminModelApi = {
       throw error;
     }
   },
-  update: async (data) => {
+  update: async (id, data) => {
     try {
-      const response = await axiosClient.patch(`/products/${data.id}`, data);
+      const response = await axiosClient.put(`/admin/editshoemode/${id}`, data);
       return response;
     } catch (error) {
       throw error;

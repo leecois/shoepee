@@ -2,25 +2,51 @@ import Box from '@mui/material/Box';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import * as React from 'react';
 import { useState } from 'react';
+import CloseIcon from '@mui/icons-material/Close';
 import { useSearchParams } from 'react-router-dom';
 import useProductDetail from '../../hooks/useProductDetail';
 import useSizeData from '../../hooks/useSizeData';
-
-import { Snackbar } from '@mui/material';
+import { Collapse, Alert, IconButton, Snackbar } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { addToCartAsync } from '../../containers/Cart/cartSlice';
+import { addToCartAsync, getCartAsync } from '../../containers/Cart/cartSlice';
+import StorageKeys from '../../constants/storage-keys';
+import AlertSign from './AlertSign';
 
 export default function CartDrawer() {
+  const isUserLoggedIn = () => {
+    const token = localStorage.getItem(StorageKeys.TOKEN);
+    return !!token; // returns true if token exists, false otherwise
+  };
+  const userLoggedIn = isUserLoggedIn();
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
+  const [isToastOpen, setIsToastOpen] = useState(false);
+
   const dispatch = useDispatch();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const handleAddToCart = async () => {
+    if (!userLoggedIn) {
+      setIsAlertOpen(true);
+      return;
+    }
+
+    if (!selectedSize) {
+      setIsToastOpen(true);
+      setTimeout(() => setIsToastOpen(false), 3000);
+      return;
+    }
     const cartItem = {
       shoeId: product.shoes[0]?.id,
       size: selectedSize,
       quantity: 1,
     };
-    dispatch(addToCartAsync(cartItem));
+    dispatch(addToCartAsync(cartItem)).then((action) => {
+      if (!action.error) {
+        // Refetch the cart data
+        dispatch(getCartAsync());
+      }
+    });
   };
+
   const handleSnackbarClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
@@ -88,7 +114,27 @@ export default function CartDrawer() {
             </button>
           ))}
         </div>
-
+        <AlertSign isOpen={isAlertOpen} onClose={() => setIsAlertOpen(false)} />
+        <Collapse in={isToastOpen}>
+          <Alert
+            severity="error"
+            action={
+              <IconButton
+                aria-label="close"
+                color="inherit"
+                size="small"
+                onClick={() => {
+                  setIsToastOpen(false);
+                }}
+              >
+                <CloseIcon fontSize="inherit" />
+              </IconButton>
+            }
+            sx={{ mb: 2 }}
+          >
+            Please select a size before adding to cart!
+          </Alert>
+        </Collapse>
         <button
           onClick={handleAddToCart}
           className="font-mono mt-4 p-2 mb-2 border-meta-3 border-b-2 rounded hover:bg-gray-100 w-full"

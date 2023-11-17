@@ -47,13 +47,17 @@ const coreRoutes = [
   {
     path: '/profile/:userId',
     title: 'Profile',
-    component: ProfilePage,
+    component: () => (
+      <ProtectedRoute allowedRoles={['USER', 'MANAGER', 'ADMIN']}>
+        <ProfilePage />
+      </ProtectedRoute>
+    ),
   },
   {
     path: '/staff',
     title: 'Staff',
     component: () => (
-      <ProtectedRoute allowedRoles={'MANAGER'}>
+      <ProtectedRoute allowedRoles={['MANAGER']}>
         <StaffPage />
       </ProtectedRoute>
     ),

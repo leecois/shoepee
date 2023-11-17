@@ -50,7 +50,7 @@ export default function ShoeListTable({ shoeList, updateShoe, deleteShoe }) {
       setRows(
         shoeList.map((item) => ({
           ...item,
-          modelname: item.shoeModelDto?.modelname,
+          modelId: item.shoeModelDto?.id,
         }))
       );
     }
@@ -62,9 +62,15 @@ export default function ShoeListTable({ shoeList, updateShoe, deleteShoe }) {
     }
   };
 
-  const handleSaveClick = (id) => () => {
+  const handleEditClick = (id) => () => {
+    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
+  };
+
+  const handleSaveClick = (id) => async () => {
     const updatedRow = rows.find((row) => row.id === id);
-    updateShoe(updatedRow.id, updatedRow);
+    try {
+      updateShoe(updatedRow.id, updatedRow);
+    } catch (error) {}
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
   };
 
@@ -94,8 +100,17 @@ export default function ShoeListTable({ shoeList, updateShoe, deleteShoe }) {
     }
   };
 
-  const processRowUpdate = (newRow) => {
+  const processRowUpdate = async (newRow) => {
     const updatedRow = { ...newRow, isNew: false };
+
+    // Call update API
+    try {
+      await updateShoe(updatedRow.id, updatedRow);
+    } catch (error) {
+      // Handle error
+      console.error('Error updating shoe: ' + error.message);
+    }
+
     setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
     return updatedRow;
   };
@@ -126,10 +141,13 @@ export default function ShoeListTable({ shoeList, updateShoe, deleteShoe }) {
       editable: true,
     },
     {
-      field: 'modelname',
+      field: 'modelId',
       headerName: 'Model Name',
       width: 170,
+      editable: true,
+      renderCell: (params) => <span>{params.row.shoeModelDto?.modelname}</span>,
     },
+
     { field: 'price', headerName: 'Price', width: 130, editable: true },
     {
       field: 'actions',
@@ -161,6 +179,13 @@ export default function ShoeListTable({ shoeList, updateShoe, deleteShoe }) {
         }
 
         return [
+          <GridActionsCellItem
+            icon={<EditIcon className="transparent dark:text-gray-300" />}
+            label="Edit"
+            className="textPrimary"
+            onClick={handleEditClick(id)}
+            color="inherit"
+          />,
           <div className="tooltip tooltip-right" data-tip="Delete">
             <GridActionsCellItem
               icon={<DeleteIcon className="transparent dark:text-gray-300" />}

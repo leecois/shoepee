@@ -43,12 +43,24 @@ const AdminShoeData = () => {
     }
   };
 
-  return { shoeList, deleteShoe };
+  const updateShoe = async (id, updatedData) => {
+    try {
+      const updateShoe = await adminShoeApi.update(id, updatedData);
+      const updateShoeList = shoeList.map((shoe) =>
+        shoe.id === id ? updateShoe : shoe
+      );
+      setShoeList(updateShoeList);
+    } catch (error) {
+      console.error('Error updating brand: ' + error.message);
+    }
+  };
+
+  return { shoeList, deleteShoe, updateShoe };
 };
 export const addShoeInformation = async (shoeInfo) => {
   try {
     const response = await adminShoeApi.add(shoeInfo);
-    return response.data; 
+    return response.data;
   } catch (error) {
     throw error;
   }

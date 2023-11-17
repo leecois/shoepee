@@ -85,7 +85,7 @@ export default function BrandsListTable({
     }
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
   };
-  
+
   const handleCloseDialog = () => {
     setOpenDialog(false);
   };
@@ -113,8 +113,17 @@ export default function BrandsListTable({
     }
   };
 
-  const processRowUpdate = (newRow) => {
+  const processRowUpdate = async (newRow) => {
     const updatedRow = { ...newRow, isNew: false };
+
+    // Call update API
+    try {
+      await updateBrand(updatedRow.id, updatedRow);
+    } catch (error) {
+      // Handle error
+      console.error('Error updating brand: ' + error.message);
+    }
+
     setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
     return updatedRow;
   };
@@ -131,14 +140,20 @@ export default function BrandsListTable({
       width: 230,
       editable: true,
     },
-    { field: 'imageUrl', headerName: 'Image', width: 130, editable: true, renderCell: (params) => (
-      <img
-        src={params.value}
-        alt="Brand"
-        style={{ width: '50px', height: '50px' }}
-        className='object-cover'
-      />
-    ), },
+    {
+      field: 'imageUrl',
+      headerName: 'Image',
+      width: 130,
+      editable: true,
+      renderCell: (params) => (
+        <img
+          src={params.value}
+          alt="Brand"
+          style={{ width: '50px', height: '50px' }}
+          className="object-cover"
+        />
+      ),
+    },
     {
       field: 'actions',
       type: 'actions',
@@ -183,13 +198,13 @@ export default function BrandsListTable({
             color="inherit"
           />,
           <div className="tooltip tooltip-right" data-tip="Add Shoe Model">
-          <GridActionsCellItem
-            icon={<AddIcon />}
-            label="Add Shoe Model"
-            onClick={handleAddModelClick(id)}
-            color="inherit"
-          />
-          </div>
+            <GridActionsCellItem
+              icon={<AddIcon />}
+              label="Add Shoe Model"
+              onClick={handleAddModelClick(id)}
+              color="inherit"
+            />
+          </div>,
         ];
       },
     },
