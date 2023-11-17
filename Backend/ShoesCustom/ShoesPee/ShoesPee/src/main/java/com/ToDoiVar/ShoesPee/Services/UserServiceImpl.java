@@ -89,9 +89,10 @@ public class UserServiceImpl implements UserService{
     }
     public User editUser(int id,User newUser){
         Optional<User> updateuser = Optional.of(userRepository.findById(id).map(user -> {
-            user.setUsername(newUser.getUsername());
-            user.setPassword(newUser.getPassword());
+//            user.setUsername(newUser.getUsername());
+//            user.setPassword(newUser.getPassword());
 //            user.setRoleId(newUser.getRoleId());
+            user.setRole(newUser.getRole());
             return userRepository.save(newUser);
         }).orElseGet(() -> {
             newUser.setUserId(id);
