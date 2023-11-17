@@ -1,5 +1,7 @@
+import { TrashIcon } from "@heroicons/react/24/outline";
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+
 import {
   getCartAsync,
   removeFromCartAsync,
@@ -73,7 +75,7 @@ const Cart = ({ cartItems }) => {
                   onClick={() => handleRemoveFromCart(item.shoe?.id)}
                   className="text-red-500 hover:text-red-700"
                 >
-                  Remove from Cart
+                  <TrashIcon className="h-6 w-6 text-red-500" />
                 </button>
               </td>
             </tr>

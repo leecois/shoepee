@@ -13,11 +13,9 @@ const HeaderProduct = ({ onSort, setOpenFilter }) => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const sortOptions = [
-    { name: 'Best Rating', value: 'rating' },
     { name: 'Price: Low to High', value: 'price_asc' },
     { name: 'Price: High to Low', value: 'price_desc' },
   ];
-  const currentSort = queryParams.get('sort');
 
   const handleSort = (value) => {
     onSort(value);

@@ -26,9 +26,11 @@ export default function Navigation() {
   // Retrieve user information from localStorage if authenticated
   let user = null;
   let isManager = false;
+  let isAdmin = false;
   if (isAuthenticated) {
     user = JSON.parse(localStorage.getItem(StorageKeys.USER));
     isManager = user.authorities.some((auth) => auth.authority === 'MANAGER');
+    isAdmin = user.authorities.some((auth) => auth.authority === 'ADMIN');
   }
 
   const userId = user ? user.userId : null;
@@ -145,6 +147,11 @@ export default function Navigation() {
                 {isAuthenticated && isManager && (
                   <Link to="/staff" className="btn btn-ghost">
                     Manager Orders
+                  </Link>
+                )}
+                {isAuthenticated && isAdmin && (
+                  <Link to="/admin" className="btn btn-ghost">
+                    My Shop
                   </Link>
                 )}
                 <li>
