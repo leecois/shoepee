@@ -1,6 +1,7 @@
 package com.ToDoiVar.ShoesPee.Services;
 
 import com.ToDoiVar.ShoesPee.Exeption.ResourceNotFoundException;
+import com.ToDoiVar.ShoesPee.Exeption.userNotFoundException;
 import com.ToDoiVar.ShoesPee.Models.*;
 import com.ToDoiVar.ShoesPee.dto.*;
 import com.ToDoiVar.ShoesPee.repositiory.CartRepository;
@@ -10,18 +11,17 @@ import com.ToDoiVar.ShoesPee.repositiory.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 @Service
+@Lazy
 public class OrderService {
     @Autowired
     private	UserRepository userRepo;
@@ -32,6 +32,7 @@ public class OrderService {
 
     @Autowired
     private OrderRepository orderReop;
+
 
     //order Create method
 
@@ -193,8 +194,10 @@ public class OrderService {
         return response;
     }
     public OrderResponse findOrdersByUserId(int userId) {
+        User user = this.userRepo.findById(userId)
+                .orElseThrow(() -> new userNotFoundException("User not found"));
 //        Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        List<Order> orderPage = this.orderReop.findByUser_UserId(userId); // Use the new repository method
+        List<Order> orderPage = this.orderReop.findByUser(user); // Use the new repository method
 //        List<Order> content = orderPage.getContent();
 
         // Map orders to DTOs
@@ -232,5 +235,39 @@ public class OrderService {
       Order save = this.orderReop.save(order);
       OrderDto orderDto = this.modelMapper.map(save,OrderDto.class);
       return orderDto;
+    }
+    public Order paidOrder(int userid,int orderid) {
+        User user = this.userRepo.findById(userid)
+                .orElseThrow(() -> new userNotFoundException("User not found"));
+
+        // Tìm tất cả các đơn hàng của người dùng
+        List<Order> userOrders = this.orderReop.findByUser(user);
+
+        // Lọc ra đơn hàng có id trùng với PathVariable
+        Optional<Order> selectedOrder = userOrders.stream()
+                .filter(order -> order.getOrderId() == orderid)
+                .findFirst();
+
+        if (selectedOrder.isPresent()) {
+            // Đã tìm thấy đơn hàng, thực hiện các bước cần thiết với đơn hàng này
+            Order order = selectedOrder.get();
+
+            // Đặt trạng thái thanh toán của đơn hàng là "PAID"
+            order.setPaymentStatus("PAID");
+
+            // Lưu đơn hàng sau khi cập nhật
+            Order savedOrder = this.orderReop.save(order);
+
+            // Chuyển đổi đối tượng Order sang OrderDto (nếu cần)
+            // OrderDto orderDto = this.modelMapper.map(savedOrder, OrderDto.class);
+
+            // Trả về đối tượng Order sau khi cập nhật
+            return savedOrder;
+
+
+        }else {
+            // Không tìm thấy đơn hàng với id tương ứng
+            throw new ResourceNotFoundException("Order not found");
+        }
     }
 }

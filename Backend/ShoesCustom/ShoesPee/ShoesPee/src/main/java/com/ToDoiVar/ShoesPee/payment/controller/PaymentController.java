@@ -1,14 +1,18 @@
     package com.ToDoiVar.ShoesPee.payment.controller;
 
+    import com.ToDoiVar.ShoesPee.Models.Order;
     import com.ToDoiVar.ShoesPee.Models.OrderResponse;
     import com.ToDoiVar.ShoesPee.Models.User;
     import com.ToDoiVar.ShoesPee.Security.config.JwtService;
     import com.ToDoiVar.ShoesPee.Services.OrderService;
     import com.ToDoiVar.ShoesPee.Services.UserService;
+    import com.ToDoiVar.ShoesPee.dto.OrderDto;
     import com.ToDoiVar.ShoesPee.payment.DTO.PaymentResDTO;
     import com.ToDoiVar.ShoesPee.payment.DTO.TransactionStatusDTO;
     import com.ToDoiVar.ShoesPee.payment.config.Config;
+    import com.ToDoiVar.ShoesPee.repositiory.OrderRepository;
     import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.context.annotation.Lazy;
     import org.springframework.http.HttpStatus;
     import org.springframework.http.ResponseEntity;
     import org.springframework.web.bind.annotation.*;
@@ -21,6 +25,7 @@
 
     @RestController
     @RequestMapping("/api/payment")
+    @Lazy
     public class PaymentController {
         @Autowired
         private JwtService jwtService;
@@ -29,17 +34,26 @@
         @Autowired
         private OrderService orderService;
 
-        @GetMapping("/pay")
-        public String getPay(@RequestHeader("Authorization") String bearertoken) throws UnsupportedEncodingException{
+        @PutMapping("/pay/{id}")
+        public String getPay(@RequestHeader("Authorization") String bearertoken,@PathVariable int id) throws UnsupportedEncodingException{
             String token = bearertoken.substring(7);
             String username =  jwtService.extractUsername(token);
-            User user = this.userService.getUserByName(username);
-            OrderResponse order = this.orderService.findOrdersByUserId(user.getUserId());
-            order.setOrderStatusForContent("PAIDED");
+            User user = this.userService.getUserByEmail(username);
+//            OrderResponse order = this.orderService.findOrdersByUserId(user.getUserId());
+//           List<Order> order1 = this.orderRepository.findByUser_UserId(user.getUserId());
+//            Optional<Order> selectedOrder = userOrders.stream()
+//                    .filter(order -> order.getId() == id)
+//                    .findFirst();
+//            if(selectedOrder.isPresent()){
+//                Order order = selectedOrder.get();
+//                this.orderService.paidOrder()
+//            }
+            Order paidOrder = orderService.paidOrder(user.getUserId(), id);
+//            order.setOrderStatusForContent("PAIDED");
             String vnp_Version = "2.1.0";
             String vnp_Command = "pay";
             String orderType = "other";
-            long amount = (long) order.getTotalPrice() *240*100;
+            long amount = (long) paidOrder.getOrderAmt() *240*100;
             String bankCode = "NCB";
 
             String vnp_TxnRef = Config.getRandomNumber(8);
@@ -63,7 +77,7 @@
 
             vnp_Params.put("vnp_Locale", "vn");
             vnp_Params.put("vnp_ReturnUrl", Config.vnp_ReturnUrl);
-            order.setOrderStatusForContent("PAIDED");
+//            order.setOrderStatusForContent("PAIDED");
             vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
 //            vnp_Params.put("vnp_CancelUrl", Config.vnp_CancelUrl);
 
@@ -106,7 +120,7 @@
             return paymentUrl;
         }
 
-        @GetMapping("/cre-payment")
+        @PutMapping("/cre-payment")
         public String crePayment(@RequestHeader("Authorization") String bearertoken){
             String token = bearertoken.substring(7);
             String username =  jwtService.extractUsername(token);
@@ -128,12 +142,8 @@
 //        }
 
         @GetMapping("/payment-in4")
-        public ResponseEntity<?> transaction2(
-                @RequestHeader("Authorization") String bearertoken,
-                @RequestParam(value = "vnp Amount") String amount,
-                @RequestParam(value = "ynp BankCode") String bankCode,
-                @RequestParam(value = "vnp OrderInfo") String order,
-                @RequestParam(value = "ynp ResponseCode") String responseCode
+        public ResponseEntity<String> transaction2(
+                @RequestHeader("Authorization") String bearertoken
         )
         {
             String token = bearertoken.substring(7);
@@ -142,17 +152,18 @@
             OrderResponse order2 = this.orderService.findOrdersByUserId(user.getUserId());
             order2.setOrderStatusForContent("PAIDED");
 
-            TransactionStatusDTO transactionStatusDTO = new TransactionStatusDTO();
-            if (responseCode.equals("00")) {
-                transactionStatusDTO.setStatus("Ok");
-                transactionStatusDTO.setMessage("Successfully");
-                transactionStatusDTO.setData("");
-            } else {
-                transactionStatusDTO.setStatus("No");
-                transactionStatusDTO.setMessage("Failed");
-                transactionStatusDTO.setData("");
-            }
-            return ResponseEntity.status(HttpStatus.OK).body(transactionStatusDTO);
+//            TransactionStatusDTO transactionStatusDTO = new TransactionStatusDTO();
+//            if (responseCode.equals("00")) {
+//                transactionStatusDTO.setStatus("Ok");
+//                transactionStatusDTO.setMessage("Successfully");
+//                transactionStatusDTO.setData("");
+//            } else {
+//                transactionStatusDTO.setStatus("No");
+//                transactionStatusDTO.setMessage("Failed");
+//                transactionStatusDTO.setData("");
+//            }
+            String link = "/redirect:/success";
+            return new ResponseEntity<>(link,HttpStatus.OK);
         }
 
     }

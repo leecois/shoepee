@@ -16,7 +16,7 @@ import java.util.*;
 @RestController
 public class Config {
 	public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-    public static String vnp_ReturnUrl = "/cre-payment";
+    public static String vnp_ReturnUrl = "https://static.vecteezy.com/system/resources/previews/019/520/923/original/payment-success-paid-bill-concept-illustration-flat-design-eps10-modern-graphic-element-for-landing-page-empty-state-ui-infographic-icon-vector.jpg";
     public static String vnp_TmnCode = "GVQT45Y9";
     public static String secretKey = "UKCOFUQZKRXJANEUISXZFPQRQEAFJWQX";
     public static String vnp_ApiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";

@@ -4,6 +4,7 @@ import com.ToDoiVar.ShoesPee.Models.OrderResponse;
 import com.ToDoiVar.ShoesPee.Services.OrderService;
 import com.ToDoiVar.ShoesPee.dto.OrderDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin("*")
 @RestController
 @RequestMapping("/api/v1/staff")
+@Lazy
 public class OrderStaffCotroller {
     @Autowired
     private OrderService orderService;
