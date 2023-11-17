@@ -24,6 +24,7 @@ public class InforUserServiceImp implements InforUserService {
     private UserRepository userRepository;
 
 
+
     @Override
     public List<InforUser> getAllInfor() {
         return inforUserRepository.findAll();
@@ -31,19 +32,28 @@ public class InforUserServiceImp implements InforUserService {
 
     @Override
     public InforUser getInforUserById(int id) {
-        return inforUserRepository.findById(id).orElseThrow(() -> new SizeException("Sorry, no infor found with the Id: " + id));
+        User user = this.userRepository.findById(id).orElseThrow(()-> new userNotFoundException("user not found"));
+        InforUser inforUser = this.inforUserRepository.findInforUserByUser(user);
+        return inforUser;
     }
 
 
     @Override
     public InforUser updateInforUser(int id, InforUser updateInforUser) {
-        return inforUserRepository.findById(id).map(sm -> {
-            sm.setFullname(updateInforUser.getFullname());
-            sm.setAddress(updateInforUser.getAddress());
-            sm.setPhone(updateInforUser.getPhone());
-            return inforUserRepository.save(sm);
-        }).orElseThrow(() -> new SizeException("Sorry, this Infor User could be not found"));
+        User user = this.userRepository.findById(id).orElseThrow(()-> new userNotFoundException("user not found"));
 
+
+        InforUser inforUser = user.getInforUser();
+        if (inforUser == null) {
+            throw new SizeException("Sorry, this User does not have an associated InforUser");
+        }
+
+        // Updating the InforUser details
+        inforUser.setFullname(updateInforUser.getFullname());
+        inforUser.setAddress(updateInforUser.getAddress());
+        inforUser.setPhone(updateInforUser.getPhone());
+
+        return inforUserRepository.save(inforUser);
     }
 
     @Override

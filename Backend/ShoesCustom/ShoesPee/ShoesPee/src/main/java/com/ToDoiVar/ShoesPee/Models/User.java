@@ -49,7 +49,7 @@ public class User implements UserDetails {
         @JsonIgnore
         private Set<Order> orders;
     @OneToOne(cascade = CascadeType.ALL)
-    @JsonBackReference
+    @JsonManagedReference
     private InforUser inforUser;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

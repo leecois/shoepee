@@ -22,7 +22,7 @@ public class InforUser {
     @Column(name = "phone")
     private String phone;
     @OneToOne(mappedBy = "inforUser")
-    @JsonManagedReference
+    @JsonBackReference
     private User user;
     public int getId() {
         return id;
