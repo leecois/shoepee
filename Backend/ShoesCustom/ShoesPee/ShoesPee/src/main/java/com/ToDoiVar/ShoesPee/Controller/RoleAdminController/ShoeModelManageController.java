@@ -21,9 +21,9 @@ public class ShoeModelManageController {
     @Autowired
     private final ShoeModelService shoeModelService;
     @PostMapping("/addShoemodel/{brandid}")
-    public ResponseEntity<ShoeModelDto> addShoeModel(@RequestBody ShoeModelDto newShoeModel,@PathVariable int brandid){
-        ShoeModelDto newShoemodel = shoeModelService.addShoeModel(newShoeModel,brandid);
-        return new ResponseEntity<ShoeModelDto>(newShoemodel,HttpStatus.CREATED);
+    public ResponseEntity<ShoeModel> addShoeModel(@RequestBody ShoeModelDto newShoeModel,@PathVariable int brandid){
+        ShoeModel newShoemodel = shoeModelService.addShoeModel(newShoeModel,brandid);
+        return new ResponseEntity<ShoeModel>(newShoemodel,HttpStatus.CREATED);
     }
     @GetMapping("/shoemodels")
     public ResponseEntity<List<ShoeModelDto>> getAllShoeModel(@RequestParam(defaultValue = "")String searchKey){

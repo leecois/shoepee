@@ -3,6 +3,8 @@ package com.ToDoiVar.ShoesPee.dto;
 import com.ToDoiVar.ShoesPee.Models.ShoeModel;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -14,6 +16,7 @@ public class ShoeDto {
     private String imageUrl;
     private String status;
     private ShoeModelDto shoeModelDto;
+    private List<ImageDto> images;
 
     public ShoeModelDto getShoeModelDto() {
         return shoeModelDto;

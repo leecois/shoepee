@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ShoeModelService {
-     ShoeModelDto addShoeModel(ShoeModelDto shoeModel,int brandid);
+     ShoeModel addShoeModel(ShoeModelDto shoeModel,int brandid);
      List<ShoeModelDto> getAllShoeModel(String searchKey);
      ShoeModel getShoeModelById(int id);
      ShoeModel updateShoeModel(int id, ShoeModel updateShoeModel);

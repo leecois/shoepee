@@ -13,6 +13,8 @@ public interface InforUserService {
     InforUser getInforUserById(int id);
 
     InforUser updateInforUser(int id,InforUser updateInforUser);
+    InforUser addInforUser(InforUser inforUser,int userId);
+
 
 
 

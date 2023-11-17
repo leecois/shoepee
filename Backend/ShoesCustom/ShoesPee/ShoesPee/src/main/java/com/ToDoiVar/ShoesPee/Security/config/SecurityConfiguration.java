@@ -52,9 +52,12 @@ public class SecurityConfiguration {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(req ->
                         req
+                                .requestMatchers("https://localhost:8080/vnpay_jsp/**")
+                                .permitAll()
                                 .requestMatchers("/api/v1/auth/**")
                                 .permitAll()
                                 .requestMatchers("/api/v1/admin/**").hasAnyAuthority(ADMIN.name())
+                                .requestMatchers("/api/v1/staff/**").hasAnyAuthority(ADMIN.name(),MANAGER.name())
 //                                .requestMatchers(GET, "/api/v1/admin/").hasAnyAuthority(ADMIN_READ.name())
 //                                .requestMatchers(POST, "/api/v1/management/**").hasAnyAuthority(ADMIN_CREATE.name(), MANAGER_CREATE.name())
 //                                .requestMatchers(PUT, "/api/v1/management/**").hasAnyAuthority(ADMIN_UPDATE.name(), MANAGER_UPDATE.name())
