@@ -1,29 +1,27 @@
-import { Switch } from '@headlessui/react';
 import { ShieldCheckIcon } from '@heroicons/react/24/outline';
-import CloseIcon from '@mui/icons-material/Close';
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import { Alert, Collapse, IconButton } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {
   addToCartAsync,
-  addToCartCustomizationAsync,
   getCartAsync,
 } from '../../../containers/Cart/cartSlice';
 import { fetchShoeImages } from '../../../hooks/CartData';
+import Toast from '../Alert/Alert';
 import AlertSign from '../AlertSign';
 import Inspiration from './Inspiration';
 import Size from './Size';
 import YourDesign from './YourDesign';
+import { useAlert } from '../Alert/AlertContext';
 
 const ProductDetails = ({ product, userLoggedIn }) => {
-  const [hasShoe, setHasShoe] = useState(false);
+  const { showAlert } = useAlert();
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [isToastOpen, setIsToastOpen] = useState(false);
   const [selectedShoe, setSelectedShoe] = useState(null);
   const [selectedShoeImages, setSelectedShoeImages] = useState([]);
   const [selectedSize, setSelectedSize] = useState(null);
   const [showInspiration, setShowInspiration] = useState(true);
+
   const dispatch = useDispatch();
   const handleCustomizeClick = () => {
     const customizeUrl = `/customize?modelname=${product.modelname}`;
@@ -36,7 +34,12 @@ const ProductDetails = ({ product, userLoggedIn }) => {
   };
 
   useEffect(() => {
-    setSelectedShoe(product?.shoes?.[0] || null);
+    if (product?.shoes && Array.isArray(product.shoes)) {
+      const sortedShoes = [...product.shoes].sort((a, b) => a.id - b.id);
+      setSelectedShoe(sortedShoes[0]);
+    } else {
+      setSelectedShoe(null);
+    }
   }, [product]);
 
   useEffect(() => {
@@ -46,23 +49,6 @@ const ProductDetails = ({ product, userLoggedIn }) => {
         .catch(console.error);
     }
   }, [selectedShoe]);
-
-  const handleBuyCustomization = async () => {
-    if (!userLoggedIn) {
-      setIsAlertOpen(true);
-      return;
-    }
-    const customizationItem = {
-      shoeId: selectedShoe.id,
-      quantity: 1,
-    };
-
-    dispatch(addToCartCustomizationAsync(customizationItem)).then((action) => {
-      if (!action.error) {
-        dispatch(getCartAsync());
-      }
-    });
-  };
 
   const handleAddToCart = async () => {
     if (!userLoggedIn) {
@@ -84,24 +70,10 @@ const ProductDetails = ({ product, userLoggedIn }) => {
 
     dispatch(addToCartAsync(cartItem)).then((action) => {
       if (!action.error) {
-        // Refetch the cart data
         dispatch(getCartAsync());
+        showAlert('Added to Bag', 'info');
       }
     });
-  };
-
-  const handleBuyClick = () => {
-    if (hasShoe) {
-      handleBuyCustomization();
-    } else {
-      handleAddToCart();
-    }
-  };
-
-  const handleToggle = () => {
-    setHasShoe(!hasShoe);
-    // Cập nhật giá cả nếu cần
-    // ...
   };
 
   if (!product) {
@@ -111,11 +83,11 @@ const ProductDetails = ({ product, userLoggedIn }) => {
   const renderShoeImages = () => {
     if (!selectedShoeImages.length)
       return <p>No images available for the selected shoe.</p>;
-    return selectedShoeImages.map((image, index) => (
-      <div key={image.id || index}>
+    return selectedShoeImages.map((image) => (
+      <div key={image.id}>
         <img
           src={image.imageUrl}
-          alt={`Shoe Images ${index}`}
+          alt={`Shoe Images`}
           className="object-contain w-full h-full rounded-sm"
         />
       </div>
@@ -161,23 +133,6 @@ const ProductDetails = ({ product, userLoggedIn }) => {
               </span>
             </div>
           </div>
-          <div className="flex gap-2 items-center justify-between mt-4">
-            <Switch
-              checked={hasShoe}
-              onChange={handleToggle}
-              className={`toggle`}
-            >
-              <span
-                className={`${hasShoe ? 'translate-x-6' : 'translate-x-1'}`}
-              />
-            </Switch>
-            <div
-              className="tooltip tooltip-right"
-              data-tip="I already own this shoe model"
-            >
-              <InfoOutlinedIcon viewBox="0 0 24 26" />
-            </div>
-          </div>
           <div className="mt-4">
             <button
               onClick={() => setShowInspiration(true)}
@@ -208,50 +163,27 @@ const ProductDetails = ({ product, userLoggedIn }) => {
             <YourDesign />
           )}
 
-          {!hasShoe && (
-            <Size
-              product={product}
-              selectedSize={selectedSize}
-              setSelectedSize={setSelectedSize}
-            />
-          )}
+          <Size
+            product={product}
+            selectedSize={selectedSize}
+            setSelectedSize={setSelectedSize}
+            isToastOpen={isToastOpen}
+            setIsToastOpen={setIsToastOpen}
+          />
 
           <div className="mt-4 py-2 w-full inline-block rounded-md outline-8 transition delay-150 text-base text-red-300 font-semibold tracking-wide ">
             <AlertSign
               isOpen={isAlertOpen}
               onClose={() => setIsAlertOpen(false)}
             />
-            <Collapse in={isToastOpen}>
-              <Alert
-                severity="error"
-                action={
-                  <IconButton
-                    aria-label="close"
-                    color="inherit"
-                    size="small"
-                    onClick={() => {
-                      setIsToastOpen(false);
-                    }}
-                  >
-                    <CloseIcon fontSize="inherit" />
-                  </IconButton>
-                }
-                sx={{ mb: 2 }}
-              >
-                Please select a size before adding to cart!
-              </Alert>
-            </Collapse>
 
             <button
-              onClick={handleBuyClick}
+              onClick={handleAddToCart}
               className="w-full btn inline-block btn-neutral btn-active rounded-md font-semibold"
             >
-              {hasShoe
-                ? 'Buy Customization ( $' + (selectedShoe?.price || 0) + ' )'
-                : 'Buy Shoe + Customization ( $' +
-                  (product.price + selectedShoe?.price || 0) +
-                  ' )'}
+              Add To Cart
             </button>
+            <Toast />
           </div>
 
           <button

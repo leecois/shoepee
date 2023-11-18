@@ -28,7 +28,7 @@ function ProductList({ modelList }) {
         <div key={model.id} className="group">
           <Link to={`/products/${model.modelname}`} className="block">
             <img
-              src={model.imageurl}
+              src={model.shoes[0]?.imageUrl}
               alt={model.modelname}
               className="h-60 w-full rounded-lg object-cover object-center dark:bg-gray-500"
             />

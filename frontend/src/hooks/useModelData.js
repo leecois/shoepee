@@ -20,6 +20,11 @@ const useModelData = (searchKey, brandFilter) => {
         }
 
         const { data } = await modelApi.getAll(params);
+        const sortedModels = data.map(model => ({
+          ...model,
+          shoes: model.shoes.sort((a, b) => a.id - b.id)
+        }));
+        setModelList(sortedModels);
         const filteredData = data.filter((model) => {
           // Filter out entire model if the brand status is unavailable
           if (model.brandDto && model.brandDto.status === 'unavailble') {

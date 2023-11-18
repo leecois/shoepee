@@ -83,6 +83,7 @@ const Filters = ({
               as="div"
               key={section.id}
               className="border-b border-gray-200"
+              defaultOpen={true} 
             >
               {({ open }) => (
                 <div

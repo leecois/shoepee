@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import OrderDetailModal from './OrderDetailModal';
 import { EyeIcon } from '@heroicons/react/24/outline';
+import userApi from '../../../api/userApi';
 
 const OrderHistory = ({ orders }) => {
   const [selectedOrder, setSelectedOrder] = useState(null);
@@ -13,10 +14,15 @@ const OrderHistory = ({ orders }) => {
     setIsModalOpen(true);
   };
 
-  const handlePaymentClick = (orderId) => {
-    // Navigate to the payment page with the orderId
-    navigate(`/payment/${orderId}`);
+  const handlePaymentClick = async (orderId) => {
+    try {
+      const response = await userApi.payOrder(orderId);
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
   };
+  
 
   const handleCloseModal = () => {
     setIsModalOpen(false);

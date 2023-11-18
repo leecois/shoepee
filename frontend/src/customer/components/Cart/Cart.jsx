@@ -1,14 +1,15 @@
-import { TrashIcon } from "@heroicons/react/24/outline";
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-
+import { useDispatch, useSelector } from 'react-redux';
+import CloseIcon from '@mui/icons-material/Close';
 import {
   getCartAsync,
   removeFromCartAsync,
 } from '../../../containers/Cart/cartSlice';
+import { cartTotalSelector } from '../../../containers/selectors';
 
 const Cart = ({ cartItems }) => {
   const dispatch = useDispatch();
+  const cartTotal = useSelector(cartTotalSelector);
 
   useEffect(() => {
     dispatch(getCartAsync());
@@ -24,58 +25,45 @@ const Cart = ({ cartItems }) => {
       });
   };
 
-
-
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
-        <thead className="ltr:text-left rtl:text-right">
-          <tr>
-            <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-left">
-              Item description
-            </th>
-            <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-left">
-              Size
-            </th>
-            <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-left">
-              Quantity
-            </th>
-            <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-left">
-              Price
-            </th>
-            <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-left">
-              Actions
-            </th>
-          </tr>
-        </thead>
+      <div className="flex justify-between items-center px-6 py-4 border-b border-gray-200">
+        <h1 className="font-serif font-bold text-2xl text-gray-900">Cart</h1>
+        <p className="font-medium text-gray-600">
+          {cartItems?.length} items | ${cartTotal}
+        </p>
+      </div>
+      <table className="min-w-full text-sm bg-white">
         <tbody className="divide-y divide-gray-200">
           {cartItems?.map((item) => (
             <tr key={item.cartItemId} className="hover:bg-gray-100">
-              <td className="whitespace-nowrap flex items-center px-4 py-2 font-medium text-gray-900">
+              <td className="px-6 py-4">
                 <div className="flex items-center">
                   <img
-                    className="h-32 w-32 object-cover mr-4"
+                    className="h-20 w-20 object-cover mr-4"
                     src={item.shoe?.imageUrl}
                     alt={item.shoe?.description}
                   />
+                  <div>
+                    <p className="font-medium text-gray-800 whitespace-nowrap">
+                      {item.shoe?.shoeModelDto?.modelname}
+                    </p>
+                    <p className="text-gray-600 whitespace-nowrap">
+                      Size: {item.size}
+                    </p>
+                    <p className="text-gray-600 whitespace-nowrap">
+                      Qty: {item.quantity}
+                    </p>
+                  </div>
                 </div>
-                <p>{item.shoe?.shoeModelDto?.modelname}</p>
               </td>
-              <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                {item.size}
-              </td>
-              <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                {item.quantity}
-              </td>
-              <td className="whitespace-nowrap px-4 py-2 text-gray-700">
-                ${item.totalprice.toFixed(2)}
-              </td>
-              <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+              <td className="px-6 py-4 text-gray-800">${item.totalprice}</td>
+              <td className="px-6 py-4">
                 <button
                   onClick={() => handleRemoveFromCart(item.shoe?.id)}
-                  className="text-red-500 hover:text-red-700"
+                  className="flex items-center gap-2 text-gray-600 hover:text-red-600"
                 >
-                  <TrashIcon className="h-6 w-6 text-red-500" />
+                  <CloseIcon className="text-lg" /> Remove
                 </button>
               </td>
             </tr>

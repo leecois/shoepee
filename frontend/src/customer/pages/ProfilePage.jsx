@@ -18,12 +18,12 @@ const ProfilePage = () => {
   const { userId } = useParams();
   const profileData = useProfileData(userId);
   return (
-    <div className="h-screen">
+    <div className="min-h-screen">
       <Breadcrumb items={breadcrumbItems} />
       <div>
         <Profile profileData={profileData} />
       </div>
-      <div className="m-8">
+      <div className="">
         <OrderHistory orders={orders} />
       </div>
     </div>

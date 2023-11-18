@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 
 const shoeScheme = Yup.object().shape({
   description: Yup.string().required('Please enter description'),
-  price: Yup.number().required('Please enter price'),
+  price: Yup.number().min(1, 'Price must be greater than 0').required('Please enter price'),
   imageUrl: Yup.string().required('Please enter image url'),
 });
 
