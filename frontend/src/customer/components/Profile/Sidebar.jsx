@@ -62,7 +62,7 @@ const Sidebar = () => {
           </li>
         </ul>
       </nav>
-      <div className="sticky inset-x-0 bottom-0 border-t border-gold-500 p-4">
+      <div className="sticky inset-x-0 bottom-0 border-t border-yellow-500 p-4">
         <div className="flex items-center gap-2">
           <img
             alt="Profile"

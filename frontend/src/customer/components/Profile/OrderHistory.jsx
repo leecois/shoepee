@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import userApi from '../../../api/userApi';
 import OrderDetailModal from './OrderDetailModal';
 
-const OrderHistory = () => {
+const OrderHistory = ({ orders }) => {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -25,75 +25,13 @@ const OrderHistory = () => {
     setIsModalOpen(false);
     setSelectedOrder(null);
   };
-  const orders = [
-    {
-      orderId: '123',
-      products: [
-        {
-          productImage: 'https://example.com/image1.jpg',
-          productName: 'Product 1',
-          variation: 'Color: Red, Size: M',
-          quantity: 2,
-          discountedPrice: '$50',
-          originalPrice: '$60',
-        },
-        {
-          productImage: 'https://example.com/image2.jpg',
-          productName: 'Product 2',
-          variation: 'Color: Blue, Size: L',
-          quantity: 1,
-          discountedPrice: '$30',
-          originalPrice: '$40',
-        },
-        {
-          productImage: 'https://example.com/image2.jpg',
-          productName: 'Product 2',
-          variation: 'Color: Blue, Size: L',
-          quantity: 1,
-          discountedPrice: '$30',
-          originalPrice: '$40',
-        },
-      ],
-      orderTotal: '$130',
-    },
-    {
-      orderId: '12333',
-      products: [
-        {
-          productImage: 'https://example.com/image1.jpg',
-          productName: 'Product 1',
-          variation: 'Color: Red, Size: M',
-          quantity: 2,
-          discountedPrice: '$50',
-          originalPrice: '$60',
-        },
-        {
-          productImage: 'https://example.com/image2.jpg',
-          productName: 'Product 2',
-          variation: 'Color: Blue, Size: L',
-          quantity: 1,
-          discountedPrice: '$30',
-          originalPrice: '$40',
-        },
-        {
-          productImage: 'https://example.com/image2.jpg',
-          productName: 'Product 2',
-          variation: 'Color: Blue, Size: L',
-          quantity: 1,
-          discountedPrice: '$30',
-          originalPrice: '$40',
-        },
-      ],
-      orderTotal: '$130',
-    },
-  ];
 
   return (
     <div className="overflow-x-auto bg-[#E5E5E5]">
-      {orders.map((order, index) => (
+      {orders?.map((order, index) => (
         <div key={index} className="mb-4 p-4 bg-white rounded-lg shadow-lg">
           <div className="space-y-4">
-            {order.products.map((product, productIndex) => (
+            {order.products?.map((product, productIndex) => (
               <div
                 key={productIndex}
                 className="flex items-center justify-between p-4 bg-gray-100 rounded-lg"

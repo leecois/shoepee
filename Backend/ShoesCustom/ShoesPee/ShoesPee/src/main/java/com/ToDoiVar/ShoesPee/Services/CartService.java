@@ -6,7 +6,7 @@ import com.ToDoiVar.ShoesPee.dto.CartDto;
 import com.ToDoiVar.ShoesPee.dto.CartItemDto;
 import com.ToDoiVar.ShoesPee.dto.ShoeModelDto;
 import com.ToDoiVar.ShoesPee.repositiory.CartRepository;
-import com.ToDoiVar.ShoesPee.repositiory.ShoeRepository;
+import com.ToDoiVar.ShoesPee.repositiory.CustomizedShoeRepository;
 import com.ToDoiVar.ShoesPee.repositiory.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,32 +21,32 @@ public class CartService {
     @Autowired
     private UserRepository userRepo;
     @Autowired
-    private ShoeRepository shoeRepository;
+    private CustomizedShoeRepository customizedShoeRepository;
 
     @Autowired
     private CartRepository cartRepo;
     @Autowired
     private ModelMapper modelMapper;
 
-    public CartDto addItem(ItemRequest item,String username){
+    public CartDto addItem(ItemRequest item, String username) {
         int productId = item.getShoeId();
         int quantity = item.getQuantity();
+        int size = item.getSize();
 
         // Fetch user
         User user = this.userRepo.findByEmail(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         // Fetch Product
-        Shoe shoe = this.shoeRepository.findById(productId)
+        CustomizedShoe customizedShoe = this.customizedShoeRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product Not Found"));
 
-        // Check product stock here (not implemented in the given code)
-
-        // Create cartItem with productId and quantity
+        // Create cartItem with productId, quantity, and size
         CartItem cartItem = new CartItem();
-        cartItem.setShoe(shoe);
+        cartItem.setShoe(customizedShoe);
         cartItem.setQuantity(quantity);
-        double totalprice = shoe.getPrice() * quantity;
+        cartItem.setSize(size);
+        double totalprice = customizedShoe.getPrice() * quantity;
         cartItem.setTotalprice(totalprice);
 
         // Get cart from user
@@ -56,10 +56,10 @@ public class CartService {
             cart.setUser(user);
         }
 
-        // Check if item is available in CartItem or not
+        // Check if item is available in CartItem or not, and if size matches
         AtomicReference<Boolean> flag = new AtomicReference<>(false);
         cart.getItems().forEach(i -> {
-            if (i.getShoe().getId() == shoe.getId()) {
+            if (i.getShoe().getId() == customizedShoe.getId() && i.getSize() ==size) {
                 i.setQuantity(i.getQuantity() + quantity);
                 i.setTotalprice(i.getTotalprice() + totalprice);
                 flag.set(true);
@@ -70,10 +70,11 @@ public class CartService {
             cartItem.setCart(cart);
             cart.getItems().add(cartItem);
         }
+
+        // Calculate total price of the cart
         double cartTotalPrice = cart.getItems().stream()
                 .mapToDouble(CartItem::getTotalprice)
                 .sum();
-        cartItem.setSize(item.getSize());
 
         // Save the cart
         Cart savedCart = this.cartRepo.save(cart);
@@ -83,11 +84,9 @@ public class CartService {
 
         Set<CartItemDto> cartItemDtos = savedCart.getItems().stream()
                 .map(ci -> {
-                    // First, map the CartItem to CartItemDto
+                    // Map CartItem to CartItemDto and ShoeModel to ShoeModelDto
                     CartItemDto cartItemDto = this.modelMapper.map(ci, CartItemDto.class);
-                    // Then map the ShoeModel to ShoeModelDto
                     ShoeModelDto shoeModelDto = this.modelMapper.map(ci.getShoe().getShoeModel(), ShoeModelDto.class);
-                    // Set the ShoeModelDto to the ShoeDto within the CartItemDto
                     cartItemDto.getShoe().setShoeModelDto(shoeModelDto);
                     return cartItemDto;
                 })
@@ -108,16 +107,16 @@ public class CartService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         // Fetch Product
-        Shoe shoe = this.shoeRepository.findById(productId)
+        CustomizedShoe customizedShoe = this.customizedShoeRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product Not Found"));
 
         // Check product stock here (not implemented in the given code)
 
         // Create cartItem with productId and quantity
         CartItem cartItem = new CartItem();
-        cartItem.setShoe(shoe);
+        cartItem.setShoe(customizedShoe);
         cartItem.setQuantity(quantity);
-        double totalprice = shoe.getPrice() * quantity + shoe.getShoeModel().getPrice();
+        double totalprice = customizedShoe.getPrice() * quantity ;
         cartItem.setTotalprice(totalprice);
 
         // Get cart from user
@@ -130,7 +129,7 @@ public class CartService {
         // Check if item is available in CartItem or not
         AtomicReference<Boolean> flag = new AtomicReference<>(false);
         cart.getItems().forEach(i -> {
-            if (i.getShoe().getId() == shoe.getId()) {
+            if (i.getShoe().getId() == customizedShoe.getId()) {
                 i.setQuantity(i.getQuantity() + quantity);
                 i.setTotalprice(i.getTotalprice() + totalprice);
                 flag.set(true);

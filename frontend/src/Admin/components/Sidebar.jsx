@@ -61,18 +61,18 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
   return (
     <aside
       ref={sidebar}
-      className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear lg:static lg:translate-x-0 ${
+      className={`absolute left-0 top-0 z-50 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear lg:static lg:translate-x-0 ${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
       }`}
     >
       {/* SIDEBAR HEADER */}
-      <div className="flex items-center justify-between px-10 py-5.5 lg:py-6.5 relative">
-        <NavLink to="/admin" className="flex items-center">
-          <img src={Logo} alt="Logo" className="w-20" />
-          <span className="text-2xl font-semibold text-white ml-2">
-            Shoepee
+      <div className=" flex items-center justify-between p-4 border-b dark:border-gray-700">
+        <a href="/" className="flex items-center mx-auto py-1 space-x-3">
+          <img src={Logo} alt="Logo" className="w-8 h-8" />
+          <span className="text-2xl font-semibold text-gray-200 dark:text-white">
+            SHOEPEE
           </span>
-        </NavLink>
+        </a>
 
         <button
           ref={trigger}
@@ -154,19 +154,6 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                 }}
               </SidebarLinkGroup>
               {/* <!-- Menu Item Dashboard --> */}
-              {/* <!-- Menu Item Profile --> */}
-              {/* <li>
-                <NavLink
-                  to="profile"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                    pathname.includes('profile') && 'bg-graydark dark:bg-meta-4'
-                  }`}
-                >
-                  <UserIcon className="h-6 w-6 text-gray-500" />
-                  Profile
-                </NavLink>
-              </li> */}
-              {/* <!-- Menu Item Profile --> */}
 
               {/* <!-- Menu Item Tables --> */}
               <SidebarLinkGroup
@@ -239,17 +226,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                               Models
                             </NavLink>
                           </li>
-                          {/* <li>
-                            <NavLink
-                              to="tables/sizes"
-                              className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
-                              }
-                            >
-                              Sizes
-                            </NavLink>
-                          </li> */}
+
                           <li>
                             <NavLink
                               to="tables/accounts"
@@ -283,21 +260,6 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                 </NavLink>
               </li>
               {/* <!-- Menu Item Tables --> */}
-
-              {/* <!-- Menu Item Settings --> */}
-              {/* <li>
-                <NavLink
-                  to="settings"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                    pathname.includes('settings') &&
-                    'bg-graydark dark:bg-meta-4'
-                  }`}
-                >
-                  <Cog8ToothIcon className="h-6 w-6 text-gray-500" />
-                  Settings
-                </NavLink>
-              </li> */}
-              {/* <!-- Menu Item Settings --> */}
             </ul>
           </div>
 

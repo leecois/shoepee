@@ -1,9 +1,7 @@
 package com.ToDoiVar.ShoesPee.Models;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,23 +21,14 @@ public class ShoeModel {
     @Id
         @Column(name = "modelid")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private int id;
-//    @Column(name = "brandid")
-//    private int brandId;
     @Column(name = "modelname")
     private String modelname;
-    @Column(name = "imageurl")
-    private String imageurl;
-    @Column(name = "price")
-    private double price;
     @Column(name = "status")
     private String status;
-
     @ManyToOne()
     @JsonIgnore
     private Brand brand;
-
     public Brand getBrand() {
         return brand;
     }
@@ -50,6 +39,6 @@ public class ShoeModel {
 
     @OneToMany(mappedBy = "shoeModel",cascade = CascadeType.ALL)
     @JsonManagedReference
-    private Set<Shoe> shoes = new HashSet<>();
+    private Set<CustomizedShoe> customizedShoes = new HashSet<>();
 
 }

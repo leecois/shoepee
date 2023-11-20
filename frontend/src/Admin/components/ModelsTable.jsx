@@ -208,7 +208,7 @@ export default function ModelsTable({ modelList, updateModel, deleteModel }) {
 
   return (
     <Box
-      className="dark:bg-gray-800 p-4" // Adjusted for a darker gray in dark mode and padding for the box
+      className="dark:bg-boxdark-2 p-4" // Adjusted for a darker gray in dark mode and padding for the box
       sx={{
         height: 500,
         width: '100%',
@@ -241,9 +241,9 @@ export default function ModelsTable({ modelList, updateModel, deleteModel }) {
         '& .MuiTablePagination-root': {
           color: 'gray', // or any color you want
         },
-        '& .MuiIconButton-root':{
+        '& .MuiIconButton-root': {
           color: 'white',
-        }
+        },
         // Add any additional styling here
       }}
     >

@@ -1,27 +1,15 @@
 package com.ToDoiVar.ShoesPee.Controller.RoleUserController;
 
-import com.ToDoiVar.ShoesPee.Exeption.AuthenticationFailException;
-import com.ToDoiVar.ShoesPee.Exeption.CartItemNotExistException;
-import com.ToDoiVar.ShoesPee.Exeption.shoeNotFoundException;
 import com.ToDoiVar.ShoesPee.Models.ItemRequest;
-import com.ToDoiVar.ShoesPee.Models.Shoe;
-import com.ToDoiVar.ShoesPee.Models.User;
 import com.ToDoiVar.ShoesPee.Security.config.JwtService;
 import com.ToDoiVar.ShoesPee.Services.CartService;
-import com.ToDoiVar.ShoesPee.Services.ShoeService;
+import com.ToDoiVar.ShoesPee.Services.CustomizedShoeService;
 import com.ToDoiVar.ShoesPee.Services.UserService;
-import com.ToDoiVar.ShoesPee.dto.AddToCartDto;
 import com.ToDoiVar.ShoesPee.dto.CartDto;
-import com.ToDoiVar.ShoesPee.dto.ShoeDto;
-import com.ToDoiVar.ShoesPee.payload.response.ApiResponse;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -35,7 +23,7 @@ public class CartController {
     @Autowired
     private UserService userService;
     @Autowired
-    private ShoeService shoeService;
+    private CustomizedShoeService shoeService;
 
 
     @PostMapping("/addcart")
@@ -45,21 +33,21 @@ public class CartController {
 //        System.out.println(email);
         String token = bearertoken.substring(7);
        String username =  jwtService.extractUsername(token);
-        CartDto addItem = this.cartService.addItemWithShoemodel(itemRequest,username);
-
-        return new ResponseEntity<CartDto>(addItem,HttpStatus.OK);
-    }
-    @PostMapping("/addcartcustomize")
-    public ResponseEntity<CartDto> addtoCartWithShoeModel(@RequestBody ItemRequest itemRequest,@RequestHeader("Authorization") String bearertoken){
-
-//        String email=principal.getName();
-//        System.out.println(email);
-        String token = bearertoken.substring(7);
-        String username =  jwtService.extractUsername(token);
         CartDto addItem = this.cartService.addItem(itemRequest,username);
 
         return new ResponseEntity<CartDto>(addItem,HttpStatus.OK);
     }
+//    @PostMapping("/addcartcustomize")
+//    public ResponseEntity<CartDto> addtoCartWithShoeModel(@RequestBody ItemRequest itemRequest,@RequestHeader("Authorization") String bearertoken){
+//
+////        String email=principal.getName();
+////        System.out.println(email);
+//        String token = bearertoken.substring(7);
+//        String username =  jwtService.extractUsername(token);
+//        CartDto addItem = this.cartService.addItem(itemRequest,username);
+//
+//        return new ResponseEntity<CartDto>(addItem,HttpStatus.OK);
+//    }
 
     //create method for getting cart
     @GetMapping("/getcart")
