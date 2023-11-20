@@ -18,8 +18,19 @@ const useUserData = () => {
 
     fetchData();
   }, []);
+  const updateRole = async (id, updatedData) => {
+    try {
+      const updateRole = await userApi.update(id, updatedData);
+      const updateRoleList = userData.map((user) =>
+        user.id === id ? updateRole : user
+      );
+      setUserData(updateRoleList);
+    } catch (error) {
+      console.error('Error updating role: ' + error.message);
+    }
+  };
 
-  return { userData, error };
+  return { userData, error, updateRole };
 };
 
 export default useUserData;

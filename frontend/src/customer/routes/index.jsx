@@ -9,7 +9,8 @@ const CartPage = lazy(() => import('../pages/CartPage/CartPage'));
 const StaffPage = lazy(() => import('../pages/StaffPage'));
 const CheckoutPage = lazy(() => import('../pages/Checkout/CheckoutPage'));
 const ShoeCustomize = lazy(() => import('../pages/ShoeCustomize'));
-const ProfilePage = lazy(() => import('../pages/ProfilePage'));
+const ProfilePage = lazy(() => import('../pages/Account/ProfilePage'));
+const PurchasePage = lazy(() => import('../pages/PurchasePage'));
 const Location = lazy(() => import('../components/Location/Location'));
 const Contact = lazy(() => import('../components/Contact'));
 
@@ -45,11 +46,20 @@ const coreRoutes = [
     component: Location,
   },
   {
-    path: '/profile/:userId',
+    path: '/user/account/profile',
     title: 'Profile',
     component: () => (
       <ProtectedRoute allowedRoles={['USER', 'MANAGER', 'ADMIN']}>
         <ProfilePage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/user/purchase',
+    title: 'Profile',
+    component: () => (
+      <ProtectedRoute allowedRoles={['USER', 'MANAGER', 'ADMIN']}>
+        <PurchasePage />
       </ProtectedRoute>
     ),
   },

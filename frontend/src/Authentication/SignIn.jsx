@@ -117,7 +117,7 @@ const SignIn = ({ goBack, enteredEmail, handleCloseSuccess }) => {
           ) : null}
         </div>
         <div className="flex justify-between">
-          <div className="flex items-start">
+          {/* <div className="flex items-start">
             <div className="flex items-center h-5">
               <input
                 id="remember"
@@ -135,13 +135,7 @@ const SignIn = ({ goBack, enteredEmail, handleCloseSuccess }) => {
                 Remember me
               </label>
             </div>
-          </div>
-          <a
-            href="#"
-            className="text-sm text-blue-700 hover:underline dark:text-blue-500"
-          >
-            Lost Password?
-          </a>
+          </div> */}
         </div>
         <button
           type="submit"

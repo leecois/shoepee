@@ -4,8 +4,8 @@ import * as Yup from 'yup';
 
 const modelSchema = Yup.object().shape({
   modelname: Yup.string().required('Please enter model name'),
-  price: Yup.number().required('Please enter price'),
-  imageurl: Yup.string().required('Please enter image url'),
+  price: Yup.number().min(1, 'Price must be greater than 0').required('Please enter price'),
+  imageurl: Yup.string().url('Must be a valid URL').required('Please enter image url'),
 });
 
 const ModelForm = ({ initialValues, onSubmit }) => (

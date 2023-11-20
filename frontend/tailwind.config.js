@@ -24,6 +24,7 @@ module.exports = {
       yellow: colors.amber,
       pink: colors.pink,
       blue: colors.blue,
+      green: colors.green,
       'light-yellow': '#f1f2ed',
       current: 'currentColor',
       transparent: 'transparent',
@@ -265,5 +266,9 @@ module.exports = {
       },
     },
   },
-  plugins: [require('daisyui'), require('@tailwindcss/forms'), require('@tailwindcss/typography')],
+  plugins: [
+    require('daisyui'),
+    require('@tailwindcss/forms'),
+    require('@tailwindcss/typography'),
+  ],
 };

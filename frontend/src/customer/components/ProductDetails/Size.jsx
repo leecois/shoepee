@@ -1,22 +1,30 @@
 // Size.js
-import { QuestionMarkCircleIcon } from '@heroicons/react/24/outline';
-import React from 'react';
+import React, { useEffect } from 'react';
 import useSizeData from '../../../hooks/useSizeData';
 
-const Size = ({ selectedSize, setSelectedSize }) => {
+const Size = ({
+  selectedSize,
+  setSelectedSize,
+  isToastOpen,
+  setIsToastOpen,
+}) => {
   const { sizeList } = useSizeData();
+
+  useEffect(() => {
+    if (isToastOpen) {
+      setIsToastOpen(true);
+    }
+  }, [isToastOpen, setIsToastOpen]);
 
   return (
     <div className="mt-4 w-full">
       <div className="flex justify-between">
         <h3 className="text-md text-gray-700 font-semibold">Size</h3>
-        <a
-          href="#sizeGuide"
-          className="inline-flex items-`enter code here`center text-sm text-gray-400 font-medium hover:text-gray-700"
-        >
-          What size should I buy?
-          <QuestionMarkCircleIcon className="ml-2 w-4 h-4" />
-        </a>
+        {isToastOpen && (
+          <span className="inline-flex items-center text-sm text-red-400 font-medium hover:text-gray-700">
+            Please choose the size!
+          </span>
+        )}
       </div>
 
       <div className="mt-2 grid grid-cols-3 lg:grid-cols-4 gap-2">

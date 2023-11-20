@@ -29,25 +29,24 @@ const HeaderProduct = ({ onSort, setOpenFilter }) => {
   };
 
   return (
-    <div className="px-4 col-span-full pb-6 flex flex-col sm:flex-row items-center justify-between space-y-5 sm:space-y-0 border-b border-gray-200">
-      <h2 className="text-3xl font-bold">Shoepee By You Shoes</h2>
+    <div className="px-4 py-6 flex flex-col sm:flex-row items-center justify-between space-y-5 sm:space-y-0 border-b border-gray-200 bg-[#f8f8f8]">
+      <h2 className="text-3xl font-extrabold text-gray-800 tracking-tight">
+        Shoepee By You Shoes
+      </h2>
       <div className="flex items-center space-x-5">
         <div className="relative">
-          <label htmlFor="search" className="sr-only">
-            Search
-          </label>
           <input
             type="search"
             id="search"
             name="search"
             placeholder="Search"
-            className="form-input pl-10 pr-4 w-44 block shadow-sm rounded-md border-gray-300 bg-gray-50 text-sm placeholder-gray-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+            className="form-input pl-10 pr-4 w-44 block shadow-sm rounded-full border border-gray-300 bg-white text-sm placeholder-gray-400 focus:border-black focus:ring-black"
             onChange={handleSearch}
           />
-          <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+          <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500" />
         </div>
         <Menu as="div" className="relative">
-          <Menu.Button className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900">
+          <Menu.Button className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-black">
             Sort by <ChevronDownIcon className="ml-2 w-5 h-5" />
           </Menu.Button>
           <Menu.Items className="absolute right-0 mt-2 origin-top-right bg-white divide-y divide-gray-100 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-10">
@@ -68,12 +67,12 @@ const HeaderProduct = ({ onSort, setOpenFilter }) => {
           </Menu.Items>
         </Menu>
         <button
-          className="p-2 text-gray-400 hover:text-gray-500"
+          className="p-2 text-gray-500 hover:text-black"
           onClick={() => setOpenFilter(true)}
         >
           <FunnelIcon className="w-6 h-6" />
         </button>
-        <button className="p-2 text-gray-400 hover:text-gray-500 lg:hidden">
+        <button className="p-2 text-gray-500 hover:text-black lg:hidden">
           <RectangleGroupIcon className="w-6 h-6" />
         </button>
       </div>

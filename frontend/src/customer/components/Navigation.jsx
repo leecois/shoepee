@@ -74,7 +74,7 @@ export default function Navigation() {
 
   return (
     <>
-      <div
+      <nav
         className={`navbar bg-base-200 sticky top-0 z-50 transition-all duration-300 ${
           visible ? 'opacity-100' : 'opacity-0 -translate-y-full'
         }`}
@@ -155,7 +155,7 @@ export default function Navigation() {
                   </Link>
                 )}
                 <li>
-                  <Link to={`profile/${userId}`} className="justify-between">
+                  <Link to={`user/account/profile`} className="justify-between">
                     Profile
                   </Link>
                 </li>
@@ -201,16 +201,18 @@ export default function Navigation() {
             </label>
             <div
               tabIndex={0}
-              className="mt-3 z-[1] card card-compact dropdown-content w-52 bg-base-100 shadow"
+              className="mt-3 z-[1] card card-compact dropdown-content w-52 bg-base-100 shadow-lg"
             >
               <div className="card-body">
-                <span className="font-bold text-lg">
+                <span className="font-bold text-lg font-serif text-black block mb-2">
                   {cartItemsCount} Items
                 </span>
-                <span className="text-info">Subtotal: {cartTotal}</span>
-                <div className="card-actions">
+                <span className="font-medium text-gray-700 block mb-4">
+                  Subtotal: {cartTotal}
+                </span>
+                <div className="card-actions pt-2 border-t border-gray-200 ">
                   <button
-                    className="btn btn-primary btn-block"
+                    className="btn btn-primary btn-block text-white bg-black border border-black py-2 px-4 rounded-md hover:bg-gray-800 transition duration-300"
                     onClick={handleCartClick}
                   >
                     View cart
@@ -220,7 +222,7 @@ export default function Navigation() {
             </div>
           </div>
         </div>
-      </div>
+      </nav>
       <img src="/assets/clp-hero-top.webp" alt="Colorful" />
       {openAuthModal && (
         <div className="modal active">

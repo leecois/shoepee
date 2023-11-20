@@ -97,10 +97,6 @@ const Stacked = ({ modelList2 }) => {
                 <Link to={`/products/${model.modelname}`} key={model.id} className="keen-slider__slide">
                   <blockquote className="flex h-full flex-col justify-between bg-white p-6 shadow-sm sm:p-8 lg:p-12">
                     <div>
-                      <div className="flex text-lg font-semibold gap-0.5 text-yellow-700">
-                        CUSTOMIZE
-                      </div>
-
                       <div className="mt-4">
                         <img
                           src={model.imageurl}
@@ -122,7 +118,7 @@ const Stacked = ({ modelList2 }) => {
                           </div>
                         </div>
                         <p className="text-xl font-semibold text-gray-900">
-                          ${model.shoes[0]?.price}
+                          ${model.price}
                         </p>
                       </div>
                     </div>

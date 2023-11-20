@@ -4,23 +4,24 @@ import './App.css';
 import ProtectedRoute from './Authentication/ProtectedRoute';
 import AdminRouters from './Routers/AdminRouters';
 import CustomerRouters from './Routers/CustomerRouters';
+import { AlertProvider } from './customer/components/Alert/AlertContext';
 
 const App = () => {
   return (
-    <div className="">
+    <AlertProvider>
       <Routes>
         <Route path="/*" element={<CustomerRouters />} />
 
         <Route
           path="/admin/*"
           element={
-            <ProtectedRoute allowedRoles={["ADMIN"]}>
+            <ProtectedRoute allowedRoles={['ADMIN']}>
               <AdminRouters />
             </ProtectedRoute>
           }
         />
       </Routes>
-    </div>
+    </AlertProvider>
   );
 };
 
