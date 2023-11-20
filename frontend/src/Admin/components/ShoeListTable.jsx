@@ -143,7 +143,9 @@ export default function ShoeListTable({ shoeList, updateShoe, deleteShoe }) {
       field: 'modelname',
       headerName: 'Model Name',
       width: 170,
-      renderCell: (params) => <span>{params.row?.shoeModelDto?.modelname}</span>,
+      renderCell: (params) => (
+        <span>{params.row?.shoeModelDto?.modelname}</span>
+      ),
     },
 
     { field: 'price', headerName: 'Price', width: 130, editable: true },
@@ -199,7 +201,7 @@ export default function ShoeListTable({ shoeList, updateShoe, deleteShoe }) {
 
   return (
     <Box
-      className="dark:bg-gray-800 p-4" // Adjusted for a darker gray in dark mode and padding for the box
+      className="dark:bg-boxdark-2 p-4" // Adjusted for a darker gray in dark mode and padding for the box
       sx={{
         height: 500,
         width: '100%',
@@ -232,9 +234,9 @@ export default function ShoeListTable({ shoeList, updateShoe, deleteShoe }) {
         '& .MuiTablePagination-root': {
           color: 'gray', // or any color you want
         },
-        '& .MuiIconButton-root':{
+        '& .MuiIconButton-root': {
           color: 'white',
-        }
+        },
         // Add any additional styling here
       }}
     >
@@ -275,5 +277,4 @@ export default function ShoeListTable({ shoeList, updateShoe, deleteShoe }) {
       </Dialog>
     </Box>
   );
-  
 }

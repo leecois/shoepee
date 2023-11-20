@@ -1,67 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-function ProductList() {
-  const modelList = [
-    {
-      id: '1',
-      modelname: 'Model 1',
-      shoes: [
-        {
-          imageUrl: 'https://example.com/image1.jpg',
-        },
-        // Add more shoes as needed
-      ],
-      brandDto: {
-        brandName: 'Brand 1',
-      },
-      price: '100',
-    },
-    {
-      id: '2',
-      modelname: 'Model 2',
-      shoes: [
-        {
-          imageUrl: 'https://example.com/image2.jpg',
-        },
-        // Add more shoes as needed
-      ],
-      brandDto: {
-        brandName: 'Brand 2',
-      },
-      price: '200',
-    },
-    {
-      id: '2',
-      modelname: 'Model 2',
-      shoes: [
-        {
-          imageUrl: 'https://example.com/image2.jpg',
-        },
-        // Add more shoes as needed
-      ],
-      brandDto: {
-        brandName: 'Brand 2',
-      },
-      price: '200',
-    },
-    {
-      id: '2',
-      modelname: 'Model 2',
-      shoes: [
-        {
-          imageUrl: 'https://example.com/image2.jpg',
-        },
-        // Add more shoes as needed
-      ],
-      brandDto: {
-        brandName: 'Brand 2',
-      },
-      price: '200',
-    },
-    
-    // Add more models as needed
-  ];
+function ProductList({ modelList }) {
   if (modelList.length === 0 || !modelList) {
     // Display loading placeholders if modelList is empty or loading
     return (
@@ -81,7 +21,10 @@ function ProductList() {
   return (
     <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       {modelList?.map((model) => (
-        <div key={model.id} className="group p-4 bg-white shadow-lg rounded-lg transition duration-500 ease-in-out transform hover:-translate-y-1 hover:shadow-2xl">
+        <div
+          key={model.id}
+          className="group p-4 bg-white shadow-lg rounded-lg transition duration-500 ease-in-out transform hover:-translate-y-1 hover:shadow-2xl"
+        >
           <Link to={`/products/${model.modelname}`} className="block">
             <img
               src={model.shoes[0]?.imageUrl}

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import { CheckIcon, EyeIcon } from '@heroicons/react/24/outline';
 import OrderDetailModal from '../../customer/components/Profile/OrderDetailModal';
+import Box from '@mui/material/Box';
 
 const OrdersTable = ({ orderList, acceptOrder }) => {
   const [selectedOrder, setSelectedOrder] = useState(null);
@@ -24,7 +25,12 @@ const OrdersTable = ({ orderList, acceptOrder }) => {
     { field: 'paymentStatus', headerName: 'Payment Status', width: 120 },
     { field: 'orderStatus', headerName: 'Order Status', width: 130 },
     { field: 'orderCreateAt', headerName: 'Created At', width: 180 },
-    { field: 'orderAmt', headerName: 'Total in USD', type: 'number', width: 130 },
+    {
+      field: 'orderAmt',
+      headerName: 'Total in USD',
+      type: 'number',
+      width: 130,
+    },
     {
       field: 'actions',
       headerName: 'Actions',
@@ -67,31 +73,60 @@ const OrdersTable = ({ orderList, acceptOrder }) => {
       : [];
 
   return (
-    <div className="rounded-sm border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-      <div style={{ height: 400, width: '100%' }}>
-        <DataGrid
-          sx={{
-            '& .MuiDataGrid-columnHeader': {
-              backgroundColor: 'whitesmoke',
-              color: 'black',
-            },
-            '& .MuiDataGrid-cell': {
-              
-            },
-          }}
-          rows={rows}
-          columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
-          checkboxSelection
-        />
-      </div>
+    <Box
+      className="dark:bg-boxdark-2 p-4" // Adjusted for a darker gray in dark mode and padding for the box
+      sx={{
+        height: 500,
+        width: '100%',
+        '& .MuiDataGrid-root': {
+          borderColor: 'transparent', // Removes default border
+        },
+        '& .MuiDataGrid-columnHeaders': {
+          backgroundColor: 'black', // GUCCI often uses black in their designs
+          color: 'white',
+          fontFamily: 'Cormorant, serif', // A font that could fit the luxurious theme
+        },
+        '& .MuiDataGrid-cell': {
+          fontFamily: 'Cormorant, serif', // Consistent font for the cells
+          '&.dark:text-white': {
+            color: 'white !important', // Ensures text color is white in dark mode
+          },
+        },
+        '& .MuiDataGrid-cell:focus': {
+          outline: 'none', // Remove the focus outline
+        },
+        '& .MuiDataGrid-columnSeparator': {
+          display: 'none', // Hiding column separators for a cleaner look
+        },
+        '& .MuiDataGrid-menuIcon': {
+          color: 'white', // Making sure all icons are visible in dark mode
+        },
+        '& .MuiDataGrid-toolbar': {
+          color: 'black',
+        },
+        '& .MuiTablePagination-root': {
+          color: 'gray', // or any color you want
+        },
+        '& .MuiIconButton-root': {
+          color: 'white',
+        },
+        // Add any additional styling here
+      }}
+    >
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        pageSize={5}
+        rowsPerPageOptions={[5]}
+        checkboxSelection
+      />
+
       <OrderDetailModal
         order={selectedOrder}
         isOpen={isModalOpen}
         onClose={handleCloseModal}
       />
-    </div>
+    </Box>
   );
 };
 

@@ -75,13 +75,16 @@ export default function Navigation() {
   return (
     <>
       <nav
-        className={`navbar bg-base-200 sticky top-0 z-50 transition-all duration-300 ${
+        className={`navbar bg-neutral-100 sticky top-0 z-50 transition-opacity duration-300 ${
           visible ? 'opacity-100' : 'opacity-0 -translate-y-full'
         }`}
       >
         <div className="navbar-start">
           <div className="dropdown">
-            <label tabIndex={0} className="btn btn-ghost btn-circle">
+            <label
+              tabIndex={0}
+              className="btn btn-ghost btn-circle text-gray-800"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5"
@@ -105,10 +108,7 @@ export default function Navigation() {
                 <button onClick={handleHomeClick}>Home</button>
               </li>
               <li>
-                <a href="/products">Shop</a>
-              </li>
-              <li>
-                <a href="#">About</a>
+                <Link to="/products">Shop</Link>
               </li>
             </ul>
           </div>
@@ -116,7 +116,7 @@ export default function Navigation() {
         <div className="navbar-center">
           <button
             onClick={handleHomeClick}
-            className="btn btn-ghost font-bold normal-case text-xl"
+            className="btn btn-ghost normal-case text-xl font-bold text-gray-800"
           >
             SHOEPEE
           </button>
