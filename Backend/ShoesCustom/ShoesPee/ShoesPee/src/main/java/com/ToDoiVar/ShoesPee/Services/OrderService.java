@@ -95,7 +95,7 @@ public class OrderService {
         OrderDto orderDto = this.modelMapper.map(save,OrderDto.class);
         Set<OrderItemDto> orderItemDtos = save.getOrderItem().stream().map(oi -> {
             OrderItemDto orderItemDto = this.modelMapper.map(oi,OrderItemDto.class);
-            ShoeDto shoeDto = this.modelMapper.map(oi.getShoe(), ShoeDto.class);
+            CustomizedShoeDto shoeDto = this.modelMapper.map(oi.getShoe(), CustomizedShoeDto.class);
             ShoeModelDto shoeModelDto = this.modelMapper.map(oi.getShoe().getShoeModel(), ShoeModelDto.class);
             orderItemDto.setShoeDto(shoeDto);
             orderItemDto.getShoeDto().setShoeModelDto(shoeModelDto);
@@ -123,7 +123,7 @@ public class OrderService {
 
             // Ensure shoe is properly loaded and mapped
             if (orderItem.getShoe() != null) {
-                ShoeDto shoeDto = modelMapper.map(orderItem.getShoe(), ShoeDto.class);
+                CustomizedShoeDto shoeDto = modelMapper.map(orderItem.getShoe(), CustomizedShoeDto.class);
                 ShoeModelDto shoeModelDto = modelMapper.map(orderItem.getShoe().getShoeModel(),ShoeModelDto.class);
                 orderItemDto.setShoeDto(shoeDto);
                 orderItemDto.getShoeDto().setShoeModelDto(shoeModelDto);
@@ -169,7 +169,7 @@ public class OrderService {
                 OrderItemDto orderItemDto = modelMapper.map(orderItem, OrderItemDto.class);
                 // Ensure shoe is properly loaded and mapped
                 if (orderItem.getShoe() != null) {
-                    ShoeDto shoeDto = modelMapper.map(orderItem.getShoe(), ShoeDto.class);
+                    CustomizedShoeDto shoeDto = modelMapper.map(orderItem.getShoe(), CustomizedShoeDto.class);
                     ShoeModelDto shoeModelDto = modelMapper.map(orderItem.getShoe().getShoeModel(),ShoeModelDto.class);
                     orderItemDto.setShoeDto(shoeDto);
                     orderItemDto.getShoeDto().setShoeModelDto(shoeModelDto);
@@ -207,7 +207,7 @@ public class OrderService {
             Set<OrderItemDto> orderItemDtos = order.getOrderItem().stream().map(orderItem -> {
                 OrderItemDto orderItemDto = modelMapper.map(orderItem, OrderItemDto.class);
                 if (orderItem.getShoe() != null) {
-                    ShoeDto shoeDto = modelMapper.map(orderItem.getShoe(), ShoeDto.class);
+                    CustomizedShoeDto shoeDto = modelMapper.map(orderItem.getShoe(), CustomizedShoeDto.class);
                     ShoeModelDto shoeModelDto = modelMapper.map(orderItem.getShoe().getShoeModel(),ShoeModelDto.class);
                     orderItemDto.setShoeDto(shoeDto);
                     orderItemDto.getShoeDto().setShoeModelDto(shoeModelDto);

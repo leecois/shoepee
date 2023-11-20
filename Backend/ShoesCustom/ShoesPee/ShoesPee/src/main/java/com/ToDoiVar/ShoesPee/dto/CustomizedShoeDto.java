@@ -1,6 +1,5 @@
 package com.ToDoiVar.ShoesPee.dto;
 
-import com.ToDoiVar.ShoesPee.Models.ShoeModel;
 import lombok.*;
 
 import java.util.List;
@@ -9,14 +8,17 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ShoeDto {
+public class CustomizedShoeDto {
     private int id;
+    private String name;
     private double price;
     private String description;
     private String imageUrl;
     private String status;
+    private boolean stock;
+    private int shoeQuantity;
     private ShoeModelDto shoeModelDto;
-    private List<ImageDto> images;
+//    private List<ImageDto> images;
 
     public ShoeModelDto getShoeModelDto() {
         return shoeModelDto;
