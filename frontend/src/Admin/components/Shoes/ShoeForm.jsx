@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 const shoeScheme = Yup.object().shape({
   description: Yup.string().required('Please enter description'),
   price: Yup.number().min(1, 'Price must be greater than 0').required('Please enter price'),
-  imageUrl: Yup.string().required('Please enter image url'),
+  imageUrl: Yup.string().url('Must be a valid URL').required('Please enter image url'),
 });
 
 const ShoeForm = ({ initialValues, onSubmit }) => (

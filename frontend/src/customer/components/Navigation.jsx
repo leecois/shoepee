@@ -74,7 +74,7 @@ export default function Navigation() {
 
   return (
     <>
-      <div
+      <nav
         className={`navbar bg-base-200 sticky top-0 z-50 transition-all duration-300 ${
           visible ? 'opacity-100' : 'opacity-0 -translate-y-full'
         }`}
@@ -155,7 +155,7 @@ export default function Navigation() {
                   </Link>
                 )}
                 <li>
-                  <Link to={`profile/${userId}`} className="justify-between">
+                  <Link to={`user/account/profile`} className="justify-between">
                     Profile
                   </Link>
                 </li>
@@ -222,7 +222,7 @@ export default function Navigation() {
             </div>
           </div>
         </div>
-      </div>
+      </nav>
       <img src="/assets/clp-hero-top.webp" alt="Colorful" />
       {openAuthModal && (
         <div className="modal active">

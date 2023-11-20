@@ -17,7 +17,7 @@ const OrderDetailModal = ({ order, isOpen, onClose }) => {
           <div className="mb-6">
             <p className="mb-1">Status: {order.orderStatus}</p>
             <p className="mb-1">Payment Status: {order.paymentStatus}</p>
-            <p className="mb-1">Total Amount: ${order.orderAmt.toFixed(2)}</p>
+            <p className="mb-1">Total Amount: ${order.orderAmt}</p>
             <p>Billing Address: {order.billingAddress}</p>
           </div>
 

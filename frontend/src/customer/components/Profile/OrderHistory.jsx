@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import OrderDetailModal from './OrderDetailModal';
 import { EyeIcon } from '@heroicons/react/24/outline';
+import React, { useState } from 'react';
 import userApi from '../../../api/userApi';
+import OrderDetailModal from './OrderDetailModal';
 
-const OrderHistory = ({ orders }) => {
+const OrderHistory = () => {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const navigate = useNavigate();
 
   const handleProductClick = (order) => {
     setSelectedOrder(order);
@@ -22,84 +20,124 @@ const OrderHistory = ({ orders }) => {
       console.error(error);
     }
   };
-  
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedOrder(null);
   };
+  const orders = [
+    {
+      orderId: '123',
+      products: [
+        {
+          productImage: 'https://example.com/image1.jpg',
+          productName: 'Product 1',
+          variation: 'Color: Red, Size: M',
+          quantity: 2,
+          discountedPrice: '$50',
+          originalPrice: '$60',
+        },
+        {
+          productImage: 'https://example.com/image2.jpg',
+          productName: 'Product 2',
+          variation: 'Color: Blue, Size: L',
+          quantity: 1,
+          discountedPrice: '$30',
+          originalPrice: '$40',
+        },
+        {
+          productImage: 'https://example.com/image2.jpg',
+          productName: 'Product 2',
+          variation: 'Color: Blue, Size: L',
+          quantity: 1,
+          discountedPrice: '$30',
+          originalPrice: '$40',
+        },
+      ],
+      orderTotal: '$130',
+    },
+    {
+      orderId: '12333',
+      products: [
+        {
+          productImage: 'https://example.com/image1.jpg',
+          productName: 'Product 1',
+          variation: 'Color: Red, Size: M',
+          quantity: 2,
+          discountedPrice: '$50',
+          originalPrice: '$60',
+        },
+        {
+          productImage: 'https://example.com/image2.jpg',
+          productName: 'Product 2',
+          variation: 'Color: Blue, Size: L',
+          quantity: 1,
+          discountedPrice: '$30',
+          originalPrice: '$40',
+        },
+        {
+          productImage: 'https://example.com/image2.jpg',
+          productName: 'Product 2',
+          variation: 'Color: Blue, Size: L',
+          quantity: 1,
+          discountedPrice: '$30',
+          originalPrice: '$40',
+        },
+      ],
+      orderTotal: '$130',
+    },
+  ];
 
   return (
-    <div className="overflow-x-auto">
-      <h1 className="text-3xl font-semibold text-black dark:text-white">
-        RECENT ORDERS
-      </h1>
-      <div className="border-b border-gray-300 py-4 px-7">
-        <table className="w-full text-sm text-center text-black-2 font-semibold dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-              <th scope="col" className="py-3 px-6">
-                Order ID
-              </th>
-              <th scope="col" className="py-3 px-6">
-                Order Status
-              </th>
-              <th scope="col" className="py-3 px-6">
-                Payment Status
-              </th>
-              <th scope="col" className="py-3 px-6">
-                Delivered
-              </th>
-              <th scope="col" className="py-3 px-6">
-                Total Amount
-              </th>
-              <th scope="col" className="py-3 px-6">
-                Billing Address
-              </th>
-              <th scope="col" className="py-3 px-6">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {orders.map((order) => (
-              <tr
-                key={order.orderId}
-                className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+    <div className="overflow-x-auto bg-[#E5E5E5]">
+      {orders.map((order, index) => (
+        <div key={index} className="mb-4 p-4 bg-white rounded-lg shadow-lg">
+          <div className="space-y-4">
+            {order.products.map((product, productIndex) => (
+              <div
+                key={productIndex}
+                className="flex items-center justify-between p-4 bg-gray-100 rounded-lg"
               >
-                <td className="py-4 px-6">{order.orderId}</td>
-                <td className="py-4 px-6">{order.orderStatus}</td>
-                <td className="py-4 px-6">
-                  {order.paymentStatus}{' '}
-                  {order.paymentStatus === 'NOT PAID' && (
-                    <button
-                      onClick={() => handlePaymentClick(order.orderId)}
-                      className="text-red-600 font-bold hover:underline"
-                    >
-                      (Pay Now)
-                    </button>
-                  )}
-                </td>
-                <td className="py-4 px-6">
-                  {order.orderDelivered ? 'Yes' : 'No'}
-                </td>
-                <td className="py-4 px-6">${order.orderAmt.toFixed(2)}</td>
-                <td className="py-4 px-6">{order.billingAddress}</td>
-                <td className="py-4 px-6">
-                  <div className="tooltip tooltip-right tooltip-info" data-tip="Detail">
-                    <button
-                      onClick={() => handleProductClick(order)}
-                      className="text-blue-600 hover:underline mr-3"
-                    >
-                      <EyeIcon className="h-5 w-5" />
-                    </button>
-                  </div>
-                </td>
-              </tr>
+                <img
+                  src={product.productImage}
+                  alt={product.productName}
+                  className="w-20 h-20 object-cover rounded-md"
+                />
+                <div className="ml-4 flex-1">
+                  <h5 className="text-lg font-semibold text-gray-800">
+                    {product.productName}
+                  </h5>
+                  <p className="text-sm text-gray-500">{product.variation}</p>
+                  <p className="text-sm font-medium text-gray-700">
+                    Quantity: {product.quantity}
+                  </p>
+                </div>
+                <div className="text-right">
+                  <p className="text-lg font-semibold text-gray-800 line-through">
+                    {product.originalPrice}
+                  </p>
+                  <p className="text-lg font-semibold text-red-500">
+                    {product.discountedPrice}
+                  </p>
+                </div>
+              </div>
             ))}
-          </tbody>
-        </table>
-      </div>
+          </div>
+          <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-300">
+            <span className="text-sm font-medium text-gray-600">
+              Order Total: {order.orderTotal}
+            </span>
+            <div className="space-x-2">
+              <button className="text-sm bg-black text-white py-2 px-4 rounded hover:bg-gray-800">
+                Buy Again
+              </button>
+              <button className="text-sm bg-black text-white py-2 px-4 rounded hover:bg-gray-800">
+                Contact Seller
+              </button>
+            </div>
+          </div>
+        </div>
+      ))}
       <OrderDetailModal
         order={selectedOrder}
         isOpen={isModalOpen}

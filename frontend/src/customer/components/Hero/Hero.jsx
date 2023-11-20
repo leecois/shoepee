@@ -3,34 +3,34 @@ import { Link } from 'react-router-dom';
 
 const Hero = () => {
   return (
-    <div className="relative w-full h-full flex flex-col justify-center items-center bg-white overflow-hidden">
-      <div className="pt-5 sm:pt-15 lg:pt-28 w-full flex flex-col lg:flex-row">
-        <div className="w-full lg:w-1/2 flex flex-col justify-center items-center text-black">
-          <div className="p-5 flex flex-col justify-center items-center lg:items-start text-center lg:text-left">
-            <h1 className="py-10 text-4xl sm:text-6xl font-bold tracking-tighter leading-tight select-none">
-              <span className="text-meta-1">Shoepee,</span> <br />
-              <span className="text-meta-6">Your Style,</span> <br />
-              <span className="text-meta-3">Your Way</span>
+    <div className="relative w-full h-screen flex items-center justify-center bg-white text-black overflow-hidden">
+      <div className="container mx-auto px-6 md:px-12 xl:px-24">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          <div className="text-center lg:text-left space-y-6">
+            <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tighter leading-tight">
+              <span className="block">Shoepee,</span>
+              <span className="block">Your Style,</span>
+              <span className="block">Your Way</span>
             </h1>
-            <p className="text-xl font-semibold text-gray-600 tracking-tight select-none">
+            <p className="text-xl font-semibold">
               Starting at $99
             </p>
-            <div className="mt-10 flex flex-col sm:flex-row items-center">
+            <div className="mt-6">
               <Link
-                to={`/products`}
-                className="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300 m-1.5 py-3 px-6 rounded-md bg-black text-white font-semibold uppercase hover:bg-red-600"
+                to="/products"
+                className="inline-block bg-black text-white text-sm font-semibold uppercase tracking-widest py-3 px-6 rounded-full hover:bg-opacity-90 transition ease-in-out duration-300"
               >
                 Shop Now
               </Link>
             </div>
           </div>
-        </div>
-        <div className="relative w-full lg:w-1/2 lg:right-16 sm:right-0 flex justify-center items-center overflow-hidden pointer-events-none select-none">
-          <img
-            src="/assets/publiceye.jpg"
-            alt="Featured Shoe"
-            className="w-2/3 lg:w-full object-cover"
-          />
+          <div className="flex justify-center lg:justify-end">
+            <img
+              src="/assets/publiceye.jpg"
+              alt="Featured Shoe"
+              className="max-w-md lg:max-w-2xl object-contain"
+            />
+          </div>
         </div>
       </div>
     </div>

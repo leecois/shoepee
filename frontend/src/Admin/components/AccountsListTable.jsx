@@ -83,15 +83,14 @@ export default function AccountsListTable({ userData, updateRole }) {
     {
       field: 'phone',
       headerName: 'Phone',
-      type: 'number',
       width: 180,
+      valueGetter: (params) => params.row.inforUser?.phone,
     },
-    { field: 'address', headerName: 'Address', width: 180, editable: true },
     {
-      field: 'joinDate',
-      headerName: 'Join date',
-      type: 'date',
+      field: 'address',
+      headerName: 'Address',
       width: 180,
+      valueGetter: (params) => params.row.inforUser?.address,
     },
     {
       field: 'role',
@@ -158,6 +157,15 @@ export default function AccountsListTable({ userData, updateRole }) {
       }}
     >
       <DataGrid
+      sx={{
+        '& .MuiDataGrid-columnHeader': {
+          backgroundColor: 'whitesmoke',
+          color: 'black',
+        },
+        '& .MuiDataGrid-cell': {
+          // ... cell styles
+        },
+      }}
         rows={rows}
         columns={columns}
         editMode="row"

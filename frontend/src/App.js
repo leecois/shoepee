@@ -9,7 +9,6 @@ import { AlertProvider } from './customer/components/Alert/AlertContext';
 const App = () => {
   return (
     <AlertProvider>
-
       <Routes>
         <Route path="/*" element={<CustomerRouters />} />
 
@@ -22,7 +21,6 @@ const App = () => {
           }
         />
       </Routes>
-
     </AlertProvider>
   );
 };

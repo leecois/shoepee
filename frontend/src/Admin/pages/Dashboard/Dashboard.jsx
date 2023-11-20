@@ -1,11 +1,10 @@
-import useUserData from '../../../hooks/useUserData';
 import AdminShoeData from '../../../hooks/AdminShoeData';
+import useOrderData from '../../../hooks/useOrderData';
+import useUserData from '../../../hooks/useUserData';
 import CardFour from '../../components/CardFour';
 import CardThree from '../../components/CardThree';
 import CardTwo from '../../components/CardTwo';
 import ChartRevenue from '../../components/ChartRevenue';
-import useOrderData from '../../../hooks/useOrderData';
-import { useMemo } from 'react';
 
 const Dashboard = () => {
   const { orderList } = useOrderData();

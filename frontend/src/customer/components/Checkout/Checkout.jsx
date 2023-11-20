@@ -25,7 +25,7 @@ const Checkout = ({ onSuccess, disabled }) => {
   const [customerName, setCustomerName] = useState('');
   const [orderAddress, setOrderAddress] = useState('');
   const cartId = useSelector((state) => state.cart.cartId);
-  const cartEmail = useSelector((state) => state.cart.user.email);
+  const cartEmail = useSelector((state) => state.cart.user?.email);
 
   const initialValues = {
     firstName: '',

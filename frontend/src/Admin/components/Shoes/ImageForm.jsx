@@ -3,7 +3,7 @@ import React from 'react';
 import * as Yup from 'yup';
 
 const shoeScheme = Yup.object().shape({
-  imageUrl: Yup.string().required('Image URL is required'),
+  imageUrl: Yup.string().url('Must be a valid URL').required('Please enter image url'),
 });
 
 const ImageForm = ({ initialValues, onSubmit }) => {

@@ -208,16 +208,43 @@ export default function ModelsTable({ modelList, updateModel, deleteModel }) {
 
   return (
     <Box
-      className="dark:bg-graydark"
+      className="dark:bg-gray-800 p-4" // Adjusted for a darker gray in dark mode and padding for the box
       sx={{
         height: 500,
         width: '100%',
-        '& .actions': {
-          color: 'text.secondary',
+        '& .MuiDataGrid-root': {
+          borderColor: 'transparent', // Removes default border
         },
-        '& .textPrimary': {
-          color: 'text.primary',
+        '& .MuiDataGrid-columnHeaders': {
+          backgroundColor: 'black', // GUCCI often uses black in their designs
+          color: 'white',
+          fontFamily: 'Cormorant, serif', // A font that could fit the luxurious theme
         },
+        '& .MuiDataGrid-cell': {
+          fontFamily: 'Cormorant, serif', // Consistent font for the cells
+          '&.dark:text-white': {
+            color: 'white !important', // Ensures text color is white in dark mode
+          },
+        },
+        '& .MuiDataGrid-cell:focus': {
+          outline: 'none', // Remove the focus outline
+        },
+        '& .MuiDataGrid-columnSeparator': {
+          display: 'none', // Hiding column separators for a cleaner look
+        },
+        '& .MuiDataGrid-menuIcon': {
+          color: 'white', // Making sure all icons are visible in dark mode
+        },
+        '& .MuiDataGrid-toolbar': {
+          color: 'black',
+        },
+        '& .MuiTablePagination-root': {
+          color: 'gray', // or any color you want
+        },
+        '& .MuiIconButton-root':{
+          color: 'white',
+        }
+        // Add any additional styling here
       }}
     >
       <DataGrid
@@ -225,13 +252,13 @@ export default function ModelsTable({ modelList, updateModel, deleteModel }) {
         columns={columns}
         editMode="row"
         rowModesModel={rowModesModel}
-        className="dark:text-white"
         onRowModesModelChange={handleRowModesModelChange}
         onRowEditStop={handleRowEditStop}
         processRowUpdate={processRowUpdate}
-        slots={{
-          toolbar: EditToolbar,
+        components={{
+          Toolbar: EditToolbar,
         }}
+        className="dark:text-white" // Ensures text within DataGrid is white in dark mode
       />
       <Dialog
         open={openDialog}

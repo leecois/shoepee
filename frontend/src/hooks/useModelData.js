@@ -20,9 +20,9 @@ const useModelData = (searchKey, brandFilter) => {
         }
 
         const { data } = await modelApi.getAll(params);
-        const sortedModels = data.map(model => ({
+        const sortedModels = data.map((model) => ({
           ...model,
-          shoes: model.shoes.sort((a, b) => a.id - b.id)
+          shoes: model.shoes.sort((a, b) => a.id - b.id),
         }));
         setModelList(sortedModels);
         const filteredData = data.filter((model) => {
@@ -30,15 +30,16 @@ const useModelData = (searchKey, brandFilter) => {
           if (model.brandDto && model.brandDto.status === 'unavailble') {
             return false;
           }
+          if (model.status === 'available') {
+            // Filter individual shoes within the model
+            if (model.shoes && model.shoes.length) {
+              model.shoes = model.shoes.filter(
+                (shoe) => shoe.status === 'available'
+              );
+            }
 
-          // Filter individual shoes within the model
-          if (model.shoes && model.shoes.length) {
-            model.shoes = model.shoes.filter(
-              (shoe) => shoe.status === 'available'
-            );
+            return true;
           }
-
-          return true;
         });
 
         setModelList(filteredData);

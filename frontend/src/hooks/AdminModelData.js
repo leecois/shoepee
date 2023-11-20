@@ -14,21 +14,19 @@ const AdminModelData = () => {
           _limit: limit,
         });
 
-        // Filtering logic
+        // Chỉnh sửa logic lọc ở đây
         const filteredData = data.filter((model) => {
-          // Filter out entire model if the brand status is unavailable
-          if (model.brandDto && model.brandDto.status === 'unavailble') {
-            return false;
+          // Bỏ qua trạng thái của brandDto và chỉ kiểm tra status của model
+          if (model.status === 'available') {
+            // Nếu có shoes, chỉ giữ lại những shoes có status là available
+            if (model.shoes && model.shoes.length) {
+              model.shoes = model.shoes.filter(
+                (shoe) => shoe.status === 'available'
+              );
+            }
+            return true;
           }
-
-          // Filter individual shoes within the model
-          if (model.shoes && model.shoes.length) {
-            model.shoes = model.shoes.filter(
-              (shoe) => shoe.status === 'available'
-            );
-          }
-
-          return true;
+          return false;
         });
 
         setModelList(filteredData);
