@@ -13,7 +13,7 @@ const Sidebar = () => {
   const isActive = (path) => location.pathname.startsWith(path);
 
   return (
-    <aside className="flex w-[240px] h-screen flex-col justify-between bg-black text-white">
+    <aside className="hidden sm:flex flex-col justify-between h-screen w-64 bg-black text-white">
       <nav className="px-4 py-6">
         <ul className="space-y-4">
           <li className="group">

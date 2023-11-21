@@ -80,7 +80,7 @@ export default function Navigation() {
         }`}
       >
         <div className="navbar-start">
-          <div className="dropdown">
+          <div className="dropdown dropdown-hover">
             <label
               tabIndex={0}
               className="btn btn-ghost btn-circle text-gray-800"
@@ -102,7 +102,7 @@ export default function Navigation() {
             </label>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+              className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
             >
               <li>
                 <button onClick={handleHomeClick}>Home</button>
@@ -126,7 +126,7 @@ export default function Navigation() {
         <div className="navbar-end gap-4 flex-none">
           {/* Authenticate */}
           {isAuthenticated ? (
-            <div className="dropdown dropdown-end">
+            <div className="dropdown dropdown-hover dropdown-end">
               <label
                 tabIndex={0}
                 className="btn btn-ghost justify-center btn-circle avatar"
@@ -141,7 +141,7 @@ export default function Navigation() {
               </label>
               <ul
                 tabIndex={0}
-                className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+                className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
               >
                 {/* Additional Navbar Item for Managers */}
                 {isAuthenticated && isManager && (
@@ -156,7 +156,12 @@ export default function Navigation() {
                 )}
                 <li>
                   <Link to={`user/account/profile`} className="justify-between">
-                    Profile
+                    My Account
+                  </Link>
+                </li>
+                <li>
+                  <Link to={`user/purchase`} className="justify-between">
+                    My Purchase
                   </Link>
                 </li>
 
@@ -177,7 +182,7 @@ export default function Navigation() {
             </div>
           )}
           {/* CART */}
-          <div className="dropdown dropdown-end">
+          <div className="dropdown dropdown-hover dropdown-end">
             <label tabIndex={0} className="btn btn-ghost btn-circle">
               <div className="indicator">
                 <svg
@@ -201,7 +206,7 @@ export default function Navigation() {
             </label>
             <div
               tabIndex={0}
-              className="mt-3 z-[1] card card-compact dropdown-content w-52 bg-base-100 shadow-lg"
+              className="p-2 z-[1] card card-compact dropdown-content w-52 bg-base-100 shadow-lg"
             >
               <div className="card-body">
                 <span className="font-bold text-lg font-serif text-black block mb-2">
