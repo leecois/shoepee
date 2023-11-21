@@ -4,10 +4,10 @@ import com.ToDoiVar.ShoesPee.Exeption.BrandNotFoundException;
 import com.ToDoiVar.ShoesPee.Exeption.shoeModelExistedException;
 import com.ToDoiVar.ShoesPee.Exeption.shoeModelNotFounException;
 import com.ToDoiVar.ShoesPee.Models.Brand;
-import com.ToDoiVar.ShoesPee.Models.Shoe;
+import com.ToDoiVar.ShoesPee.Models.CustomizedShoe;
 import com.ToDoiVar.ShoesPee.Models.ShoeModel;
 import com.ToDoiVar.ShoesPee.dto.BrandDto;
-import com.ToDoiVar.ShoesPee.dto.ShoeDto;
+import com.ToDoiVar.ShoesPee.dto.CustomizedShoeDto;
 import com.ToDoiVar.ShoesPee.dto.ShoeModelDto;
 import com.ToDoiVar.ShoesPee.repositiory.BrandRepository;
 import com.ToDoiVar.ShoesPee.repositiory.ShoeModelRepository;
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -66,7 +65,7 @@ public class ShoeModelServiceImpl implements ShoeModelService{
     @Override
     public ShoeModel updateShoeModel(int id, ShoeModel updateShoeModel) {
        return shoeModelRepository.findById(id).map(sm -> {
-            sm.setImageurl(updateShoeModel.getImageurl());
+//            sm.setImageurl(updateShoeModel.getImageurl());
             sm.setModelname(updateShoeModel.getModelname());
 //            sm.setBrandId(updateShoeModel.getBrandId());
             return shoeModelRepository.save(sm);
@@ -105,8 +104,8 @@ public class ShoeModelServiceImpl implements ShoeModelService{
         sm.setId(shoeModelDto.getId());
 //        sm.setBrandId(shoeModelDto.getBrandId());
         sm.setModelname(shoeModelDto.getModelname());
-        sm.setImageurl(shoeModelDto.getImageurl());
-        sm.setPrice(shoeModelDto.getPrice());
+//        sm.setImageurl(shoeModelDto.getImageurl());
+//        sm.setPrice(shoeModelDto.getPrice());
         sm.setStatus(shoeModelDto.getStatus());
         return sm;
     }
@@ -115,8 +114,8 @@ public class ShoeModelServiceImpl implements ShoeModelService{
         sto.setId(shoeModel.getId());
 //        sto.setBrandId(shoeModel.getBrandId());
         sto.setModelname(shoeModel.getModelname());
-        sto.setImageurl(shoeModel.getImageurl());
-        sto.setPrice(shoeModel.getPrice());
+//        sto.setImageurl(shoeModel.getImageurl());
+//        sto.setPrice(shoeModel.getPrice());
         sto.setStatus(shoeModel.getStatus());
         BrandDto brandDto = new BrandDto();
         brandDto.setId(shoeModel.getBrand().getId());
@@ -124,18 +123,20 @@ public class ShoeModelServiceImpl implements ShoeModelService{
         brandDto.setImageUrl(shoeModel.getBrand().getImageUrl());
         brandDto.setStatus(shoeModel.getBrand().getStatus());
         sto.setBrandDto(brandDto);
-        List<ShoeDto> shoeDtos = new ArrayList<>();
-        for (Shoe shoe: shoeModel.getShoes()
+        List<CustomizedShoeDto> CustomizedShoeDtos = new ArrayList<>();
+        for (CustomizedShoe customizedShoe : shoeModel.getCustomizedShoes()
              ) {
-            ShoeDto shoeDto = new ShoeDto();
-            shoeDto.setId(shoe.getId());
-            shoeDto.setDescription(shoe.getDescription());
-            shoeDto.setPrice(shoe.getPrice());
-            shoeDto.setImageUrl(shoe.getImageUrl());
-            shoeDto.setStatus(shoe.getStatus());
-            shoeDtos.add(shoeDto);
+            CustomizedShoeDto customizedShoeDto = new CustomizedShoeDto();
+            customizedShoeDto.setId(customizedShoe.getId());
+            customizedShoeDto.setShoeQuantity(customizedShoe.getShoeQuantity());
+            customizedShoeDto.setStock(customizedShoe.isStock());
+            customizedShoeDto.setDescription(customizedShoe.getDescription());
+            customizedShoeDto.setPrice(customizedShoe.getPrice());
+            customizedShoeDto.setImageUrl(customizedShoe.getImageUrl());
+            customizedShoeDto.setStatus(customizedShoe.getStatus());
+            CustomizedShoeDtos.add(customizedShoeDto);
         }
-        sto.setShoes(shoeDtos);
+        sto.setShoes(CustomizedShoeDtos);
 //        Brand brandDto = new Brand();
 ////        brandDto.setId(shoeModel.getBrand().getId());
 //        brandDto.setBrandName(shoeModel.getBrand().getBrandName());
@@ -143,19 +144,22 @@ public class ShoeModelServiceImpl implements ShoeModelService{
 //        sto.setBrand(brandDto);
         return sto;
     }
-    private ShoeDto ShoeToDto(Shoe shoe){
-        ShoeDto st = new ShoeDto();
-        st.setId(shoe.getId());
-        st.setDescription(shoe.getDescription());
-        st.setPrice(shoe.getPrice());
-        st.setImageUrl(shoe.getImageUrl());
-        st.setStatus(shoe.getStatus());
+    private CustomizedShoeDto ShoeToDto(CustomizedShoe customizedShoe){
+        CustomizedShoeDto st = new CustomizedShoeDto();
+        st.setId(customizedShoe.getId());
+        st.setName(customizedShoe.getName());
+        st.setStock(customizedShoe.isStock());
+        st.setShoeQuantity(customizedShoe.getShoeQuantity());
+        st.setDescription(customizedShoe.getDescription());
+        st.setPrice(customizedShoe.getPrice());
+        st.setImageUrl(customizedShoe.getImageUrl());
+        st.setStatus(customizedShoe.getStatus());
         ShoeModelDto smdt = new ShoeModelDto();
-        smdt.setId(shoe.getShoeModel().getId());
-        smdt.setModelname(shoe.getShoeModel().getModelname());
-        smdt.setImageurl(shoe.getShoeModel().getImageurl());
-        smdt.setPrice(shoe.getShoeModel().getPrice());
-        smdt.setStatus(shoe.getShoeModel().getStatus());
+        smdt.setId(customizedShoe.getShoeModel().getId());
+        smdt.setModelname(customizedShoe.getShoeModel().getModelname());
+//        smdt.setImageurl(customizedShoe.getShoeModel().getImageurl());
+//        smdt.setPrice(customizedShoe.getShoeModel().getPrice());
+        smdt.setStatus(customizedShoe.getShoeModel().getStatus());
 //        smdt.setBrandDto(shoe.get);
         st.setShoeModelDto(smdt);
         return st;

@@ -1,7 +1,5 @@
 package com.ToDoiVar.ShoesPee.Models;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 @Entity
 public class CartItem {
@@ -18,7 +16,7 @@ public class CartItem {
     private Cart cart;
     @ManyToOne
     @JoinColumn(name = "shoeid")
-    private Shoe shoe;
+    private CustomizedShoe customizedShoe;
     public int getCartItemId() {
         return cartItemId;
     }
@@ -43,11 +41,11 @@ public class CartItem {
     public void setCart(Cart cart) {
         this.cart = cart;
     }
-    public Shoe getShoe() {
-        return shoe;
+    public CustomizedShoe getShoe() {
+        return customizedShoe;
     }
-    public void setShoe(Shoe product) {
-        this.shoe = product;
+    public void setShoe(CustomizedShoe product) {
+        this.customizedShoe = product;
     }
 
     public int getSize() {

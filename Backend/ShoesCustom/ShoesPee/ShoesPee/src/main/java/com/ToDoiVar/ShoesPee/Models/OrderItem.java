@@ -12,7 +12,7 @@ public class OrderItem {
     private int orderItemId;
     @ManyToOne
     @JsonIgnore
-    private Shoe shoe;
+    private CustomizedShoe customizedShoe;
 
     private double totalProductprice;
 
@@ -28,10 +28,10 @@ public class OrderItem {
     public void setProductQuantity(int productQuantity) {
         this.productQuantity = productQuantity;
     }
-    public OrderItem(int orderItemId, Shoe shoe, double totalProductprice, int productQuantity, Order order) {
+    public OrderItem(int orderItemId, CustomizedShoe customizedShoe, double totalProductprice, int productQuantity, Order order) {
         super();
         this.orderItemId = orderItemId;
-        this.shoe = shoe;
+        this.customizedShoe = customizedShoe;
         this.totalProductprice = totalProductprice;
         this.productQuantity = productQuantity;
         this.order = order;
@@ -46,11 +46,11 @@ public class OrderItem {
     public void setOrderItemId(int orderItemId) {
         this.orderItemId = orderItemId;
     }
-    public Shoe getShoe() {
-        return shoe;
+    public CustomizedShoe getShoe() {
+        return customizedShoe;
     }
-    public void setShoe(Shoe product) {
-        this.shoe = product;
+    public void setShoe(CustomizedShoe product) {
+        this.customizedShoe = product;
     }
     public double getTotalProductprice() {
         return totalProductprice;

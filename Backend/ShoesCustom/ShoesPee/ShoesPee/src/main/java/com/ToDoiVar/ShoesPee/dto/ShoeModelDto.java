@@ -1,12 +1,10 @@
 package com.ToDoiVar.ShoesPee.dto;
 
-import com.ToDoiVar.ShoesPee.Models.Brand;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -14,13 +12,10 @@ import java.util.Set;
 public class ShoeModelDto {
 
     private int id;
-//    private int brandId;
     private String modelname;
-    private String imageurl;
-    private double price;
     private String status;
     private BrandDto brandDto;
-    private List<ShoeDto> shoes;
+    private List<CustomizedShoeDto> shoes;
 //    private Brand brand;
 //
 //    public Brand getBrand() {

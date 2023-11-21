@@ -51,6 +51,7 @@ public class BrandServiceImp implements BrandService{
             throw new BrandExistedException("Sorry, this brand has been exist");
         }
         Brand brand = this.mapper.map(newBrand,Brand.class);
+        brand.setStatus("availble");
         Brand save = this.brandRepository.save(brand);
 
         return this.mapper.map(save,BrandDto.class);

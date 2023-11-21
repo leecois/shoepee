@@ -8,7 +8,7 @@
         private double totalprice;
         @JsonIgnore
         private CartDto cart;
-        private ShoeDto shoe;
+        private CustomizedShoeDto shoe;
         private int size;
         public int getCartItemId() {
             return cartItemId;
@@ -35,10 +35,10 @@
         public void setCart(CartDto cart) {
             this.cart = cart;
         }
-        public ShoeDto getShoe() {
+        public CustomizedShoeDto getShoe() {
             return shoe;
         }
-        public void setShoe(ShoeDto shoe) {
+        public void setShoe(CustomizedShoeDto shoe) {
             this.shoe = shoe;
         }
         public int getSize() {
