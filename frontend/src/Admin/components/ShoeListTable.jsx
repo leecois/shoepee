@@ -235,7 +235,10 @@ export default function ShoeListTable({ shoeList, updateShoe, deleteShoe }) {
           color: 'gray', // or any color you want
         },
         '& .MuiIconButton-root': {
-          color: 'white',
+          color: 'black',
+          '&.dark:text-white': {
+            color: 'white !important',
+          },
         },
         // Add any additional styling here
       }}

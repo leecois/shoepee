@@ -93,11 +93,8 @@ const AuthModal = ({ handleClickOpen, handleClose }) => {
     setIsSignUpVisible(false);
     setIsSignInVisible(false);
   };
-  const user = JSON.parse(localStorage.getItem(StorageKeys.USER));
-
-  const userId = user ? user.userId : null;
   const handleUpdateProfile = () => {
-    navigate(`profile/${userId}`);
+    navigate(`user/account/profile`);
   };
 
   return (

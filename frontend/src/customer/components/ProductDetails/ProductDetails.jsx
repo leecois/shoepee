@@ -5,20 +5,18 @@ import {
   addToCartAsync,
   getCartAsync,
 } from '../../../containers/Cart/cartSlice';
-import { fetchShoeImages } from '../../../hooks/CartData';
 import Toast from '../Alert/Alert';
+import { useAlert } from '../Alert/AlertContext';
 import AlertSign from '../AlertSign';
 import Inspiration from './Inspiration';
 import Size from './Size';
 import YourDesign from './YourDesign';
-import { useAlert } from '../Alert/AlertContext';
 
 const ProductDetails = ({ product, userLoggedIn }) => {
   const { showAlert } = useAlert();
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [isToastOpen, setIsToastOpen] = useState(false);
   const [selectedShoe, setSelectedShoe] = useState(null);
-  const [selectedShoeImages, setSelectedShoeImages] = useState([]);
   const [selectedSize, setSelectedSize] = useState(null);
   const [showInspiration, setShowInspiration] = useState(true);
 
@@ -30,25 +28,18 @@ const ProductDetails = ({ product, userLoggedIn }) => {
 
   const handleShoeButtonClick = (shoe) => {
     setSelectedShoe(shoe);
-    setSelectedShoeImages(shoe.imageUrls);
   };
 
   useEffect(() => {
-    if (product?.shoes && Array.isArray(product.shoes)) {
-      const sortedShoes = [...product.shoes].sort((a, b) => a.id - b.id);
+    if (product?.customizedShoes && Array.isArray(product.customizedShoes)) {
+      const sortedShoes = [...product.customizedShoes].sort(
+        (a, b) => a.id - b.id
+      );
       setSelectedShoe(sortedShoes[0]);
     } else {
       setSelectedShoe(null);
     }
   }, [product]);
-
-  useEffect(() => {
-    if (selectedShoe?.id) {
-      fetchShoeImages(selectedShoe.id)
-        .then(setSelectedShoeImages)
-        .catch(console.error);
-    }
-  }, [selectedShoe]);
 
   const handleAddToCart = async () => {
     if (!userLoggedIn) {
@@ -80,60 +71,37 @@ const ProductDetails = ({ product, userLoggedIn }) => {
     return <div>Loading...</div>;
   }
 
-  const renderShoeImages = () => {
-    if (!selectedShoeImages.length)
-      return <p>No images available for the selected shoe.</p>;
-    return selectedShoeImages.map((image) => (
-      <div key={image.id}>
-        <img
-          src={image.imageUrl}
-          alt={`Shoe Images`}
-          className="object-contain w-full h-full rounded-sm"
-        />
-      </div>
-    ));
-  };
-
   return (
     <div className="min-h-screen mx-auto py-8 px-4 w-full max-w-7xl bg-white">
-      <div className="mx-auto max-w-2xl lg:max-w-none grid grid-cols-1 lg:grid-cols-2 gap-5">
-        <div className="order-2 lg:order-1 relative rounded-sm">
-          {selectedShoeImages && selectedShoeImages.length > 0 ? (
-            <div className="grid grid-cols-2 gap-2 lg:grid-cols-2 lg:gap-2">
-              {renderShoeImages()}
-            </div>
-          ) : selectedShoe ? (
-            <div>
+      <div className="mx-auto max-w-2xl lg:max-w-none grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="order-2 lg:order-1 rounded overflow-hidden">
+          {selectedShoe ? (
+            <div className="flex justify-center items-center rounded-lg shadow-lg border-2 p-1">
               <img
-                src={selectedShoe.imageUrl}
+                src={selectedShoe?.imageUrl}
                 alt="Shoe Images"
-                className="object-contain w-full h-full rounded-sm"
+                className="object-cover w-full h-full shadow-lg rounded-lg"
               />
             </div>
           ) : (
-            <p>No images available for the selected shoe.</p>
+            <div className="flex justify-center items-center bg-black border-yellow-500 border-2 p-4">
+              <p className="text-center text-yellow-500 font-serif text-xl">
+                No images available for the selected shoe.
+              </p>
+            </div>
           )}
         </div>
 
         <div className="order-1 lg:order-2 col-span-full lg:col-span-1 lg:max-w-xl flex flex-col items-start">
-          <h1 className="text-3xl sm:text-4xl text-gray-700 font-extrabold tracking-wide">
+          <h1 className="text-4xl font-serif text-black font-extrabold">
             {product.modelname}{' '}
-            <span className="pl-2 border-l border-gray-200 text-2xl text-gray-700 font-sans">
-              ${product.price}
-            </span>
           </h1>
           <div className="mt-5 flex items-center">
-            <p className="pr-5 border-r border-gray-200 text-2xl text-gray-700 font-sans">
+            <p className="text-2xl font-serif text-black pr-5">
               ${selectedShoe?.price}
             </p>
-
-            <div className="pl-3 pr-3 flex items-center">
-              <span className="ml-2 text-sm text-gray-400 font-medium">
-                Custom Shoes
-              </span>
-            </div>
           </div>
-          <div className="mt-4">
+          <div className="mt-4 ">
             <button
               onClick={() => setShowInspiration(true)}
               className={`mr-4 text-xl font-semibold border-b-4 ${
@@ -179,7 +147,7 @@ const ProductDetails = ({ product, userLoggedIn }) => {
 
             <button
               onClick={handleAddToCart}
-              className="w-full btn inline-block btn-neutral btn-active rounded-md font-semibold"
+              className=" btn btn-block btn-accent"
             >
               Add To Cart
             </button>
@@ -188,7 +156,7 @@ const ProductDetails = ({ product, userLoggedIn }) => {
 
           <button
             onClick={handleCustomizeClick}
-            className="mt-4 py-2 w-full inline-block rounded-md border-2 border-black outline-8 transition delay-150 text-base font-semibold tracking-wide hover:bg-black hover:text-white"
+            className="mt-4 btn btn-outline btn-block"
           >
             CUSTOMIZE
           </button>
@@ -199,9 +167,14 @@ const ProductDetails = ({ product, userLoggedIn }) => {
         </div>
       </div>
       {/* <h3 className="mt-10 text-lg text-gray-700 font-semibold">Overview</h3> */}
-      <p className="mt-2 text-md text-gray-500 font-medium">
-        {product.description}
-      </p>
+      <div className="mt-8 p-6 border-2 rounded-lg shadow-lg">
+        <h1 className="text-2xl text-black-2 font-serif font-bold mb-4">
+          {selectedShoe?.name}
+        </h1>
+        <p className="text-black-2 text-lg font-light">
+          {selectedShoe?.description}
+        </p>
+      </div>
     </div>
   );
 };

@@ -205,7 +205,7 @@ export default function BrandsListTable({
           />,
           <div className="tooltip tooltip-right" data-tip="Add Shoe Model">
             <GridActionsCellItem
-              icon={<AddIcon />}
+              icon={<AddIcon className="transparent dark:text-gray-300" />}
               label="Add Shoe Model"
               onClick={handleAddModelClick(id)}
               color="inherit"
@@ -252,7 +252,10 @@ export default function BrandsListTable({
           color: 'gray', // or any color you want
         },
         '& .MuiIconButton-root': {
-          color: 'white',
+          color: 'black',
+          '&.dark:text-white': {
+            color: 'white !important',
+          },
         },
         // Add any additional styling here
       }}

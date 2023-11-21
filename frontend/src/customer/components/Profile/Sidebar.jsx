@@ -8,6 +8,7 @@ const Sidebar = () => {
   useEffect(() => {
     setIsAccountDropdownOpen(location.pathname.includes('/user/account'));
   }, [location]);
+  const user = JSON.parse(localStorage.getItem('user'));
 
   const isActive = (path) => location.pathname.startsWith(path);
 
@@ -71,8 +72,7 @@ const Sidebar = () => {
           />
           <div>
             <p className="text-xs">
-              <strong className="block font-medium">Lee Cois</strong>
-              <span>leecois@gmail.com</span>
+              <span>{user.email}</span>
             </p>
           </div>
         </div>

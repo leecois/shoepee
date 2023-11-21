@@ -5,11 +5,17 @@ import Breadcrumb from '../components/Breadcrumb';
 
 const StaffPage = () => {
   const breadcrumbItems = [{ label: 'Manager Order' }];
-  const orderList = StaffOrderData();
+  const { orderList, acceptOrder, deliveryOrder, completeOrder } =
+    StaffOrderData();
   return (
     <div className="min-h-screen">
       <Breadcrumb items={breadcrumbItems} />
-      <OrdersTable orderList={orderList} />
+      <OrdersTable
+        completeOrder={completeOrder}
+        deliveryOrder={deliveryOrder}
+        orderList={orderList}
+        acceptOrder={acceptOrder}
+      />
     </div>
   );
 };

@@ -133,7 +133,7 @@ export default function Navigation() {
               >
                 <div className="indicator">
                   <img
-                    src="https://i.redd.it/snoovatar/avatars/67ec63fa-4e6d-49ff-bd8b-b4ea1341ab4d.png"
+                    src="https://i.redd.it/djgsy4us83w71.jpg"
                     alt="User"
                     className="rounded-full h-7 w-7"
                   />

@@ -94,12 +94,16 @@ const Stacked = ({ modelList2 }) => {
           <div className="-mx-6 mt-8 border shadow-xl lg:col-span-2 lg:mx-0">
             <div id="keen-slider-1" className="keen-slider">
               {modelList2?.map((model) => (
-                <Link to={`/products/${model.modelname}`} key={model.id} className="keen-slider__slide">
+                <Link
+                  to={`/products/${model.modelname}`}
+                  key={model.id}
+                  className="keen-slider__slide"
+                >
                   <blockquote className="flex h-full flex-col justify-between bg-white p-6 shadow-sm sm:p-8 lg:p-12">
                     <div>
                       <div className="mt-4">
                         <img
-                          src={model.imageurl}
+                          src={model.shoes[0]?.imageUrl}
                           alt={model.modelname}
                           className="h-100 w-full rounded-lg object-cover object-center dark:bg-gray-500"
                         />
@@ -118,7 +122,7 @@ const Stacked = ({ modelList2 }) => {
                           </div>
                         </div>
                         <p className="text-xl font-semibold text-gray-900">
-                          ${model.price}
+                          ${model.shoes[0]?.price}
                         </p>
                       </div>
                     </div>

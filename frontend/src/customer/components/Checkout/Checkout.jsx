@@ -24,6 +24,7 @@ const Checkout = ({ onSuccess, disabled }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [customerName, setCustomerName] = useState('');
   const [orderAddress, setOrderAddress] = useState('');
+  const [orderPhone, setOrderPhone] = useState('');
   const cartId = useSelector((state) => state.cart.cartId);
   const cartEmail = useSelector((state) => state.cart.user?.email);
 
@@ -38,6 +39,7 @@ const Checkout = ({ onSuccess, disabled }) => {
   const handleConfirm = (values) => {
     setCustomerName(`${values.firstName} ${values.lastName}`);
     setOrderAddress(values.address);
+    setOrderPhone(values.phone);
     setIsModalOpen(true);
   };
 
@@ -45,7 +47,7 @@ const Checkout = ({ onSuccess, disabled }) => {
     const orderData = {
       customerName,
       orderAddress,
-      orderPhone: initialValues.phone,
+      orderPhone,
       cartId,
     };
 

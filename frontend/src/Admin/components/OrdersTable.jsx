@@ -1,21 +1,36 @@
 import React, { useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
-import { CheckIcon, EyeIcon } from '@heroicons/react/24/outline';
+import {
+  CheckIcon,
+  EyeIcon,
+  TruckIcon,
+  CheckBadgeIcon,
+} from '@heroicons/react/24/outline';
 import OrderDetailModal from '../../customer/components/Profile/OrderDetailModal';
 import Box from '@mui/material/Box';
 
-const OrdersTable = ({ orderList, acceptOrder }) => {
+const OrdersTable = ({
+  orderList,
+  acceptOrder,
+  deliveryOrder,
+  completeOrder,
+}) => {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  console.log(orderList);
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedOrder(null);
   };
-
-  const handleProductClick = (order) => {
-    setSelectedOrder(order);
-    setIsModalOpen(true);
+  const confirmOrder = (orderId) => {
+    acceptOrder(orderId);
+  };
+  const startShipping = (orderId) => {
+    deliveryOrder(orderId);
+  };
+  const completedOrder = (orderId) => {
+    completeOrder(orderId);
   };
 
   const columns = [
@@ -34,23 +49,39 @@ const OrdersTable = ({ orderList, acceptOrder }) => {
     {
       field: 'actions',
       headerName: 'Actions',
-      width: 150,
+      width: 200,
       renderCell: (params) => (
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-2">
+          {params.row.orderStatus === 'PENDING' && (
+            <button
+              onClick={() => confirmOrder(params.row.orderId)}
+              title="Confirm Order"
+            >
+              <CheckIcon className="h-5 w-5 text-green-500" />
+            </button>
+          )}
+          {params.row.orderStatus === 'CONFIRMED' && (
+            <button
+              onClick={() => startShipping(params.row.orderId)}
+              title="Start Shipping"
+            >
+              <TruckIcon className="h-5 w-5 text-blue-500" />
+            </button>
+          )}
+          {params.row.orderStatus === 'SHIPPING' && (
+            <button
+              onClick={() => completedOrder(params.row.orderId)}
+              title="Complete Order"
+            >
+              <CheckBadgeIcon className="h-5 w-5 text-purple-500" />
+            </button>
+          )}
           <button
-            onClick={() => handleProductClick(params.row)}
-            className="hover:text-info mr-3"
+            onClick={() => setSelectedOrder(params.row)}
+            title="View Details"
           >
             <EyeIcon className="h-5 w-5" />
           </button>
-          {params.row.status === false && (
-            <button
-              className="hover:text-success"
-              onClick={() => acceptOrder(params.row.orderId)}
-            >
-              <CheckIcon className="h-5 w-5" />
-            </button>
-          )}
         </div>
       ),
     },
@@ -61,10 +92,10 @@ const OrdersTable = ({ orderList, acceptOrder }) => {
       ? orderList.content.map((order) => ({
           id: order.orderId,
           orderId: `${order.orderId}`,
-          phone: order.user.phone || 'N/A',
+          phone: order.phoneNumber || 'N/A',
           address: order.billingAddress || 'N/A',
           paymentStatus: order.paymentStatus,
-          orderStatus: order.status ? 'ACCEPT' : 'PENDING',
+          orderStatus: order.orderStatus,
           orderCreateAt: new Date(order.orderCreateAt).toLocaleString(),
           orderAmt: '$' + order.orderAmt,
           status: order.status, // Add this line

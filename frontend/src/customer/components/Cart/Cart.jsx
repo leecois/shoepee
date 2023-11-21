@@ -60,7 +60,7 @@ const Cart = ({ cartItems }) => {
               <td className="px-6 py-4 text-gray-800">${item.totalprice}</td>
               <td className="px-6 py-4">
                 <button
-                  onClick={() => handleRemoveFromCart(item.shoe?.id)}
+                  onClick={() => handleRemoveFromCart(item.cartItemId)}
                   className="flex items-center gap-2 text-gray-600 hover:text-red-600"
                 >
                   <CloseIcon className="text-lg" /> Remove

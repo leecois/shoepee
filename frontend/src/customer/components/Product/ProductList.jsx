@@ -39,7 +39,7 @@ function ProductList({ modelList }) {
                 {model.modelname}
               </h3>
               <p className="text-md text-gray-900 font-semibold">
-                ${model.price}
+                ${model.shoes[0]?.price}
               </p>
             </div>
           </Link>

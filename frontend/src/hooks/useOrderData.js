@@ -7,7 +7,7 @@ const useOrderData = () => {
 
   const fetchData = async () => {
     try {
-      const data = await axiosClient.get(`${baseUrl}/findAll`);
+      const  data = await axiosClient.get(`${baseUrl}/findAll`);
       setOrderList(data);
     } catch (error) {
       console.error(
@@ -20,20 +20,35 @@ const useOrderData = () => {
   const acceptOrder = async (orderId) => {
     try {
       await axiosClient.put(`${baseUrl}/acceptorder/${orderId}`);
-      // Update orderList state here
-      // For example, you might want to filter out the accepted order
-      // or update its status in the list.
-      setOrderList((prevOrderList) => {
-        if (!Array.isArray(prevOrderList)) {
-          return [];
-        }
-        return prevOrderList.map((order) =>
-          order.orderId === orderId ? { ...order, accepted: true } : order
-        );
-      });
+      console.log(`Order ${orderId} accepted successfully.`);
+      fetchData(); // Refresh the order list
     } catch (error) {
       console.error(
         'Error accepting order:',
+        error.message || 'Unexpected error'
+      );
+    }
+  };
+
+  const completeOrder = async (orderId) => {
+    try {
+      await axiosClient.put(`${baseUrl}/completedyorder/${orderId}`);
+      fetchData();
+    } catch (error) {
+      console.error(
+        'Error completing order:',
+        error.message || 'Unexpected error'
+      );
+    }
+  };
+
+  const deliveryOrder = async (orderId) => {
+    try {
+      await axiosClient.put(`${baseUrl}/deliveryorder/${orderId}`);
+      fetchData();
+    } catch (error) {
+      console.error(
+        'Error updating delivery status:',
         error.message || 'Unexpected error'
       );
     }
@@ -43,7 +58,7 @@ const useOrderData = () => {
     fetchData();
   }, []);
 
-  return { orderList, acceptOrder };
+  return { orderList, acceptOrder, completeOrder, deliveryOrder };
 };
 
 export default useOrderData;

@@ -136,21 +136,6 @@ export default function ModelsTable({ modelList, updateModel, deleteModel }) {
       width: 230,
     },
     {
-      field: 'imageurl',
-      headerName: 'Image',
-      width: 130,
-      editable: true,
-      renderCell: (params) => (
-        <img
-          src={params.value}
-          alt="Shoe"
-          style={{ width: '50px', height: '50px' }}
-          className="object-cover"
-        />
-      ),
-    },
-    { field: 'price', headerName: 'Price', width: 100, editable: true },
-    {
       field: 'actions',
       type: 'actions',
       headerName: 'Actions',
@@ -195,7 +180,7 @@ export default function ModelsTable({ modelList, updateModel, deleteModel }) {
           />,
           <div className="tooltip tooltip-right" data-tip="Add Shoe">
             <GridActionsCellItem
-              icon={<AddIcon />}
+              icon={<AddIcon className="transparent dark:text-gray-300" />}
               label="Add Shoe"
               onClick={handleAddShoeClick(id)}
               color="inherit"
@@ -233,7 +218,7 @@ export default function ModelsTable({ modelList, updateModel, deleteModel }) {
           display: 'none', // Hiding column separators for a cleaner look
         },
         '& .MuiDataGrid-menuIcon': {
-          color: 'white', // Making sure all icons are visible in dark mode
+          color: 'white',
         },
         '& .MuiDataGrid-toolbar': {
           color: 'black',
@@ -242,7 +227,10 @@ export default function ModelsTable({ modelList, updateModel, deleteModel }) {
           color: 'gray', // or any color you want
         },
         '& .MuiIconButton-root': {
-          color: 'white',
+          color: 'black',
+          '&.dark:text-white': {
+            color: 'white !important',
+          },
         },
         // Add any additional styling here
       }}
