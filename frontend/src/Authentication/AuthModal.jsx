@@ -1,11 +1,10 @@
 import { Box, Modal } from '@mui/material';
 import axios from 'axios';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { API_BASE_URL } from '../constants/index';
 import SignIn from './SignIn';
 import SignUp from './Signup';
-import { useNavigate } from 'react-router-dom';
-import StorageKeys from '../constants/storage-keys';
 
 const style = {
   position: 'absolute',
@@ -94,7 +93,8 @@ const AuthModal = ({ handleClickOpen, handleClose }) => {
     setIsSignInVisible(false);
   };
   const handleUpdateProfile = () => {
-    navigate(`user/account/profile`);
+    navigate(`/user/account/profile`);
+    window.location.reload();
   };
 
   return (

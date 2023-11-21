@@ -2,16 +2,15 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 function ProductList({ modelList }) {
-  if (modelList.length === 0 || !modelList) {
-    // Display loading placeholders if modelList is empty or loading
+  if (!modelList || modelList.length === 0) {
     return (
       <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {[...Array(12)].map((_, index) => (
-          <div key={index} className="animate-pulse space-y-2">
-            <div className="h-60 bg-gray-300 rounded-lg"></div>
-            <div className="h-4 bg-gray-300 rounded"></div>
-            <div className="h-4 bg-gray-300 rounded"></div>
-            <div className="h-4 bg-gray-300 rounded"></div>
+          <div key={index} className="animate-pulse space-y-4 p-4 border border-gray-200 rounded-lg">
+            <div className="h-60 bg-gray-300 rounded"></div>
+            <div className="h-4 bg-gray-300 w-3/4 rounded"></div>
+            <div className="h-4 bg-gray-300 w-1/2 rounded"></div>
+            <div className="h-4 bg-gray-300 w-1/4 rounded"></div>
           </div>
         ))}
       </div>
@@ -20,30 +19,21 @@ function ProductList({ modelList }) {
 
   return (
     <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      {modelList?.map((model) => (
-        <div
-          key={model.id}
-          className="group p-4 bg-white shadow-lg rounded-lg transition duration-500 ease-in-out transform hover:-translate-y-1 hover:shadow-2xl"
-        >
-          <Link to={`/products/${model.modelname}`} className="block">
+      {modelList.map((model) => (
+        <Link key={model.id} to={`/products/${model.modelname}`} className="block group">
+          <div className="p-4 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 ease-in-out">
             <img
               src={model.shoes[0]?.imageUrl}
               alt={model.modelname}
-              className="h-60 w-full rounded-t-lg object-cover"
+              className="h-60 w-full object-cover rounded-t-lg mb-4"
             />
-            <div className="py-4">
-              <span className="text-sm text-gray-500 font-semibold">
-                {model.brandDto.brandName}
-              </span>
-              <h3 className="text-lg text-gray-900 font-bold group-hover:underline">
-                {model.modelname}
-              </h3>
-              <p className="text-md text-gray-900 font-semibold">
-                ${model.shoes[0]?.price}
-              </p>
+            <div>
+              <span className="text-sm text-gray-500 font-semibold">{model.brandDto.brandName}</span>
+              <h3 className="text-lg text-gray-900 font-bold mt-1 group-hover:underline">{model.modelname}</h3>
+              <p className="text-md text-gray-900 font-semibold">${model.shoes[0]?.price}</p>
             </div>
-          </Link>
-        </div>
+          </div>
+        </Link>
       ))}
     </div>
   );

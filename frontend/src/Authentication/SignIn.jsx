@@ -23,7 +23,7 @@ const SignIn = ({ goBack, enteredEmail, handleCloseSuccess }) => {
       password: '',
     },
     validationSchema,
-    onSubmit: async (values) => {
+    onSubmit: async (values, { setFieldError }) => {
       try {
         setIsLoading(true);
         const action = login(values);
@@ -32,14 +32,15 @@ const SignIn = ({ goBack, enteredEmail, handleCloseSuccess }) => {
 
         enqueueSnackbar('Login Successful!', { variant: 'success' });
         handleCloseSuccess();
-        window.location.reload();
       } catch (error) {
-        enqueueSnackbar('Failed to login: ' + error.message, {
-          variant: 'error',
-        });
-        console.log('Failed to login:', error);
-      } finally {
         setIsLoading(false);
+        if (error.response && error.response.status === 401) {
+          setFieldError('password', 'Password is incorrect');
+        } else {
+          enqueueSnackbar('Failed to login: ' + error.message, {
+            variant: 'error',
+          });
+        }
       }
     },
   });
@@ -88,7 +89,7 @@ const SignIn = ({ goBack, enteredEmail, handleCloseSuccess }) => {
               className="peer w-full border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0"
               value={formik.values.email}
               onChange={formik.handleChange}
-              readOnly
+              disabled
             />
             <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
               Email
@@ -116,8 +117,8 @@ const SignIn = ({ goBack, enteredEmail, handleCloseSuccess }) => {
             </div>
           ) : null}
         </div>
-        <div className="flex justify-between">
-          {/* <div className="flex items-start">
+        {/* <div className="flex justify-between">
+          <div className="flex items-start">
             <div className="flex items-center h-5">
               <input
                 id="remember"
@@ -135,8 +136,8 @@ const SignIn = ({ goBack, enteredEmail, handleCloseSuccess }) => {
                 Remember me
               </label>
             </div>
-          </div> */}
-        </div>
+          </div>
+        </div> */}
         <button
           type="submit"
           disabled={isLoading}
