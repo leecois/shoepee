@@ -7,10 +7,26 @@ public class OrderItemDto {
     private int orderItemId;
 
     private CustomizedShoeDto customizedShoeDto;
-
+    private int productQuantity;
     private double totalProductprice;
     @JsonIgnore
     private OrderDto order;
+
+    public CustomizedShoeDto getCustomizedShoeDto() {
+        return customizedShoeDto;
+    }
+
+    public void setCustomizedShoeDto(CustomizedShoeDto customizedShoeDto) {
+        this.customizedShoeDto = customizedShoeDto;
+    }
+
+    public int getProductQuantity() {
+        return productQuantity;
+    }
+
+    public void setProductQuantity(int productQuantity) {
+        this.productQuantity = productQuantity;
+    }
 
     public int getOrderItemId() {
         return orderItemId;

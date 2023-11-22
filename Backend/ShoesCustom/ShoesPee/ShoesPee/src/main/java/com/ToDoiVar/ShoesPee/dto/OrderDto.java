@@ -15,9 +15,10 @@ public class OrderDto {
     private int orderId;
     private String orderStatus;
     private String paymentStatus;
-    private boolean status;
     private Date orderCreateAt;
     private double orderAmt;
+    private String customerName;
+    private String phoneNumber;
     private String billingAddress;
     private UserDto user;
 
@@ -47,13 +48,7 @@ public class OrderDto {
         this.paymentStatus = paymentStatus;
     }
 
-    public boolean isStatus() {
-        return status;
-    }
 
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
 
     public double getOrderAmt() {
         return orderAmt;

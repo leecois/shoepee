@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -52,9 +53,7 @@ public class SecurityConfiguration {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(req ->
                         req
-                                .requestMatchers("https://localhost:8080/vnpay_jsp/**")
-                                .permitAll()
-                                .requestMatchers("/api/v1/auth/**")
+                                .requestMatchers("/api/v1/auth/**", "/payment_infor")
                                 .permitAll()
                                 .requestMatchers("/api/v1/admin/**").hasAnyAuthority(ADMIN.name())
                                 .requestMatchers("/api/v1/staff/**").hasAnyAuthority(ADMIN.name(),MANAGER.name())

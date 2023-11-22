@@ -9,8 +9,10 @@
     import com.ToDoiVar.ShoesPee.dto.OrderDto;
     import com.ToDoiVar.ShoesPee.payment.DTO.PaymentResDTO;
     import com.ToDoiVar.ShoesPee.payment.DTO.TransactionStatusDTO;
+    import com.ToDoiVar.ShoesPee.payment.PaymentService.VNPayService;
     import com.ToDoiVar.ShoesPee.payment.config.Config;
     import com.ToDoiVar.ShoesPee.repositiory.OrderRepository;
+    import jakarta.servlet.http.HttpServletRequest;
     import org.springframework.beans.factory.annotation.Autowired;
     import org.springframework.context.annotation.Lazy;
     import org.springframework.http.HttpStatus;
@@ -22,9 +24,10 @@
     import java.nio.charset.StandardCharsets;
     import java.text.SimpleDateFormat;
     import java.util.*;
-
+    @org.springframework.stereotype.Controller
+    @CrossOrigin("*")
     @RestController
-    @RequestMapping("/api/payment")
+    @RequestMapping("/api/v1/auth")
     @Lazy
     public class PaymentController {
         @Autowired
@@ -33,12 +36,14 @@
         private UserService userService;
         @Autowired
         private OrderService orderService;
+        @Autowired
+        private VNPayService vnPayService;
+        @PostMapping("/pay")
+        public String getPay(@RequestBody Order orderid) throws UnsupportedEncodingException{
+//            String token = bearertoken.substring(7);
+//            String username =  jwtService.extractUsername(token);
+//            User user = this.userService.getUserByEmail(username);
 
-        @PutMapping("/pay/{id}")
-        public String getPay(@RequestHeader("Authorization") String bearertoken,@PathVariable int id) throws UnsupportedEncodingException{
-            String token = bearertoken.substring(7);
-            String username =  jwtService.extractUsername(token);
-            User user = this.userService.getUserByEmail(username);
 //            OrderResponse order = this.orderService.findOrdersByUserId(user.getUserId());
 //           List<Order> order1 = this.orderRepository.findByUser_UserId(user.getUserId());
 //            Optional<Order> selectedOrder = userOrders.stream()
@@ -48,12 +53,12 @@
 //                Order order = selectedOrder.get();
 //                this.orderService.paidOrder()
 //            }
-            Order paidOrder = orderService.paidOrder(user.getUserId(), id);
+            Order order = orderService.getOrderById(orderid.getOrderId());
 //            order.setOrderStatusForContent("PAIDED");
             String vnp_Version = "2.1.0";
             String vnp_Command = "pay";
             String orderType = "other";
-            long amount = (long) paidOrder.getOrderAmt() *240*100;
+            long amount = (long) order.getOrderAmt() *240*100;
             String bankCode = "NCB";
 
             String vnp_TxnRef = Config.getRandomNumber(8);
@@ -69,11 +74,12 @@
             vnp_Params.put("vnp_TmnCode", vnp_TmnCode);
             vnp_Params.put("vnp_Amount", String.valueOf(amount));
             vnp_Params.put("vnp_CurrCode", "VND");
+//            vnp_Params.put("vnp_Orderid", String.valueOf(orderid.getOrderId()));
 
             vnp_Params.put("vnp_BankCode", bankCode);
             vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
             vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang:" + vnp_TxnRef);
-            vnp_Params.put("vnp_OrderType", orderType);
+            vnp_Params.put("vnp_OrderType", String.valueOf(orderid.getOrderId()));
 
             vnp_Params.put("vnp_Locale", "vn");
             vnp_Params.put("vnp_ReturnUrl", Config.vnp_ReturnUrl);
@@ -141,29 +147,46 @@
 //            return ResponseEntity.status(HttpStatus.OK).body(order);
 //        }
 
-        @GetMapping("/payment-in4")
-        public ResponseEntity<String> transaction2(
-                @RequestHeader("Authorization") String bearertoken
+        @GetMapping("/payment_infor")
+        public ResponseEntity<?> transaction2(
+//                @RequestHeader("Authorization") String bearertoken,
+                @RequestParam(value = "vnp_Amount") String amount,
+                @RequestParam(value = "vnp_BankCode") String bankcode,
+                @RequestParam(value = "vnp_OrderInfo") String order,
+                @RequestParam(value = "vnp_ResponseCode") String responseCode
+//                @RequestParam(value = "vnp_OrderType") String orderid
+
+//                @RequestHeader("Authorization") String bearertoken
         )
         {
-            String token = bearertoken.substring(7);
-            String username =  jwtService.extractUsername(token);
-            User user = this.userService.getUserByName(username);
-            OrderResponse order2 = this.orderService.findOrdersByUserId(user.getUserId());
-            order2.setOrderStatusForContent("PAIDED");
+//            String token = bearertoken.substring(7);
+//            String username =  jwtService.extractUsername(token);
+//            User user = this.userService.getUserByName(username);
+//            OrderResponse order2 = this.orderService.findOrdersByUserId(user.getUserId());
+//            order2.setOrderStatusForContent("PAIDED");
 
-//            TransactionStatusDTO transactionStatusDTO = new TransactionStatusDTO();
-//            if (responseCode.equals("00")) {
-//                transactionStatusDTO.setStatus("Ok");
-//                transactionStatusDTO.setMessage("Successfully");
-//                transactionStatusDTO.setData("");
-//            } else {
-//                transactionStatusDTO.setStatus("No");
-//                transactionStatusDTO.setMessage("Failed");
-//                transactionStatusDTO.setData("");
-//            }
-            String link = "/redirect:/success";
-            return new ResponseEntity<>(link,HttpStatus.OK);
+            TransactionStatusDTO transactionStatusDTO = new TransactionStatusDTO();
+            if (responseCode.equals("00")) {
+                transactionStatusDTO.setStatus("Ok");
+                transactionStatusDTO.setMessage("Successfully");
+                transactionStatusDTO.setData("");
+//                Order paidOrder = orderService.paidOrder(Integer.parseInt(String.valueOf(orderid)));
+            }
+            else {
+                transactionStatusDTO.setStatus("No");
+                transactionStatusDTO.setMessage("Failed");
+                transactionStatusDTO.setData("");
+            }
+//            String link = "/redirect:/success";
+            return ResponseEntity.status(HttpStatus.OK).body(transactionStatusDTO);
+        }
+        @PostMapping("/submitOrder")
+        public String submidOrder(@RequestParam("amount") int orderTotal,
+                                  @RequestParam("orderInfo") String orderInfo,
+                                  HttpServletRequest request){
+            String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
+            String vnpayUrl = vnPayService.createOrder(orderTotal, orderInfo, baseUrl);
+            return "redirect:" + vnpayUrl;
         }
 
     }

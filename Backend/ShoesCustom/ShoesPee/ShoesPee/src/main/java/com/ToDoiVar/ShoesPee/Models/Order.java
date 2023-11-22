@@ -22,7 +22,6 @@ public class Order {
     private int orderId;
     private String orderStatus;
     private String paymentStatus;
-    private boolean status;
     private double orderAmt;
     private String billingAddress;
     private String phoneNumber;

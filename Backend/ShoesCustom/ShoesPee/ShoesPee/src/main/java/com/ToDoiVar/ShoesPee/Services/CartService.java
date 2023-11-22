@@ -98,78 +98,78 @@ public class CartService {
         // Return the CartDto
         return cartDto;
     }
-    public CartDto addItemWithShoemodel(ItemRequest item,String username){
-        int productId = item.getShoeId();
-        int quantity = item.getQuantity();
-
-        // Fetch user
-        User user = this.userRepo.findByEmail(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-
-        // Fetch Product
-        CustomizedShoe customizedShoe = this.customizedShoeRepository.findById(productId)
-                .orElseThrow(() -> new ResourceNotFoundException("Product Not Found"));
-
-        // Check product stock here (not implemented in the given code)
-
-        // Create cartItem with productId and quantity
-        CartItem cartItem = new CartItem();
-        cartItem.setShoe(customizedShoe);
-        cartItem.setQuantity(quantity);
-        double totalprice = customizedShoe.getPrice() * quantity ;
-        cartItem.setTotalprice(totalprice);
-
-        // Get cart from user
-        Cart cart = user.getCart();
-        if (cart == null) {
-            cart = new Cart();
-            cart.setUser(user);
-        }
-
-        // Check if item is available in CartItem or not
-        AtomicReference<Boolean> flag = new AtomicReference<>(false);
-        cart.getItems().forEach(i -> {
-            if (i.getShoe().getId() == customizedShoe.getId()) {
-                i.setQuantity(i.getQuantity() + quantity);
-                i.setTotalprice(i.getTotalprice() + totalprice);
-                flag.set(true);
-            }
-        });
-
-        if (!flag.get()) {
-            cartItem.setCart(cart);
-            cart.getItems().add(cartItem);
-        }
-
-        cartItem.setSize(item.getSize());
-        double cartTotalPrice = cart.getItems().stream()
-                .mapToDouble(CartItem::getTotalprice)
-                .sum();
-        cart.setTotalPrice(cartTotalPrice);
-        // Save the cart
-        Cart savedCart = this.cartRepo.save(cart);
-
-        // Map the Cart to CartDto
-        CartDto cartDto = this.modelMapper.map(savedCart, CartDto.class);
-        cartDto.setTotalPrice(cartTotalPrice);
-        Set<CartItemDto> cartItemDtos = savedCart.getItems().stream()
-                .map(ci -> {
-                    // First, map the CartItem to CartItemDto
-                    CartItemDto cartItemDto = this.modelMapper.map(ci, CartItemDto.class);
-                    // Then map the ShoeModel to ShoeModelDto
-                    ShoeModelDto shoeModelDto = this.modelMapper.map(ci.getShoe().getShoeModel(), ShoeModelDto.class);
-                    // Set the ShoeModelDto to the ShoeDto within the CartItemDto
-                    cartItemDto.getShoe().setShoeModelDto(shoeModelDto);
-                    return cartItemDto;
-                })
-                .collect(Collectors.toSet());
-
-        // Set the CartItemDtos to the CartDto
-        cartDto.setItems(cartItemDtos);
-
-        // Return the CartDto
-        return cartDto;
-    }
+//    public CartDto addItemWithShoemodel(ItemRequest item,String username){
+//        int productId = item.getShoeId();
+//        int quantity = item.getQuantity();
+//
+//        // Fetch user
+//        User user = this.userRepo.findByEmail(username)
+//                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+//
+//        // Fetch Product
+//        CustomizedShoe customizedShoe = this.customizedShoeRepository.findById(productId)
+//                .orElseThrow(() -> new ResourceNotFoundException("Product Not Found"));
+//
+//        // Check product stock here (not implemented in the given code)
+//
+//        // Create cartItem with productId and quantity
+//        CartItem cartItem = new CartItem();
+//        cartItem.setShoe(customizedShoe);
+//        cartItem.setQuantity(quantity);
+//        double totalprice = customizedShoe.getPrice() * quantity ;
+//        cartItem.setTotalprice(totalprice);
+//
+//        // Get cart from user
+//        Cart cart = user.getCart();
+//        if (cart == null) {
+//            cart = new Cart();
+//            cart.setUser(user);
+//        }
+//
+//        // Check if item is available in CartItem or not
+//        AtomicReference<Boolean> flag = new AtomicReference<>(false);
+//        cart.getItems().forEach(i -> {
+//            if (i.getShoe().getId() == customizedShoe.getId()) {
+//                i.setQuantity(i.getQuantity() + quantity);
+//                i.setTotalprice(i.getTotalprice() + totalprice);
+//                flag.set(true);
+//            }
+//        });
+//
+//        if (!flag.get()) {
+//            cartItem.setCart(cart);
+//            cart.getItems().add(cartItem);
+//        }
+//
+//        cartItem.setSize(item.getSize());
+//        double cartTotalPrice = cart.getItems().stream()
+//                .mapToDouble(CartItem::getTotalprice)
+//                .sum();
+//        cart.setTotalPrice(cartTotalPrice);
+//        // Save the cart
+//        Cart savedCart = this.cartRepo.save(cart);
+//
+//        // Map the Cart to CartDto
+//        CartDto cartDto = this.modelMapper.map(savedCart, CartDto.class);
+//        cartDto.setTotalPrice(cartTotalPrice);
+//        Set<CartItemDto> cartItemDtos = savedCart.getItems().stream()
+//                .map(ci -> {
+//                    // First, map the CartItem to CartItemDto
+//                    CartItemDto cartItemDto = this.modelMapper.map(ci, CartItemDto.class);
+//                    // Then map the ShoeModel to ShoeModelDto
+//                    ShoeModelDto shoeModelDto = this.modelMapper.map(ci.getShoe().getShoeModel(), ShoeModelDto.class);
+//                    // Set the ShoeModelDto to the ShoeDto within the CartItemDto
+//                    cartItemDto.getShoe().setShoeModelDto(shoeModelDto);
+//                    return cartItemDto;
+//                })
+//                .collect(Collectors.toSet());
+//
+//        // Set the CartItemDtos to the CartDto
+//        cartDto.setItems(cartItemDtos);
+//
+//        // Return the CartDto
+//        return cartDto;
+//    }
 
     public CartDto getcartAll(String email){
         //find user
@@ -210,13 +210,13 @@ public class CartService {
         return this.modelMapper.map(findByUserAndcartId,CartDto.class);
     }
 
-    public CartDto removeCartItemFromCart(String userName, int ProductId){
+    public CartDto removeCartItemFromCart(String userName, int cartItemId){
         User user=this.userRepo.findByEmail(userName).orElseThrow(()->new ResourceNotFoundException("User Not found"));
 
         Cart cart=user.getCart();
         Set<CartItem> items = cart.getItems();
 
-        boolean removeIf = items.removeIf((i)->i.getShoe().getId()==ProductId);
+        boolean removeIf = items.removeIf((i) -> i.getCartItemId() == cartItemId);
         Cart save = this.cartRepo.save(cart);
         System.out.println(removeIf);
         return this.modelMapper.map(save,CartDto.class);

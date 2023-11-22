@@ -33,7 +33,7 @@ public class UserManageController {
         userService.removeUser(id);
         return new ResponseEntity<String>("Delete sucessful",HttpStatus.OK);
     }
-    @PostMapping("/edituser/{id}")
+    @PutMapping("/edituser/{id}")
     public ResponseEntity<User> editUser(@PathVariable int id,@RequestBody User newUser){
         return new ResponseEntity<User>(userService.editUser(id,newUser),HttpStatus.OK);
     }

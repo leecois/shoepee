@@ -64,6 +64,8 @@ public class AuthenticationService {
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
         saveUserToken(savedUser, jwtToken);
+        InforUser inforUser = new InforUser();
+        this.inforUserService.addInforUser(inforUser, savedUser.getUserId());
         return AuthenticationResponse.builder()
                 .user(user)
                 .accessToken(jwtToken)
@@ -80,6 +82,8 @@ public class AuthenticationService {
         var savedUser = repository.save(user);
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
+        InforUser inforUser = new InforUser();
+        this.inforUserService.addInforUser(inforUser, savedUser.getUserId());
         saveUserToken(savedUser, jwtToken);
         return AuthenticationResponse.builder()
                 .user(user)

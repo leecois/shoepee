@@ -4,10 +4,7 @@ import com.ToDoiVar.ShoesPee.Exeption.ResourceNotFoundException;
 import com.ToDoiVar.ShoesPee.Exeption.userNotFoundException;
 import com.ToDoiVar.ShoesPee.Models.*;
 import com.ToDoiVar.ShoesPee.dto.*;
-import com.ToDoiVar.ShoesPee.repositiory.CartRepository;
-import com.ToDoiVar.ShoesPee.repositiory.OrderItemsRepository;
-import com.ToDoiVar.ShoesPee.repositiory.OrderRepository;
-import com.ToDoiVar.ShoesPee.repositiory.UserRepository;
+import com.ToDoiVar.ShoesPee.repositiory.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,6 +29,8 @@ public class OrderService {
 
     @Autowired
     private OrderRepository orderReop;
+    @Autowired
+    private CustomizedShoeRepository customizedShoeRepository;
 
 
     //order Create method
@@ -72,10 +71,10 @@ public class OrderService {
         }).collect(Collectors.toSet());
 
         order.setBillingAddress(orderAddress);
-        order.setStatus(false);
+//        order.setStatus(false);
         order.setFullName(orderFullName);
         order.setPhoneNumber(orderPhoneNumber);
-        order.setOrderStatus("CREATED");
+        order.setOrderStatus("PENDING");
         order.setPaymentStatus("NOT PAID");
         order.setUser(user);
         order.setOrderItem(orderitems);
@@ -111,7 +110,10 @@ public class OrderService {
         this.orderReop.delete(order);
     }
 
-
+    public Order getOrderById(int orderid){
+        Order order = this.orderReop.findById(orderid).orElseThrow(()->new ResourceNotFoundException("order not found"));
+        return order;
+    }
     public OrderResponse findById(int orderId){
         Order order = this.orderReop.findById(orderId).orElseThrow(()->new ResourceNotFoundException("order not found"));
 //      OrderDto orderDto = this.modelMapper.map(order,OrderDto.class);
@@ -125,6 +127,7 @@ public class OrderService {
             if (orderItem.getShoe() != null) {
                 CustomizedShoeDto shoeDto = modelMapper.map(orderItem.getShoe(), CustomizedShoeDto.class);
                 ShoeModelDto shoeModelDto = modelMapper.map(orderItem.getShoe().getShoeModel(),ShoeModelDto.class);
+
                 orderItemDto.setShoeDto(shoeDto);
                 orderItemDto.getShoeDto().setShoeModelDto(shoeModelDto);
             }
@@ -136,7 +139,7 @@ public class OrderService {
         // Prepare the response
         OrderResponse response = new OrderResponse();
         response.setContent(Collections.singletonList(orderDto));
-        response.setStatus(orderDto.isStatus());
+//        response.setStatus(orderDto.isStatus());
         response.setOrderCreateAt(orderDto.getOrderCreateAt());
         // Since it's a single order, these values can be set accordingly
         response.setPageNumber(0);
@@ -172,7 +175,7 @@ public class OrderService {
                     CustomizedShoeDto shoeDto = modelMapper.map(orderItem.getShoe(), CustomizedShoeDto.class);
                     ShoeModelDto shoeModelDto = modelMapper.map(orderItem.getShoe().getShoeModel(),ShoeModelDto.class);
                     orderItemDto.setShoeDto(shoeDto);
-                    orderItemDto.getShoeDto().setShoeModelDto(shoeModelDto);
+//                    orderItemDto.getShoeDto().setShoeModelDto(shoeModelDto);
 
                 }
                 return orderItemDto;
@@ -231,43 +234,76 @@ public class OrderService {
     }
     public OrderDto acceptOrder(int orderid){
       Order order=  this.orderReop.findById(orderid).orElseThrow(() -> new ResourceNotFoundException("order not found"));
-      order.setStatus(true);
+      order.setOrderStatus("CONFIRMED");
       Order save = this.orderReop.save(order);
       OrderDto orderDto = this.modelMapper.map(save,OrderDto.class);
       return orderDto;
     }
-    public Order paidOrder(int userid,int orderid) {
-        User user = this.userRepo.findById(userid)
-                .orElseThrow(() -> new userNotFoundException("User not found"));
+    public OrderDto deliveryOrder(int orderid){
+      Order order=  this.orderReop.findById(orderid).orElseThrow(() -> new ResourceNotFoundException("order not found"));
+      order.setOrderStatus("SHIPPING");
+      Order save = this.orderReop.save(order);
+      OrderDto orderDto = this.modelMapper.map(save,OrderDto.class);
+      return orderDto;
+    }
+    public OrderDto completedOrder(int orderid){
+      Order order=  this.orderReop.findById(orderid).orElseThrow(() -> new ResourceNotFoundException("order not found"));
+      order.setOrderStatus("COMPLETED");
+        order.getOrderItem().forEach(orderItem -> {
+            CustomizedShoe shoe = orderItem.getShoe();
+            int soldQuantity = orderItem.getProductQuantity();
+
+            // Giảm số lượng hàng tồn dựa trên số lượng đã bán
+//            shoe.setShoeQuantity(shoe.getShoeQuantity() - soldQuantity);
+            int newQuantity = shoe.getShoeQuantity() - soldQuantity;
+            shoe.setShoeQuantity(newQuantity);
+            if (newQuantity <= 0) {
+                shoe.setStock(false);
+            }
+            // Lưu thay đổi vào cơ sở dữ liệu
+            this.customizedShoeRepository.save(shoe);
+        });
+      Order save = this.orderReop.save(order);
+      OrderDto orderDto = this.modelMapper.map(save,OrderDto.class);
+      return orderDto;
+    }
+    public Order paidOrder(int orderid) {
+        Order order = orderReop.findById(orderid).orElseThrow(()-> new ResourceNotFoundException("order not found"));
+        order.setOrderStatus("PAID");
+        Order savedOrder = this.orderReop.save(order);
+        OrderDto orderDto = this.modelMapper.map(savedOrder, OrderDto.class);
+        return savedOrder;
+//        User user = this.userRepo.findById(userid)
+//                .orElseThrow(() -> new userNotFoundException("User not found"));
 
         // Tìm tất cả các đơn hàng của người dùng
-        List<Order> userOrders = this.orderReop.findByUser(user);
+//        List<Order> userOrders = this.orderReop.findByUser(user);
 
         // Lọc ra đơn hàng có id trùng với PathVariable
-        Optional<Order> selectedOrder = userOrders.stream()
-                .filter(order -> order.getOrderId() == orderid)
-                .findFirst();
+//        Optional<Order> selectedOrder = userOrders.stream()
+//                .filter(order -> order.getOrderId() == orderid)
+//                .findFirst();
 
-        if (selectedOrder.isPresent()) {
-            // Đã tìm thấy đơn hàng, thực hiện các bước cần thiết với đơn hàng này
-            Order order = selectedOrder.get();
-
-            // Đặt trạng thái thanh toán của đơn hàng là "PAID"
-            order.setPaymentStatus("PAID");
-
-            // Lưu đơn hàng sau khi cập nhật
-            Order savedOrder = this.orderReop.save(order);
-
-            // Chuyển đổi đối tượng Order sang OrderDto (nếu cần)
-            // OrderDto orderDto = this.modelMapper.map(savedOrder, OrderDto.class);
-
-            // Trả về đối tượng Order sau khi cập nhật
-            return savedOrder;
-
-
-        }else {
-            // Không tìm thấy đơn hàng với id tương ứng
-            throw new ResourceNotFoundException("Order not found");
-        }
+//        if (selectedOrder.isPresent()) {
+//            // Đã tìm thấy đơn hàng, thực hiện các bước cần thiết với đơn hàng này
+//            Order order = selectedOrder.get();
+//
+//            // Đặt trạng thái thanh toán của đơn hàng là "PAID"
+//            order.setPaymentStatus("PAID");
+//
+//            // Lưu đơn hàng sau khi cập nhật
+//            Order savedOrder = this.orderReop.save(order);
+//
+//            // Chuyển đổi đối tượng Order sang OrderDto (nếu cần)
+//             OrderDto orderDto = this.modelMapper.map(savedOrder, OrderDto.class);
+//
+//            // Trả về đối tượng Order sau khi cập nhật
+//            return savedOrder;
+//
+//
+//        }else {
+//            // Không tìm thấy đơn hàng với id tương ứng
+//            throw new ResourceNotFoundException("Order not found");
+//        }
     }
 }

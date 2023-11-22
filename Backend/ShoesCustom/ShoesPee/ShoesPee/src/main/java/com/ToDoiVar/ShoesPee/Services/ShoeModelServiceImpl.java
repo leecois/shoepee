@@ -64,12 +64,18 @@ public class ShoeModelServiceImpl implements ShoeModelService{
 
     @Override
     public ShoeModel updateShoeModel(int id, ShoeModel updateShoeModel) {
-       return shoeModelRepository.findById(id).map(sm -> {
-//            sm.setImageurl(updateShoeModel.getImageurl());
+        return shoeModelRepository.findById(id).map(sm -> {
             sm.setModelname(updateShoeModel.getModelname());
-//            sm.setBrandId(updateShoeModel.getBrandId());
+
+            // Tìm đối tượng Brand mới
+            Brand newBrand = brandRepository.findById(updateShoeModel.getBrand().getId())
+                    .orElseThrow(() -> new BrandNotFoundException("Brand not found"));
+
+            // Cập nhật Brand cho ShoeModel
+            sm.setBrand(newBrand);
+
             return shoeModelRepository.save(sm);
-        }).orElseThrow(() -> new shoeModelNotFounException("Sorry, this shoemodel could be not found"));
+        }).orElseThrow(() -> new shoeModelNotFounException("Sorry, this shoemodel could not be found"));
 
     }
 

@@ -1,5 +1,6 @@
 package com.ToDoiVar.ShoesPee.Controller;
 
+import com.ToDoiVar.ShoesPee.Models.Order;
 import com.ToDoiVar.ShoesPee.Models.OrderResponse;
 import com.ToDoiVar.ShoesPee.Services.OrderService;
 import com.ToDoiVar.ShoesPee.dto.OrderDto;
@@ -20,6 +21,16 @@ public class OrderStaffCotroller {
     @PutMapping("/acceptorder/{id}")
     public ResponseEntity<OrderDto> acceptOrder(@PathVariable int id){
         OrderDto order = orderService.acceptOrder(id);
+        return new ResponseEntity<OrderDto>(order, HttpStatus.OK);
+    }
+
+    @PutMapping("/deliveryorder/{id}")
+    public ResponseEntity<OrderDto> deliveryOrder(@PathVariable int id){
+        OrderDto order = orderService.deliveryOrder(id);
+        return new ResponseEntity<OrderDto>(order, HttpStatus.OK);
+    }  @PutMapping("/completedyorder/{id}")
+    public ResponseEntity<OrderDto> completedOrder(@PathVariable int id){
+        OrderDto order = orderService.completedOrder(id);
         return new ResponseEntity<OrderDto>(order, HttpStatus.OK);
     }
     @GetMapping("/findAll")
