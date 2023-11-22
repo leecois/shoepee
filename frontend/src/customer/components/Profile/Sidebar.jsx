@@ -67,7 +67,7 @@ const Sidebar = () => {
         <div className="flex items-center gap-2">
           <img
             alt="Profile"
-            src="https://i.redd.it/djgsy4us83w71.jpg"
+            src="/blank-avatar.png"
             className="h-10 w-10 rounded-full object-cover"
           />
           <div>

@@ -116,9 +116,17 @@ export default function Navigation() {
         <div className="navbar-center">
           <button
             onClick={handleHomeClick}
-            className="btn btn-ghost normal-case text-xl font-bold text-gray-800"
+            className="btn btn-ghost normal-case text-xl font-bold text-gray-800 group relative inline-block mr-5 p-2.5 outline-none no-underline bg-gradient-to-br from-yellow-500 to-red-500 bg-clip-text tracking-wide focus:outline-none transition-all duration-300 transform hover:from-gray-700 hover:to-gray-700"
           >
+            <span
+              className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-br from-purple-500 to-red-500 opacity-0 transition-all duration-300 transform -translate-y-2.5 group-hover:opacity-100 group-hover:translate-y-0"
+              aria-hidden="true"
+            />
             SHOEPEE
+            <span
+              className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-br from-purple-500 to-red-500 opacity-0 transition-all duration-300 transform translate-y-2.5 group-hover:opacity-100 group-hover:translate-y-0"
+              aria-hidden="true"
+            />
           </button>
         </div>
 
@@ -133,7 +141,7 @@ export default function Navigation() {
               >
                 <div className="indicator">
                   <img
-                    src="https://i.redd.it/djgsy4us83w71.jpg"
+                    src="/blank-avatar.png"
                     alt="User"
                     className="rounded-full h-7 w-7"
                   />
@@ -209,7 +217,7 @@ export default function Navigation() {
               className="p-2 z-[1] card card-compact dropdown-content w-52 bg-base-100 shadow-lg"
             >
               <div className="card-body">
-                <span className="font-bold text-lg font-serif text-black block mb-2">
+                <span className="font-bold text-lg text-black block mb-2">
                   {cartItemsCount} Items
                 </span>
                 <span className="font-medium text-gray-700 block mb-4">

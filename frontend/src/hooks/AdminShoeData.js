@@ -45,13 +45,15 @@ const AdminShoeData = () => {
 
   const updateShoe = async (id, updatedData) => {
     try {
-      const updateShoe = await adminShoeApi.update(id, updatedData);
-      const updateShoeList = shoeList.map((shoe) =>
-        shoe.id === id ? updateShoe : shoe
+      const { data: updatedShoe } = await adminShoeApi.update(id, updatedData);
+      const updatedShoeList = shoeList.map((shoe) =>
+        shoe.id === id
+          ? { ...shoe, shoeModelDto: updatedShoe.shoeModelDto }
+          : shoe
       );
-      setShoeList(updateShoeList);
+      setShoeList(updatedShoeList);
     } catch (error) {
-      console.error('Error updating brand: ' + error.message);
+      console.error('Error updating shoe: ' + error.message);
     }
   };
 
@@ -60,15 +62,6 @@ const AdminShoeData = () => {
 export const addShoeInformation = async (shoeInfo) => {
   try {
     const response = await adminShoeApi.add(shoeInfo);
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
-};
-export const addShoeImages = async (shoeId, imageUrls) => {
-  try {
-    const data = { shoeId, imageUrls };
-    const response = await adminShoeApi.addimage(data);
     return response.data;
   } catch (error) {
     throw error;

@@ -32,7 +32,12 @@ function EditToolbar() {
 
   return (
     <GridToolbarContainer>
-      <Button color="inherit" startIcon={<AddIcon />} onClick={handleClick}>
+      <Button
+        color="inherit"
+        style={{ fontWeight: 'bold', fontFamily: 'inherit' }}
+        startIcon={<AddIcon />}
+        onClick={handleClick}
+      >
         Add Inspiration For Shoe Model
       </Button>
     </GridToolbarContainer>
@@ -124,6 +129,7 @@ export default function ShoeListTable({ shoeList, updateShoe, deleteShoe }) {
       field: 'imageUrl',
       headerName: 'Image',
       width: 90,
+      height: 90,
       editable: true,
       renderCell: (params) => (
         <img
@@ -203,7 +209,7 @@ export default function ShoeListTable({ shoeList, updateShoe, deleteShoe }) {
     <Box
       className="dark:bg-boxdark-2 p-4" // Adjusted for a darker gray in dark mode and padding for the box
       sx={{
-        height: 500,
+        height: 700,
         width: '100%',
         '& .MuiDataGrid-root': {
           borderColor: 'transparent', // Removes default border
@@ -211,10 +217,10 @@ export default function ShoeListTable({ shoeList, updateShoe, deleteShoe }) {
         '& .MuiDataGrid-columnHeaders': {
           backgroundColor: 'black', // GUCCI often uses black in their designs
           color: 'white',
-          fontFamily: 'Cormorant, serif', // A font that could fit the luxurious theme
+          fontFamily: 'sans-serif', // A font that could fit the luxurious theme
         },
         '& .MuiDataGrid-cell': {
-          fontFamily: 'Cormorant, serif', // Consistent font for the cells
+          fontFamily: 'sans-serif', // Consistent font for the cells
           '&.dark:text-white': {
             color: 'white !important', // Ensures text color is white in dark mode
           },
@@ -229,17 +235,23 @@ export default function ShoeListTable({ shoeList, updateShoe, deleteShoe }) {
           color: 'white', // Making sure all icons are visible in dark mode
         },
         '& .MuiDataGrid-toolbar': {
-          color: 'black',
+          color: 'white',
         },
         '& .MuiTablePagination-root': {
           color: 'gray', // or any color you want
         },
         '& .MuiIconButton-root': {
-          color: 'black',
+          color: 'gray',
           '&.dark:text-white': {
             color: 'white !important',
           },
         },
+        '& .MuiInputBase-input': {
+          '&:focus': {
+            'box-shadow': 'none',
+          },
+        },
+
         // Add any additional styling here
       }}
     >
@@ -262,18 +274,31 @@ export default function ShoeListTable({ shoeList, updateShoe, deleteShoe }) {
         onClose={handleCloseDialog}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
+        PaperProps={{
+          style: {
+            backgroundColor: 'white', // Luxurious white background
+            color: 'black', // Black for text for contrast
+            boxShadow: 'none',
+          },
+        }}
       >
-        <DialogTitle id="alert-dialog-title">{'Delete Brand'}</DialogTitle>
+        <DialogTitle id="alert-dialog-title" style={{ fontWeight: 'bold' }}>
+          Delete Shoe
+        </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             Are you sure you want to delete this shoe?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDialog} color="primary">
+          <Button onClick={handleCloseDialog} style={{ color: 'gray' }}>
             Cancel
           </Button>
-          <Button onClick={handleConfirmDelete} color="primary" autoFocus>
+          <Button
+            onClick={handleConfirmDelete}
+            style={{ color: 'red' }}
+            autoFocus
+          >
             Delete
           </Button>
         </DialogActions>

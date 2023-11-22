@@ -1,10 +1,14 @@
 import React, { useEffect } from 'react';
+import Alert from '@mui/material/Alert';
+import { useTheme } from '@mui/material/styles';
 
 const AlertModal = ({ message, type, isVisible, onClose }) => {
+  const theme = useTheme();
+
   useEffect(() => {
     let timer;
     if (isVisible) {
-      timer = setTimeout(onClose, 1000);
+      timer = setTimeout(onClose, 3000); // Increased duration for visibility
     }
 
     return () => clearTimeout(timer);
@@ -13,16 +17,23 @@ const AlertModal = ({ message, type, isVisible, onClose }) => {
   if (!isVisible) return null;
 
   return (
-    <div
-      role="alert"
-      className={`fixed inset-0 z-50 flex items-center justify-center p-4 ${
-        isVisible ? '' : 'hidden'
-      }`}
+    <Alert
+      severity={type} // Can be 'error', 'warning', 'info', 'success'
+      style={{
+        position: 'fixed',
+        bottom: theme.spacing(2),
+        right: theme.spacing(2),
+        zIndex: 50,
+        backgroundColor: 'black', // Luxurious black background
+        color: 'gold', // Gold color for the text
+        border: '2px solid gold', // Gold border for emphasis
+        boxShadow: theme.shadows[4],
+        fontFamily: 'serif' // Serif font for an elegant touch
+      }}
+      onClose={onClose}
     >
-      <div className="w-auto bg-opacity-75  bg-gray-300 border-x-meta-3 border-l-4 p-4">
-        <h3 className={`font-bold text-lg text-black-2`}>{message}</h3>
-      </div>
-    </div>
+      {message}
+    </Alert>
   );
 };
 

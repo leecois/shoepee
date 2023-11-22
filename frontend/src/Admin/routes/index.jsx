@@ -1,7 +1,7 @@
 import { lazy } from 'react';
-import Shoes from '../pages/Table/Shoes';
 
 const Chart = lazy(() => import('../pages/Chart'));
+const Shoes = lazy(() => import('../pages/Table/Shoes'));
 const Brands = lazy(() => import('../pages/Table/Brands'));
 const Sizes = lazy(() => import('../pages/Table/Sizes'));
 const Accounts = lazy(() => import('../pages/Table/Accounts'));
@@ -25,6 +25,7 @@ const coreRoutes = [
     title: 'Shoes',
     component: Shoes,
   },
+
   {
     path: 'tables/add-shoe/:modelId',
     title: 'Add Shoe',

@@ -28,7 +28,7 @@ const Cart = ({ cartItems }) => {
   return (
     <div className="overflow-x-auto">
       <div className="flex justify-between items-center px-6 py-4 border-b border-gray-200">
-        <h1 className="font-serif font-bold text-2xl text-gray-900">Cart</h1>
+        <h1 className="font-mono font-bold text-2xl text-gray-900">Cart</h1>
         <p className="font-medium whitespace-nowrap text-gray-600">
           {cartItems?.length} items | ${cartTotal}
         </p>

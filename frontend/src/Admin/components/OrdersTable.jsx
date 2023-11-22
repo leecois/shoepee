@@ -97,7 +97,7 @@ const OrdersTable = ({
           paymentStatus: order.paymentStatus,
           orderStatus: order.orderStatus,
           orderCreateAt: new Date(order.orderCreateAt).toLocaleString(),
-          orderAmt: '$' + order.orderAmt,
+          orderAmt: order.orderAmt,
           status: order.status, // Add this line
           actions: '', // Actions are rendered in the renderCell function
         }))
@@ -107,7 +107,7 @@ const OrdersTable = ({
     <Box
       className="dark:bg-boxdark-2 p-4" // Adjusted for a darker gray in dark mode and padding for the box
       sx={{
-        height: 500,
+        height: 700,
         width: '100%',
         '& .MuiDataGrid-root': {
           borderColor: 'transparent', // Removes default border
@@ -115,10 +115,10 @@ const OrdersTable = ({
         '& .MuiDataGrid-columnHeaders': {
           backgroundColor: 'black', // GUCCI often uses black in their designs
           color: 'white',
-          fontFamily: 'Cormorant, serif', // A font that could fit the luxurious theme
+          fontFamily: 'sans-serif', // A font that could fit the luxurious theme
         },
         '& .MuiDataGrid-cell': {
-          fontFamily: 'Cormorant, serif', // Consistent font for the cells
+          fontFamily: 'sans-serif', // Consistent font for the cells
           '&.dark:text-white': {
             color: 'white !important', // Ensures text color is white in dark mode
           },
@@ -133,7 +133,7 @@ const OrdersTable = ({
           color: 'white', // Making sure all icons are visible in dark mode
         },
         '& .MuiDataGrid-toolbar': {
-          color: 'black',
+          color: 'white',
         },
         '& .MuiTablePagination-root': {
           color: 'gray', // or any color you want
@@ -145,6 +145,7 @@ const OrdersTable = ({
       }}
     >
       <DataGrid
+        className="dark:text-white"
         rows={rows}
         columns={columns}
         pageSize={5}

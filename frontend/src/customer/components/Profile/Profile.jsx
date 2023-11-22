@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useUserInfoData from '../../../hooks/useUserInfoData';
+import { useAlert } from '../Alert/AlertContext';
 
 const Profile = () => {
   const user = JSON.parse(localStorage.getItem('user'));
@@ -10,6 +11,7 @@ const Profile = () => {
   const [fullname, setFullName] = useState('');
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
+  const { showAlert } = useAlert();
 
   useEffect(() => {
     if (userData) {
@@ -24,6 +26,7 @@ const Profile = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     await updateUserInfo({ fullname, phone, address });
+    showAlert('Profile updated', 'success');
   };
   return (
     <div className="grid m-8 grid-cols-3 gap-8">

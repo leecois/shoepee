@@ -1,9 +1,6 @@
 import { Link } from 'react-router-dom';
 import Logo from '../images/logo/logoshoepee.png';
 import DarkModeSwitcher from './DarkModeSwitcher';
-import DropdownNotification from './DropdownNotification';
-import DropdownUser from './DropdownUser.jsx';
-import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
 const Header = (props) => {
   return (
@@ -53,23 +50,20 @@ const Header = (props) => {
           </button>
           {/* <!-- Hamburger Toggle BTN --> */}
           <Link className="block flex-shrink-0 lg:hidden" to="/">
-            <img src={Logo} alt="Logo" className='w-10'/>
+            <img src={Logo} alt="Logo" className="w-10" />
           </Link>
         </div>
 
-        <div className="hidden sm:block">
-          <form action="#" method="POST">
-            <div className="relative">
-              <button className="absolute top-1/2 left-0 -translate-y-1/2">
-                <MagnifyingGlassIcon className="h-5 w-5 hover:fill-primary dark:fill-bodydark dark:hover:fill-primary" />
-              </button>
-              <input
-                type="text"
-                placeholder="Type to search..."
-                className="w-full bg-transparent placeholder:text-gray-400 pr-4 pl-9 border-transparent border-0 focus:ring-0 focus:outline-none"
-              />
-            </div>
-          </form>
+        <div className="mt-5 sm:mt-0 flex items-center">
+          {/* ::Welcome Back */}
+          <div className="pl-5 hidden sm:block border-l-2 border-gray-200 space-y-0.5">
+            <p className="text-xs text-gray-500 dark:text-gray-300">
+              Hi, Admin
+            </p>
+            <p className="text-lg text-gray-700 dark:text-gray-200 font-bold leading-5 tracking-wide">
+              <span className="block">Welcome Back</span>
+            </p>
+          </div>
         </div>
 
         <div className="flex items-center gap-3 2xsm:gap-7">

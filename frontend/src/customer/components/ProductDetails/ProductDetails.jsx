@@ -62,7 +62,7 @@ const ProductDetails = ({ product, userLoggedIn }) => {
     dispatch(addToCartAsync(cartItem)).then((action) => {
       if (!action.error) {
         dispatch(getCartAsync());
-        showAlert('Added to Bag', 'info');
+        showAlert('Added to Bag', 'success');
       }
     });
   };
@@ -84,8 +84,8 @@ const ProductDetails = ({ product, userLoggedIn }) => {
               />
             </div>
           ) : (
-            <div className="flex justify-center items-center bg-black border-yellow-500 border-2 p-4">
-              <p className="text-center text-yellow-500 font-serif text-xl">
+            <div className="flex items-center justify-center bg-black border-yellow-500 border-2 p-4">
+              <p className="text-center text-yellow-500 font-mono text-xl">
                 No images available for the selected shoe.
               </p>
             </div>
@@ -93,11 +93,11 @@ const ProductDetails = ({ product, userLoggedIn }) => {
         </div>
 
         <div className="order-1 lg:order-2 col-span-full lg:col-span-1 lg:max-w-xl flex flex-col items-start">
-          <h1 className="text-4xl font-serif text-black font-extrabold">
+          <h1 className="text-4xl font-mono text-black font-extrabold">
             {product.modelname}{' '}
           </h1>
           <div className="mt-5 flex items-center">
-            <p className="text-2xl font-serif text-black pr-5">
+            <p className="text-2xl font-mono text-black pr-5">
               ${selectedShoe?.price}
             </p>
           </div>
@@ -144,21 +144,13 @@ const ProductDetails = ({ product, userLoggedIn }) => {
               isOpen={isAlertOpen}
               onClose={() => setIsAlertOpen(false)}
             />
-
-            <button
-              onClick={handleAddToCart}
-              className=" btn btn-block btn-accent"
-            >
-              Add To Cart
-            </button>
-            <Toast />
           </div>
 
           <button
-            onClick={handleCustomizeClick}
+            onClick={handleAddToCart}
             className="mt-4 btn btn-outline btn-block"
           >
-            CUSTOMIZE
+            Add To Cart
           </button>
           <p className="mt-3 w-full inline-flex justify-center items-center text-sm text-gray-500 font font-semibold">
             <ShieldCheckIcon className="mr-2 w-4 h-4" />
@@ -168,7 +160,7 @@ const ProductDetails = ({ product, userLoggedIn }) => {
       </div>
       {/* <h3 className="mt-10 text-lg text-gray-700 font-semibold">Overview</h3> */}
       <div className="mt-8 p-6 border-2 rounded-lg shadow-lg">
-        <h1 className="text-2xl text-black-2 font-serif font-bold mb-4">
+        <h1 className="text-2xl text-black-2 font-mono font-bold mb-4">
           {selectedShoe?.name}
         </h1>
         <p className="text-black-2 text-lg font-light">

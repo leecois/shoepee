@@ -32,7 +32,7 @@ function EditToolbar() {
 
   return (
     <GridToolbarContainer>
-      <Button color="inherit" startIcon={<AddIcon />} onClick={handleClick}>
+      <Button color="inherit" style={{ fontWeight: 'bold', fontFamily: 'inherit' }} startIcon={<AddIcon />} onClick={handleClick}>
         Add Shoe Model Of Brand
       </Button>
     </GridToolbarContainer>
@@ -195,7 +195,7 @@ export default function ModelsTable({ modelList, updateModel, deleteModel }) {
     <Box
       className="dark:bg-boxdark-2 p-4" // Adjusted for a darker gray in dark mode and padding for the box
       sx={{
-        height: 500,
+        height: 700,
         width: '100%',
         '& .MuiDataGrid-root': {
           borderColor: 'transparent', // Removes default border
@@ -203,10 +203,10 @@ export default function ModelsTable({ modelList, updateModel, deleteModel }) {
         '& .MuiDataGrid-columnHeaders': {
           backgroundColor: 'black', // GUCCI often uses black in their designs
           color: 'white',
-          fontFamily: 'Cormorant, serif', // A font that could fit the luxurious theme
+          fontFamily: 'sans-serif', // A font that could fit the luxurious theme
         },
         '& .MuiDataGrid-cell': {
-          fontFamily: 'Cormorant, serif', // Consistent font for the cells
+          fontFamily: 'sans-serif', // Consistent font for the cells
           '&.dark:text-white': {
             color: 'white !important', // Ensures text color is white in dark mode
           },
@@ -221,18 +221,22 @@ export default function ModelsTable({ modelList, updateModel, deleteModel }) {
           color: 'white',
         },
         '& .MuiDataGrid-toolbar': {
-          color: 'black',
+          color: 'white',
         },
         '& .MuiTablePagination-root': {
           color: 'gray', // or any color you want
         },
         '& .MuiIconButton-root': {
-          color: 'black',
+          color: 'gray',
           '&.dark:text-white': {
             color: 'white !important',
           },
         },
-        // Add any additional styling here
+        '& .MuiInputBase-input': {
+          '&:focus': {
+            'box-shadow': 'none',
+          },
+        },
       }}
     >
       <DataGrid
@@ -253,18 +257,31 @@ export default function ModelsTable({ modelList, updateModel, deleteModel }) {
         onClose={handleCloseDialog}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
+        PaperProps={{
+          style: {
+            backgroundColor: 'white',
+            color: 'black',
+            boxShadow: 'none',
+          },
+        }}
       >
-        <DialogTitle id="alert-dialog-title">{'Delete Model'}</DialogTitle>
+        <DialogTitle id="alert-dialog-title" style={{ fontWeight: 'bold' }}>
+          Delete Model
+        </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
             Are you sure you want to delete this model?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDialog} color="primary">
+          <Button onClick={handleCloseDialog} style={{ color: 'gray' }}>
             Cancel
           </Button>
-          <Button onClick={handleConfirmDelete} color="primary" autoFocus>
+          <Button
+            onClick={handleConfirmDelete}
+            style={{ color: 'red' }}
+            autoFocus
+          >
             Delete
           </Button>
         </DialogActions>
