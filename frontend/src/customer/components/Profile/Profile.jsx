@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import useUserInfoData from '../../../hooks/useUserInfoData';
+import { useAlert } from '../Alert/AlertContext';
 
 const Profile = () => {
-  const { userId } = useParams();
+  const user = JSON.parse(localStorage.getItem('user'));
+  const userId = user?.userId;
   const { userData, updateUserInfo } = useUserInfoData(userId);
   const [email, setEmail] = useState('');
   const [fullname, setFullName] = useState('');
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
+  const { showAlert } = useAlert();
 
   useEffect(() => {
     if (userData) {
@@ -23,6 +26,7 @@ const Profile = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     await updateUserInfo({ fullname, phone, address });
+    showAlert('Profile updated', 'success');
   };
   return (
     <div className="grid m-8 grid-cols-3 gap-8">
@@ -105,7 +109,8 @@ const Profile = () => {
                 <div className="relative">
                   <span className="absolute left-4.5 top-4"></span>
                   <input
-                    className="w-full rounded input input-bordered border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black-2 focus-border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus-border-primary" disabled 
+                    className="w-full rounded input input-bordered border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black-2 focus-border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus-border-primary"
+                    disabled
                     placeholder="@gmail.com"
                     value={email}
                   />
@@ -113,12 +118,6 @@ const Profile = () => {
               </div>
 
               <div className="flex justify-end gap-4.5">
-                <button
-                  className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                  type="submit"
-                >
-                  Cancel
-                </button>
                 <button type="submit" className="btn btn-outline btn-primary">
                   Save
                 </button>

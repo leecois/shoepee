@@ -87,7 +87,7 @@ const ProductDetailPage = () => {
     );
   }
   if (notFound) {
-    return <Navigate to="/nothing" replace />; 
+    return <Navigate to="/nothing" replace />;
   }
 
   if (!product) {

@@ -14,11 +14,8 @@ const AdminModelData = () => {
           _limit: limit,
         });
 
-        // Chỉnh sửa logic lọc ở đây
         const filteredData = data.filter((model) => {
-          // Bỏ qua trạng thái của brandDto và chỉ kiểm tra status của model
           if (model.status === 'available') {
-            // Nếu có shoes, chỉ giữ lại những shoes có status là available
             if (model.shoes && model.shoes.length) {
               model.shoes = model.shoes.filter(
                 (shoe) => shoe.status === 'available'
@@ -60,9 +57,9 @@ const AdminModelData = () => {
 
   const updateModel = async (id, updatedData) => {
     try {
-      const updateModel = await adminModelApi.update(id, updatedData);
+      const { data: updateModel } = await adminModelApi.update(id, updatedData);
       const updateModelList = modelList.map((model) =>
-        model.id === id ? updateModel : model
+        model.id === id ? { ...model, brandDto: updateModel.brandDto } : model
       );
       setModelList(updateModelList);
     } catch (error) {

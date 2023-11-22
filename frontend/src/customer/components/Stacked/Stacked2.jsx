@@ -41,7 +41,7 @@ const Stacked2 = ({ modelList }) => {
             <div className="max-w-xl text-center ltr:sm:text-left rtl:sm:text-right">
               <div className="flex flex-col items-center justify-center lg:mt-8">
                 <h2 className="max-w-xl text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-                  Customize
+                  Features
                 </h2>
                 <p className="mt-4 text-lg text-gray-500">
                   Discover the latest trending styles from Shoepee and bring
@@ -106,7 +106,7 @@ const Stacked2 = ({ modelList }) => {
                       <div>
                         <div className="mt-4">
                           <img
-                            src={model.imageurl}
+                            src={model.shoes[0]?.imageUrl}
                             alt={model.modelname}
                             className="h-100 w-full rounded-lg object-cover object-center dark:bg-gray-500"
                           />
@@ -125,7 +125,7 @@ const Stacked2 = ({ modelList }) => {
                             </div>
                           </div>
                           <p className="text-xl font-semibold text-gray-900">
-                            ${model.price}
+                            ${model.shoes[0]?.price}
                           </p>
                         </div>
                       </div>

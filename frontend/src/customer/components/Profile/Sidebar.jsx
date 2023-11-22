@@ -8,11 +8,12 @@ const Sidebar = () => {
   useEffect(() => {
     setIsAccountDropdownOpen(location.pathname.includes('/user/account'));
   }, [location]);
+  const user = JSON.parse(localStorage.getItem('user'));
 
   const isActive = (path) => location.pathname.startsWith(path);
 
   return (
-    <aside className="flex w-[240px] h-screen flex-col justify-between bg-black text-white">
+    <aside className="hidden sm:flex flex-col justify-between h-screen w-64 bg-black text-white">
       <nav className="px-4 py-6">
         <ul className="space-y-4">
           <li className="group">
@@ -66,13 +67,12 @@ const Sidebar = () => {
         <div className="flex items-center gap-2">
           <img
             alt="Profile"
-            src="https://i.redd.it/djgsy4us83w71.jpg"
+            src="/blank-avatar.png"
             className="h-10 w-10 rounded-full object-cover"
           />
           <div>
             <p className="text-xs">
-              <strong className="block font-medium">Lee Cois</strong>
-              <span>leecois@gmail.com</span>
+              <span>{user.email}</span>
             </p>
           </div>
         </div>

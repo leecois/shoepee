@@ -28,7 +28,7 @@ const Cart = ({ cartItems }) => {
   return (
     <div className="overflow-x-auto">
       <div className="flex justify-between items-center px-6 py-4 border-b border-gray-200">
-        <h1 className="font-serif font-bold text-2xl text-gray-900">Cart</h1>
+        <h1 className="font-mono font-bold text-2xl text-gray-900">Cart</h1>
         <p className="font-medium whitespace-nowrap text-gray-600">
           {cartItems?.length} items | ${cartTotal}
         </p>
@@ -60,7 +60,7 @@ const Cart = ({ cartItems }) => {
               <td className="px-6 py-4 text-gray-800">${item.totalprice}</td>
               <td className="px-6 py-4">
                 <button
-                  onClick={() => handleRemoveFromCart(item.shoe?.id)}
+                  onClick={() => handleRemoveFromCart(item.cartItemId)}
                   className="flex items-center gap-2 text-gray-600 hover:text-red-600"
                 >
                   <CloseIcon className="text-lg" /> Remove

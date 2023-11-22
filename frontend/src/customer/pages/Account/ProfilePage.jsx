@@ -25,8 +25,9 @@ const ProfilePage = () => {
           {/* Profile component container */}
           <section className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6 mb-6">
             <h1 className="text-2xl font-semibold text-gray-800 dark:text-white">
-              User Profile
+              My Profile
             </h1>
+            <p>Manage and protect your account</p>
             {/* Render Profile with passed data */}
             <Profile profileData={profileData} />
           </section>

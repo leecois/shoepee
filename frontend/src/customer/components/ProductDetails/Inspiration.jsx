@@ -1,10 +1,10 @@
 import React from 'react';
 
 const Inspiration = ({ product, selectedShoe, handleShoeButtonClick }) => {
-
-  const sortedShoes = product.shoes && Array.isArray(product.shoes) 
-    ? [...product.shoes].sort((a, b) => a.id - b.id)
-    : [];
+  const sortedShoes =
+    product.customizedShoes && Array.isArray(product.customizedShoes)
+      ? [...product.customizedShoes].sort((a, b) => a.id - b.id)
+      : [];
 
   return (
     <div className="mt-4 w-full">

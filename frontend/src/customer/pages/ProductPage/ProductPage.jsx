@@ -30,20 +30,17 @@ const ProductPage = () => {
     // Filter by selected brands
     if (selectedBrands.length > 0) {
       updatedList = updatedList.filter((model) =>
-        selectedBrands.includes(model.brandDto.brandName)
+        selectedBrands.includes(model.brandDto?.brandName)
       );
     }
 
     // Apply sorting
     switch (sortOption) {
-      case 'rating':
-        updatedList.sort((a, b) => b.rating - a.rating);
-        break;
       case 'price_asc':
-        updatedList.sort((a, b) => a.price - b.price);
+        updatedList.sort((a, b) => a.shoes[0]?.price - b.shoes[0]?.price);
         break;
       case 'price_desc':
-        updatedList.sort((a, b) => b.price - a.price);
+        updatedList.sort((a, b) => b.shoes[0]?.price - a.shoes[0]?.price);
         break;
       default:
         break;
@@ -55,10 +52,14 @@ const ProductPage = () => {
   const breadcrumbItems = [{ label: 'Products', url: '/products' }];
 
   return (
-    <div className="flex flex-col min-h-screen"> {/* Ensures full page height and column direction */}
+    <div className="flex flex-col min-h-screen">
+      {' '}
+      {/* Ensures full page height and column direction */}
       <Breadcrumb items={breadcrumbItems} />
       <HeaderProduct onSort={setSortOption} setOpenFilter={setOpenFilter} />
-      <div className="flex-grow"> {/* Ensures content below header takes up remaining space */}
+      <div className="flex-grow">
+        {' '}
+        {/* Ensures content below header takes up remaining space */}
         <div className="mx-auto py-4 sm:py-8 px-4 w-auto">
           <div className="flex flex-col md:flex-row justify-between mt-4">
             <Filters

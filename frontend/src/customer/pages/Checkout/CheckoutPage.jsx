@@ -41,7 +41,7 @@ const CheckoutPage = () => {
                       key={item.id}
                       className="py-4 border-b border-gray-200"
                     >
-                      <h1 className="font-serif text-md font-bold text-gray-900">
+                      <h1 className="font-mono text-md font-bold text-gray-900">
                         {item.shoe.shoeModelDto.modelname}
                       </h1>
                       <div className="flex items-center">

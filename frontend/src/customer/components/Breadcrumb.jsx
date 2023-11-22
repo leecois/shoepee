@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 const Breadcrumb = ({ items }) => {
   return (
     <nav aria-label="Breadcrumb">
-      <ol className="flex items-center gap-2 ml-4 mt-4 text-sm text-gray-600">
+      <ol className="flex items-center gap-2 m-4 text-sm text-gray-600">
         <li>
           <a href="/" className="block transition hover:text-gray-700">
             <span className="sr-only"> Home </span>

@@ -95,7 +95,7 @@ export default function AccountsListTable({ userData, updateRole }) {
     {
       field: 'role',
       headerName: 'is Admin ?',
-      width: 220,
+      width: 150,
       editable: true,
 
       type: 'singleSelect',
@@ -105,7 +105,7 @@ export default function AccountsListTable({ userData, updateRole }) {
       field: 'actions',
       type: 'actions',
       headerName: 'Actions',
-      width: 400,
+      width: 300,
       cellClassName: 'actions',
       getActions: ({ id, row }) => {
         const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
@@ -145,9 +145,9 @@ export default function AccountsListTable({ userData, updateRole }) {
 
   return (
     <Box
-    className="dark:bg-boxdark-2 p-4" // Adjusted for a darker gray in dark mode and padding for the box
+      className="dark:bg-boxdark-2 p-4" // Adjusted for a darker gray in dark mode and padding for the box
       sx={{
-        height: 500,
+        height: 700,
         width: '100%',
         '& .MuiDataGrid-root': {
           borderColor: 'transparent', // Removes default border
@@ -155,10 +155,10 @@ export default function AccountsListTable({ userData, updateRole }) {
         '& .MuiDataGrid-columnHeaders': {
           backgroundColor: 'black', // GUCCI often uses black in their designs
           color: 'white',
-          fontFamily: 'Cormorant, serif', // A font that could fit the luxurious theme
+          fontFamily: 'sans-serif', // A font that could fit the luxurious theme
         },
         '& .MuiDataGrid-cell': {
-          fontFamily: 'Cormorant, serif', // Consistent font for the cells
+          fontFamily: 'sans-serif', // Consistent font for the cells
           '&.dark:text-white': {
             color: 'white !important', // Ensures text color is white in dark mode
           },
@@ -173,13 +173,16 @@ export default function AccountsListTable({ userData, updateRole }) {
           color: 'white', // Making sure all icons are visible in dark mode
         },
         '& .MuiDataGrid-toolbar': {
-          color: 'black',
+          color: 'white',
         },
         '& .MuiTablePagination-root': {
           color: 'gray', // or any color you want
         },
         '& .MuiIconButton-root': {
-          color: 'white',
+          color: 'gray',
+          '&.dark:text-white': {
+            color: 'white !important',
+          },
         },
         // Add any additional styling here
       }}

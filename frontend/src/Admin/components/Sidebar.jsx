@@ -61,16 +61,16 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
   return (
     <aside
       ref={sidebar}
-      className={`absolute left-0 top-0 z-50 flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear lg:static lg:translate-x-0 ${
+      className={`absolute left-0 top-0 z-50 font-gucci-sans flex h-screen w-72.5 flex-col overflow-y-hidden bg-black duration-300 ease-linear lg:static lg:translate-x-0 ${
         sidebarOpen ? 'translate-x-0' : '-translate-x-full'
       }`}
     >
       {/* SIDEBAR HEADER */}
       <div className=" flex items-center justify-between p-4 border-b dark:border-gray-700">
-        <a href="/" className="flex items-center mx-auto py-1 space-x-3">
+        <a href="/" className="flex items-start mx-auto py-1 space-x-3">
           <img src={Logo} alt="Logo" className="w-8 h-8" />
           <span className="text-2xl font-semibold text-gray-200 dark:text-white">
-            SHOEPEE
+            SHOEPEE SHOP
           </span>
         </a>
 

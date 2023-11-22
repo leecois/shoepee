@@ -24,6 +24,7 @@ const Checkout = ({ onSuccess, disabled }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [customerName, setCustomerName] = useState('');
   const [orderAddress, setOrderAddress] = useState('');
+  const [orderPhone, setOrderPhone] = useState('');
   const cartId = useSelector((state) => state.cart.cartId);
   const cartEmail = useSelector((state) => state.cart.user?.email);
 
@@ -38,6 +39,7 @@ const Checkout = ({ onSuccess, disabled }) => {
   const handleConfirm = (values) => {
     setCustomerName(`${values.firstName} ${values.lastName}`);
     setOrderAddress(values.address);
+    setOrderPhone(values.phone);
     setIsModalOpen(true);
   };
 
@@ -45,7 +47,7 @@ const Checkout = ({ onSuccess, disabled }) => {
     const orderData = {
       customerName,
       orderAddress,
-      orderPhone: initialValues.phone,
+      orderPhone,
       cartId,
     };
 
@@ -67,7 +69,7 @@ const Checkout = ({ onSuccess, disabled }) => {
 
   return (
     <div className="max-w-screen-lg mx-auto p-6">
-      <h1 className="text-3xl font-serif font-bold text-gray-800 mb-8">
+      <h1 className="text-3xl font-mono font-bold text-gray-800 mb-8">
         1. Shipping & Delivery{' '}
         <LockOutlinedIcon className="align-middle text-lg" />
       </h1>
@@ -181,7 +183,7 @@ const Checkout = ({ onSuccess, disabled }) => {
         <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="absolute inset-0 bg-black opacity-50"></div>
           <div className="relative rounded-lg bg-white p-8 shadow-2xl">
-            <h2 className="text-2xl font-serif font-bold text-gray-800 mb-4">
+            <h2 className="text-2xl font-mono font-bold text-gray-800 mb-4">
               Confirm Address
             </h2>
             <p className="mt-2 text-md text-gray-500">

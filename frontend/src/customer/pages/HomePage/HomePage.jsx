@@ -4,7 +4,6 @@ import Hero from '../../components/Hero/Hero';
 import Shoepee from '../../components/KeenSlider/Shoepee';
 import Stacked from '../../components/Stacked/Stacked';
 import Stacked2 from '../../components/Stacked/Stacked2';
-import StepCustomize from '../../components/Steps/stepsCustomize';
 
 const HomePage = () => {
   const { modelList } = useModelData();
@@ -15,7 +14,7 @@ const HomePage = () => {
 
       {modelList.length > 0 && <Stacked2 modelList={modelList} />}
       {modelList.length > 0 && <Stacked modelList2={modelList} />}
-      <StepCustomize />
+      {/* <StepCustomize /> */}
       <Shoepee />
     </>
   );

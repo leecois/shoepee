@@ -265,6 +265,10 @@ module.exports = {
         'spin-2': 'spin 2s linear infinite',
         'spin-3': 'spin 3s linear infinite',
       },
+      fontFamily: {
+        'gucci-serif': ['Playfair Display', 'Georgia', 'serif'],
+        'gucci-sans': ['Oswald', 'Arial', 'sans-serif'], 
+      },
     },
   },
   plugins: [
