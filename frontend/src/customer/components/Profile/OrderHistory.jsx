@@ -1,47 +1,58 @@
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 import React, { useState } from 'react';
 import userApi from '../../../api/userApi';
 import OrderDetailModal from './OrderDetailModal';
 
 const OrderHistory = ({ orders, selectedTab }) => {
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('COD');
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('VNPAY');
+  const [paymentUrl, setPaymentUrl] = useState(null);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+
   const filteredOrders = orders.filter((order) => {
     if (selectedTab === 'ALL') {
-      return true; // Hiển thị tất cả các đơn hàng khi 'ALL' được chọn
+      return true;
     } else if (selectedTab === 'To Ship' && order.orderStatus === 'SHIPPING') {
-      return true; // Hiển thị các đơn hàng có trạng thái 'SHIPPING' khi 'To Ship' được chọn
+      return true;
     } else if (
       selectedTab === 'Completed' &&
       order.orderStatus === 'COMPLETED'
     ) {
-      return true; // Hiển thị các đơn hàng có trạng thái 'COMPLETED' khi 'Completed' được chọn
+      return true;
     } else if (
       selectedTab === 'Cancelled' &&
       order.orderStatus === 'CANCELLED'
     ) {
-      return true; // Hiển thị các đơn hàng có trạng thái 'CANCELLED' khi 'Cancelled' được chọn
+      return true;
     } else if (
       selectedTab === 'To Pay' &&
       (order.paymentStatus === 'NOT PAID' || order.paymentStatus === 'PAID') &&
       order.orderStatus !== 'SHIPPING' &&
       order.orderStatus !== 'COMPLETED'
     ) {
-      return true; // Display orders with 'NOT PAID' or 'PAID' payment status and not 'SHIPPING' or 'COMPLETED' order status when 'To Pay' is selected
+      return true;
     }
     return false;
   });
 
   const handlePaymentClick = async (orderId) => {
     try {
-      if (selectedPaymentMethod === 'COD') {
-        // Xử lý thanh toán bằng COD
-        const response = await userApi.payOrder(orderId);
-        console.log(response);
-      } else if (selectedPaymentMethod === 'Bank') {
-        // Xử lý thanh toán bằng Bank Transfer
-        // Hiển thị thông báo hoặc hướng dẫn cho người dùng thực hiện chuyển khoản ngân hàng
-        console.log('Please make a bank transfer for this order.');
+      const orderToPay = orders.find((order) => order.orderId === orderId);
+      if (!orderToPay) {
+        console.error('Order not found');
+        return;
+      }
+
+      if (selectedPaymentMethod !== 'COD') {
+        const response = await userApi.payOrder(orderToPay);
+        setPaymentUrl(response);
+        setOpenDialog(true);
       }
     } catch (error) {
       console.error(error);
@@ -62,7 +73,7 @@ const OrderHistory = ({ orders, selectedTab }) => {
   function formatDate(date) {
     const d = new Date(date);
     const day = d.getDate().toString().padStart(2, '0');
-    const month = (d.getMonth() + 1).toString().padStart(2, '0'); // Months are 0 based
+    const month = (d.getMonth() + 1).toString().padStart(2, '0');
     const year = d.getFullYear();
     const hours = d.getHours().toString().padStart(2, '0');
     const minutes = d.getMinutes().toString().padStart(2, '0');
@@ -99,7 +110,7 @@ const OrderHistory = ({ orders, selectedTab }) => {
                         : ''
                     }`}
                   >
-                    {order.paymentStatus} ({selectedPaymentMethod})
+                    {order.paymentStatus}
                   </div>
                 </div>
               </div>
@@ -146,7 +157,7 @@ const OrderHistory = ({ orders, selectedTab }) => {
                       className="btn btn-neutral mx-2"
                       onClick={() => handlePaymentClick(order.orderId)}
                     >
-                      Pay Now
+                      Pay Now <span>VNPAY</span>
                     </button>
                     <button className="btn btn-outline btn-error">
                       Cancel Order
@@ -168,6 +179,28 @@ const OrderHistory = ({ orders, selectedTab }) => {
         isOpen={isModalOpen}
         onClose={handleCloseModal}
       />
+      <Dialog
+        open={openDialog}
+        onClose={() => setOpenDialog(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {'Redirect to Payment'}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            You will be redirected to the payment page to complete your
+            transaction.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
+          <Button onClick={() => window.open(paymentUrl, '_blank')} autoFocus>
+            Proceed to Payment
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

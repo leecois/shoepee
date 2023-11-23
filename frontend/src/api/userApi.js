@@ -104,17 +104,13 @@ const order = (orderData) => {
   });
 };
 
-const payOrder = (orderId) => {
+const payOrder = (orderData) => {
   const jwt = localStorage.getItem(StorageKeys.TOKEN);
-  return axiosClient.put(
-    `../payment/pay/${orderId}`,
-    {},
-    {
-      headers: {
-        Authorization: `Bearer ${jwt}`,
-      },
-    }
-  );
+  return axiosClient.post(`auth/pay`, orderData, {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  });
 };
 
 const getOrderById = () => {

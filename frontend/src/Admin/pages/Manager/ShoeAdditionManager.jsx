@@ -17,10 +17,6 @@ const ShoeAdditionManager = () => {
     imageUrl: '',
   };
 
-  const initialImageValues = {
-    imageUrl: '',
-  };
-
   const handleShoeSubmit = async (values, { setSubmitting }) => {
     try {
       const response = await adminShoeApi.add(modelId, values);
@@ -29,19 +25,6 @@ const ShoeAdditionManager = () => {
       setShoeAdded(true);
     } catch (error) {
       console.error('Error adding shoe:', error);
-      setError(error);
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  const handleImageSubmit = async (values, { setSubmitting }) => {
-    try {
-      const response = await adminShoeApi.addimage(shoeId, values);
-      console.log(response);
-      // Handle image addition success
-    } catch (error) {
-      console.error('Error adding image:', error);
       setError(error);
     } finally {
       setSubmitting(false);
@@ -60,7 +43,7 @@ const ShoeAdditionManager = () => {
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
-                1. Shoe Information
+                Shoe Information
               </h3>
             </div>
             <div className="p-7">
@@ -69,28 +52,6 @@ const ShoeAdditionManager = () => {
                 onSubmit={handleShoeSubmit}
               />
             </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ImageForm */}
-
-      <div className="grid mt-4 gap-8">
-        <div className="col-span-5 xl:col-span-3">
-          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-            <div className="border-b border-stroke py-4 px-7 dark:border-strokedark">
-              <h3 className="font-medium text-black dark:text-white">
-                2. Image Of Shoe
-              </h3>
-            </div>
-            {shoeAdded && (
-              <div className="p-7">
-                <ImageForm
-                  initialValues={initialImageValues}
-                  onSubmit={handleImageSubmit}
-                />
-              </div>
-            )}
           </div>
         </div>
       </div>

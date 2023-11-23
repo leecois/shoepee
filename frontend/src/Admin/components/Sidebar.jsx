@@ -69,9 +69,6 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
       <div className=" flex items-center justify-between p-4 border-b dark:border-gray-700">
         <a href="/" className="flex items-start mx-auto py-1 space-x-3">
           <img src={Logo} alt="Logo" className="w-8 h-8" />
-          <span className="text-2xl font-semibold text-gray-200 dark:text-white">
-            SHOEPEE SHOP
-          </span>
         </a>
 
         <button
