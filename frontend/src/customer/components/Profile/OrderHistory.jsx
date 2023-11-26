@@ -8,7 +8,7 @@ import React, { useState } from 'react';
 import userApi from '../../../api/userApi';
 import OrderDetailModal from './OrderDetailModal';
 
-const OrderHistory = ({ orders, selectedTab }) => {
+const OrderHistory = ({ orders, selectedTab, fetchOrders }) => {
   const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
   const [orderToCancel, setOrderToCancel] = useState(null);
   const [paymentUrl, setPaymentUrl] = useState(null);
@@ -75,7 +75,7 @@ const OrderHistory = ({ orders, selectedTab }) => {
         const response = await userApi.cancelOrder(orderToCancel);
         console.log(response);
         setCancelDialogOpen(false);
-        // Thêm logic cập nhật UI ở đây nếu cần
+        fetchOrders(); // Call fetchOrders after successfully cancelling the order
       } catch (error) {
         console.error(error);
       }
@@ -209,6 +209,13 @@ const OrderHistory = ({ orders, selectedTab }) => {
                         onClick={() => handlePaymentClick(order.orderId)}
                       >
                         Pay Now
+                      </button>
+                    )}
+                    {order.paymentStatus === 'CANCELLED' && (
+                      <button
+                        className="btn btn-neutral mx-2"
+                      >
+                        Buy Again
                       </button>
                     )}
                   <button className="btn btn-outline mx-2">Contact</button>

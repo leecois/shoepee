@@ -30,7 +30,11 @@ const PurchasePage = () => {
           <Tabs onTabChange={handleTabChange} />{' '}
           {/* Pass the handleTabChange callback */}
           <section className="bg-white dark:bg-gray-800 shadow-xl rounded-md p-6 mb-6 mt-4">
-            <OrderHistory orders={orders} selectedTab={selectedTab} />{' '}
+            <OrderHistory
+              orders={orders}
+              fetchOrders={() => dispatch(fetchOrders())}
+              selectedTab={selectedTab}
+            />
             {/* Pass selectedTab to OrderHistory */}
           </section>
         </div>
