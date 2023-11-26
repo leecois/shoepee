@@ -54,7 +54,7 @@ const CheckoutPage = () => {
                           </div>
                         </div>
                         <div className="flex gap-2.5 mt-2">
-                          ${item.shoe?.price}
+                          {item.shoe?.price.toLocaleString('de-DE')} VND
                         </div>
                       </div>
                     </div>

@@ -3,12 +3,11 @@ import { useParams } from 'react-router-dom';
 import Breadcrumb from '../../components/Breadcrumb';
 import ModelForm from '../../components/Models/ModelForm';
 import adminModelApi from '../../../api/adminModelApi';
-import { useAlert } from '../../../customer/components/Alert/AlertContext';
+import { enqueueSnackbar } from 'notistack';
 
 // Component for adding a new model
 const ModelAddManager = () => {
   const { brandId } = useParams();
-  const { showAlert } = useAlert();
 
   const initialValues = {
     modelname: '',
@@ -21,11 +20,15 @@ const ModelAddManager = () => {
     try {
       const response = await adminModelApi.add(brandId, values);
       if (response) {
-        showAlert('Model added successfully', 'success');
+        enqueueSnackbar('Model added successfully ', {
+          variant: 'success',
+        });
       }
     } catch (error) {
       console.error('Error adding model:', error);
-      showAlert('Failed to add model. Please try again.', 'error');
+      enqueueSnackbar('Failed to add model. Please try again.', {
+        variant: 'error',
+      });
     } finally {
       setSubmitting(false);
     }

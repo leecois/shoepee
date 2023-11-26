@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
+import { enqueueSnackbar } from 'notistack';
+import React from 'react';
 import { useParams } from 'react-router-dom';
+import adminShoeApi from '../../../api/adminShoeApi';
 import Breadcrumb from '../../components/Breadcrumb';
 import ShoeForm from '../../components/Shoes/ShoeForm';
-import adminShoeApi from '../../../api/adminShoeApi';
-import { useAlert } from '../../../customer/components/Alert/AlertContext';
 
 // Component for adding new shoes to a model
 const ShoeAdditionManager = () => {
   const { modelId } = useParams();
-  const { showAlert } = useAlert();
 
   const initialShoeValues = {
     name: '',
@@ -22,11 +21,14 @@ const ShoeAdditionManager = () => {
     try {
       const response = await adminShoeApi.add(modelId, values);
       if (response) {
-        showAlert('Shoe added successfully', 'success');
+        enqueueSnackbar('Shoe added successfully', {
+          variant: 'success',
+        });
       }
     } catch (error) {
-      console.error('Error adding shoe:', error);
-      showAlert('Failed to add shoe. Please try again.', 'error');
+      enqueueSnackbar('Failed to add shoe. Please try again', {
+        variant: 'error',
+      });
     } finally {
       setSubmitting(false);
     }

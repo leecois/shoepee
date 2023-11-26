@@ -53,6 +53,7 @@ export default function ModelsTable({ modelList, updateModel, deleteModel }) {
   const [rowModesModel, setRowModesModel] = useState({});
   const [openDialog, setOpenDialog] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
+  const brand = [...new Set(modelList.map((item) => item.brandDto.brandName))];
 
   useEffect(() => {
     setRows(
@@ -111,6 +112,10 @@ export default function ModelsTable({ modelList, updateModel, deleteModel }) {
   const processRowUpdate = async (newRow) => {
     const updatedRow = { ...newRow, isNew: false };
 
+    updatedRow.brandDto = {
+      ...updatedRow.brandDto,
+      brandName: newRow.brandName
+    };
     // Call update API
     try {
       await updateModel(updatedRow.id, updatedRow);
@@ -140,6 +145,9 @@ export default function ModelsTable({ modelList, updateModel, deleteModel }) {
       headerName: 'Brand Name',
       width: 230,
       editable: true,
+
+      type: 'singleSelect',
+      valueOptions: brand,
     },
     {
       field: 'actions',

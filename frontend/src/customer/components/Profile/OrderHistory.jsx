@@ -128,9 +128,9 @@ const OrderHistory = ({ orders, selectedTab, fetchOrders }) => {
                   <div
                     className={`font-semibold ${
                       order.paymentStatus === 'PAID'
-                        ? 'btn btn-success no-animation text-white cursor-default'
+                        ? 'btn btn-error no-animation text-white cursor-default'
                         : order.paymentStatus === 'NOT PAID'
-                        ? 'btn btn-warning no-animation text-white cursor-default'
+                        ? 'btn btn-error no-animation text-white cursor-default'
                         : order.paymentStatus === 'CANCELLED'
                         ? 'btn btn-error no-animation text-white cursor-default'
                         : ''
@@ -180,27 +180,18 @@ const OrderHistory = ({ orders, selectedTab, fetchOrders }) => {
                       </div>
                       <div className="text-right">
                         <p className="text-lg font-semibold text-gray-700">
-                          ${product.totalProductprice}
+                          {product.totalProductprice.toLocaleString('de-DE')}{' '}
+                          VND
                         </p>
                       </div>
                     </div>
                   ))}
               </div>
               <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-300">
-                <span className="text-lg font-medium text-gray-600">
-                  Order Total: ${order.orderAmt}
+                <span className="text-lg font-semibold text-gray-600">
+                  Order Total: {order.orderAmt.toLocaleString('de-DE')}
                 </span>
                 <div className="flex justify-between">
-                  {(order.paymentMethod === 'COD' ||
-                    order.paymentMethod === 'VNPAY') &&
-                    order.orderStatus === 'PENDING' && (
-                      <button
-                        className="btn btn-outline btn-error mx-2"
-                        onClick={() => showCancelDialog(order.orderId)}
-                      >
-                        Cancel Order
-                      </button>
-                    )}
                   {order.paymentMethod === 'VNPAY' &&
                     order.paymentStatus === 'NOT PAID' &&
                     order.orderStatus === 'PENDING' && (
@@ -211,14 +202,22 @@ const OrderHistory = ({ orders, selectedTab, fetchOrders }) => {
                         Pay Now
                       </button>
                     )}
-                    {order.paymentStatus === 'CANCELLED' && (
+                  {(order.paymentMethod === 'COD' ||
+                    order.paymentMethod === 'VNPAY') &&
+                    order.orderStatus === 'PENDING' && (
                       <button
-                        className="btn btn-neutral mx-2"
+                        className="btn btn-outline btn-error mx-2"
+                        onClick={() => showCancelDialog(order.orderId)}
                       >
-                        Buy Again
+                        Cancel Order
                       </button>
                     )}
-                  <button className="btn btn-outline mx-2">Contact</button>
+                  {order.paymentStatus === 'CANCELLED' && (
+                    <button className="btn btn-neutral mx-2">Buy Again</button>
+                  )}
+                  <a href="/contact" className="btn btn-outline mx-2">
+                    Contact
+                  </a>
                 </div>
               </div>
             </div>

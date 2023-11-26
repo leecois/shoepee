@@ -17,7 +17,6 @@ const OrdersTable = ({
 }) => {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  console.log(orderList);
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
@@ -38,12 +37,11 @@ const OrdersTable = ({
     { field: 'phone', headerName: 'Phone', width: 130 },
     { field: 'address', headerName: 'Address', width: 200 },
     { field: 'paymentMethod', headerName: 'Payment Method', width: 120 },
-    { field: 'paymentStatus', headerName: 'Payment Status', width: 120 },
     { field: 'orderStatus', headerName: 'Order Status', width: 130 },
     { field: 'orderCreateAt', headerName: 'Created At', width: 180 },
     {
       field: 'orderAmt',
-      headerName: 'Total in USD',
+      headerName: 'Total in VND',
       type: 'number',
       width: 130,
     },
@@ -89,20 +87,21 @@ const OrdersTable = ({
   ];
 
   const rows =
-    orderList && Array.isArray(orderList.content)
-      ? orderList.content.map((order) => ({
-          id: order.orderId,
-          phone: order.phoneNumber || 'N/A',
-          address: order.billingAddress || 'N/A',
-          paymentMethod: order.paymentMethod,
-          paymentStatus: order.paymentStatus,
-          orderStatus: order.orderStatus,
-          orderCreateAt: new Date(order.orderCreateAt).toLocaleString(),
-          orderAmt: order.orderAmt,
-          status: order.status, // Add this line
-          actions: '', // Actions are rendered in the renderCell function
-        }))
-      : [];
+  orderList && Array.isArray(orderList.content)
+    ? orderList.content
+        .filter(order => !(order.paymentMethod === 'VNPAY' && order.paymentStatus === 'NOT PAID'))
+        .map((order) => ({
+            id: order.orderId,
+            phone: order.phoneNumber || 'N/A',
+            address: order.billingAddress || 'N/A',
+            paymentMethod: order.paymentMethod,
+            orderStatus: order.orderStatus,
+            orderCreateAt: new Date(order.orderCreateAt).toLocaleString(),
+            orderAmt: order.orderAmt,
+            status: order.status, // Add this line
+            actions: '', // Actions are rendered in the renderCell function
+          }))
+    : [];
 
   return (
     <Box

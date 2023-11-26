@@ -9,6 +9,7 @@ import {
   cartItemsCountSelector,
   cartTotalSelector,
 } from '../../containers/selectors';
+import { enqueueSnackbar } from 'notistack';
 
 export default function Navigation() {
   const cartItemsCount = useSelector(cartItemsCountSelector);
@@ -48,6 +49,9 @@ export default function Navigation() {
   const dispatch = useDispatch();
 
   const handleLogout = () => {
+    enqueueSnackbar('Logout Success', {
+      variant: 'success',
+    });
     dispatch(clearUserData());
     window.location.reload();
   };
