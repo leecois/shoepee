@@ -1,11 +1,14 @@
 import { ErrorMessage, Field, Form, Formik } from 'formik';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
 import {
   getCartAsync,
   placeOrderAsync,
 } from '../../../containers/Cart/cartSlice';
+import userApi from '../../../api/userApi';
+import { fetchOrders } from '../../../containers/Cart/orderSlice';
+import { useNavigate } from 'react-router-dom';
 
 const validationSchema = Yup.object({
   firstName: Yup.string().required('Required'),
@@ -19,6 +22,7 @@ const validationSchema = Yup.object({
 });
 
 const Checkout = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [orderDetails, setOrderDetails] = useState({
@@ -28,6 +32,9 @@ const Checkout = () => {
   });
   const cartId = useSelector((state) => state.cart.cartId);
   const cartEmail = useSelector((state) => state.cart.user?.email);
+  const [orderPlaced, setOrderPlaced] = useState(false);
+  const orders = useSelector((state) => state.orders.content);
+  const [sortedOrders, setSortedOrders] = useState([]);
   const [focused, setFocused] = useState(null);
 
   const initialValues = {
@@ -60,11 +67,53 @@ const Checkout = () => {
       if (!action.error) {
         dispatch(getCartAsync());
         setIsModalOpen(false);
+        setOrderPlaced(true); // Indicate successful order placement
       }
     } catch (error) {
       console.error('Order submission failed:', error);
     }
   };
+
+  useEffect(() => {
+    if (orderPlaced) {
+      dispatch(fetchOrders());
+      setOrderPlaced(false); // Reset the flag
+    }
+  }, [orderPlaced, dispatch]);
+
+  useEffect(() => {
+    // Sort orders
+    if (orders.length > 0) {
+      const sorted = [...orders].sort(
+        (a, b) => new Date(b.orderCreateAt) - new Date(a.orderCreateAt)
+      );
+      setSortedOrders(sorted);
+    }
+  }, [orders]);
+
+  useEffect(() => {
+    const latestOrder = sortedOrders[0];
+    if (
+      latestOrder &&
+      latestOrder.paymentMethod === 'VNPAY' &&
+      orderDetails.paymentMethod === 'VNPAY'
+    ) {
+      const orderToPay = {
+        orderId: latestOrder.orderId,
+      };
+
+      userApi
+        .payOrder(orderToPay)
+        .then((response) => {
+          window.open(response, '_blank');
+          navigate('/user/purchase');
+        })
+        .catch((error) => {
+          console.error('Payment failed:', error);
+        });
+    }
+  }, [sortedOrders, orderDetails, navigate]);
+
   const handleCancel = () => {
     setIsModalOpen(false);
   };
@@ -220,7 +269,7 @@ const Checkout = () => {
                 <Field
                   type="radio"
                   name="paymentMethod"
-                  value="BankOnline"
+                  value="VNPAY"
                   className="radio text-black focus:ring-black"
                 />
                 <div className="flex items-center space-x-2">

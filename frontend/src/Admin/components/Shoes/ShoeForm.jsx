@@ -4,8 +4,12 @@ import * as Yup from 'yup';
 
 const shoeScheme = Yup.object().shape({
   description: Yup.string().required('Please enter description'),
-  price: Yup.number().min(1, 'Price must be greater than 0').required('Please enter price'),
-  imageUrl: Yup.string().url('Must be a valid URL').required('Please enter image url'),
+  price: Yup.number()
+    .min(1, 'Price must be greater than 0')
+    .required('Please enter price'),
+  imageUrl: Yup.string()
+    .url('Must be a valid URL')
+    .required('Please enter image url'),
 });
 
 const ShoeForm = ({ initialValues, onSubmit }) => (
@@ -19,17 +23,17 @@ const ShoeForm = ({ initialValues, onSubmit }) => (
         <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
           <div className="w-full sm:w-1/2">
             <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-              Shoe Description
+              Name
             </label>
             <div className="relative">
               <span className="absolute left-4.5 top-4"></span>
               <Field
                 className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus-border-primary"
                 type="text"
-                name="description"
-                placeholder="Lore Ipsum Dolor Sit Amet Consectetur Adipiscing Elit"
+                name="name"
+                placeholder=""
               />
-              <ErrorMessage name="description" component="div" className="error" />
+              <ErrorMessage name="name" component="div" className="error" />
             </div>
           </div>
           <div className="w-full sm:w-1/2">
@@ -45,6 +49,34 @@ const ShoeForm = ({ initialValues, onSubmit }) => (
             />
             <ErrorMessage name="price" component="div" className="error" />
           </div>
+          <div className="w-full sm:w-1/2">
+            <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+              Quantity
+            </label>
+            <Field
+              className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus-border-primary"
+              type="number"
+              name="shoeQuantity"
+              min="0"
+              placeholder="0"
+            />
+            <ErrorMessage
+              name="shoeQuantity"
+              component="div"
+              className="error"
+            />
+          </div>
+        </div>
+        <div className="mb-5.5">
+          <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+            Description
+          </label>
+          <Field
+            className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
+            type="text"
+            name="description"
+          />
+          <ErrorMessage name="description" component="div" className="error" />
         </div>
         {/* Image URL Field */}
         <div className="mb-5.5">
@@ -75,7 +107,7 @@ const ShoeForm = ({ initialValues, onSubmit }) => (
             className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
             type="reset"
           >
-            Cancel
+            Reset
           </button>
           <button
             className="flex justify-center rounded bg-black-2 dark:bg-white dark:text-black-2 py-2 px-6 font-medium text-white hover:shadow-1"

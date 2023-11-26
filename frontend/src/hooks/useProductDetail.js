@@ -17,8 +17,8 @@ export default function useProductDetail(modelname) {
           setNotFound(true); // Set notFound to true if no product data is found
         } else {
           const availableShoes =
-            response.shoes?.filter((shoe) => shoe.status === 'available') || [];
-          const updatedProduct = { ...response, shoes: availableShoes };
+            response.customizedShoes?.filter((shoe) => shoe.status === 'available') || [];
+          const updatedProduct = { ...response, customizedShoes: availableShoes };
           setProduct(updatedProduct);
           setNotFound(false); // Ensure notFound is false if product data is found
         }

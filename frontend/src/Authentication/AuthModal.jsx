@@ -31,11 +31,10 @@ const AuthModal = ({ handleClickOpen, handleClose }) => {
   const navigate = useNavigate();
 
   const handleContinue = () => {
-    if (
-      !email ||
-      !email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)
-    ) {
-      setEmailError('This field is required. Please enter a valid email.');
+    if (!email || !email.match(/^[a-zA-Z0-9._%+-]+@gmail\.com$/)) {
+      setEmailError(
+        'This field is required. Please enter a valid @gmail.com.'
+      );
       return;
     } else {
       setEmailError('');

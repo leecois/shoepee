@@ -1,31 +1,32 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Breadcrumb from '../../components/Breadcrumb';
-import adminShoeApi from '../../../api/adminShoeApi';
 import ShoeForm from '../../components/Shoes/ShoeForm';
-import ImageForm from '../../components/Shoes/ImageForm';
+import adminShoeApi from '../../../api/adminShoeApi';
+import { useAlert } from '../../../customer/components/Alert/AlertContext';
 
+// Component for adding new shoes to a model
 const ShoeAdditionManager = () => {
   const { modelId } = useParams();
-  const [shoeAdded, setShoeAdded] = useState(false);
-  const [shoeId, setShoeId] = useState(null);
-  const [error, setError] = useState(null);
+  const { showAlert } = useAlert();
 
   const initialShoeValues = {
+    name: '',
     description: '',
     price: '',
     imageUrl: '',
   };
 
+  // Handles the shoe form submission
   const handleShoeSubmit = async (values, { setSubmitting }) => {
     try {
       const response = await adminShoeApi.add(modelId, values);
-      console.log(response);
-      setShoeId(response.id); // Assuming response contains shoeId
-      setShoeAdded(true);
+      if (response) {
+        showAlert('Shoe added successfully', 'success');
+      }
     } catch (error) {
       console.error('Error adding shoe:', error);
-      setError(error);
+      showAlert('Failed to add shoe. Please try again.', 'error');
     } finally {
       setSubmitting(false);
     }
@@ -34,10 +35,6 @@ const ShoeAdditionManager = () => {
   return (
     <div className="mx-auto max-w-270">
       <Breadcrumb pageName="Add Shoe For Model" />
-      {/* Error or Success Messages */}
-      {error && <div>Error adding shoe</div>}
-      {shoeAdded && <div>Shoe added successfully</div>}
-      {/* Shoe Information Form */}
       <div className="grid gap-8">
         <div className="col-span-5 xl:col-span-3">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">

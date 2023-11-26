@@ -11,8 +11,9 @@ const Tabs = ({ onTabChange }) => {
   const tabs = [
     { name: 'ALL', icon: ArchiveBoxIcon },
     { name: 'To Pay', icon: WalletIcon },
-    { name: 'To Ship', icon: TruckIcon },
-    { name: 'Completed', icon: CheckCircleIcon },
+    { name: 'To Ship', icon: WalletIcon },
+    { name: 'To Receive', icon: TruckIcon },
+    { name: 'Delivered', icon: CheckCircleIcon },
     { name: 'Cancelled', icon: NoSymbolIcon },
   ];
 

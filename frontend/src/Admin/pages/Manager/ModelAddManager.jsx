@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import Breadcrumb from '../../components/Breadcrumb';
 import { useParams } from 'react-router-dom';
-import adminModelApi from '../../../api/adminModelApi';
+import Breadcrumb from '../../components/Breadcrumb';
 import ModelForm from '../../components/Models/ModelForm';
+import adminModelApi from '../../../api/adminModelApi';
+import { useAlert } from '../../../customer/components/Alert/AlertContext';
 
+// Component for adding a new model
 const ModelAddManager = () => {
   const { brandId } = useParams();
-  const [modelAdded, setModelAdded] = useState(false);
-  const [error, setError] = useState(null);
+  const { showAlert } = useAlert();
 
   const initialValues = {
     modelname: '',
@@ -15,15 +16,16 @@ const ModelAddManager = () => {
     imageurl: '',
   };
 
+  // Handles form submission
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
       const response = await adminModelApi.add(brandId, values);
-      console.log(response);
-      setModelAdded(true);
-      // Optionally, reset form or navigate away
+      if (response) {
+        showAlert('Model added successfully', 'success');
+      }
     } catch (error) {
       console.error('Error adding model:', error);
-      setError(error);
+      showAlert('Failed to add model. Please try again.', 'error');
     } finally {
       setSubmitting(false);
     }
@@ -32,9 +34,6 @@ const ModelAddManager = () => {
   return (
     <div className="mx-auto max-w-270">
       <Breadcrumb pageName="Add Shoe Model" />
-      {/* Error or Success Messages */}
-      {error && <div>Error adding model</div>}
-      {modelAdded && <div>Model added successfully</div>}
       <div className="grid gap-8">
         <div className="col-span-5 xl:col-span-3">
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">

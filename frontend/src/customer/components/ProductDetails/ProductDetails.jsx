@@ -5,7 +5,6 @@ import {
   addToCartAsync,
   getCartAsync,
 } from '../../../containers/Cart/cartSlice';
-import Toast from '../Alert/Alert';
 import { useAlert } from '../Alert/AlertContext';
 import AlertSign from '../AlertSign';
 import Inspiration from './Inspiration';

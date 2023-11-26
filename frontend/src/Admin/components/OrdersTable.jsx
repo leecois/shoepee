@@ -34,9 +34,10 @@ const OrdersTable = ({
   };
 
   const columns = [
-    { field: 'orderId', headerName: 'Order ID', width: 150 },
+    { field: 'id', headerName: 'Order ID', width: 150 },
     { field: 'phone', headerName: 'Phone', width: 130 },
     { field: 'address', headerName: 'Address', width: 200 },
+    { field: 'paymentMethod', headerName: 'Payment Method', width: 120 },
     { field: 'paymentStatus', headerName: 'Payment Status', width: 120 },
     { field: 'orderStatus', headerName: 'Order Status', width: 130 },
     { field: 'orderCreateAt', headerName: 'Created At', width: 180 },
@@ -54,7 +55,7 @@ const OrdersTable = ({
         <div className="flex items-center space-x-2">
           {params.row.orderStatus === 'PENDING' && (
             <button
-              onClick={() => confirmOrder(params.row.orderId)}
+              onClick={() => confirmOrder(params.row.id)}
               title="Confirm Order"
             >
               <CheckIcon className="h-5 w-5 text-green-500" />
@@ -62,7 +63,7 @@ const OrdersTable = ({
           )}
           {params.row.orderStatus === 'CONFIRMED' && (
             <button
-              onClick={() => startShipping(params.row.orderId)}
+              onClick={() => startShipping(params.row.id)}
               title="Start Shipping"
             >
               <TruckIcon className="h-5 w-5 text-blue-500" />
@@ -70,7 +71,7 @@ const OrdersTable = ({
           )}
           {params.row.orderStatus === 'SHIPPING' && (
             <button
-              onClick={() => completedOrder(params.row.orderId)}
+              onClick={() => completedOrder(params.row.id)}
               title="Complete Order"
             >
               <CheckBadgeIcon className="h-5 w-5 text-purple-500" />
@@ -91,9 +92,9 @@ const OrdersTable = ({
     orderList && Array.isArray(orderList.content)
       ? orderList.content.map((order) => ({
           id: order.orderId,
-          orderId: `${order.orderId}`,
           phone: order.phoneNumber || 'N/A',
           address: order.billingAddress || 'N/A',
+          paymentMethod: order.paymentMethod,
           paymentStatus: order.paymentStatus,
           orderStatus: order.orderStatus,
           orderCreateAt: new Date(order.orderCreateAt).toLocaleString(),
