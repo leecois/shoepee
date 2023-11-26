@@ -9,6 +9,7 @@ public class OrderRequest {
     private String customerName;
     private String orderAddress;
     private String orderPhone;
+    private String paymentMethod;
     private int cartId;
     public String getOrderAddress() {
         return orderAddress;

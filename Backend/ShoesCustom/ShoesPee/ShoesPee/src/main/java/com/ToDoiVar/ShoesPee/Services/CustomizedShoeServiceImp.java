@@ -1,7 +1,9 @@
 package com.ToDoiVar.ShoesPee.Services;
 
+import com.ToDoiVar.ShoesPee.Exeption.BrandNotFoundException;
 import com.ToDoiVar.ShoesPee.Exeption.shoeModelNotFounException;
 import com.ToDoiVar.ShoesPee.Exeption.shoeNotFoundException;
+import com.ToDoiVar.ShoesPee.Models.Brand;
 import com.ToDoiVar.ShoesPee.Models.CustomizedShoe;
 import com.ToDoiVar.ShoesPee.Models.ShoeModel;
 import com.ToDoiVar.ShoesPee.dto.CustomizedShoeDto;
@@ -44,11 +46,17 @@ public class CustomizedShoeServiceImp implements CustomizedShoeService {
 
 
     @Override
-    public CustomizedShoe addShoe(CustomizedShoeDto newShoe, int shoeModelId) {
-        ShoeModel shoeModel = this.shoeModelRepository.findById(shoeModelId).orElseThrow(() -> new shoeModelNotFounException("shoe model not found"));
+    public CustomizedShoe addShoe(CustomizedShoeDto newShoe) {
+        ShoeModel shoeModel = this.shoeModelRepository.getShoeModelsByModelname(newShoe.getShoeModelDto().getModelname()).orElseThrow(() -> new shoeModelNotFounException("shoe model not found"));
 
         CustomizedShoe customizedShoe = this.mapper.map(newShoe, CustomizedShoe.class);
         customizedShoe.setStatus("available");
+        if(newShoe.getShoeQuantity() == 0){
+            customizedShoe.setStock(false);
+        }
+        else {
+            customizedShoe.setStock(true);
+        }
         customizedShoe.setShoeModel(shoeModel);
         CustomizedShoe save = this.customizedShoeRepository.save(customizedShoe);
         this.mapper.map(save, CustomizedShoeDto.class);
@@ -61,6 +69,21 @@ public class CustomizedShoeServiceImp implements CustomizedShoeService {
         oldCustomizedShoe.setPrice(editShoe.getPrice());
         oldCustomizedShoe.setDescription(editShoe.getDescription());
         oldCustomizedShoe.setImageUrl(editShoe.getImageUrl());
+        oldCustomizedShoe.setShoeQuantity(editShoe.getShoeQuantity());
+        if (editShoe.getShoeQuantity() == 0){
+            editShoe.setStock(false);
+        }
+        else {
+            editShoe.setStock(true);
+        }
+        oldCustomizedShoe.setName(editShoe.getName());
+        if (editShoe.getShoeModelDto() != null && editShoe.getShoeModelDto().getModelname()!= null) {
+            // Giả sử getId() trả về id của Brand
+            String shoeModelName = editShoe.getShoeModelDto().getModelname();
+            ShoeModel shoeModel = shoeModelRepository.getShoeModelsByModelname(shoeModelName)
+                    .orElseThrow(() -> new BrandNotFoundException("Brand with id " + shoeModelName + " not found"));
+            oldCustomizedShoe.setShoeModel(shoeModel);
+        }
         CustomizedShoe save = this.customizedShoeRepository.save(oldCustomizedShoe);
         return this.mapper.map(save, CustomizedShoeDto.class);
     }
@@ -78,7 +101,7 @@ public class CustomizedShoeServiceImp implements CustomizedShoeService {
     @Override
     public CustomizedShoe deleteShoe(int id) {
         CustomizedShoe customizedShoe = this.customizedShoeRepository.findById(id).orElseThrow(() -> new shoeNotFoundException("shoe not found"));
-        customizedShoe.setStatus("unavailble");
+        customizedShoe.setStatus("unavailable");
         CustomizedShoe save = this.customizedShoeRepository.save(customizedShoe);
         return save;
     }

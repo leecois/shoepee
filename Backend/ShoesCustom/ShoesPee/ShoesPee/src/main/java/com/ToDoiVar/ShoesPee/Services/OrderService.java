@@ -7,7 +7,6 @@ import com.ToDoiVar.ShoesPee.dto.*;
 import com.ToDoiVar.ShoesPee.repositiory.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -43,6 +42,7 @@ public class OrderService {
         String orderAddress=request.getOrderAddress();
         String orderPhoneNumber = request.getOrderPhone();
         String orderFullName = request.getCustomerName();
+        String orderPaymentMethod = request.getPaymentMethod();
         //find cart
         Cart cart= this.cartRepo.findById(cartId).orElseThrow(()->new ResourceNotFoundException("Cart Not Found"));
         //getting CartItem
@@ -76,6 +76,7 @@ public class OrderService {
         order.setPhoneNumber(orderPhoneNumber);
         order.setOrderStatus("PENDING");
         order.setPaymentStatus("NOT PAID");
+        order.setPaymentMethod(orderPaymentMethod);
         order.setUser(user);
         order.setOrderItem(orderitems);
         order.setOrderAmt(totalOrderPrice.get());
@@ -105,10 +106,10 @@ public class OrderService {
         return orderDto;
     }
 
-    public void CancelOrder(int orderId){
-        Order order = this.orderReop.findById(orderId).orElseThrow(()->new ResourceNotFoundException("Order not Found"));
-        this.orderReop.delete(order);
-    }
+//    public void CancelOrder(int orderId){
+//        Order order = this.orderReop.findById(orderId).orElseThrow(()->new ResourceNotFoundException("Order not Found"));
+//        this.orderReop.delete(order);
+//    }
 
     public Order getOrderById(int orderid){
         Order order = this.orderReop.findById(orderid).orElseThrow(()->new ResourceNotFoundException("order not found"));
@@ -239,6 +240,13 @@ public class OrderService {
       OrderDto orderDto = this.modelMapper.map(save,OrderDto.class);
       return orderDto;
     }
+    public OrderDto cancelOrder(int orderid){
+      Order order=  this.orderReop.findById(orderid).orElseThrow(() -> new ResourceNotFoundException("order not found"));
+      order.setOrderStatus("CANCELLED");
+      Order save = this.orderReop.save(order);
+      OrderDto orderDto = this.modelMapper.map(save,OrderDto.class);
+      return orderDto;
+    }
     public OrderDto deliveryOrder(int orderid){
       Order order=  this.orderReop.findById(orderid).orElseThrow(() -> new ResourceNotFoundException("order not found"));
       order.setOrderStatus("SHIPPING");
@@ -269,7 +277,7 @@ public class OrderService {
     }
     public Order paidOrder(int orderid) {
         Order order = orderReop.findById(orderid).orElseThrow(()-> new ResourceNotFoundException("order not found"));
-        order.setOrderStatus("PAID");
+        order.setPaymentStatus("PAID");
         Order savedOrder = this.orderReop.save(order);
         OrderDto orderDto = this.modelMapper.map(savedOrder, OrderDto.class);
         return savedOrder;

@@ -25,11 +25,11 @@ public class ShoeModelServiceImpl implements ShoeModelService{
     @Autowired
     private BrandRepository brandRepository;
     @Override
-    public ShoeModel addShoeModel(ShoeModelDto newShoeModel,int brandid) {
+    public ShoeModel addShoeModel(ShoeModelDto newShoeModel) {
         if(shoeModelExisted(newShoeModel.getModelname())){
             throw new shoeModelExistedException(newShoeModel.getModelname() + "ShoeModel has been existed");
         }
-        Brand brand= this.brandRepository.findById(brandid).orElseThrow(()-> new BrandNotFoundException("Brand not found"));
+        Brand brand= this.brandRepository.getBrandByBrandName(newShoeModel.getBrandDto().getBrandName()).orElseThrow(()-> new BrandNotFoundException("Brand not found"));
         //ShoeModelDto to shoemodel
         ShoeModel entity = toEntity(newShoeModel);
         entity.setStatus("available");
@@ -62,27 +62,32 @@ public class ShoeModelServiceImpl implements ShoeModelService{
         return shoeModelRepository.findById(id).orElseThrow(() -> new shoeModelNotFounException("Sorry, no shoe model found with the Id: " + id));
     }
 
+
     @Override
-    public ShoeModel updateShoeModel(int id, ShoeModel updateShoeModel) {
-        return shoeModelRepository.findById(id).map(sm -> {
-            sm.setModelname(updateShoeModel.getModelname());
+    public ShoeModel updateShoeModel(int id, ShoeModelDto updateShoeModel) {
+        ShoeModel existingShoeModel = shoeModelRepository.findById(id)
+                .orElseThrow(() -> new shoeModelNotFounException("ShoeModel with id " + id + " not found"));
+        ShoeModelDto getShoe = toDto(existingShoeModel);
 
-            // Tìm đối tượng Brand mới
-            Brand newBrand = brandRepository.findById(updateShoeModel.getBrand().getId())
-                    .orElseThrow(() -> new BrandNotFoundException("Brand not found"));
+        existingShoeModel.setModelname(updateShoeModel.getModelname());
+        // ... cập nhật các trường khác của ShoeModel nếu cần ...
 
-            // Cập nhật Brand cho ShoeModel
-            sm.setBrand(newBrand);
+        // Kiểm tra xem updateShoeModelData có chứa thông tin Brand không
+        if (updateShoeModel.getBrandDto() != null && updateShoeModel.getBrandDto().getBrandName() != null) {
+            // Giả sử getId() trả về id của Brand
+            String brandName = updateShoeModel.getBrandDto().getBrandName();
+            Brand brand = brandRepository.getBrandByBrandName(brandName)
+                    .orElseThrow(() -> new BrandNotFoundException("Brand with id " + brandName + " not found"));
+            existingShoeModel.setBrand(brand);
+        }
 
-            return shoeModelRepository.save(sm);
-        }).orElseThrow(() -> new shoeModelNotFounException("Sorry, this shoemodel could not be found"));
-
+        return shoeModelRepository.save(existingShoeModel);
     }
 
     @Override
     public ShoeModel removeShoeModel(int id) {
         ShoeModel shoeModel = this.shoeModelRepository.findById(id).orElseThrow(()-> new shoeModelNotFounException("shoe model not found"));
-        shoeModel.setStatus("unavailble");
+        shoeModel.setStatus("unavailable");
         ShoeModel save = this.shoeModelRepository.save(shoeModel);
         return save;
     }

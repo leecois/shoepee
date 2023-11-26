@@ -10,5 +10,8 @@ import java.io.Serializable;
 public class TransactionStatusDTO implements Serializable {
     private String status;
     private String message;
-    private String data;
+    private String totalprice;
+    private String orderInfor;
+    private String payDate;
+    private String transactionNo;
 }

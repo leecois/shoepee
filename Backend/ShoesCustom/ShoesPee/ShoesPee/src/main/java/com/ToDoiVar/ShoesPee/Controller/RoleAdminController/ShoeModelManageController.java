@@ -20,9 +20,9 @@ import java.util.Optional;
 public class ShoeModelManageController {
     @Autowired
     private final ShoeModelService shoeModelService;
-    @PostMapping("/addShoemodel/{brandid}")
-    public ResponseEntity<ShoeModel> addShoeModel(@RequestBody ShoeModelDto newShoeModel,@PathVariable int brandid){
-        ShoeModel newShoemodel = shoeModelService.addShoeModel(newShoeModel,brandid);
+    @PostMapping("/addShoemodel")
+    public ResponseEntity<ShoeModel> addShoeModel(@RequestBody ShoeModelDto newShoeModel){
+        ShoeModel newShoemodel = shoeModelService.addShoeModel(newShoeModel);
         return new ResponseEntity<ShoeModel>(newShoemodel,HttpStatus.CREATED);
     }
     @GetMapping("/shoemodels")
@@ -45,7 +45,7 @@ public class ShoeModelManageController {
         return new ResponseEntity<List<ShoeModelDto>>(getShoemodelByBrand,HttpStatus.OK);
     }
     @PutMapping("/editshoemode/{id}")
-    public ResponseEntity<ShoeModel> editShoeModel(@PathVariable int id, @RequestBody ShoeModel editShoeModel){
+    public ResponseEntity<ShoeModel> editShoeModel(@PathVariable int id, @RequestBody ShoeModelDto editShoeModel){
         return new ResponseEntity<>(shoeModelService.updateShoeModel(id,editShoeModel),HttpStatus.OK);
     }
     @PutMapping("/deleteshoemodel/{id}")

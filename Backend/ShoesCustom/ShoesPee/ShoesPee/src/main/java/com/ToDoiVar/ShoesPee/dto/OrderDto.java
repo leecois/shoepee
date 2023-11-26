@@ -21,6 +21,7 @@ public class OrderDto {
     private String phoneNumber;
     private String billingAddress;
     private UserDto user;
+    private String paymentMethod;
 
     private Set<OrderItemDto> orderItem=new HashSet<>();
 

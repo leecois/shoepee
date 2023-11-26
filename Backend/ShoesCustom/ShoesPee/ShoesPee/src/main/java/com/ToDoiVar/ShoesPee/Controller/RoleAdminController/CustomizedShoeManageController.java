@@ -24,9 +24,9 @@ public class CustomizedShoeManageController {
     public ResponseEntity<List<CustomizedShoeDto>> getShoeByShoemodelId(@PathVariable int id){
         return new ResponseEntity<List<CustomizedShoeDto>>(shoeService.getShoeByShoeModel(id),HttpStatus.OK);
     }
-    @PostMapping("/addshoe/{shoemodelid}")
-    public ResponseEntity<CustomizedShoe> addShoe(@RequestBody CustomizedShoeDto newShoe, @PathVariable int shoemodelid){
-        return new ResponseEntity<CustomizedShoe>(shoeService.addShoe(newShoe,shoemodelid),HttpStatus.OK);
+    @PostMapping("/addshoe")
+    public ResponseEntity<CustomizedShoe> addShoe(@RequestBody CustomizedShoeDto newShoe){
+        return new ResponseEntity<CustomizedShoe>(shoeService.addShoe(newShoe),HttpStatus.OK);
     }
     @PutMapping("/editshoe/{id}")
     public ResponseEntity<CustomizedShoeDto> editShoe(@PathVariable int id, @RequestBody CustomizedShoeDto editshoe){
