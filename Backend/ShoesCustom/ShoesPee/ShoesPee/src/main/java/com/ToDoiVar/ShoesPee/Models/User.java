@@ -33,6 +33,7 @@ public class User implements UserDetails {
     private String password;
     @Column(name = "email")
     private String email;
+    private boolean isEnabled = false;
     @Enumerated(EnumType.STRING)
     @JoinColumn()
     private Role role;

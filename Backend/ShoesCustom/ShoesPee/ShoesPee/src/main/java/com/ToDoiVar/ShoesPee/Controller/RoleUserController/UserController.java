@@ -3,6 +3,7 @@ package com.ToDoiVar.ShoesPee.Controller.RoleUserController;
 import com.ToDoiVar.ShoesPee.Models.ChangePasswordRequest;
 import com.ToDoiVar.ShoesPee.Models.Role;
 import com.ToDoiVar.ShoesPee.Models.User;
+import com.ToDoiVar.ShoesPee.Security.changepass.PasswordRequestUtil;
 import com.ToDoiVar.ShoesPee.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -49,11 +50,13 @@ public class UserController {
         return role.equals("ADMIN");
     }
 
-    @PatchMapping("/change-password")
-    public ResponseEntity<?> changePassword(
-            @RequestBody ChangePasswordRequest request, Principal connectedUser
-            ) {
-                    userService.changePassword(request,connectedUser);
-                    return ResponseEntity.ok().build();
+    @PostMapping("/change-password")
+    public String changePassword(@RequestBody PasswordRequestUtil requestUtil){
+        User user = userService.findByEmail(requestUtil.getEmail()).get();
+        if (!userService.oldPasswordIsValid(user, requestUtil.getOldPassword())){
+            return "Incorrect old password";
+        }
+        userService.changePassword(user, requestUtil.getNewPassword());
+        return "Password changed successfully";
     }
 }
