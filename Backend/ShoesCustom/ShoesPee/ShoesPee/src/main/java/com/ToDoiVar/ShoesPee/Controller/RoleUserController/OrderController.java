@@ -35,11 +35,12 @@ public class OrderController {
         return new ResponseEntity<OrderDto>(order, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/deleteorder/{orderId}")
+    @GetMapping("/cancelorder/{orderId}")
     public ResponseEntity<?> cancelOrderById(@PathVariable int orderId){
-        this.orderService.CancelOrder(orderId);
-        return new ResponseEntity<ApiResponse>(new ApiResponse("Order deleted",true),HttpStatus.OK);
+        this.orderService.cancelOrder(orderId);
+        return new ResponseEntity<ApiResponse>(new ApiResponse("Order cancelled",true),HttpStatus.OK);
     }
+
 
     @GetMapping("/getorderbyid/{orderId}")
 

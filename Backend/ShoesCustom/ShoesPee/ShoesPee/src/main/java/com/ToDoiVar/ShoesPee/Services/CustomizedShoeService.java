@@ -9,7 +9,7 @@ public interface CustomizedShoeService {
     List<CustomizedShoeDto> getAllShoe();
     CustomizedShoeDto getShoeById(int id);
     CustomizedShoe findById(int id);
-    CustomizedShoe addShoe(CustomizedShoeDto newShoe, int shoeModelsId);
+    CustomizedShoe addShoe(CustomizedShoeDto newShoe);
     CustomizedShoeDto editShoe(int id, CustomizedShoeDto editShoe);
     List<CustomizedShoeDto> getShoeByShoeModel(int shoeModelId);
     CustomizedShoe deleteShoe(int id);

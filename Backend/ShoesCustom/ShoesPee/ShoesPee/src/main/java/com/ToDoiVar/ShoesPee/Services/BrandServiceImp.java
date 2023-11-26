@@ -51,7 +51,7 @@ public class BrandServiceImp implements BrandService{
             throw new BrandExistedException("Sorry, this brand has been exist");
         }
         Brand brand = this.mapper.map(newBrand,Brand.class);
-        brand.setStatus("availble");
+        brand.setStatus("available");
         Brand save = this.brandRepository.save(brand);
 
         return this.mapper.map(save,BrandDto.class);
@@ -64,7 +64,7 @@ public class BrandServiceImp implements BrandService{
     @Override
     public Brand deleteBrand(int id) {
         Brand deleBrand = this.brandRepository.findById(id).orElseThrow(() -> new BrandNotFoundException("Brand not found"));
-        deleBrand.setStatus("unavailble");
+        deleBrand.setStatus("unavailable");
         Brand save = this.brandRepository.save(deleBrand);
         return save;
     }

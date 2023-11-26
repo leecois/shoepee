@@ -17,7 +17,8 @@ import java.util.*;
 public class Config {
 	public static String vnp_PayUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
 //    public static String vnp_ReturnUrl = "https://static.vecteezy.com/system/resources/previews/019/520/923/original/payment-success-paid-bill-concept-illustration-flat-design-eps10-modern-graphic-element-for-landing-page-empty-state-ui-infographic-icon-vector.jpg";
-    public static String vnp_ReturnUrl = "https://localhost:8080/api/v1/auth/payment_infor";
+    public static String vnp_ReturnUrl = "https://3.1.85.78/api/v1/auth/payment_infor";
+//    public static String vnp_ReturnUrl = "https://shoepee.vercel.app/user/purchase";
     public static String vnp_TmnCode = "GVQT45Y9";
     public static String secretKey = "UKCOFUQZKRXJANEUISXZFPQRQEAFJWQX";
     public static String vnp_ApiUrl = "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction";

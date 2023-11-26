@@ -1,5 +1,6 @@
 package com.ToDoiVar.ShoesPee.Models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,7 +23,8 @@ public class Brand {
     private String imageUrl;
     @Column(name = "status")
     private String status ;
-    @OneToMany(mappedBy = "brand", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "brand")
+    @JsonManagedReference
     private Set<ShoeModel> shoeModel  = new HashSet<>();
 
     public Set<ShoeModel> getShoeModel(Set<ShoeModel> shoeModel) {

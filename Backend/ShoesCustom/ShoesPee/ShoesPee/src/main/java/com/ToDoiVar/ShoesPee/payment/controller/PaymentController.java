@@ -13,12 +13,15 @@
     import com.ToDoiVar.ShoesPee.payment.config.Config;
     import com.ToDoiVar.ShoesPee.repositiory.OrderRepository;
     import jakarta.servlet.http.HttpServletRequest;
+    import jakarta.servlet.http.HttpServletResponse;
+    import org.modelmapper.ModelMapper;
     import org.springframework.beans.factory.annotation.Autowired;
     import org.springframework.context.annotation.Lazy;
     import org.springframework.http.HttpStatus;
     import org.springframework.http.ResponseEntity;
     import org.springframework.web.bind.annotation.*;
 
+    import java.io.IOException;
     import java.io.UnsupportedEncodingException;
     import java.net.URLEncoder;
     import java.nio.charset.StandardCharsets;
@@ -38,6 +41,8 @@
         private OrderService orderService;
         @Autowired
         private VNPayService vnPayService;
+        @Autowired
+        private ModelMapper modelMapper;
         @PostMapping("/pay")
         public String getPay(@RequestBody Order orderid) throws UnsupportedEncodingException{
 //            String token = bearertoken.substring(7);
@@ -58,11 +63,11 @@
             String vnp_Version = "2.1.0";
             String vnp_Command = "pay";
             String orderType = "other";
-            long amount = (long) order.getOrderAmt() *240*100;
+            long amount = (long) order.getOrderAmt() *1000;
             String bankCode = "NCB";
 
             String vnp_TxnRef = Config.getRandomNumber(8);
-            String vnp_IpAddr = "3.1.85.78";
+            String vnp_IpAddr = Config.vnp_ApiUrl;
 
             String vnp_TmnCode = Config.vnp_TmnCode;
 //            String vnp_CancelUrl = Config.vnp_CancelUrl;
@@ -77,9 +82,9 @@
 //            vnp_Params.put("vnp_Orderid", String.valueOf(orderid.getOrderId()));
 
             vnp_Params.put("vnp_BankCode", bankCode);
-            vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
+            vnp_Params.put("vnp_TxnRef", String.valueOf(orderid.getOrderId()));
             vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang:" + vnp_TxnRef);
-            vnp_Params.put("vnp_OrderType", String.valueOf(orderid.getOrderId()));
+            vnp_Params.put("vnp_OrderType", orderType);
 
             vnp_Params.put("vnp_Locale", "vn");
             vnp_Params.put("vnp_ReturnUrl", Config.vnp_ReturnUrl);
@@ -87,7 +92,8 @@
             vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
 //            vnp_Params.put("vnp_CancelUrl", Config.vnp_CancelUrl);
 
-            Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
+            TimeZone.setDefault(TimeZone.getTimeZone("Asia/Ho_Chi_Minh")); // Đặt múi giờ mặc định
+            Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
             SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
             String vnp_CreateDate = formatter.format(cld.getTime());
             vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
@@ -122,7 +128,7 @@
             String queryUrl = query.toString();
             String vnp_SecureHash = Config.hmacSHA512(Config.secretKey, hashData.toString());
             queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
-            String paymentUrl = Config.vnp_PayUrl + "?" + queryUrl;
+            String paymentUrl = Config.vnp_PayUrl + "?" + queryUrl  ;
             return paymentUrl;
         }
 
@@ -148,17 +154,19 @@
 //        }
 
         @GetMapping("/payment_infor")
-        public ResponseEntity<?> transaction2(
+        public void transaction2(
 //                @RequestHeader("Authorization") String bearertoken,
                 @RequestParam(value = "vnp_Amount") String amount,
                 @RequestParam(value = "vnp_BankCode") String bankcode,
                 @RequestParam(value = "vnp_OrderInfo") String order,
-                @RequestParam(value = "vnp_ResponseCode") String responseCode
-//                @RequestParam(value = "vnp_OrderType") String orderid
+                @RequestParam(value = "vnp_ResponseCode") String responseCode,
+                @RequestParam(value = "vnp_TxnRef") String orderid,
+//                @RequestParam(value = "vnp_CreateDate") String payday,
 
+                HttpServletResponse response
+//                @PathVariable int id
 //                @RequestHeader("Authorization") String bearertoken
-        )
-        {
+        ) throws IOException {
 //            String token = bearertoken.substring(7);
 //            String username =  jwtService.extractUsername(token);
 //            User user = this.userService.getUserByName(username);
@@ -169,24 +177,31 @@
             if (responseCode.equals("00")) {
                 transactionStatusDTO.setStatus("Ok");
                 transactionStatusDTO.setMessage("Successfully");
-                transactionStatusDTO.setData("");
-//                Order paidOrder = orderService.paidOrder(Integer.parseInt(String.valueOf(orderid)));
+                transactionStatusDTO.setTotalprice(amount);
+                transactionStatusDTO.setOrderInfor(order);
+//                transactionStatusDTO.setPayDate(payday);
+                Order paidOrder = orderService.paidOrder(Integer.parseInt(String.valueOf(orderid)));
+                OrderDto orderDto = this.modelMapper.map(paidOrder,OrderDto.class);
+                orderDto = orderService.acceptOrder(Integer.parseInt(String.valueOf(orderid)));
+                response.sendRedirect("https://shoepee.vercel.com/success");
+
             }
             else {
                 transactionStatusDTO.setStatus("No");
                 transactionStatusDTO.setMessage("Failed");
-                transactionStatusDTO.setData("");
+                response.sendRedirect("https://shoepee.vercel.app/user/purchase");
+
+//                transactionStatusDTO.setData("");
             }
 //            String link = "/redirect:/success";
-            return ResponseEntity.status(HttpStatus.OK).body(transactionStatusDTO);
         }
-        @PostMapping("/submitOrder")
-        public String submidOrder(@RequestParam("amount") int orderTotal,
-                                  @RequestParam("orderInfo") String orderInfo,
-                                  HttpServletRequest request){
-            String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
-            String vnpayUrl = vnPayService.createOrder(orderTotal, orderInfo, baseUrl);
-            return "redirect:" + vnpayUrl;
-        }
+//        @PostMapping("/submitOrder")
+//        public String submidOrder(@RequestParam("amount") int orderTotal,
+//                                  @RequestParam("orderInfo") String orderInfo,
+//                                  HttpServletRequest request){
+//            String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort();
+//            String vnpayUrl = vnPayService.createOrder(orderTotal, orderInfo, baseUrl);
+//            return "redirect:" + vnpayUrl;
+//        }
 
     }

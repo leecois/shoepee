@@ -6,3 +6,6 @@ server:
     key-store: classpath:javatechie.jks
     key-store-type: JKS
     key-password: passoword
+    spring:
+      jackson:
+        time-zone: Asia/Ho_Chi_Minh

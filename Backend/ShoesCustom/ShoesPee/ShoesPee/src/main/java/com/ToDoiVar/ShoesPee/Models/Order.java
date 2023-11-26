@@ -1,6 +1,5 @@
 package com.ToDoiVar.ShoesPee.Models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +8,6 @@ import lombok.Setter;
 
 import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 @Getter
 @Setter
@@ -22,6 +20,7 @@ public class Order {
     private int orderId;
     private String orderStatus;
     private String paymentStatus;
+    private String paymentMethod;
     private double orderAmt;
     private String billingAddress;
     private String phoneNumber;
