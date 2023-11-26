@@ -37,7 +37,7 @@ const Hero = () => {
               </Link>
             </div>
           </div>
-          <div className="flex justify-center lg:justify-end">
+          <div className="m-auto">
             <img
               src="/assets/publiceye.jpg"
               alt="Featured Shoe"

@@ -32,7 +32,12 @@ function EditToolbar() {
 
   return (
     <GridToolbarContainer>
-      <Button color="inherit" style={{ fontWeight: 'bold', fontFamily: 'inherit' }} startIcon={<AddIcon />} onClick={handleClick}>
+      <Button
+        color="inherit"
+        style={{ fontWeight: 'bold', fontFamily: 'inherit' }}
+        startIcon={<AddIcon />}
+        onClick={handleClick}
+      >
         Add Shoe Model Of Brand
       </Button>
     </GridToolbarContainer>
@@ -134,6 +139,7 @@ export default function ModelsTable({ modelList, updateModel, deleteModel }) {
       field: 'brandName',
       headerName: 'Brand Name',
       width: 230,
+      editable: true,
     },
     {
       field: 'actions',

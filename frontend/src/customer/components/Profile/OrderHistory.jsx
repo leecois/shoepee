@@ -1,50 +1,84 @@
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 import React, { useState } from 'react';
 import userApi from '../../../api/userApi';
 import OrderDetailModal from './OrderDetailModal';
 
-const OrderHistory = ({ orders, selectedTab }) => {
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('COD');
+const OrderHistory = ({ orders, selectedTab, fetchOrders }) => {
+  const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
+  const [orderToCancel, setOrderToCancel] = useState(null);
+  const [paymentUrl, setPaymentUrl] = useState(null);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+  const gucciStyle = {
+    dialogTitle: { color: '#a5a58d' }, // Olive green color, typical in GUCCI design
+    dialogContent: { fontFamily: 'Times New Roman', fontStyle: 'italic' }, // Classic, elegant font
+    button: { backgroundColor: '#6b705c', color: '#fff' }, // Dark green button with white text
+  };
+
   const filteredOrders = orders.filter((order) => {
-    if (selectedTab === 'ALL') {
-      return true; // Hiển thị tất cả các đơn hàng khi 'ALL' được chọn
-    } else if (selectedTab === 'To Ship' && order.orderStatus === 'SHIPPING') {
-      return true; // Hiển thị các đơn hàng có trạng thái 'SHIPPING' khi 'To Ship' được chọn
-    } else if (
-      selectedTab === 'Completed' &&
-      order.orderStatus === 'COMPLETED'
-    ) {
-      return true; // Hiển thị các đơn hàng có trạng thái 'COMPLETED' khi 'Completed' được chọn
-    } else if (
-      selectedTab === 'Cancelled' &&
-      order.orderStatus === 'CANCELLED'
-    ) {
-      return true; // Hiển thị các đơn hàng có trạng thái 'CANCELLED' khi 'Cancelled' được chọn
-    } else if (
-      selectedTab === 'To Pay' &&
-      (order.paymentStatus === 'NOT PAID' || order.paymentStatus === 'PAID') &&
-      order.orderStatus !== 'SHIPPING' &&
-      order.orderStatus !== 'COMPLETED'
-    ) {
-      return true; // Display orders with 'NOT PAID' or 'PAID' payment status and not 'SHIPPING' or 'COMPLETED' order status when 'To Pay' is selected
+    switch (selectedTab) {
+      case 'ALL':
+        return true;
+
+      case 'To Pay':
+        return (
+          order.paymentStatus === 'NOT PAID' && order.orderStatus === 'PENDING'
+        );
+
+      case 'To Ship':
+        // Hiển thị đơn hàng đã thanh toán hoặc là COD
+        return order.orderStatus === 'CONFIRMED';
+
+      case 'To Receive':
+        return order.orderStatus === 'SHIPPING';
+
+      case 'Delivered':
+        return order.orderStatus === 'COMPLETED';
+
+      case 'Cancelled':
+        return order.orderStatus === 'CANCELLED';
+
+      default:
+        return false;
     }
-    return false;
   });
 
   const handlePaymentClick = async (orderId) => {
     try {
-      if (selectedPaymentMethod === 'COD') {
-        // Xử lý thanh toán bằng COD
-        const response = await userApi.payOrder(orderId);
-        console.log(response);
-      } else if (selectedPaymentMethod === 'Bank') {
-        // Xử lý thanh toán bằng Bank Transfer
-        // Hiển thị thông báo hoặc hướng dẫn cho người dùng thực hiện chuyển khoản ngân hàng
-        console.log('Please make a bank transfer for this order.');
+      const orderToPay = orders.find((order) => order.orderId === orderId);
+      if (!orderToPay) {
+        console.error('Order not found');
+        return;
       }
+      const response = await userApi.payOrder(orderToPay);
+      setPaymentUrl(response);
+      setOpenDialog(true);
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  const showCancelDialog = (orderId) => {
+    setOrderToCancel(orderId);
+    setCancelDialogOpen(true);
+  };
+
+  const confirmCancelOrder = async () => {
+    if (orderToCancel) {
+      try {
+        const response = await userApi.cancelOrder(orderToCancel);
+        console.log(response);
+        setCancelDialogOpen(false);
+        fetchOrders(); // Call fetchOrders after successfully cancelling the order
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
 
@@ -62,7 +96,7 @@ const OrderHistory = ({ orders, selectedTab }) => {
   function formatDate(date) {
     const d = new Date(date);
     const day = d.getDate().toString().padStart(2, '0');
-    const month = (d.getMonth() + 1).toString().padStart(2, '0'); // Months are 0 based
+    const month = (d.getMonth() + 1).toString().padStart(2, '0');
     const year = d.getFullYear();
     const hours = d.getHours().toString().padStart(2, '0');
     const minutes = d.getMinutes().toString().padStart(2, '0');
@@ -88,6 +122,9 @@ const OrderHistory = ({ orders, selectedTab }) => {
                 </span>
 
                 <div className="space-x-2">
+                  <div className="font-semibold btn btn-outline mx-2">
+                    Payment Method: {order.paymentMethod}
+                  </div>
                   <div
                     className={`font-semibold ${
                       order.paymentStatus === 'PAID'
@@ -99,7 +136,20 @@ const OrderHistory = ({ orders, selectedTab }) => {
                         : ''
                     }`}
                   >
-                    {order.paymentStatus} ({selectedPaymentMethod})
+                    {order.orderStatus === 'PENDING' &&
+                    order.paymentMethod === 'VNPAY' &&
+                    order.paymentStatus === 'NOT PAID'
+                      ? 'Awaiting Payment'
+                      : order.orderStatus === 'PENDING' &&
+                        order.paymentMethod === 'COD'
+                      ? 'Awaiting Confirmation'
+                      : order.orderStatus === 'CONFIRMED'
+                      ? 'Preparing Order'
+                      : order.orderStatus === 'SHIPPING'
+                      ? 'Shipping'
+                      : order.orderStatus === 'COMPLETED'
+                      ? 'Order Completed'
+                      : 'CANCELLED'}
                   </div>
                 </div>
               </div>
@@ -140,25 +190,36 @@ const OrderHistory = ({ orders, selectedTab }) => {
                 <span className="text-lg font-medium text-gray-600">
                   Order Total: ${order.orderAmt}
                 </span>
-                {order.paymentStatus === 'NOT PAID' && (
-                  <div className="flex justify-between">
-                    <button
-                      className="btn btn-neutral mx-2"
-                      onClick={() => handlePaymentClick(order.orderId)}
-                    >
-                      Pay Now
-                    </button>
-                    <button className="btn btn-outline btn-error">
-                      Cancel Order
-                    </button>
-                  </div>
-                )}
-                {(order.paymentStatus === 'CANCELLED' ||
-                  order.paymentStatus === 'COMPLETED') && (
-                  <div className="space-x-2">
-                    <button className="btn btn-neutral">Buy Again</button>
-                  </div>
-                )}
+                <div className="flex justify-between">
+                  {(order.paymentMethod === 'COD' ||
+                    order.paymentMethod === 'VNPAY') &&
+                    order.orderStatus === 'PENDING' && (
+                      <button
+                        className="btn btn-outline btn-error mx-2"
+                        onClick={() => showCancelDialog(order.orderId)}
+                      >
+                        Cancel Order
+                      </button>
+                    )}
+                  {order.paymentMethod === 'VNPAY' &&
+                    order.paymentStatus === 'NOT PAID' &&
+                    order.orderStatus === 'PENDING' && (
+                      <button
+                        className="btn btn-neutral mx-2"
+                        onClick={() => handlePaymentClick(order.orderId)}
+                      >
+                        Pay Now
+                      </button>
+                    )}
+                    {order.paymentStatus === 'CANCELLED' && (
+                      <button
+                        className="btn btn-neutral mx-2"
+                      >
+                        Buy Again
+                      </button>
+                    )}
+                  <button className="btn btn-outline mx-2">Contact</button>
+                </div>
               </div>
             </div>
           ))
@@ -168,6 +229,62 @@ const OrderHistory = ({ orders, selectedTab }) => {
         isOpen={isModalOpen}
         onClose={handleCloseModal}
       />
+      {/* Payment Dialog */}
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+        <DialogTitle style={gucciStyle.dialogTitle}>
+          {'Redirect to Payment'}
+        </DialogTitle>
+        <DialogContent style={gucciStyle.dialogContent}>
+          <DialogContentText>
+            You will be redirected to the payment page to complete your
+            transaction.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            style={gucciStyle.button}
+            onClick={() => setOpenDialog(false)}
+          >
+            Cancel
+          </Button>
+          <Button
+            style={gucciStyle.button}
+            onClick={() => window.open(paymentUrl, '_blank')}
+            autoFocus
+          >
+            Proceed to Payment
+          </Button>
+        </DialogActions>
+      </Dialog>
+      {/* Dialog xác nhận hủy đơn hàng */}
+      <Dialog
+        open={cancelDialogOpen}
+        onClose={() => setCancelDialogOpen(false)}
+      >
+        <DialogTitle style={gucciStyle.dialogTitle}>
+          {'Cancel Order'}
+        </DialogTitle>
+        <DialogContent style={gucciStyle.dialogContent}>
+          <DialogContentText>
+            Are you sure you want to cancel this order?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            style={gucciStyle.button}
+            onClick={() => setCancelDialogOpen(false)}
+          >
+            No
+          </Button>
+          <Button
+            style={gucciStyle.button}
+            onClick={confirmCancelOrder}
+            autoFocus
+          >
+            Yes, Cancel Order
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

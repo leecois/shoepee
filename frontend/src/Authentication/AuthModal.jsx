@@ -27,14 +27,14 @@ const AuthModal = ({ handleClickOpen, handleClose }) => {
   const [enteredEmail, setEnteredEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [hasSignedUp, setHasSignedUp] = useState(false);
+  const [focused, setFocused] = useState(null);
   const navigate = useNavigate();
 
   const handleContinue = () => {
-    if (
-      !email ||
-      !email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)
-    ) {
-      setEmailError('This field is required. Please enter a valid email.');
+    if (!email || !email.match(/^[a-zA-Z0-9._%+-]+@gmail\.com$/)) {
+      setEmailError(
+        'This field is required. Please enter a valid @gmail.com.'
+      );
       return;
     } else {
       setEmailError('');
@@ -143,23 +143,34 @@ const AuthModal = ({ handleClickOpen, handleClose }) => {
               </p>
               <div className="text-left mb-4">
                 <h3 className="text-lg font-bold mb-2">SIGN IN OR SIGN UP</h3>
-                <label
-                  htmlFor="Email"
-                  className="relative block rounded-md border border-gray-200 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
-                >
+                <div className="my-5 mr-5 relative overflow-hidden">
+                  <label
+                    htmlFor="email"
+                    className={`bg-gradient-to-r bg-clip-text text-xs text-transparent font-semibold uppercase transition-all duration-300 ${
+                      focused === 1
+                        ? 'from-red-600 to-pink-600'
+                        : 'from-gray-600 to-gray-600'
+                    }`}
+                  >
+                    Email
+                  </label>
                   <input
                     type="email"
                     id="emailInput"
-                    placeholder="Enter your email (e.g., name@gmail.com)"
+                    placeholder="@gmail.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="peer w-full border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0"
-                    required
+                    className="form-input w-full border-0 border-b-2 border-gray-300 bg-white bg-opacity-80 placeholder-gray-400 focus:border-gray-300 focus:ring-0"
+                    onFocus={() => setFocused(1)}
+                    onBlur={() => setFocused(null)}
                   />
-                  <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
-                    Email
-                  </span>
-                </label>
+                  <span
+                    className={`absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-red-400 to-pink-400 transition-all duration-300 ease-in transform ${
+                      focused === 1 ? 'w-full' : 'w-0'
+                    }`}
+                    aria-hidden="true"
+                  />
+                </div>
                 {emailError && (
                   <div className="text-red-600 text-sm mt-1">{emailError}</div>
                 )}

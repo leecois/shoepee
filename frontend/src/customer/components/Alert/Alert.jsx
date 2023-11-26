@@ -28,7 +28,7 @@ const AlertModal = ({ message, type, isVisible, onClose }) => {
         color: 'gold', // Gold color for the text
         border: '2px solid gold', // Gold border for emphasis
         boxShadow: theme.shadows[4],
-        fontFamily: 'serif' // Serif font for an elegant touch
+        fontFamily: 'monospace', // Serif font for an elegant touch
       }}
       onClose={onClose}
     >

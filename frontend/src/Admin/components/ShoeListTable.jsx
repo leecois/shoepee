@@ -55,6 +55,7 @@ export default function ShoeListTable({ shoeList, updateShoe, deleteShoe }) {
       setRows(
         shoeList.map((item) => ({
           ...item,
+          modelname: item.shoeModelDto?.modelname,
         }))
       );
     }
@@ -125,6 +126,7 @@ export default function ShoeListTable({ shoeList, updateShoe, deleteShoe }) {
 
   const columns = [
     { field: 'id', headerName: 'ID', width: 70 },
+    { field: 'name', headerName: 'Name', width: 170, editable: true },
     {
       field: 'imageUrl',
       headerName: 'Image',
@@ -142,16 +144,19 @@ export default function ShoeListTable({ shoeList, updateShoe, deleteShoe }) {
     {
       field: 'description',
       headerName: 'Description',
-      width: 500,
+      width: 400,
       editable: true,
     },
     {
       field: 'modelname',
       headerName: 'Model Name',
       width: 170,
-      renderCell: (params) => (
-        <span>{params.row?.shoeModelDto?.modelname}</span>
-      ),
+    },
+    {
+      field: 'shoeQuantity',
+      headerName: 'Quantity',
+      width: 170,
+      editable: true,
     },
 
     { field: 'price', headerName: 'Price', width: 130, editable: true },

@@ -8,6 +8,7 @@ import { useSnackbar } from 'notistack';
 
 const SignIn = ({ goBack, enteredEmail, handleCloseSuccess }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [focused, setFocused] = useState(null);
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -32,6 +33,7 @@ const SignIn = ({ goBack, enteredEmail, handleCloseSuccess }) => {
 
         enqueueSnackbar('Login Successful!', { variant: 'success' });
         handleCloseSuccess();
+        window.location.reload();
       } catch (error) {
         setIsLoading(false);
         if (error.response && error.response.status === 401) {
@@ -78,39 +80,50 @@ const SignIn = ({ goBack, enteredEmail, handleCloseSuccess }) => {
           We are glad to see you again! Please enter your password to continue.
         </p>
         <div className="text-left">
-          <label
-            htmlFor="email"
-            className="relative mb-4 block rounded-md border border-gray-200 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
-          >
+          <div className="my-5 mr-5 relative overflow-hidden">
+            <label
+              htmlFor="email"
+              className="bg-gradient-to-r text-gray-600 bg-clip-text text-xs  font-semibold uppercase transition-all duration-300 "
+            >
+              Email
+            </label>
             <input
               type="email"
               id="email"
               name="email"
-              className="peer w-full border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0"
               value={formik.values.email}
-              onChange={formik.handleChange}
+              className="form-input w-full border-0 border-b-2 border-gray-300 bg-white bg-opacity-80 placeholder-gray-400 focus:border-gray-300 focus:ring-0"
               disabled
             />
-            <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
-              Email
-            </span>
-          </label>
-          <label
-            htmlFor="password"
-            className="relative block rounded-md border border-gray-200 shadow-sm focus-within:border-blue-600 focus-within:ring-1 focus-within:ring-blue-600"
-          >
+          </div>
+          <div className="my-5 mr-5 relative overflow-hidden">
+            <label
+              htmlFor="password"
+              className={`bg-gradient-to-r bg-clip-text text-xs text-transparent font-semibold uppercase transition-all duration-300 ${
+                focused === 1
+                  ? 'from-red-600 to-pink-600'
+                  : 'from-gray-600 to-gray-600'
+              }`}
+            >
+              Password
+            </label>
             <input
               type="password"
               id="password"
               name="password"
-              className="peer w-full border-none bg-transparent placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0"
+              className="form-input w-full border-0 border-b-2 border-gray-300 bg-white bg-opacity-80 placeholder-gray-400 focus:border-gray-300 focus:ring-0"
+              onFocus={() => setFocused(1)}
+              onBlur={() => setFocused(null)}
               value={formik.values.password}
               onChange={formik.handleChange}
             />
-            <span className="pointer-events-none absolute start-2.5 top-0 -translate-y-1/2 bg-white p-0.5 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-0 peer-focus:text-xs">
-              Password
-            </span>
-          </label>
+            <span
+              className={`absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-red-400 to-pink-400 transition-all duration-300 ease-in transform ${
+                focused === 1 ? 'w-full' : 'w-0'
+              }`}
+              aria-hidden="true"
+            />
+          </div>
           {formik.errors.password ? (
             <div className="text-sm text-gray-500">
               {formik.errors.password}

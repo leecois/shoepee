@@ -11,6 +11,7 @@ const CheckoutPage = lazy(() => import('../pages/Checkout/CheckoutPage'));
 const ShoeCustomize = lazy(() => import('../pages/ShoeCustomize'));
 const ProfilePage = lazy(() => import('../pages/Account/ProfilePage'));
 const PurchasePage = lazy(() => import('../pages/PurchasePage'));
+const PaymentSuccessPage = lazy(() => import('../pages/PaymentSuccessPage'));
 const Location = lazy(() => import('../components/Location/Location'));
 const Contact = lazy(() => import('../components/Contact'));
 
@@ -44,6 +45,11 @@ const coreRoutes = [
     path: '/location',
     title: 'Location',
     component: Location,
+  },
+  {
+    path: '/success',
+    title: 'Payment Success',
+    component: PaymentSuccessPage,
   },
   {
     path: '/user/account/profile',

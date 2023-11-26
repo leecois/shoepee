@@ -106,16 +106,21 @@ const order = (orderData) => {
 
 const payOrder = (orderId) => {
   const jwt = localStorage.getItem(StorageKeys.TOKEN);
-  return axiosClient.put(
-    `../payment/pay/${orderId}`,
-    {},
-    {
-      headers: {
-        Authorization: `Bearer ${jwt}`,
-      },
-    }
-  );
+  return axiosClient.post(`auth/pay`, orderId, {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  });
 };
+
+const cancelOrder = (orderId) => {
+  const jwt = localStorage.getItem(StorageKeys.TOKEN);
+  return axiosClient.get(`auth/cancelorder/${orderId}`, {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  });
+}
 
 const getOrderById = () => {
   const jwt = localStorage.getItem(StorageKeys.TOKEN);
@@ -142,6 +147,7 @@ const userApi = {
   addUserInfo,
   getUserInfo,
   payOrder,
+  cancelOrder,
 };
 
 export default userApi;

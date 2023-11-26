@@ -5,7 +5,6 @@ import {
   addToCartAsync,
   getCartAsync,
 } from '../../../containers/Cart/cartSlice';
-import Toast from '../Alert/Alert';
 import { useAlert } from '../Alert/AlertContext';
 import AlertSign from '../AlertSign';
 import Inspiration from './Inspiration';
@@ -21,14 +20,17 @@ const ProductDetails = ({ product, userLoggedIn }) => {
   const [showInspiration, setShowInspiration] = useState(true);
 
   const dispatch = useDispatch();
-  const handleCustomizeClick = () => {
-    const customizeUrl = `/customize?modelname=${product.modelname}`;
-    window.location.href = customizeUrl;
-  };
+  // const handleCustomizeClick = () => {
+  //   const customizeUrl = `/customize?modelname=${product.modelname}`;
+  //   window.location.href = customizeUrl;
+  // };
 
   const handleShoeButtonClick = (shoe) => {
     setSelectedShoe(shoe);
   };
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   useEffect(() => {
     if (product?.customizedShoes && Array.isArray(product.customizedShoes)) {
@@ -85,7 +87,7 @@ const ProductDetails = ({ product, userLoggedIn }) => {
             </div>
           ) : (
             <div className="flex items-center justify-center bg-black border-yellow-500 border-2 p-4">
-              <p className="text-center text-yellow-500 font-mono text-xl">
+              <p className="text-center text-yellow-500 text-xl">
                 No images available for the selected shoe.
               </p>
             </div>
@@ -93,12 +95,12 @@ const ProductDetails = ({ product, userLoggedIn }) => {
         </div>
 
         <div className="order-1 lg:order-2 col-span-full lg:col-span-1 lg:max-w-xl flex flex-col items-start">
-          <h1 className="text-4xl font-mono text-black font-extrabold">
+          <h1 className="text-4xl text-black font-extrabold">
             {product.modelname}{' '}
           </h1>
           <div className="mt-5 flex items-center">
-            <p className="text-2xl font-mono text-black pr-5">
-              ${selectedShoe?.price}
+            <p className="text-2xl text-black pr-5">
+              {selectedShoe?.price.toLocaleString('de-DE')} VND
             </p>
           </div>
           <div className="mt-4 ">
@@ -160,7 +162,7 @@ const ProductDetails = ({ product, userLoggedIn }) => {
       </div>
       {/* <h3 className="mt-10 text-lg text-gray-700 font-semibold">Overview</h3> */}
       <div className="mt-8 p-6 border-2 rounded-lg shadow-lg">
-        <h1 className="text-2xl text-black-2 font-mono font-bold mb-4">
+        <h1 className="text-2xl text-black-2 font-bold mb-4">
           {selectedShoe?.name}
         </h1>
         <p className="text-black-2 text-lg font-light">

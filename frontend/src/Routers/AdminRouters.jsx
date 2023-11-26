@@ -5,10 +5,13 @@ import { Route, Routes } from 'react-router-dom';
 import Loader from '../Admin/common/Loader';
 import Dashboard from '../Admin/pages/Dashboard/Dashboard';
 import routes from '../Admin/routes';
+import AlertModal from '../customer/components/Alert/Alert';
+import { useAlert } from '../customer/components/Alert/AlertContext';
 
 const DefaultLayout = lazy(() => import('../Admin/layout/DefaultLayout'));
 
 function AdminRouters() {
+  const { alert, hideAlert } = useAlert();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -19,10 +22,11 @@ function AdminRouters() {
     <Loader />
   ) : (
     <>
-      <Toaster
-        position="top-right"
-        reverseOrder={false}
-        containerClassName="overflow-auto"
+      <AlertModal
+        message={alert.message}
+        type={alert.type}
+        isVisible={alert.isVisible}
+        onClose={hideAlert}
       />
       <Routes>
         <Route element={<DefaultLayout />}>
