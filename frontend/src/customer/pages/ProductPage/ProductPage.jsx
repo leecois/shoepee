@@ -7,6 +7,9 @@ import HeaderProduct from '../../components/Product/HeaderProduct';
 import ProductList from '../../components/Product/ProductList';
 
 const ProductPage = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const location = useLocation();
   const queryParam = new URLSearchParams(location.search);
   const searchKey = queryParam.get('searchKey') || '';

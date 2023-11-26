@@ -8,21 +8,23 @@ import CustomerRouters from './Routers/CustomerRouters';
 
 const App = () => {
   return (
-    <SnackbarProvider dense maxSnack={3} anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}>
+    <SnackbarProvider
+      dense
+      maxSnack={3}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+    >
+      <Routes>
+        <Route path="/*" element={<CustomerRouters />} />
 
-        <Routes>
-          <Route path="/*" element={<CustomerRouters />} />
-
-          <Route
-            path="/admin/*"
-            element={
-              <ProtectedRoute allowedRoles={['ADMIN']}>
-                <AdminRouters />
-              </ProtectedRoute>
-            }
-          />
-        </Routes>
-
+        <Route
+          path="/admin/*"
+          element={
+            <ProtectedRoute allowedRoles={['ADMIN']}>
+              <AdminRouters />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
     </SnackbarProvider>
   );
 };

@@ -16,6 +16,9 @@ const PurchasePage = () => {
     dispatch(fetchOrders());
     dispatch(getCartAsync());
   }, [dispatch]);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const breadcrumbItems = [{ label: 'My Purchase' }];
 
@@ -31,7 +34,7 @@ const PurchasePage = () => {
         <div className="max-w-5xl mt-4 mx-auto">
           <Tabs onTabChange={handleTabChange} />{' '}
           {/* Pass the handleTabChange callback */}
-          <section className="bg-white dark:bg-gray-800 shadow-xl rounded-md p-6 mb-6 mt-4">
+          <section className="bg-white min-w-fit dark:bg-gray-800 shadow-xl rounded-md p-6 mb-6 mt-4">
             <OrderHistory
               orders={orders}
               fetchOrders={() => dispatch(fetchOrders())}

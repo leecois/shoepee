@@ -4,8 +4,14 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import { enqueueSnackbar } from 'notistack';
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import userApi from '../../../api/userApi';
+import {
+  addToCartAsync,
+  getCartAsync,
+} from '../../../containers/Cart/cartSlice';
 import OrderDetailModal from './OrderDetailModal';
 
 const OrderHistory = ({ orders, selectedTab, fetchOrders }) => {
@@ -19,6 +25,28 @@ const OrderHistory = ({ orders, selectedTab, fetchOrders }) => {
     dialogTitle: { color: '#a5a58d' }, // Olive green color, typical in GUCCI design
     dialogContent: { fontFamily: 'Times New Roman', fontStyle: 'italic' }, // Classic, elegant font
     button: { backgroundColor: '#6b705c', color: '#fff' }, // Dark green button with white text
+  };
+  
+  const dispatch = useDispatch();
+
+  const handleBuyAgain = async (canceledOrder) => {
+    try {
+      for (const item of canceledOrder.orderItem) {
+        const cartItem = {
+          shoeId: item.customizedShoeDto.id,
+          size: item.customizedShoeDto.shoeModelDto.size, // Assuming size is part of shoeModelDto
+          quantity: item.productQuantity,
+        };
+
+        await dispatch(addToCartAsync(cartItem));
+      }
+      dispatch(getCartAsync()); // Refresh the cart state
+      enqueueSnackbar('Added to Bag', {
+        variant: 'success',
+      });
+    } catch (error) {
+      console.error('Error in buying again:', error);
+    }
   };
 
   const filteredOrders = orders.filter((order) => {
@@ -122,16 +150,16 @@ const OrderHistory = ({ orders, selectedTab, fetchOrders }) => {
                 </span>
 
                 <div className="space-x-2">
-                  <div className="font-semibold btn btn-outline mx-2">
+                  <div className="font-semibold btn btn-disabled mx-2">
                     Payment Method: {order.paymentMethod}
                   </div>
                   <div
                     className={`font-semibold ${
                       order.paymentStatus === 'PAID'
-                        ? 'btn btn-error no-animation text-white cursor-default'
+                        ? 'btn btn-success no-animation text-white cursor-default'
                         : order.paymentStatus === 'NOT PAID'
                         ? 'btn btn-error no-animation text-white cursor-default'
-                        : order.paymentStatus === 'CANCELLED'
+                        : order.orderStatus === 'CANCELLED'
                         ? 'btn btn-error no-animation text-white cursor-default'
                         : ''
                     }`}
@@ -148,7 +176,7 @@ const OrderHistory = ({ orders, selectedTab, fetchOrders }) => {
                       : order.orderStatus === 'SHIPPING'
                       ? 'Shipping'
                       : order.orderStatus === 'COMPLETED'
-                      ? 'Order Completed'
+                      ? 'COMPLETED'
                       : 'CANCELLED'}
                   </div>
                 </div>
@@ -212,8 +240,14 @@ const OrderHistory = ({ orders, selectedTab, fetchOrders }) => {
                         Cancel Order
                       </button>
                     )}
-                  {order.paymentStatus === 'CANCELLED' && (
-                    <button className="btn btn-neutral mx-2">Buy Again</button>
+                  {(order.orderStatus === 'CANCELLED' ||
+                    order.orderStatus === 'COMPLETED') && (
+                    <button
+                      className="btn btn-neutral mx-2"
+                      onClick={() => handleBuyAgain(order)}
+                    >
+                      Buy Again
+                    </button>
                   )}
                   <a href="/contact" className="btn btn-outline mx-2">
                     Contact

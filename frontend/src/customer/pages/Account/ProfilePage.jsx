@@ -15,6 +15,9 @@ const ProfilePage = () => {
   useEffect(() => {
     dispatch(fetchOrders());
   }, [dispatch]);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <UserLayout>

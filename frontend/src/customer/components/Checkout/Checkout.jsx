@@ -37,6 +37,7 @@ const Checkout = () => {
     orderPhone: '',
     paymentMethod: 'COD',
   });
+  
   const [isLoading, setIsLoading] = useState(false);
   const [orderSubmitted, setOrderSubmitted] = useState(false);
 
