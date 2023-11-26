@@ -4,8 +4,7 @@ import ordersReducer from '../containers/Cart/orderSlice';
 import counterReducer from '../containers/Counter/counterSlice';
 import userReducer from '../containers/User/userSlice';
 
-const initialCartState = JSON.parse(localStorage.getItem('cart')) || [];
-
+// rootReducer remains the same
 const rootReducer = {
   counter: counterReducer,
   user: userReducer,
@@ -15,11 +14,17 @@ const rootReducer = {
 
 const store = configureStore({
   reducer: rootReducer,
-  preloadedState: {
-    cart: {
-      cartItems: initialCartState,
-    },
-  },
+  // Removed preloadedState for lazy loading
+  middleware: (getDefaultMiddleware) => 
+    getDefaultMiddleware({
+
+    }),
+  // Add any additional store enhancers or middleware here
 });
+
+export const loadInitialCartState = () => {
+  const initialCartState = JSON.parse(localStorage.getItem('cart')) || [];
+  store.dispatch({ type: 'cart/setInitialCartState', payload: initialCartState });
+};
 
 export default store;

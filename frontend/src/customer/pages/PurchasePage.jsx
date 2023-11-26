@@ -5,6 +5,7 @@ import Breadcrumb from '../components/Breadcrumb';
 import OrderHistory from '../components/Profile/OrderHistory';
 import UserLayout from '../layout/UserLayout';
 import Tabs from './ProductPage/Tabs';
+import { getCartAsync } from '../../containers/Cart/cartSlice';
 
 const PurchasePage = () => {
   const dispatch = useDispatch();
@@ -13,6 +14,7 @@ const PurchasePage = () => {
 
   useEffect(() => {
     dispatch(fetchOrders());
+    dispatch(getCartAsync());
   }, [dispatch]);
 
   const breadcrumbItems = [{ label: 'My Purchase' }];

@@ -9,6 +9,7 @@ import {
 import userApi from '../../../api/userApi';
 import { fetchOrders } from '../../../containers/Cart/orderSlice';
 import { useNavigate } from 'react-router-dom';
+import { useMemo } from 'react';
 
 const validationSchema = Yup.object({
   fullName: Yup.string()
@@ -34,102 +35,71 @@ const Checkout = () => {
     customerName: '',
     orderAddress: '',
     orderPhone: '',
-  });
-  const cartId = useSelector((state) => state.cart.cartId);
-  const cartEmail = useSelector((state) => state.cart.user?.email);
-  const [orderPlaced, setOrderPlaced] = useState(false);
-  const orders = useSelector((state) => state.orders.content);
-  const [sortedOrders, setSortedOrders] = useState([]);
-  const [focused, setFocused] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const initialValues = {
-    fullName: '',
-    email: cartEmail || '',
-    address: '',
-    phone: '',
     paymentMethod: 'COD',
-  };
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const [orderSubmitted, setOrderSubmitted] = useState(false);
+
+  const { cartId, user } = useSelector((state) => state.cart);
+  const orders = useSelector((state) => state.orders.content);
+
+  const initialValues = useMemo(
+    () => ({
+      fullName: '',
+      email: user?.email || '',
+      address: '',
+      phone: '',
+      paymentMethod: 'COD',
+    }),
+    [user?.email]
+  );
 
   const handleConfirm = (values) => {
-    setOrderDetails({
-      customerName: values.fullName,
-      orderAddress: values.address,
-      orderPhone: values.phone,
-      paymentMethod: values.paymentMethod,
-    });
+    setOrderDetails(values);
     setIsModalOpen(true);
   };
 
   const handleSubmit = async () => {
-    const orderData = {
-      ...orderDetails,
-      cartId,
-    };
-
     try {
       setIsLoading(true);
-      const action = await dispatch(placeOrderAsync(orderData));
-      if (!action.error) {
-        dispatch(getCartAsync());
-        setIsModalOpen(false);
-        setOrderPlaced(true); // Indicate successful order placement
+      const action = await dispatch(
+        placeOrderAsync({ ...orderDetails, cartId })
+      );
+      if (action.meta.requestStatus === 'fulfilled') {
+        await dispatch(fetchOrders()); // Ensure this completes before proceeding
+        setOrderSubmitted(true);
       }
     } catch (error) {
       console.error('Order submission failed:', error);
+    } finally {
+      setIsLoading(false);
+      setIsModalOpen(false);
     }
   };
 
   useEffect(() => {
-    if (orderPlaced) {
-      dispatch(fetchOrders());
-      setOrderPlaced(false); // Reset the flag
+    const initiatePayment = async () => {
+      const latestOrder = orders[orders.length - 1];
+      if (latestOrder?.paymentMethod === orderDetails.paymentMethod) {
+        if (latestOrder.paymentMethod === 'VNPAY') {
+          userApi
+            .payOrder({ orderId: latestOrder.orderId })
+            .then((response) => window.open(response, '_blank'))
+            .catch((error) => console.error('Payment failed:', error));
+          setOrderSubmitted(false);
+          navigate('/user/purchase', { replace: true });
+        } else if (latestOrder.paymentMethod === 'COD') {
+          navigate('/user/purchase', { replace: true });
+        }
+        setOrderSubmitted(false);
+      }
+    };
+    if (orderSubmitted) {
+      initiatePayment();
     }
-  }, [orderPlaced, dispatch]);
+  }, [orderSubmitted, orderDetails, orders, navigate]);
 
-  useEffect(() => {
-    // Sort orders
-    if (orders.length > 0) {
-      const sorted = [...orders].sort(
-        (a, b) => new Date(b.orderCreateAt) - new Date(a.orderCreateAt)
-      );
-      setSortedOrders(sorted);
-    }
-  }, [orders]);
-
-  useEffect(() => {
-    const latestOrder = sortedOrders[0];
-    if (
-      latestOrder &&
-      latestOrder.paymentMethod === 'VNPAY' &&
-      orderDetails.paymentMethod === 'VNPAY'
-    ) {
-      const orderToPay = {
-        orderId: latestOrder.orderId,
-      };
-
-      userApi
-        .payOrder(orderToPay)
-        .then((response) => {
-          window.open(response, '_blank');
-
-          navigate('/user/purchase');
-        })
-        .catch((error) => {
-          console.error('Payment failed:', error);
-        });
-    } else if (
-      latestOrder &&
-      latestOrder.paymentMethod === 'COD' &&
-      orderDetails.paymentMethod === 'COD'
-    ) {
-      navigate('/user/purchase');
-    }
-  }, [sortedOrders, orderDetails, navigate]);
-
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
+  const handleCancel = () => setIsModalOpen(false);
 
   return (
     <div className="max-w-screen-lg mx-auto p-6">
@@ -145,11 +115,7 @@ const Checkout = () => {
           <div className="mb-4">
             <label
               htmlFor="fullName"
-              className={`bg-gradient-to-r bg-clip-text text-xs text-transparent font-semibold uppercase transition-all duration-300 ${
-                focused === 3
-                  ? 'from-gray-800 to-gray-400'
-                  : 'from-gray-600 to-gray-600'
-              }`}
+              className="bg-gradient-to-r bg-clip-text text-xs text-gray-600 font-semibold uppercase transition-all duration-300"
             >
               Full Name
             </label>
@@ -164,22 +130,14 @@ const Checkout = () => {
             <ErrorMessage
               name="fullName"
               component="div"
-              className={`bg-gradient-to-r bg-clip-text text-xs text-transparent font-semibold uppercase transition-all duration-300 ${
-                focused === 3
-                  ? 'from-red-800 to-red-400'
-                  : 'from-red-600 to-red-600'
-              }`}
+              className="bg-gradient-to-r bg-clip-text text-xs text-red-600 font-semibold uppercase transition-all duration-300"
             />
           </div>
 
           <div className="mb-4">
             <label
               htmlFor="address"
-              className={`bg-gradient-to-r bg-clip-text text-xs text-transparent font-semibold uppercase transition-all duration-300 ${
-                focused === 3
-                  ? 'from-gray-800 to-gray-400'
-                  : 'from-gray-600 to-gray-600'
-              }`}
+              className="bg-gradient-to-r bg-clip-text text-xs text-gray-600 font-semibold uppercase transition-all duration-300"
             >
               Address
             </label>
@@ -193,22 +151,14 @@ const Checkout = () => {
             <ErrorMessage
               name="address"
               component="div"
-              className={`bg-gradient-to-r bg-clip-text text-xs text-transparent font-semibold uppercase transition-all duration-300 ${
-                focused === 3
-                  ? 'from-red-800 to-red-400'
-                  : 'from-red-600 to-red-600'
-              }`}
+              className="bg-gradient-to-r bg-clip-text text-xs text-red-600 font-semibold uppercase transition-all duration-300"
             />
           </div>
 
           <div className="mb-4">
             <label
               htmlFor="phone"
-              className={`bg-gradient-to-r bg-clip-text text-xs text-transparent font-semibold uppercase transition-all duration-300 ${
-                focused === 3
-                  ? 'from-gray-800 to-gray-400'
-                  : 'from-gray-600 to-gray-600'
-              }`}
+              className="bg-gradient-to-r bg-clip-text text-xs text-gray-600 font-semibold uppercase transition-all duration-300"
             >
               Phone
             </label>
@@ -222,11 +172,7 @@ const Checkout = () => {
             <ErrorMessage
               name="phone"
               component="div"
-              className={`bg-gradient-to-r bg-clip-text text-xs text-transparent font-semibold uppercase transition-all duration-300 ${
-                focused === 3
-                  ? 'from-red-800 to-red-400'
-                  : 'from-red-600 to-red-600'
-              }`}
+              className="bg-gradient-to-r bg-clip-text text-xs text-red-600 font-semibold uppercase transition-all duration-300"
             />
           </div>
 
