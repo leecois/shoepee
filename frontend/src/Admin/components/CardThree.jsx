@@ -26,7 +26,7 @@ const CardThree = ({ shoeList }) => {
           <h4 className="text-title-md font-bold text-black dark:text-white">
             {shoeList?.length}
           </h4>
-          <span className="text-sm font-medium">Total Inspiration</span>
+          <span className="text-sm font-medium">Total Customized Shoe</span>
         </div>
       </div>
     </div>
