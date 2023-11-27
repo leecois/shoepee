@@ -111,15 +111,7 @@ const ProductDetails = ({ product, userLoggedIn }) => {
                 showInspiration ? 'border-red-600' : ''
               }`}
             >
-              Inspiration
-            </button>
-            <button
-              onClick={() => setShowInspiration(false)}
-              className={`text-xl font-semibold border-b-4 ${
-                !showInspiration ? 'border-red-600' : ''
-              }`}
-            >
-              Your Designs
+              Customized Shoe
             </button>
           </div>
 
