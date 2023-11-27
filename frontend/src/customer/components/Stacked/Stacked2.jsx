@@ -4,7 +4,7 @@ import 'keen-slider/keen-slider.min.css';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-const Stacked2 = ({ modelList }) => {
+const Stacked2 = ({ brandList }) => {
   useEffect(() => {
     const slider = new KeenSlider('#keen-slider-2', {
       loop: true,
@@ -41,7 +41,7 @@ const Stacked2 = ({ modelList }) => {
             <div className="max-w-xl text-center ltr:sm:text-left rtl:sm:text-right">
               <div className="flex flex-col items-center justify-center lg:mt-8">
                 <h2 className="max-w-xl text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-                  Features
+                  Brands
                 </h2>
                 <p className="mt-4 text-lg text-gray-500">
                   Discover the latest trending styles from Shoepee and bring
@@ -96,18 +96,18 @@ const Stacked2 = ({ modelList }) => {
 
             <div className="-mx-6 border shadow-xl lg:col-span-2 lg:mx-0">
               <div id="keen-slider-2" className="keen-slider">
-                {modelList?.map((model) => (
+                {brandList?.map((brand) => (
                   <Link
-                    to={`/products/${model.modelname}`}
-                    key={model.id}
+                    to={`/products/?searchKey=${brand.brandName}`}
+                    key={brand.id}
                     className="keen-slider__slide"
                   >
                     <blockquote className="flex h-full flex-col justify-between bg-white p-6 shadow-sm sm:p-8 lg:p-12">
                       <div>
                         <div className="mt-4">
                           <img
-                            src={model.shoes[0]?.imageUrl}
-                            alt={model.modelname}
+                            src={brand.imageUrl}
+                            alt={brand.brandName}
                             className="h-100 w-full rounded-lg object-cover object-center dark:bg-gray-500"
                           />
                         </div>
@@ -117,16 +117,14 @@ const Stacked2 = ({ modelList }) => {
                           <div className="flex items-center">
                             <div className="flex flex-col">
                               <div className="text-2xl font-bold text-gray-900">
-                                {model.modelname}
+                                {brand.brandName}
                               </div>
                               <div className="text-sm font-medium text-gray-500">
-                                {model.brandId}
+                                {brand.brandName}
                               </div>
                             </div>
                           </div>
-                          <p className="text-xl font-semibold text-gray-900">
-                            {model.shoes[0]?.price.toLocaleString('de-DE')} VND
-                          </p>
+                        
                         </div>
                       </div>
                     </blockquote>
