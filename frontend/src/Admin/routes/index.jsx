@@ -27,13 +27,13 @@ const coreRoutes = [
   },
 
   {
-    path: 'tables/add-shoe/:modelId',
+    path: 'tables/add-shoe',
     title: 'Add Shoe',
     component: ShoeAdditionManager,
   },
 
   {
-    path: 'tables/add-model/:brandId',
+    path: 'tables/add-model',
     title: 'Add Shoe Model',
     component: ModelAddManager,
   },

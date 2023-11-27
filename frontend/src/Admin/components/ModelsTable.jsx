@@ -27,7 +27,7 @@ function EditToolbar() {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate('/admin/tables/brands');
+    navigate('/admin/tables/add-model');
   };
 
   return (
@@ -38,17 +38,13 @@ function EditToolbar() {
         startIcon={<AddIcon />}
         onClick={handleClick}
       >
-        Add Shoe Model Of Brand
+        Add Model
       </Button>
     </GridToolbarContainer>
   );
 }
 
 export default function ModelsTable({ modelList, updateModel, deleteModel }) {
-  const navigate = useNavigate();
-  const handleAddShoeClick = (modelId) => () => {
-    navigate(`/admin/tables/add-shoe/${modelId}`);
-  };
   const [rows, setRows] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
   const [openDialog, setOpenDialog] = useState(false);
@@ -114,7 +110,7 @@ export default function ModelsTable({ modelList, updateModel, deleteModel }) {
 
     updatedRow.brandDto = {
       ...updatedRow.brandDto,
-      brandName: newRow.brandName
+      brandName: newRow.brandName,
     };
     // Call update API
     try {
@@ -192,14 +188,6 @@ export default function ModelsTable({ modelList, updateModel, deleteModel }) {
             onClick={handleDeleteClick(id)}
             color="inherit"
           />,
-          <div className="tooltip tooltip-right" data-tip="Add Shoe">
-            <GridActionsCellItem
-              icon={<AddIcon className="transparent dark:text-gray-300" />}
-              label="Add Shoe"
-              onClick={handleAddShoeClick(id)}
-              color="inherit"
-            />
-          </div>,
         ];
       },
     },

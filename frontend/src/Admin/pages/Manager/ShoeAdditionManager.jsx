@@ -1,25 +1,28 @@
 import { enqueueSnackbar } from 'notistack';
 import React from 'react';
-import { useParams } from 'react-router-dom';
 import adminShoeApi from '../../../api/adminShoeApi';
+import AdminModelData from '../../../hooks/AdminModelData';
 import Breadcrumb from '../../components/Breadcrumb';
 import ShoeForm from '../../components/Shoes/ShoeForm';
 
 // Component for adding new shoes to a model
 const ShoeAdditionManager = () => {
-  const { modelId } = useParams();
-
+  const { modelList } = AdminModelData();
   const initialShoeValues = {
+    shoeModelDto: {
+      modelname: '',
+    },
     name: '',
-    description: '',
     price: '',
     imageUrl: '',
+    description: '',
+    shoeQuantity: 0,
   };
 
   // Handles the shoe form submission
   const handleShoeSubmit = async (values, { setSubmitting }) => {
     try {
-      const response = await adminShoeApi.add(modelId, values);
+      const response = await adminShoeApi.add(values);
       if (response) {
         enqueueSnackbar('Shoe added successfully', {
           variant: 'success',
@@ -49,6 +52,7 @@ const ShoeAdditionManager = () => {
               <ShoeForm
                 initialValues={initialShoeValues}
                 onSubmit={handleShoeSubmit}
+                modelList={modelList} 
               />
             </div>
           </div>

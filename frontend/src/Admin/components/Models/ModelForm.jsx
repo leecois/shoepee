@@ -4,15 +4,18 @@ import * as Yup from 'yup';
 
 const modelSchema = Yup.object().shape({
   modelname: Yup.string().required('Please enter model name'),
+  brandDto: Yup.object().shape({
+    brandName: Yup.string().required('Please enter brand name'),
+  }),
 });
 
-const ModelForm = ({ initialValues, onSubmit }) => (
+const ModelForm = ({ initialValues, onSubmit, brandList }) => (
   <Formik
     initialValues={initialValues}
     validationSchema={modelSchema}
     onSubmit={onSubmit}
   >
-    {({ isSubmitting, values }) => (
+    {({ isSubmitting }) => (
       <Form>
         <div className="mb-5.5 flex flex-col gap-5.5 sm:flex-row">
           <div className="w-full">
@@ -29,6 +32,28 @@ const ModelForm = ({ initialValues, onSubmit }) => (
               />
               <ErrorMessage
                 name="modelname"
+                component="div"
+                className="error"
+              />
+            </div>
+            <div className="relative">
+              <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                Brand
+              </label>
+              <Field
+                as="select"
+                name="brandDto.brandName"
+                className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus-border-primary"
+              >
+                <option value="">Select a Brand</option>
+                {brandList.map((brand) => (
+                  <option key={brand.id} value={brand.brandName}>
+                    {brand.brandName}
+                  </option>
+                ))}
+              </Field>
+              <ErrorMessage
+                name="brandDto.brandName"
                 component="div"
                 className="error"
               />

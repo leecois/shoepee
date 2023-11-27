@@ -27,7 +27,7 @@ function EditToolbar() {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate('/admin/tables/models');
+    navigate('/admin/tables/add-shoe');
   };
 
   return (
@@ -38,7 +38,7 @@ function EditToolbar() {
         startIcon={<AddIcon />}
         onClick={handleClick}
       >
-        Add Inspiration For Shoe Model
+        Add Inspiration 
       </Button>
     </GridToolbarContainer>
   );

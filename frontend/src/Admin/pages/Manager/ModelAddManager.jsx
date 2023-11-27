@@ -1,24 +1,24 @@
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { enqueueSnackbar } from 'notistack';
+import React from 'react';
+import adminModelApi from '../../../api/adminModelApi';
 import Breadcrumb from '../../components/Breadcrumb';
 import ModelForm from '../../components/Models/ModelForm';
-import adminModelApi from '../../../api/adminModelApi';
-import { enqueueSnackbar } from 'notistack';
+import AdminBrandData from '../../../hooks/AdminBrandData';
 
 // Component for adding a new model
 const ModelAddManager = () => {
-  const { brandId } = useParams();
-
+  const { brandList } = AdminBrandData();
   const initialValues = {
+    brandDto: {
+      brandName: '',
+    },
     modelname: '',
-    price: '',
-    imageurl: '',
   };
 
   // Handles form submission
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      const response = await adminModelApi.add(brandId, values);
+      const response = await adminModelApi.add(values);
       if (response) {
         enqueueSnackbar('Model added successfully ', {
           variant: 'success',
@@ -49,6 +49,7 @@ const ModelAddManager = () => {
               <ModelForm
                 initialValues={initialValues}
                 onSubmit={handleSubmit}
+                brandList={brandList} 
               />
             </div>
           </div>
