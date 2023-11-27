@@ -34,37 +34,7 @@ const ChartRevenue = ({ orderList }) => {
         autoScaleYaxis: true,
       },
     },
-    annotations: {
-      yaxis: [
-        {
-          y: 30,
-          borderColor: '#999',
-          label: {
-            show: true,
-            text: 'Day',
-            style: {
-              color: '#fff',
-              background: '#00E396',
-            },
-          },
-        },
-      ],
-      xaxis: [
-        {
-          x: new Date('14 Dev 2023').getTime(),
-          borderColor: '#999',
-          yAxisIndex: 0,
-          label: {
-            show: true,
-            text: 'Number',
-            style: {
-              color: '#fff',
-              background: '#775DD0',
-            },
-          },
-        },
-      ],
-    },
+    
     dataLabels: {
       enabled: false,
     },

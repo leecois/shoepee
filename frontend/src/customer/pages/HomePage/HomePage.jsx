@@ -14,7 +14,7 @@ const HomePage = () => {
     <>
       <Hero />
 
-      {modelList.length > 0 && <Stacked2 brandList={brandList} />}
+      {brandList.length > 0 && <Stacked2 brandList={brandList} />}
       {modelList.length > 0 && <Stacked modelList2={modelList} />}
       {/* <StepCustomize /> */}
       <Shoepee />

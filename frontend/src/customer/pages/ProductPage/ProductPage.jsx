@@ -33,6 +33,7 @@ const ProductPage = () => {
             .includes(searchKey.toLowerCase())
       );
     }
+    
     // Filter by selected brands
     if (selectedBrands.length > 0) {
       updatedList = updatedList.filter((model) =>

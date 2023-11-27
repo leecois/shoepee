@@ -119,12 +119,8 @@ const Stacked2 = ({ brandList }) => {
                               <div className="text-2xl font-bold text-gray-900">
                                 {brand.brandName}
                               </div>
-                              <div className="text-sm font-medium text-gray-500">
-                                {brand.brandName}
-                              </div>
                             </div>
                           </div>
-                        
                         </div>
                       </div>
                     </blockquote>

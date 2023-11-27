@@ -1,59 +1,104 @@
 import React from 'react';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import Button from '@mui/material/Button';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import Avatar from '@mui/material/Avatar';
+import ListItemText from '@mui/material/ListItemText';
+import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
 
 const OrderDetailModal = ({ order, isOpen, onClose }) => {
   if (!order) return null;
 
   return (
-    <div
-      className={`${
-        isOpen ? 'fixed' : 'hidden'
-      } z-10 inset-0 overflow-y-auto flex items-center justify-center p-4`}
-    >
-      <div className="bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full overflow-auto text-white">
-        <div className="p-6">
-          <h2 className="text-2xl font-bold mb-4">
-            Order Details - ID: {order.orderId}
-          </h2>
-          <div className="mb-6">
-            <p className="mb-1">Status: {order.orderStatus}</p>
-            <p className="mb-1">Payment Status: {order.paymentStatus}</p>
-            <p className="mb-1">Total Amount: ${order.orderAmt}</p>
-            <p>Billing Address: {order.billingAddress}</p>
-          </div>
+    <Dialog open={isOpen} onClose={onClose} maxWidth="md" fullWidth>
+      <DialogTitle sx={{ fontSize: '1.5rem', fontWeight: 'bold' }}>
+        Order ID: {order.orderId}
+      </DialogTitle>
+      <DialogContent dividers>
+        <Typography gutterBottom variant="subtitle1">
+          Status: {order.orderStatus}
+        </Typography>
+        <Divider light />
+        <Typography gutterBottom variant="subtitle1">
+          Payment Status: {order.paymentStatus}
+        </Typography>
+        <Divider light />
+        <Typography gutterBottom variant="subtitle1">
+          Total Amount: {order.orderAmt.toLocaleString('de-DE')} VND
+        </Typography>
+        <Divider light />
+        <Typography gutterBottom variant="subtitle1">
+          Full Name: {order.fullName}
+        </Typography>
+        <Divider light />
+        <Typography gutterBottom variant="subtitle1">
+          Phone: {order.phoneNumber}
+        </Typography>
+        <Divider light />
+        <Typography gutterBottom variant="subtitle1">
+          Address: {order.billingAddress}
+        </Typography>
+        <Divider light />
+        <Typography gutterBottom variant="subtitle1">
+          Payment Method: {order.paymentMethod}
+        </Typography>
+        <Divider light />
+        <Typography gutterBottom variant="subtitle1">
+          Order Created At: {new Date(order.orderCreateAt).toLocaleString()}
+        </Typography>
+        <Divider light />
+        {order.orderCompeledAt && (
+         <Typography gutterBottom variant="subtitle1">
+            Order Completed At: {new Date(order.orderCompeledAt).toLocaleString()}
+          </Typography>
+        )}
 
-          <div className="font-semibold mb-3">Purchased Products:</div>
-          <ul>
-            {order.orderItem?.map((item, index) => (
-              <li
-                key={index}
-                className="border-b border-gray-600 last:border-b-0 flex items-center p-2"
-              >
-                <img
+        <Typography
+          gutterBottom
+          variant="h6"
+          sx={{ fontWeight: 'bold', marginTop: 2 }}
+        >
+          Purchased Products:
+        </Typography>
+        <List>
+          {order.orderItem?.map((item, index) => (
+            <ListItem key={index}>
+              <ListItemAvatar>
+                <Avatar
                   src={item.shoeDto.imageUrl}
-                  alt={item.shoeDto?.modelname}
-                  className="w-10 h-10 rounded-full"
+                  alt={item.shoeDto.name}
+                  variant="square"
                 />
-                <div className="ml-4">
-                  <p>
-                    {item.shoeDto?.shoeModelDto?.modelname} ($
-                    {item.shoeDto?.shoeModelDto?.price})
-                  </p>
-                  <p>Customize Price: ${item.shoeDto?.price}</p>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="flex justify-end p-6">
-          <button
-            onClick={onClose}
-            className="bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700"
-          >
-            Close
-          </button>
-        </div>
-      </div>
-    </div>
+              </ListItemAvatar>
+              <ListItemText
+                primary={item.shoeDto.name}
+                secondary={`Customize Price: ${item.customizedShoeDto.price.toLocaleString(
+                  'de-DE'
+                )} VND - Size: ${item.size} - Quantity: ${
+                  item.productQuantity
+                }`}
+                primaryTypographyProps={{
+                  sx: { fontFamily: 'serif', fontWeight: 'bold' },
+                }}
+                secondaryTypographyProps={{ sx: { fontFamily: 'serif' } }}
+              />
+              {index < order.orderItem.length - 1 && <Divider />}
+            </ListItem>
+          ))}
+        </List>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose} color="primary" variant="contained">
+          Close
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };
 

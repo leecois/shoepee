@@ -31,6 +31,15 @@ const OrdersTable = ({
   const completedOrder = (orderId) => {
     completeOrder(orderId);
   };
+  const handleViewDetails = (order) => {
+    // Find the full order data with 'orderItem' details from 'orderList'
+    const fullOrderData = orderList.content.find(o => o.orderId === order.id);
+  
+    // Set the selected order with all its details
+    setSelectedOrder(fullOrderData);
+    setIsModalOpen(true);
+  };
+  
 
   const columns = [
     { field: 'id', headerName: 'Order ID', width: 70 },
@@ -40,6 +49,7 @@ const OrdersTable = ({
       type: 'number',
       width: 130,
     },
+    { field: 'fullName', headerName: 'Full Name', width: 130 },
     { field: 'phone', headerName: 'Phone', width: 130 },
     { field: 'address', headerName: 'Address', width: 200 },
     { field: 'paymentMethod', headerName: 'Payment Method', width: 120 },
@@ -50,6 +60,8 @@ const OrdersTable = ({
     {
       field: 'actions',
       headerName: 'Actions',
+      filterable: false,
+      sortable: false,
       width: 120,
       renderCell: (params) => (
         <div className="flex items-center space-x-2">
@@ -77,10 +89,7 @@ const OrdersTable = ({
               <CheckBadgeIcon className="h-5 w-5 text-purple-500" />
             </button>
           )}
-          <button
-            onClick={() => setSelectedOrder(params.row)}
-            title="View Details"
-          >
+          <button onClick={() => handleViewDetails(params.row)} title="View Details">
             <EyeIcon className="h-5 w-5" />
           </button>
         </div>
@@ -89,28 +98,31 @@ const OrdersTable = ({
   ];
 
   const rows =
-  orderList && Array.isArray(orderList.content)
-    ? orderList.content
-        .filter(
-          (order) =>
-            !(
-              order.paymentMethod === 'VNPAY' &&
-              order.paymentStatus === 'NOT PAID'
-            )
-        )
-        .map((order) => ({
-          id: order.orderId,
-          phone: order.phoneNumber || 'N/A',
-          address: order.billingAddress || 'N/A',
-          paymentMethod: order.paymentMethod,
-          orderStatus: order.orderStatus,
-          orderCreateAt: new Date(order.orderCreateAt).toLocaleString(),
-          orderCompeledAt: order.orderCompeledAt ? new Date(order.orderCompeledAt).toLocaleString() : 'N/A',
-          orderAmt: order.orderAmt,
-          status: order.status, // Add this line
-          actions: '', // Actions are rendered in the renderCell function
-        }))
-    : [];
+    orderList && Array.isArray(orderList.content)
+      ? orderList.content
+          .filter(
+            (order) =>
+              !(
+                (order.paymentMethod === 'VNPAY' &&
+                order.paymentStatus === 'NOT PAID') || order.orderStatus === 'CANCELLED'
+              )
+          )
+          .map((order) => ({
+            id: order.orderId,
+            phone: order.phoneNumber || 'N/A',
+            fullName: order.fullName || 'N/A',
+            address: order.billingAddress || 'N/A',
+            paymentMethod: order.paymentMethod,
+            orderStatus: order.orderStatus,
+            orderCreateAt: new Date(order.orderCreateAt).toLocaleString(),
+            orderCompeledAt: order.orderCompeledAt
+              ? new Date(order.orderCompeledAt).toLocaleString()
+              : 'N/A',
+            orderAmt: order.orderAmt,
+            status: order.status, 
+            actions: '',
+          }))
+      : [];
 
   return (
     <Box

@@ -25,8 +25,14 @@ const HeaderProduct = ({ onSort, setOpenFilter }) => {
     navigate(`${location.pathname}?${queryParams.toString()}`);
   };
 
+  const [searchKey, setSearchKey] = useState(
+    queryParams.get('searchKey') || ''
+  );
+
   const handleSearch = (event) => {
-    queryParams.set('searchKey', event.target.value);
+    const newSearchKey = event.target.value;
+    setSearchKey(newSearchKey);
+    queryParams.set('searchKey', newSearchKey);
     navigate(`${location.pathname}?${queryParams.toString()}`);
   };
 
@@ -56,6 +62,7 @@ const HeaderProduct = ({ onSort, setOpenFilter }) => {
             onFocus={() => setFocused(5)}
             onBlur={() => setFocused(null)}
             onChange={handleSearch}
+            value={searchKey}
           />
           <span
             className={`absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-gray-400 to-gray-800 transition-all duration-300 ease-in transform ${
