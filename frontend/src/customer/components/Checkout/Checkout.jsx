@@ -4,15 +4,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import userApi from '../../../api/userApi';
-import {
-  placeOrderAsync
-} from '../../../containers/Cart/cartSlice';
+import { placeOrderAsync } from '../../../containers/Cart/cartSlice';
 import { fetchOrders } from '../../../containers/Cart/orderSlice';
 
 const validationSchema = Yup.object({
   fullName: Yup.string()
     .required('Full name is required')
-    .matches(/^[A-Za-z -]+$/, 'Invalid characters'),
+    .matches(/^[A-Za-z\u00C0-\u1EF9\s]+$/, 'Invalid characters'),
   email: Yup.string()
     .email('Please enter a valid email address.')
     .required('Email is required'),
@@ -36,22 +34,27 @@ const Checkout = () => {
     orderPhone: '',
     paymentMethod: 'COD',
   });
+  const getUserInfo = () => {
+    const userInfo = localStorage.getItem('user');
+    return userInfo ? JSON.parse(userInfo) : null;
+  };
+  const user = getUserInfo();
 
   const [isLoading, setIsLoading] = useState(false);
   const [orderSubmitted, setOrderSubmitted] = useState(false);
 
-  const { cartId, user } = useSelector((state) => state.cart);
+  const { cartId } = useSelector((state) => state.cart);
   const orders = useSelector((state) => state.orders.content);
 
   const initialValues = useMemo(
     () => ({
-      fullName: '',
+      fullName: user?.inforUser?.fullname || '',
       email: user?.email || '',
-      address: '',
-      phone: '',
+      address: user?.inforUser?.address || '',
+      phone: user?.inforUser?.phone || '',
       paymentMethod: 'COD',
     }),
-    [user?.email]
+    [user]
   );
 
   const handleConfirm = (values) => {

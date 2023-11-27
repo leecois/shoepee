@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { createSelector } from 'reselect';
 
 const cartItemsSelector = (state) => state.cart.cartItems;

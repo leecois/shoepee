@@ -7,7 +7,7 @@ import useUserInfoData from '../../../hooks/useUserInfoData';
 const validationSchema = Yup.object().shape({
   fullname: Yup.string()
     .required('Full name is required')
-    .matches(/^[A-Za-z -]+$/, 'Invalid characters'),
+    .matches(/^[A-Za-z\u00C0-\u1EF9\s]+$/, 'Invalid characters'),
   phone: Yup.string()
     .required('Phone Number is required')
     .matches(/^[0-9]+$/, 'Phone Number must be only digits')
@@ -89,7 +89,11 @@ const Profile = () => {
                           onBlur={() => setFocused(null)}
                         />
 
-                        <ErrorMessage name="fullname" component="div" />
+                        <ErrorMessage
+                          name="fullname"
+                          component="div"
+                          className="bg-gradient-to-r bg-clip-text text-xs text-red-600 font-semibold uppercase transition-all duration-300"
+                        />
                         {/* right side */}
                       </div>
                     </div>
@@ -112,7 +116,11 @@ const Profile = () => {
                         onFocus={() => setFocused(3)}
                         onBlur={() => setFocused(null)}
                       />
-                      <ErrorMessage name="phone" component="div" />
+                      <ErrorMessage
+                        name="phone"
+                        component="div"
+                        className="bg-gradient-to-r bg-clip-text text-xs text-red-600 font-semibold uppercase transition-all duration-300"
+                      />
                     </div>
                   </div>
                   <div className="my-5 mr-5 relative overflow-hidden">
@@ -135,7 +143,11 @@ const Profile = () => {
                         onFocus={() => setFocused(3)}
                         onBlur={() => setFocused(null)}
                       />
-                      <ErrorMessage name="address" component="div" />
+                      <ErrorMessage
+                        name="address"
+                        component="div"
+                        className="bg-gradient-to-r bg-clip-text text-xs text-red-600 font-semibold uppercase transition-all duration-300"
+                      />
                     </div>
                   </div>
                   <div className="my-5 mr-5 relative overflow-hidden">
