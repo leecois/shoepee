@@ -11,6 +11,7 @@ import Avatar from '@mui/material/Avatar';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
+import Box from '@mui/material/Box';
 
 const OrderDetailModal = ({ order, isOpen, onClose }) => {
   if (!order) return null;
@@ -29,9 +30,6 @@ const OrderDetailModal = ({ order, isOpen, onClose }) => {
           Payment Status: {order.paymentStatus}
         </Typography>
         <Divider light />
-        <Typography gutterBottom variant="subtitle1">
-          Total Amount: {order.orderAmt.toLocaleString('de-DE')} VND
-        </Typography>
         <Divider light />
         <Typography gutterBottom variant="subtitle1">
           Full Name: {order.fullName}
@@ -54,8 +52,9 @@ const OrderDetailModal = ({ order, isOpen, onClose }) => {
         </Typography>
         <Divider light />
         {order.orderCompeledAt && (
-         <Typography gutterBottom variant="subtitle1">
-            Order Completed At: {new Date(order.orderCompeledAt).toLocaleString()}
+          <Typography gutterBottom variant="subtitle1">
+            Order Completed At:{' '}
+            {new Date(order.orderCompeledAt).toLocaleString()}
           </Typography>
         )}
 
@@ -84,20 +83,36 @@ const OrderDetailModal = ({ order, isOpen, onClose }) => {
                   item.productQuantity
                 }`}
                 primaryTypographyProps={{
-                  sx: { fontFamily: 'serif', fontWeight: 'bold' },
+                  sx: { fontFamily: 'inherit', fontWeight: 'bold' },
                 }}
-                secondaryTypographyProps={{ sx: { fontFamily: 'serif' } }}
+                secondaryTypographyProps={{ sx: { fontFamily: 'inherit' } }}
               />
               {index < order.orderItem.length - 1 && <Divider />}
             </ListItem>
           ))}
         </List>
       </DialogContent>
-      <DialogActions>
+
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '1rem',
+        }}
+      >
+        <Typography
+          sx={{
+            fontWeight: 'bold',
+          }}
+          variant="subtitle1"
+        >
+          Total Amount: {order.orderAmt.toLocaleString('de-DE')} VND
+        </Typography>
         <Button onClick={onClose} color="primary" variant="contained">
           Close
         </Button>
-      </DialogActions>
+      </Box>
     </Dialog>
   );
 };

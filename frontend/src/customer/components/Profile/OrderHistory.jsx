@@ -29,7 +29,10 @@ const OrderHistory = ({ orders, selectedTab, fetchOrders }) => {
   };
 
   const dispatch = useDispatch();
-
+  const handleOrderClick = (order) => {
+    setSelectedOrder(order);
+    setIsModalOpen(true);
+  };
   const handleBuyAgain = async (canceledOrder) => {
     try {
       for (const item of canceledOrder.orderItem) {
@@ -183,7 +186,7 @@ const OrderHistory = ({ orders, selectedTab, fetchOrders }) => {
                   </div>
                 </div>
               </div>
-              <div className="space-y-4">
+              <div onClick={() => handleOrderClick(order)} className="space-y-4 cursor-pointer">
                 {order.orderItem
                   ?.slice()
                   .sort((a, b) => a.orderItemId - b.orderItemId)
@@ -323,6 +326,11 @@ const OrderHistory = ({ orders, selectedTab, fetchOrders }) => {
           </Button>
         </DialogActions>
       </Dialog>
+      <OrderDetailModal
+        order={selectedOrder}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      />
     </div>
   );
 };
