@@ -34,7 +34,7 @@ const OrderHistory = ({ orders, selectedTab, fetchOrders }) => {
       for (const item of canceledOrder.orderItem) {
         const cartItem = {
           shoeId: item.customizedShoeDto.id,
-          size: item.customizedShoeDto.shoeModelDto.size, // Assuming size is part of shoeModelDto
+          size: item.size, // Assuming size is part of shoeModelDto
           quantity: item.productQuantity,
         };
 
@@ -201,6 +201,9 @@ const OrderHistory = ({ orders, selectedTab, fetchOrders }) => {
                         </h5>
                         <p className="text-sm text-gray-500">
                           {product.variation}
+                        </p>
+                        <p className="text-sm font-medium text-gray-700">
+                          Size: {product.size}
                         </p>
                         <p className="text-sm font-medium text-gray-700">
                           Quantity: {product.productQuantity}

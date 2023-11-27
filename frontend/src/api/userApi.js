@@ -120,11 +120,20 @@ const cancelOrder = (orderId) => {
       Authorization: `Bearer ${jwt}`,
     },
   });
-}
+};
 
 const getOrderById = () => {
   const jwt = localStorage.getItem(StorageKeys.TOKEN);
   return axiosClient.get('auth/getorderbyuserid', {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  });
+};
+
+const changePassword = (data) => {
+  const jwt = localStorage.getItem(StorageKeys.TOKEN);
+  return axiosClient.post('auth/change-password', data, {
     headers: {
       Authorization: `Bearer ${jwt}`,
     },
@@ -148,6 +157,7 @@ const userApi = {
   getUserInfo,
   payOrder,
   cancelOrder,
+  changePassword,
 };
 
 export default userApi;

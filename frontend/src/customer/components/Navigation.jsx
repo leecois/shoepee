@@ -114,6 +114,9 @@ export default function Navigation() {
               <li>
                 <Link to="/products">Shop</Link>
               </li>
+              <li>
+                <Link to="/contact">Contact</Link>
+              </li>
             </ul>
           </div>
         </div>

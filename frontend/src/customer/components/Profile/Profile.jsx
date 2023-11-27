@@ -5,12 +5,16 @@ import * as Yup from 'yup';
 import useUserInfoData from '../../../hooks/useUserInfoData';
 
 const validationSchema = Yup.object().shape({
-  fullname: Yup.string().required('Full Name is required'),
+  fullname: Yup.string()
+    .required('Full name is required')
+    .matches(/^[A-Za-z -]+$/, 'Invalid characters'),
   phone: Yup.string()
     .required('Phone Number is required')
     .matches(/^[0-9]+$/, 'Phone Number must be only digits')
     .min(10, 'Phone Number must be at least 10 digits'),
-  address: Yup.string().required('Address is required'),
+  address: Yup.string()
+    .required('Address is required')
+    .max(255, 'Address too long'),
 });
 
 const Profile = () => {

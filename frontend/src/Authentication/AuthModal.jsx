@@ -49,7 +49,7 @@ const AuthModal = ({ handleClickOpen, handleClose }) => {
         emailExists = response.data.email;
         isCheckEmailSuccess = true;
       })
-      .catch((error) => {
+      .catch(() => {
         isCheckEmailSuccess = true;
       })
       .finally(() => {

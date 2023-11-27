@@ -17,7 +17,10 @@ const Sidebar = () => {
       <nav className="px-4 py-6">
         <ul className="space-y-4">
           <li className="group">
-            <details open={isAccountDropdownOpen} className="group [&>summary]:list-none">
+            <details
+              open={isAccountDropdownOpen}
+              className="group [&>summary]:list-none"
+            >
               <summary className="flex cursor-pointer items-center justify-between rounded-lg px-4 py-3 hover:bg-yellow-500 hover:text-black">
                 <span className="text-sm font-medium">Account</span>
                 <svg
@@ -28,7 +31,11 @@ const Sidebar = () => {
                   stroke="currentColor"
                   strokeWidth={2}
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M19 9l-7 7-7-7"
+                  />
                 </svg>
               </summary>
               <ul className="mt-1 space-y-2 pl-4">
@@ -36,15 +43,24 @@ const Sidebar = () => {
                   <Link
                     to="/user/account/profile"
                     className={`block rounded px-4 py-2 text-sm font-medium transition-colors
-                      ${isActive('/user/account/profile') ? 'bg-yellow-500 text-black' : 'hover:bg-yellow-500 hover:text-black'}`}
+                      ${
+                        isActive('/user/account/profile')
+                          ? 'bg-yellow-500 text-black'
+                          : 'hover:bg-yellow-500 hover:text-black'
+                      }`}
                   >
                     Profile
                   </Link>
                 </li>
                 <li>
                   <Link
-                    to="/user/account/password-change"
-                    className="block rounded px-4 py-2 text-sm font-medium hover:bg-yellow-500 hover:text-black"
+                    to="/user/account/change-password"
+                    className={`block rounded px-4 py-2 text-sm font-medium transition-colors
+                      ${
+                        isActive('/user/account/change-password')
+                          ? 'bg-yellow-500 text-black'
+                          : 'hover:bg-yellow-500 hover:text-black'
+                      }`}
                   >
                     Change Password
                   </Link>
@@ -56,7 +72,11 @@ const Sidebar = () => {
             <Link
               to="/user/purchase"
               className={`block rounded-lg px-4 py-2 text-sm font-medium transition-colors
-                ${isActive('/user/purchase') ? 'bg-yellow-500 text-black' : 'hover:bg-yellow-500 hover:text-black'}`}
+                ${
+                  isActive('/user/purchase')
+                    ? 'bg-yellow-500 text-black'
+                    : 'hover:bg-yellow-500 hover:text-black'
+                }`}
             >
               My Purchase
             </Link>

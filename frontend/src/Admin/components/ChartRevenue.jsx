@@ -77,14 +77,16 @@ const ChartRevenue = () => {
     {
       name: 'Total Revenue',
       data: [
-        [new Date('2023-01-01').getTime(), 50000], // Jan 1, 2023, Revenue: 50000
-        [new Date('2023-02-01').getTime(), 48000], // Feb 1, 2023, Revenue: 48000
+        [new Date('2023-01-01').getTime(), 5000], // Jan 1, 2023, Revenue: 50000
+        [new Date('2023-01-02').getTime(), 5000], // Jan 1, 2023, Revenue: 50000
+        [new Date('2023-02-01').getTime(), 4800], // Feb 1, 2023, Revenue: 48000
       ],
     },
     {
       name: 'Total Sales',
       data: [
         [new Date('2023-01-01').getTime(), 400], // Jan 1, 2023, Sales: 400
+        [new Date('2023-01-02').getTime(), 400], // Jan 1, 2023, Revenue: 50000
         [new Date('2023-02-01').getTime(), 450], // Feb 1, 2023, Sales: 450
       ],
     },

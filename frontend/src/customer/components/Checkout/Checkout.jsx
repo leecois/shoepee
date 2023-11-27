@@ -1,15 +1,13 @@
 import { ErrorMessage, Field, Form, Formik } from 'formik';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import * as Yup from 'yup';
-import {
-  getCartAsync,
-  placeOrderAsync,
-} from '../../../containers/Cart/cartSlice';
-import userApi from '../../../api/userApi';
-import { fetchOrders } from '../../../containers/Cart/orderSlice';
 import { useNavigate } from 'react-router-dom';
-import { useMemo } from 'react';
+import * as Yup from 'yup';
+import userApi from '../../../api/userApi';
+import {
+  placeOrderAsync
+} from '../../../containers/Cart/cartSlice';
+import { fetchOrders } from '../../../containers/Cart/orderSlice';
 
 const validationSchema = Yup.object({
   fullName: Yup.string()
@@ -20,8 +18,9 @@ const validationSchema = Yup.object({
     .required('Email is required'),
   address: Yup.string().required('Address is required'),
   phone: Yup.string()
-    .required('Phone is required')
-    .matches(/^\d{10}$/, 'Invalid phone number'),
+    .required('Phone Number is required')
+    .matches(/^[0-9]+$/, 'Phone Number must be only digits')
+    .min(10, 'Phone Number must be at least 10 digits'),
   paymentMethod: Yup.string()
     .required('Payment Method is required')
     .oneOf(['COD', 'VNPAY'], 'Invalid payment method'),

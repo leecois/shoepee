@@ -1,11 +1,9 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { Checkbox } from '@mui/material';
-import { register } from '../containers/User/userSlice';
 import { unwrapResult } from '@reduxjs/toolkit';
-import { useState } from 'react';
+import { useFormik } from 'formik';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import * as Yup from 'yup';
+import { register } from '../containers/User/userSlice';
 
 const SignUp = ({ goBack, enteredEmail, handleCloseSuccess }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -23,7 +21,7 @@ const SignUp = ({ goBack, enteredEmail, handleCloseSuccess }) => {
     validationSchema: Yup.object({
       password: Yup.string()
         .required('Password is required')
-        .min(6, 'Password must be at least 6 characters long'),
+        .min(8, 'Password must be at least 6 characters long'),
     }),
     onSubmit: async (values) => {
       try {
