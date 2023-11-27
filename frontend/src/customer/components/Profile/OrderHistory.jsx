@@ -26,7 +26,7 @@ const OrderHistory = ({ orders, selectedTab, fetchOrders }) => {
     dialogContent: { fontFamily: 'Times New Roman', fontStyle: 'italic' }, // Classic, elegant font
     button: { backgroundColor: '#6b705c', color: '#fff' }, // Dark green button with white text
   };
-  
+
   const dispatch = useDispatch();
 
   const handleBuyAgain = async (canceledOrder) => {
@@ -285,7 +285,7 @@ const OrderHistory = ({ orders, selectedTab, fetchOrders }) => {
           </Button>
           <Button
             style={gucciStyle.button}
-            onClick={() => window.open(paymentUrl, '_blank')}
+            onClick={() => (window.location.href = paymentUrl)}
             autoFocus
           >
             Proceed to Payment

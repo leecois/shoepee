@@ -92,7 +92,7 @@ const Checkout = () => {
         if (latestOrder.paymentMethod === 'VNPAY') {
           userApi
             .payOrder({ orderId: latestOrder.orderId })
-            .then((response) => window.open(response, '_blank'))
+            .then((response) => window.location.href = response)
             .catch((error) => console.error('Payment failed:', error));
           setOrderSubmitted(false);
           navigate('/user/purchase', { replace: true });

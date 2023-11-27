@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
-import ReactApexChart from 'react-apexcharts';
 import ApexCharts from 'apexcharts';
+import React, { useEffect, useState } from 'react';
+import ReactApexChart from 'react-apexcharts';
 
-const ChartRevenue = () => {
-  // Define the chart options
+const ChartRevenue = ({ orderList }) => {
   const options = {
     chart: {
       id: 'area-datetime',
@@ -72,23 +71,70 @@ const ChartRevenue = () => {
     },
   };
 
-  // Set initial series state
+  // Function to format date to YYYY/MM/DD
+  const formatDate = (date) => {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = `0${d.getMonth() + 1}`.slice(-2); // Adding 1 as getMonth() returns 0-11
+    const day = `0${d.getDate()}`.slice(-2);
+    return `${year}/${month}/${day}`;
+  };
+
+  // Function to aggregate product quantities by formatted date
+  const aggregateProductsByDate = (orders) => {
+    const productSalesMap = new Map();
+
+    orders.forEach((order) => {
+      if (order.orderCompeledAt && order.orderItem) {
+        const date = formatDate(order.orderCompeledAt);
+        let dailyTotal = productSalesMap.get(date) || 0;
+
+        order.orderItem.forEach((item) => {
+          dailyTotal += item.productQuantity; // Assuming item.productQuantity holds the number of products sold
+        });
+
+        productSalesMap.set(date, dailyTotal);
+      }
+    });
+
+    return Array.from(productSalesMap, ([date, total]) => ({
+      x: new Date(date).getTime(),
+      y: total,
+    })).sort((a, b) => a.x - b.x);
+  };
+
+  const aggregateSalesByDate = (orders) => {
+    const salesMap = new Map();
+
+    orders.forEach((order) => {
+      if (order.orderCompeledAt) {
+        const date = new Date(order.orderCompeledAt).toDateString();
+        const currentTotal = salesMap.get(date) || 0;
+        salesMap.set(date, currentTotal + order.orderAmt);
+      }
+    });
+
+    return Array.from(salesMap, ([date, total]) => ({
+      x: new Date(date).getTime(),
+      y: total,
+    })).sort((a, b) => a.x - b.x);
+  };
+
+  // Update series with aggregated data
+  useEffect(() => {
+    if (orderList && orderList.length > 0) {
+      const aggregatedData = aggregateProductsByDate(orderList);
+      const aggregateSalesByDateData = aggregateSalesByDate(orderList);
+      setSeries([
+        { name: 'Total Products Sold', data: aggregatedData },
+        { name: 'Total Sales', data: aggregateSalesByDateData },
+      ]);
+    }
+  }, [orderList]);
   const [series, setSeries] = useState([
     {
-      name: 'Total Revenue',
-      data: [
-        [new Date('2023-01-01').getTime(), 5000], // Jan 1, 2023, Revenue: 50000
-        [new Date('2023-01-02').getTime(), 5000], // Jan 1, 2023, Revenue: 50000
-        [new Date('2023-02-01').getTime(), 4800], // Feb 1, 2023, Revenue: 48000
-      ],
-    },
-    {
-      name: 'Total Sales',
-      data: [
-        [new Date('2023-01-01').getTime(), 400], // Jan 1, 2023, Sales: 400
-        [new Date('2023-01-02').getTime(), 400], // Jan 1, 2023, Revenue: 50000
-        [new Date('2023-02-01').getTime(), 450], // Feb 1, 2023, Sales: 450
-      ],
+      name: 'Total Products Sold',
+      data: [],
     },
   ]);
 
@@ -98,8 +144,8 @@ const ChartRevenue = () => {
     switch (timeline) {
       case 'one_month':
         // Adjusted for one month in 2023
-        newMinDate = new Date('2023-01-01').getTime();
-        newMaxDate = new Date('2023-01-31').getTime();
+        newMinDate = new Date('2023-11-15').getTime();
+        newMaxDate = new Date('2023-12-16').getTime();
         break;
       case 'six_months':
         // Adjusted for the last six months up to a date in 2023
