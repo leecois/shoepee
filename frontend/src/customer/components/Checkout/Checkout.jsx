@@ -37,7 +37,7 @@ const Checkout = () => {
     orderPhone: '',
     paymentMethod: 'COD',
   });
-  
+
   const [isLoading, setIsLoading] = useState(false);
   const [orderSubmitted, setOrderSubmitted] = useState(false);
 
@@ -56,7 +56,12 @@ const Checkout = () => {
   );
 
   const handleConfirm = (values) => {
-    setOrderDetails(values);
+    setOrderDetails({
+      customerName: values.fullName,
+      orderAddress: values.address,
+      orderPhone: values.phone,
+      paymentMethod: values.paymentMethod,
+    });
     setIsModalOpen(true);
   };
 
@@ -88,7 +93,6 @@ const Checkout = () => {
             .then((response) => window.open(response, '_blank'))
             .catch((error) => console.error('Payment failed:', error));
           setOrderSubmitted(false);
-          navigate('/user/purchase', { replace: true });
         } else if (latestOrder.paymentMethod === 'COD') {
           navigate('/user/purchase', { replace: true });
         }
