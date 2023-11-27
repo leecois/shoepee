@@ -93,6 +93,7 @@ const Checkout = () => {
             .then((response) => window.open(response, '_blank'))
             .catch((error) => console.error('Payment failed:', error));
           setOrderSubmitted(false);
+          navigate('/user/purchase', { replace: true });
         } else if (latestOrder.paymentMethod === 'COD') {
           navigate('/user/purchase', { replace: true });
         }
