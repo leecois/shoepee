@@ -2,8 +2,29 @@ import ApexCharts from 'apexcharts';
 import React, { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 
+const formatDate = (date) => {
+  const d = new Date(date);
+  return `${d.getFullYear()}/${String(d.getMonth() + 1).padStart(
+    2,
+    '0'
+  )}/${String(d.getDate()).padStart(2, '0')}`;
+};
+const aggregateData = (orders, keyExtractor) => {
+  const salesMap = new Map();
+  orders.forEach((order) => {
+    if (order.orderCompeledAt) {
+      const date = formatDate(order.orderCompeledAt);
+      const currentTotal = salesMap.get(date) || 0;
+      salesMap.set(date, currentTotal + keyExtractor(order));
+    }
+  });
+  return Array.from(salesMap, ([date, total]) => ({
+    x: new Date(date).getTime(),
+    y: total,
+  })).sort((a, b) => new Date(a.x) - new Date(b.x)); // Sort based on date
+};
+
 const ChartRevenue = ({ orderList }) => {
-  const [selectedTimeline, setSelectedTimeline] = useState('all');
   const options = {
     chart: {
       id: 'area-datetime',
@@ -30,7 +51,7 @@ const ChartRevenue = ({ orderList }) => {
       ],
       xaxis: [
         {
-          x: new Date('31 Dev 2023').getTime(),
+          x: new Date('14 Dev 2023').getTime(),
           borderColor: '#999',
           yAxisIndex: 0,
           label: {
@@ -52,9 +73,15 @@ const ChartRevenue = ({ orderList }) => {
       style: 'hollow',
     },
     xaxis: {
-      type: 'datetime',
-      min: new Date('01 Nov 2023').getTime(),
+      type: 'category',
+      min: new Date('20 Nov 2023').getTime(),
       tickAmount: 6,
+      labels: {
+        formatter: function (val) {
+          // Format the date as 'yyyy/mm/dd'
+          return formatDate(val);
+        },
+      },
     },
     tooltip: {
       x: {
@@ -72,30 +99,6 @@ const ChartRevenue = ({ orderList }) => {
     },
   };
 
-  // Function to format date to YYYY/MM/DD
-  const formatDate = (date) => {
-    const d = new Date(date);
-    return `${d.getFullYear()}/${String(d.getMonth() + 1).padStart(
-      2,
-      '0'
-    )}/${String(d.getDate()).padStart(2, '0')}`;
-  };
-
-  const aggregateData = (orders, keyExtractor) => {
-    const salesMap = new Map();
-    orders.forEach((order) => {
-      if (order.orderCompeledAt) {
-        const date = formatDate(order.orderCompeledAt);
-        const currentTotal = salesMap.get(date) || 0;
-        salesMap.set(date, currentTotal + keyExtractor(order));
-      }
-    });
-    return Array.from(salesMap, ([date, total]) => ({
-      x: new Date(date).getTime(),
-      y: total,
-    })).sort((a, b) => a.x - b.x);
-  };
-
   const [series, setSeries] = useState([]);
 
   useEffect(() => {
@@ -104,14 +107,14 @@ const ChartRevenue = ({ orderList }) => {
         order.orderItem.reduce((sum, item) => sum + item.productQuantity, 0)
       );
       const salesData = aggregateData(orderList, (order) => order.orderAmt);
-      console.log(productsData);
-      console.log(salesData);
+
       setSeries([
-        { name: 'Total Products Sold', data: productsData },
         { name: 'Total Sales', data: salesData },
+        { name: 'Total Products Sold', data: productsData },
       ]);
     }
   }, [orderList]);
+
   const getDataRange = () => {
     let minDate = new Date();
     let maxDate = new Date(0); // A very old date
@@ -157,11 +160,9 @@ const ChartRevenue = ({ orderList }) => {
         newMinDate = minDate;
         newMaxDate = maxDate;
     }
-    
+
     ApexCharts.exec('area-datetime', 'zoomX', newMinDate, newMaxDate);
-    
   };
-  
 
   return (
     <div className="col-span-12 rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5">
@@ -171,27 +172,21 @@ const ChartRevenue = ({ orderList }) => {
           <div className="inline-flex items-center rounded-md bg-whiter p-1.5 dark:bg-meta-4">
             <button
               onClick={() => updateData('one_month')}
-              className={`rounded py-1 px-3 text-xs font-medium text-black ${
-                selectedTimeline === 'one_month' ? 'bg-white shadow-card' : ''
-              } hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark`}
+              className={`rounded py-1 px-3 text-xs font-medium text-black  hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark`}
             >
               1M
             </button>
 
             <button
               onClick={() => updateData('one_year')}
-              className={`rounded py-1 px-3 text-xs font-medium text-black ${
-                selectedTimeline === 'one_year' ? 'bg-white shadow-card' : ''
-              } hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark`}
+              className={`rounded py-1 px-3 text-xs font-medium text-black  hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark`}
             >
               1Y
             </button>
 
             <button
               onClick={() => updateData('all')}
-              className={`rounded py-1 px-3 text-xs font-medium text-black ${
-                selectedTimeline === 'all' ? 'bg-white shadow-card' : ''
-              } hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark`}
+              className={`rounded py-1 px-3 text-xs font-medium text-black hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark`}
             >
               ALL
             </button>

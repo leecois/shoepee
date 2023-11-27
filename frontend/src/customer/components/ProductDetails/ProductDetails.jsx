@@ -100,11 +100,11 @@ const ProductDetails = ({ product, userLoggedIn }) => {
           <h1 className="text-4xl text-black font-extrabold">
             {product.modelname}
           </h1>
-          <span className="border-l-2 p-2 font-semibold">
+          <span className="border-l-2 italic p-2 text-2xl font-sans font-normal">
             {selectedShoe?.name}
           </span>
           <div className="mt-5 flex items-center">
-            <p className="text-2xl text-black pr-5">
+            <p className="text-3xl font-bold text-black pr-5">
               {selectedShoe?.price.toLocaleString('de-DE')} VND
             </p>
           </div>
@@ -121,15 +121,12 @@ const ProductDetails = ({ product, userLoggedIn }) => {
           </div>
 
           {/* Toggle between Inspiration and YourDesign */}
-          {showInspiration ? (
-            <Inspiration
-              product={product}
-              selectedShoe={selectedShoe}
-              handleShoeButtonClick={handleShoeButtonClick}
-            />
-          ) : (
-            <YourDesign />
-          )}
+
+          <Inspiration
+            product={product}
+            selectedShoe={selectedShoe}
+            handleShoeButtonClick={handleShoeButtonClick}
+          />
 
           {selectedShoe?.stock ? (
             <Size

@@ -16,24 +16,35 @@ const Filters = ({
   const { brandList } = useBrandData();
 
   const handleBrandFilterChange = (brandName) => {
-    setSelectedBrands((prevSelectedBrands) => {
-      if (prevSelectedBrands.includes(brandName)) {
-        return prevSelectedBrands.filter((brand) => brand !== brandName);
+    if (brandName === 'All') {
+      if (selectedBrands.length === brandList.length) {
+        setSelectedBrands([]);
       } else {
-        return [...prevSelectedBrands, brandName];
+        setSelectedBrands(brandList.map(brand => brand.brandName));
       }
-    });
+    } else {
+      setSelectedBrands((prevSelectedBrands) => {
+        if (prevSelectedBrands.includes(brandName)) {
+          return prevSelectedBrands.filter((brand) => brand !== brandName);
+        } else {
+          return [...prevSelectedBrands, brandName];
+        }
+      });
+    }
   };
 
   const filters = [
     {
       id: 'brand',
       name: 'Brand',
-      options: brandList.map((brand) => ({
-        key: brand.id,
-        value: brand.brandName,
-        label: brand.brandName,
-      })),
+      options: [
+        { key: 'all', value: 'All', label: 'All' },
+        ...brandList.map((brand) => ({
+          key: brand.id,
+          value: brand.brandName,
+          label: brand.brandName,
+        })),
+      ],
     },
   ];
 

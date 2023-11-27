@@ -1,11 +1,9 @@
 import {
   ChevronUpIcon,
-  Cog8ToothIcon,
   CubeIcon,
-  PresentationChartLineIcon,
   SquaresPlusIcon,
   TableCellsIcon,
-  XMarkIcon,
+  XMarkIcon
 } from '@heroicons/react/24/outline';
 import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
@@ -18,7 +16,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
 
   const trigger = useRef(null);
   const sidebar = useRef(null);
-  const user = JSON.parse(localStorage.getItem('user'));
+
   const storedSidebarExpanded = localStorage.getItem('sidebar-expanded');
   const [sidebarExpanded, setSidebarExpanded] = useState(
     storedSidebarExpanded === null ? false : storedSidebarExpanded === 'true'
@@ -283,20 +281,7 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
             </ul>
           </div> */}
         </nav>
-        <div className="sticky inset-x-0 bottom-0 border-t border-yellow-500 p-4">
-          <div className="flex items-center gap-2">
-            <img
-              alt="Profile"
-              src="/blank-avatar.png"
-              className="h-10 w-10 rounded-full object-cover"
-            />
-            <div>
-              <p className="text-xs text-white">
-                <span>{user.email}</span>
-              </p>
-            </div>
-          </div>
-        </div>
+
         {/* <!-- Sidebar Menu --> */}
       </div>
     </aside>

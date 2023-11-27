@@ -13,6 +13,7 @@ import {
   getCartAsync,
 } from '../../../containers/Cart/cartSlice';
 import OrderDetailModal from './OrderDetailModal';
+import { InformationCircleIcon } from '@heroicons/react/24/outline';
 
 const OrderHistory = ({ orders, selectedTab, fetchOrders }) => {
   const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
@@ -150,12 +151,13 @@ const OrderHistory = ({ orders, selectedTab, fetchOrders }) => {
                 </span>
 
                 <div className="space-x-2">
+                
                   <div className="font-semibold btn btn-disabled mx-2">
                     Payment Method: {order.paymentMethod}
                   </div>
                   <div
                     className={`font-semibold ${
-                      order.paymentStatus === 'PAID'
+                      (order.paymentStatus === 'PAID' || (order.paymentStatus === 'NOT PAID' && order.paymentMethod === 'COD'))
                         ? 'btn btn-success no-animation text-white cursor-default'
                         : order.paymentStatus === 'NOT PAID'
                         ? 'btn btn-error no-animation text-white cursor-default'

@@ -30,7 +30,7 @@ const ChangePassword = () => {
       enqueueSnackbar('Password changed successfully', { variant: 'success' });
       // Additional logic on success
     } catch (error) {
-      enqueueSnackbar('Failed to change password', { variant: 'error' });
+      enqueueSnackbar('Old password does not match', { variant: 'error' });
       // Error handling logic
     } finally {
       setSubmitting(false);
@@ -91,7 +91,7 @@ const ChangePassword = () => {
                     <div className="relative">
                       <span className="absolute left-4.5 top-4"></span>
                       <Field
-                        type="text"
+                        type="password"
                         name="newPassword"
                         className="form-input w-full border-0 border-b-2 border-gray-300 bg-white bg-opacity-80 placeholder-gray-400 focus:border-gray-300 focus:ring-0"
                         onFocus={() => setFocused(3)}

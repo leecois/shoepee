@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import Logo from '../images/logo/logoshoepee.png';
 import DarkModeSwitcher from './DarkModeSwitcher';
+import DropdownUser from './DropdownUser';
 
 const Header = (props) => {
   return (
@@ -77,7 +78,7 @@ const Header = (props) => {
             {/* <!-- Chat Notification Area --> */}
           </ul>
           {/* <!-- User Area --> */}
-          {/* <DropdownUser /> */}
+          <DropdownUser />
           {/* <!-- User Area --> */}
         </div>
       </div>
