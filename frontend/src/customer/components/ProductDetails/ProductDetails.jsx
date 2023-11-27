@@ -5,14 +5,13 @@ import {
   addToCartAsync,
   getCartAsync,
 } from '../../../containers/Cart/cartSlice';
-import { useAlert } from '../Alert/AlertContext';
 import AlertSign from '../AlertSign';
 import Inspiration from './Inspiration';
 import Size from './Size';
 import YourDesign from './YourDesign';
+import { enqueueSnackbar } from 'notistack';
 
 const ProductDetails = ({ product, userLoggedIn }) => {
-  const { showAlert } = useAlert();
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [isToastOpen, setIsToastOpen] = useState(false);
   const [selectedShoe, setSelectedShoe] = useState(null);
@@ -64,7 +63,9 @@ const ProductDetails = ({ product, userLoggedIn }) => {
     dispatch(addToCartAsync(cartItem)).then((action) => {
       if (!action.error) {
         dispatch(getCartAsync());
-        showAlert('Added to Bag', 'success');
+        enqueueSnackbar('Added to Bag ', {
+          variant: 'success',
+        });
       }
     });
   };
@@ -110,15 +111,7 @@ const ProductDetails = ({ product, userLoggedIn }) => {
                 showInspiration ? 'border-red-600' : ''
               }`}
             >
-              Inspiration
-            </button>
-            <button
-              onClick={() => setShowInspiration(false)}
-              className={`text-xl font-semibold border-b-4 ${
-                !showInspiration ? 'border-red-600' : ''
-              }`}
-            >
-              Your Designs
+              Customized Shoe
             </button>
           </div>
 

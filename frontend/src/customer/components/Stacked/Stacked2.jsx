@@ -125,7 +125,7 @@ const Stacked2 = ({ modelList }) => {
                             </div>
                           </div>
                           <p className="text-xl font-semibold text-gray-900">
-                            ${model.shoes[0]?.price}
+                            {model.shoes[0]?.price.toLocaleString('de-DE')} VND
                           </p>
                         </div>
                       </div>

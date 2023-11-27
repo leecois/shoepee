@@ -78,7 +78,7 @@ const Cart = ({ cartItems }) => {
                   </div>
                   <div>
                     <p className="text-lg font-medium text-gray-800">
-                      ${item.totalprice}
+                      {item.totalprice.toLocaleString('de-DE')} VND
                     </p>
                   </div>
                 </div>

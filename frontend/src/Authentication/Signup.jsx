@@ -1,11 +1,16 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { Checkbox } from '@mui/material';
-import { register } from '../containers/User/userSlice';
 import { unwrapResult } from '@reduxjs/toolkit';
-import { useState } from 'react';
+import { useFormik } from 'formik';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import * as Yup from 'yup';
+import { register } from '../containers/User/userSlice';
+
+// Validation schema defined outside the component
+const validationSchema = Yup.object({
+  password: Yup.string()
+    .required('Password is required')
+    .min(8, 'Password must be at least 8 characters long'),
+});
 
 const SignUp = ({ goBack, enteredEmail, handleCloseSuccess }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -18,13 +23,9 @@ const SignUp = ({ goBack, enteredEmail, handleCloseSuccess }) => {
       password: '',
       phone: '',
       address: '',
-      username: enteredEmail,
+      username: '',
     },
-    validationSchema: Yup.object({
-      password: Yup.string()
-        .required('Password is required')
-        .min(6, 'Password must be at least 6 characters long'),
-    }),
+    validationSchema,
     onSubmit: async (values) => {
       try {
         setIsLoading(true);
@@ -117,7 +118,7 @@ const SignUp = ({ goBack, enteredEmail, handleCloseSuccess }) => {
               aria-hidden="true"
             />
           </div>
-          {formik.touched.password && formik.errors.password ? (
+          {formik.errors.password ? (
             <div className="text-sm text-gray-500">
               {formik.errors.password}
             </div>
@@ -126,10 +127,14 @@ const SignUp = ({ goBack, enteredEmail, handleCloseSuccess }) => {
 
         <button
           type="submit"
-          className="w-full text-white bg-red-900 hover:bg-black focus:ring-4 focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-800 dark:hover-bg-red-700 dark:focus-ring-blue-800"
           disabled={isLoading || !formik.isValid}
+          className="w-full text-white bg-red-900 hover:bg-black focus:ring-4 focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-800 dark:hover-bg-red-700 dark:focus-ring-blue-800"
         >
-          {isLoading ? 'Loading...' : 'SIGN UP'}
+          {isLoading ? (
+            <span className="loading loading-spinner"></span>
+          ) : (
+            'SIGN UP'
+          )}
         </button>
       </form>
     </div>

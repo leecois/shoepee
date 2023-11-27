@@ -1,31 +1,34 @@
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { enqueueSnackbar } from 'notistack';
+import React from 'react';
+import adminModelApi from '../../../api/adminModelApi';
 import Breadcrumb from '../../components/Breadcrumb';
 import ModelForm from '../../components/Models/ModelForm';
-import adminModelApi from '../../../api/adminModelApi';
-import { useAlert } from '../../../customer/components/Alert/AlertContext';
+import AdminBrandData from '../../../hooks/AdminBrandData';
 
 // Component for adding a new model
 const ModelAddManager = () => {
-  const { brandId } = useParams();
-  const { showAlert } = useAlert();
-
+  const { brandList } = AdminBrandData();
   const initialValues = {
+    brandDto: {
+      brandName: '',
+    },
     modelname: '',
-    price: '',
-    imageurl: '',
   };
 
   // Handles form submission
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      const response = await adminModelApi.add(brandId, values);
+      const response = await adminModelApi.add(values);
       if (response) {
-        showAlert('Model added successfully', 'success');
+        enqueueSnackbar('Model added successfully ', {
+          variant: 'success',
+        });
       }
     } catch (error) {
       console.error('Error adding model:', error);
-      showAlert('Failed to add model. Please try again.', 'error');
+      enqueueSnackbar('Failed to add model. Please try again.', {
+        variant: 'error',
+      });
     } finally {
       setSubmitting(false);
     }
@@ -46,6 +49,7 @@ const ModelAddManager = () => {
               <ModelForm
                 initialValues={initialValues}
                 onSubmit={handleSubmit}
+                brandList={brandList} 
               />
             </div>
           </div>

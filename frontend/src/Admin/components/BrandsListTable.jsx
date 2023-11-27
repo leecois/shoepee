@@ -21,7 +21,6 @@ import {
 } from '@mui/x-data-grid';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 function EditToolbar(props) {
   const { rows, setRows, setRowModesModel, addBrand } = props;
@@ -46,7 +45,12 @@ function EditToolbar(props) {
 
   return (
     <GridToolbarContainer>
-      <Button color="inherit" style={{ fontWeight: 'bold', fontFamily: 'sans-serif' }} startIcon={<AddIcon />} onClick={handleClick} >
+      <Button
+        color="inherit"
+        style={{ fontWeight: 'bold', fontFamily: 'sans-serif' }}
+        startIcon={<AddIcon />}
+        onClick={handleClick}
+      >
         Add brand
       </Button>
     </GridToolbarContainer>
@@ -59,10 +63,6 @@ export default function BrandsListTable({
   addBrand,
   deleteBrand,
 }) {
-  const navigate = useNavigate();
-  const handleAddModelClick = (brandId) => () => {
-    navigate(`/admin/tables/add-model/${brandId}`);
-  };
   const [rows, setRows] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
   const [openDialog, setOpenDialog] = useState(false);
@@ -203,14 +203,6 @@ export default function BrandsListTable({
             onClick={handleDeleteClick(id)}
             color="inherit"
           />,
-          <div className="tooltip tooltip-right" data-tip="Add Shoe Model">
-            <GridActionsCellItem
-              icon={<AddIcon className="transparent dark:text-gray-300" />}
-              label="Add Shoe Model"
-              onClick={handleAddModelClick(id)}
-              color="inherit"
-            />
-          </div>,
         ];
       },
     },

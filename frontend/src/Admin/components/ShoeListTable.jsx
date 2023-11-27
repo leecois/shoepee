@@ -27,7 +27,7 @@ function EditToolbar() {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate('/admin/tables/models');
+    navigate('/admin/tables/add-shoe');
   };
 
   return (
@@ -38,7 +38,7 @@ function EditToolbar() {
         startIcon={<AddIcon />}
         onClick={handleClick}
       >
-        Add Inspiration For Shoe Model
+        Add Inspiration 
       </Button>
     </GridToolbarContainer>
   );
@@ -49,6 +49,7 @@ export default function ShoeListTable({ shoeList, updateShoe, deleteShoe }) {
   const [rowModesModel, setRowModesModel] = useState({});
   const [openDialog, setOpenDialog] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
+  const model = [...new Set(shoeList.map((item) => item.shoeModelDto.modelname))];
 
   useEffect(() => {
     if (shoeList) {
@@ -106,19 +107,27 @@ export default function ShoeListTable({ shoeList, updateShoe, deleteShoe }) {
   };
 
   const processRowUpdate = async (newRow) => {
+    // Copy the updated row and mark as not new
     const updatedRow = { ...newRow, isNew: false };
-
+  
+    // Update the shoeModelDto with the new model name
+    updatedRow.shoeModelDto = {
+      ...updatedRow.shoeModelDto,
+      modelname: newRow.modelname
+    };
+  
     // Call update API
     try {
       await updateShoe(updatedRow.id, updatedRow);
     } catch (error) {
-      // Handle error
       console.error('Error updating shoe: ' + error.message);
     }
-
+  
+    // Update the rows state
     setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
     return updatedRow;
   };
+  
 
   const handleRowModesModelChange = (newRowModesModel) => {
     setRowModesModel(newRowModesModel);
@@ -151,6 +160,10 @@ export default function ShoeListTable({ shoeList, updateShoe, deleteShoe }) {
       field: 'modelname',
       headerName: 'Model Name',
       width: 170,
+      editable: true,
+
+      type: 'singleSelect',
+      valueOptions: model,
     },
     {
       field: 'shoeQuantity',

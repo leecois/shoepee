@@ -27,7 +27,7 @@ function EditToolbar() {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate('/admin/tables/brands');
+    navigate('/admin/tables/add-model');
   };
 
   return (
@@ -38,21 +38,18 @@ function EditToolbar() {
         startIcon={<AddIcon />}
         onClick={handleClick}
       >
-        Add Shoe Model Of Brand
+        Add Model
       </Button>
     </GridToolbarContainer>
   );
 }
 
 export default function ModelsTable({ modelList, updateModel, deleteModel }) {
-  const navigate = useNavigate();
-  const handleAddShoeClick = (modelId) => () => {
-    navigate(`/admin/tables/add-shoe/${modelId}`);
-  };
   const [rows, setRows] = useState([]);
   const [rowModesModel, setRowModesModel] = useState({});
   const [openDialog, setOpenDialog] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
+  const brand = [...new Set(modelList.map((item) => item.brandDto.brandName))];
 
   useEffect(() => {
     setRows(
@@ -111,6 +108,10 @@ export default function ModelsTable({ modelList, updateModel, deleteModel }) {
   const processRowUpdate = async (newRow) => {
     const updatedRow = { ...newRow, isNew: false };
 
+    updatedRow.brandDto = {
+      ...updatedRow.brandDto,
+      brandName: newRow.brandName,
+    };
     // Call update API
     try {
       await updateModel(updatedRow.id, updatedRow);
@@ -140,6 +141,9 @@ export default function ModelsTable({ modelList, updateModel, deleteModel }) {
       headerName: 'Brand Name',
       width: 230,
       editable: true,
+
+      type: 'singleSelect',
+      valueOptions: brand,
     },
     {
       field: 'actions',
@@ -184,14 +188,6 @@ export default function ModelsTable({ modelList, updateModel, deleteModel }) {
             onClick={handleDeleteClick(id)}
             color="inherit"
           />,
-          <div className="tooltip tooltip-right" data-tip="Add Shoe">
-            <GridActionsCellItem
-              icon={<AddIcon className="transparent dark:text-gray-300" />}
-              label="Add Shoe"
-              onClick={handleAddShoeClick(id)}
-              color="inherit"
-            />
-          </div>,
         ];
       },
     },

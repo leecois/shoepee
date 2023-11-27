@@ -33,9 +33,9 @@ const adminShoeApi = {
       throw error;
     }
   },
-  add: async (modelId, data) => {
+  add: async (data) => {
     try {
-      const response = await axiosClient.post(`/admin/addshoe/${modelId}`, data);
+      const response = await axiosClient.post(`/admin/addshoe`, data);
       return response;
     } catch (error) {
       throw error;

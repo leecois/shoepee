@@ -32,9 +32,7 @@ const AuthModal = ({ handleClickOpen, handleClose }) => {
 
   const handleContinue = () => {
     if (!email || !email.match(/^[a-zA-Z0-9._%+-]+@gmail\.com$/)) {
-      setEmailError(
-        'This field is required. Please enter a valid @gmail.com.'
-      );
+      setEmailError('This field is required. Please enter a valid @gmail.com.');
       return;
     } else {
       setEmailError('');
@@ -51,7 +49,7 @@ const AuthModal = ({ handleClickOpen, handleClose }) => {
         emailExists = response.data.email;
         isCheckEmailSuccess = true;
       })
-      .catch((error) => {
+      .catch(() => {
         isCheckEmailSuccess = true;
       })
       .finally(() => {
@@ -179,7 +177,11 @@ const AuthModal = ({ handleClickOpen, handleClose }) => {
                 onClick={handleContinue}
                 className="w-full text-white bg-red-900 hover:bg-black focus:ring-4 focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-800 dark:hover-bg-red-700 dark:focus-ring-blue-800"
               >
-                {isLoading ? 'Loading...' : 'Continue'}{' '}
+                {isLoading ? (
+                  <span className="loading loading-spinner"></span>
+                ) : (
+                  'Continue'
+                )}
               </button>
             </div>
           ) : isSignInVisible ? (

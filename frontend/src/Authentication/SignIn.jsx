@@ -36,10 +36,15 @@ const SignIn = ({ goBack, enteredEmail, handleCloseSuccess }) => {
         window.location.reload();
       } catch (error) {
         setIsLoading(false);
+        console.error('Login error:', error); // Log the error to the console
+
         if (error.response && error.response.status === 401) {
-          setFieldError('password', 'Password is incorrect');
+          setFieldError('password', 'Incorrect Password'); // Show "Incorrect Password" error
+          console.log('Incorrect Password');
         } else {
-          enqueueSnackbar('Failed to login: ' + error.message, {
+          // Handle other types of errors or log them as needed
+          console.error('Error during login:', error);
+          enqueueSnackbar('Incorrect Password ', {
             variant: 'error',
           });
         }
@@ -130,33 +135,16 @@ const SignIn = ({ goBack, enteredEmail, handleCloseSuccess }) => {
             </div>
           ) : null}
         </div>
-        {/* <div className="flex justify-between">
-          <div className="flex items-start">
-            <div className="flex items-center h-5">
-              <input
-                id="remember"
-                aria-describedby="remember"
-                type="checkbox"
-                className="bg-gray-50 border border-gray-300 focus:ring-3 focus:ring-blue-300 h-4 w-4 rounded dark:border-gray-500 dark:focus-ring-blue-600 dark:ring-offset-gray-800"
-                required=""
-              />
-            </div>
-            <div className="text-sm ml-3">
-              <label
-                htmlFor="remember"
-                className="font-medium text-gray-700 dark:text-gray-500"
-              >
-                Remember me
-              </label>
-            </div>
-          </div>
-        </div> */}
         <button
           type="submit"
           disabled={isLoading}
           className="w-full text-white bg-red-900 hover:bg-black focus:ring-4 focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-800 dark:hover-bg-red-700 dark:focus-ring-blue-800"
         >
-          {isLoading ? 'Loading...' : 'Sign In'}
+          {isLoading ? (
+            <span className="loading loading-spinner"></span>
+          ) : (
+            'Sign In'
+          )}
         </button>
       </form>
     </div>

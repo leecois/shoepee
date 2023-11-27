@@ -7,6 +7,9 @@ import HeaderProduct from '../../components/Product/HeaderProduct';
 import ProductList from '../../components/Product/ProductList';
 
 const ProductPage = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const location = useLocation();
   const queryParam = new URLSearchParams(location.search);
   const searchKey = queryParam.get('searchKey') || '';
@@ -22,11 +25,19 @@ const ProductPage = () => {
 
     // Filter by search key
     if (searchKey) {
-      updatedList = updatedList.filter((model) =>
-        model.modelname.toLowerCase().includes(searchKey.toLowerCase())
+      updatedList = updatedList.filter(
+        (model) =>
+          model.modelname.toLowerCase().includes(searchKey.toLowerCase()) ||
+          model.brandDto.brandName
+            .toLowerCase()
+            .includes(searchKey.toLowerCase()) ||
+          model.shoes.some(
+            (shoe) =>
+              shoe.name &&
+              shoe.name.toLowerCase().includes(searchKey.toLowerCase())
+          )
       );
     }
-
     // Filter by selected brands
     if (selectedBrands.length > 0) {
       updatedList = updatedList.filter((model) =>

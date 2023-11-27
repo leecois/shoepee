@@ -33,10 +33,10 @@ const adminModelApi = {
       throw error;
     }
   },
-  add: async (brandId, data) => {
+  add: async ( data) => {
     try {
       const response = await axiosClient.post(
-        `/admin/addShoemodel/${brandId}`,
+        `/admin/addShoemodel`,
         data
       );
       return response;

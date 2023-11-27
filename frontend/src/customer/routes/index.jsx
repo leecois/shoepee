@@ -11,6 +11,7 @@ const CheckoutPage = lazy(() => import('../pages/Checkout/CheckoutPage'));
 const ShoeCustomize = lazy(() => import('../pages/ShoeCustomize'));
 const ProfilePage = lazy(() => import('../pages/Account/ProfilePage'));
 const PurchasePage = lazy(() => import('../pages/PurchasePage'));
+const ChangePasswordPage = lazy(() => import('../pages/Account/ChangePasswordPage'));
 const PaymentSuccessPage = lazy(() => import('../pages/PaymentSuccessPage'));
 const Location = lazy(() => import('../components/Location/Location'));
 const Contact = lazy(() => import('../components/Contact'));
@@ -57,6 +58,15 @@ const coreRoutes = [
     component: () => (
       <ProtectedRoute allowedRoles={['USER', 'MANAGER', 'ADMIN']}>
         <ProfilePage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: '/user/account/change-password',
+    title: 'Change Password',
+    component: () => (
+      <ProtectedRoute allowedRoles={['USER', 'MANAGER', 'ADMIN']}>
+        <ChangePasswordPage />
       </ProtectedRoute>
     ),
   },

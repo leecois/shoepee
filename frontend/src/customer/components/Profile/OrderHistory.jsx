@@ -4,8 +4,14 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import { enqueueSnackbar } from 'notistack';
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import userApi from '../../../api/userApi';
+import {
+  addToCartAsync,
+  getCartAsync,
+} from '../../../containers/Cart/cartSlice';
 import OrderDetailModal from './OrderDetailModal';
 
 const OrderHistory = ({ orders, selectedTab, fetchOrders }) => {
@@ -19,6 +25,28 @@ const OrderHistory = ({ orders, selectedTab, fetchOrders }) => {
     dialogTitle: { color: '#a5a58d' }, // Olive green color, typical in GUCCI design
     dialogContent: { fontFamily: 'Times New Roman', fontStyle: 'italic' }, // Classic, elegant font
     button: { backgroundColor: '#6b705c', color: '#fff' }, // Dark green button with white text
+  };
+
+  const dispatch = useDispatch();
+
+  const handleBuyAgain = async (canceledOrder) => {
+    try {
+      for (const item of canceledOrder.orderItem) {
+        const cartItem = {
+          shoeId: item.customizedShoeDto.id,
+          size: item.size, // Assuming size is part of shoeModelDto
+          quantity: item.productQuantity,
+        };
+
+        await dispatch(addToCartAsync(cartItem));
+      }
+      dispatch(getCartAsync()); // Refresh the cart state
+      enqueueSnackbar('Added to Bag', {
+        variant: 'success',
+      });
+    } catch (error) {
+      console.error('Error in buying again:', error);
+    }
   };
 
   const filteredOrders = orders.filter((order) => {
@@ -122,7 +150,7 @@ const OrderHistory = ({ orders, selectedTab, fetchOrders }) => {
                 </span>
 
                 <div className="space-x-2">
-                  <div className="font-semibold btn btn-outline mx-2">
+                  <div className="font-semibold btn btn-disabled mx-2">
                     Payment Method: {order.paymentMethod}
                   </div>
                   <div
@@ -130,8 +158,8 @@ const OrderHistory = ({ orders, selectedTab, fetchOrders }) => {
                       order.paymentStatus === 'PAID'
                         ? 'btn btn-success no-animation text-white cursor-default'
                         : order.paymentStatus === 'NOT PAID'
-                        ? 'btn btn-warning no-animation text-white cursor-default'
-                        : order.paymentStatus === 'CANCELLED'
+                        ? 'btn btn-error no-animation text-white cursor-default'
+                        : order.orderStatus === 'CANCELLED'
                         ? 'btn btn-error no-animation text-white cursor-default'
                         : ''
                     }`}
@@ -148,7 +176,7 @@ const OrderHistory = ({ orders, selectedTab, fetchOrders }) => {
                       : order.orderStatus === 'SHIPPING'
                       ? 'Shipping'
                       : order.orderStatus === 'COMPLETED'
-                      ? 'Order Completed'
+                      ? 'COMPLETED'
                       : 'CANCELLED'}
                   </div>
                 </div>
@@ -175,32 +203,26 @@ const OrderHistory = ({ orders, selectedTab, fetchOrders }) => {
                           {product.variation}
                         </p>
                         <p className="text-sm font-medium text-gray-700">
+                          Size: {product.size}
+                        </p>
+                        <p className="text-sm font-medium text-gray-700">
                           Quantity: {product.productQuantity}
                         </p>
                       </div>
                       <div className="text-right">
                         <p className="text-lg font-semibold text-gray-700">
-                          ${product.totalProductprice}
+                          {product.totalProductprice.toLocaleString('de-DE')}{' '}
+                          VND
                         </p>
                       </div>
                     </div>
                   ))}
               </div>
               <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-300">
-                <span className="text-lg font-medium text-gray-600">
-                  Order Total: ${order.orderAmt}
+                <span className="text-lg font-semibold text-gray-600">
+                  Order Total: {order.orderAmt.toLocaleString('de-DE')}
                 </span>
                 <div className="flex justify-between">
-                  {(order.paymentMethod === 'COD' ||
-                    order.paymentMethod === 'VNPAY') &&
-                    order.orderStatus === 'PENDING' && (
-                      <button
-                        className="btn btn-outline btn-error mx-2"
-                        onClick={() => showCancelDialog(order.orderId)}
-                      >
-                        Cancel Order
-                      </button>
-                    )}
                   {order.paymentMethod === 'VNPAY' &&
                     order.paymentStatus === 'NOT PAID' &&
                     order.orderStatus === 'PENDING' && (
@@ -211,14 +233,28 @@ const OrderHistory = ({ orders, selectedTab, fetchOrders }) => {
                         Pay Now
                       </button>
                     )}
-                    {order.paymentStatus === 'CANCELLED' && (
+                  {(order.paymentMethod === 'COD' ||
+                    order.paymentMethod === 'VNPAY') &&
+                    order.orderStatus === 'PENDING' && (
                       <button
-                        className="btn btn-neutral mx-2"
+                        className="btn btn-outline btn-error mx-2"
+                        onClick={() => showCancelDialog(order.orderId)}
                       >
-                        Buy Again
+                        Cancel Order
                       </button>
                     )}
-                  <button className="btn btn-outline mx-2">Contact</button>
+                  {(order.orderStatus === 'CANCELLED' ||
+                    order.orderStatus === 'COMPLETED') && (
+                    <button
+                      className="btn btn-neutral mx-2"
+                      onClick={() => handleBuyAgain(order)}
+                    >
+                      Buy Again
+                    </button>
+                  )}
+                  <a href="/contact" className="btn btn-outline mx-2">
+                    Contact
+                  </a>
                 </div>
               </div>
             </div>
@@ -249,7 +285,7 @@ const OrderHistory = ({ orders, selectedTab, fetchOrders }) => {
           </Button>
           <Button
             style={gucciStyle.button}
-            onClick={() => window.open(paymentUrl, '_blank')}
+            onClick={() => (window.location.href = paymentUrl)}
             autoFocus
           >
             Proceed to Payment

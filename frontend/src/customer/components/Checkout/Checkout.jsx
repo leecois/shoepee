@@ -1,24 +1,27 @@
 import { ErrorMessage, Field, Form, Formik } from 'formik';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import * as Yup from 'yup';
-import {
-  getCartAsync,
-  placeOrderAsync,
-} from '../../../containers/Cart/cartSlice';
-import userApi from '../../../api/userApi';
-import { fetchOrders } from '../../../containers/Cart/orderSlice';
 import { useNavigate } from 'react-router-dom';
+import * as Yup from 'yup';
+import userApi from '../../../api/userApi';
+import { placeOrderAsync } from '../../../containers/Cart/cartSlice';
+import { fetchOrders } from '../../../containers/Cart/orderSlice';
 
 const validationSchema = Yup.object({
-  firstName: Yup.string().required('Required'),
-  lastName: Yup.string().required('Required'),
+  fullName: Yup.string()
+    .required('Full name is required')
+    .matches(/^[A-Za-z\u00C0-\u1EF9\s]+$/, 'Invalid characters'),
   email: Yup.string()
     .email('Please enter a valid email address.')
-    .required('Required'),
-  address: Yup.string().required('Required'),
-  phone: Yup.string().required('Required'),
-  paymentMethod: Yup.string().required('Required'),
+    .required('Email is required'),
+  address: Yup.string().required('Address is required'),
+  phone: Yup.string()
+    .required('Phone Number is required')
+    .matches(/^[0-9]+$/, 'Phone Number must be only digits')
+    .min(10, 'Phone Number must be at least 10 digits'),
+  paymentMethod: Yup.string()
+    .required('Payment Method is required')
+    .oneOf(['COD', 'VNPAY'], 'Invalid payment method'),
 });
 
 const Checkout = () => {
@@ -29,26 +32,34 @@ const Checkout = () => {
     customerName: '',
     orderAddress: '',
     orderPhone: '',
-  });
-  const cartId = useSelector((state) => state.cart.cartId);
-  const cartEmail = useSelector((state) => state.cart.user?.email);
-  const [orderPlaced, setOrderPlaced] = useState(false);
-  const orders = useSelector((state) => state.orders.content);
-  const [sortedOrders, setSortedOrders] = useState([]);
-  const [focused, setFocused] = useState(null);
-
-  const initialValues = {
-    firstName: '',
-    lastName: '',
-    email: cartEmail || '',
-    address: '',
-    phone: '',
     paymentMethod: 'COD',
+  });
+  const getUserInfo = () => {
+    const userInfo = localStorage.getItem('user');
+    return userInfo ? JSON.parse(userInfo) : null;
   };
+  const user = getUserInfo();
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [orderSubmitted, setOrderSubmitted] = useState(false);
+
+  const { cartId } = useSelector((state) => state.cart);
+  const orders = useSelector((state) => state.orders.content);
+
+  const initialValues = useMemo(
+    () => ({
+      fullName: user?.inforUser?.fullname || '',
+      email: user?.email || '',
+      address: user?.inforUser?.address || '',
+      phone: user?.inforUser?.phone || '',
+      paymentMethod: 'COD',
+    }),
+    [user]
+  );
 
   const handleConfirm = (values) => {
     setOrderDetails({
-      customerName: `${values.firstName} ${values.lastName}`,
+      customerName: values.fullName,
       orderAddress: values.address,
       orderPhone: values.phone,
       paymentMethod: values.paymentMethod,
@@ -57,70 +68,50 @@ const Checkout = () => {
   };
 
   const handleSubmit = async () => {
-    const orderData = {
-      ...orderDetails,
-      cartId,
-    };
-
     try {
-      const action = await dispatch(placeOrderAsync(orderData));
-      if (!action.error) {
-        dispatch(getCartAsync());
-        setIsModalOpen(false);
-        setOrderPlaced(true); // Indicate successful order placement
+      setIsLoading(true);
+      const action = await dispatch(
+        placeOrderAsync({ ...orderDetails, cartId })
+      );
+      if (action.meta.requestStatus === 'fulfilled') {
+        await dispatch(fetchOrders()); // Ensure this completes before proceeding
+        setOrderSubmitted(true);
       }
     } catch (error) {
       console.error('Order submission failed:', error);
+    } finally {
+      setIsLoading(false);
+      setIsModalOpen(false);
     }
   };
 
   useEffect(() => {
-    if (orderPlaced) {
-      dispatch(fetchOrders());
-      setOrderPlaced(false); // Reset the flag
+    const initiatePayment = async () => {
+      const latestOrder = orders[orders.length - 1];
+      if (latestOrder?.paymentMethod === orderDetails.paymentMethod) {
+        if (latestOrder.paymentMethod === 'VNPAY') {
+          userApi
+            .payOrder({ orderId: latestOrder.orderId })
+            .then((response) => window.location.href = response)
+            .catch((error) => console.error('Payment failed:', error));
+          setOrderSubmitted(false);
+          navigate('/user/purchase', { replace: true });
+        } else if (latestOrder.paymentMethod === 'COD') {
+          navigate('/user/purchase', { replace: true });
+        }
+        setOrderSubmitted(false);
+      }
+    };
+    if (orderSubmitted) {
+      initiatePayment();
     }
-  }, [orderPlaced, dispatch]);
+  }, [orderSubmitted, orderDetails, orders, navigate]);
 
-  useEffect(() => {
-    // Sort orders
-    if (orders.length > 0) {
-      const sorted = [...orders].sort(
-        (a, b) => new Date(b.orderCreateAt) - new Date(a.orderCreateAt)
-      );
-      setSortedOrders(sorted);
-    }
-  }, [orders]);
-
-  useEffect(() => {
-    const latestOrder = sortedOrders[0];
-    if (
-      latestOrder &&
-      latestOrder.paymentMethod === 'VNPAY' &&
-      orderDetails.paymentMethod === 'VNPAY'
-    ) {
-      const orderToPay = {
-        orderId: latestOrder.orderId,
-      };
-
-      userApi
-        .payOrder(orderToPay)
-        .then((response) => {
-          window.open(response, '_blank');
-          navigate('/user/purchase');
-        })
-        .catch((error) => {
-          console.error('Payment failed:', error);
-        });
-    }
-  }, [sortedOrders, orderDetails, navigate]);
-
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
+  const handleCancel = () => setIsModalOpen(false);
 
   return (
     <div className="max-w-screen-lg mx-auto p-6">
-      <h1 className="text-3xl font-mono font-bold text-gray-800 mb-8">
+      <h1 className="text-3xl font-bold text-gray-800 mb-8">
         Shipping Informations
       </h1>
       <Formik
@@ -131,71 +122,30 @@ const Checkout = () => {
         <Form className="space-y-4">
           <div className="mb-4">
             <label
-              htmlFor="firstName"
-              className={`bg-gradient-to-r bg-clip-text text-xs text-transparent font-semibold uppercase transition-all duration-300 ${
-                focused === 3
-                  ? 'from-gray-800 to-gray-400'
-                  : 'from-gray-600 to-gray-600'
-              }`}
+              htmlFor="fullName"
+              className="bg-gradient-to-r bg-clip-text text-xs text-gray-600 font-semibold uppercase transition-all duration-300"
             >
-              First Name
+              Full Name
             </label>
             <Field
               type="text"
-              id="firstName"
-              name="firstName"
-              placeholder="First Name"
+              id="fullName"
+              name="fullName"
+              placeholder="Your Name"
               className="form-input w-full border-0 border-b-2 border-gray-300 bg-white bg-opacity-80 placeholder-gray-400 focus:border-gray-300 focus:ring-0"
             />
 
             <ErrorMessage
-              name="firstName"
+              name="fullName"
               component="div"
-              className={`bg-gradient-to-r bg-clip-text text-xs text-transparent font-semibold uppercase transition-all duration-300 ${
-                focused === 3
-                  ? 'from-red-800 to-red-400'
-                  : 'from-red-600 to-red-600'
-              }`}
-            />
-          </div>
-
-          <div className="mb-4">
-            <label
-              htmlFor="lastName"
-              className={`bg-gradient-to-r bg-clip-text text-xs text-transparent font-semibold uppercase transition-all duration-300 ${
-                focused === 3
-                  ? 'from-gray-800 to-gray-400'
-                  : 'from-gray-600 to-gray-600'
-              }`}
-            >
-              Last Name
-            </label>
-            <Field
-              type="text"
-              id="lastName"
-              name="lastName"
-              placeholder="Last Name"
-              className="form-input w-full border-0 border-b-2 border-gray-300 bg-white bg-opacity-80 placeholder-gray-400 focus:border-gray-300 focus:ring-0"
-            />
-            <ErrorMessage
-              name="lastName"
-              component="div"
-              className={`bg-gradient-to-r bg-clip-text text-xs text-transparent font-semibold uppercase transition-all duration-300 ${
-                focused === 3
-                  ? 'from-red-800 to-red-400'
-                  : 'from-red-600 to-red-600'
-              }`}
+              className="bg-gradient-to-r bg-clip-text text-xs text-red-600 font-semibold uppercase transition-all duration-300"
             />
           </div>
 
           <div className="mb-4">
             <label
               htmlFor="address"
-              className={`bg-gradient-to-r bg-clip-text text-xs text-transparent font-semibold uppercase transition-all duration-300 ${
-                focused === 3
-                  ? 'from-gray-800 to-gray-400'
-                  : 'from-gray-600 to-gray-600'
-              }`}
+              className="bg-gradient-to-r bg-clip-text text-xs text-gray-600 font-semibold uppercase transition-all duration-300"
             >
               Address
             </label>
@@ -209,22 +159,14 @@ const Checkout = () => {
             <ErrorMessage
               name="address"
               component="div"
-              className={`bg-gradient-to-r bg-clip-text text-xs text-transparent font-semibold uppercase transition-all duration-300 ${
-                focused === 3
-                  ? 'from-red-800 to-red-400'
-                  : 'from-red-600 to-red-600'
-              }`}
+              className="bg-gradient-to-r bg-clip-text text-xs text-red-600 font-semibold uppercase transition-all duration-300"
             />
           </div>
 
           <div className="mb-4">
             <label
               htmlFor="phone"
-              className={`bg-gradient-to-r bg-clip-text text-xs text-transparent font-semibold uppercase transition-all duration-300 ${
-                focused === 3
-                  ? 'from-gray-800 to-gray-400'
-                  : 'from-gray-600 to-gray-600'
-              }`}
+              className="bg-gradient-to-r bg-clip-text text-xs text-gray-600 font-semibold uppercase transition-all duration-300"
             >
               Phone
             </label>
@@ -232,22 +174,18 @@ const Checkout = () => {
               type="text"
               id="phone"
               name="phone"
-              placeholder="(+84) 123 456 789"
+              placeholder="0123456789"
               className="form-input w-full border-0 border-b-2 border-gray-300 bg-white bg-opacity-80 placeholder-gray-400 focus:border-gray-300 focus:ring-0"
             />
             <ErrorMessage
               name="phone"
               component="div"
-              className={`bg-gradient-to-r bg-clip-text text-xs text-transparent font-semibold uppercase transition-all duration-300 ${
-                focused === 3
-                  ? 'from-red-800 to-red-400'
-                  : 'from-red-600 to-red-600'
-              }`}
+              className="bg-gradient-to-r bg-clip-text text-xs text-red-600 font-semibold uppercase transition-all duration-300"
             />
           </div>
 
           <div className="mx-auto py-6">
-            <h1 className="text-3xl font-mono font-bold text-gray-800 mb-8">
+            <h1 className="text-3xl font-bold text-gray-800 mb-8">
               Payment Method
             </h1>
             <div className="space-y-4">
@@ -326,7 +264,11 @@ const Checkout = () => {
                 className="rounded bg-meta-3/10 px-4 py-2 text-sm font-medium text-meta-3"
                 onClick={handleSubmit}
               >
-                Yes, I'm sure
+                {isLoading ? (
+                  <span className="loading loading-spinner"></span>
+                ) : (
+                  "Yes, I'm sure"
+                )}
               </button>
 
               <button

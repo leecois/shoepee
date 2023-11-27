@@ -1,32 +1,37 @@
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { enqueueSnackbar } from 'notistack';
+import React from 'react';
+import adminShoeApi from '../../../api/adminShoeApi';
+import AdminModelData from '../../../hooks/AdminModelData';
 import Breadcrumb from '../../components/Breadcrumb';
 import ShoeForm from '../../components/Shoes/ShoeForm';
-import adminShoeApi from '../../../api/adminShoeApi';
-import { useAlert } from '../../../customer/components/Alert/AlertContext';
 
 // Component for adding new shoes to a model
 const ShoeAdditionManager = () => {
-  const { modelId } = useParams();
-  const { showAlert } = useAlert();
-
+  const { modelList } = AdminModelData();
   const initialShoeValues = {
+    shoeModelDto: {
+      modelname: '',
+    },
     name: '',
-    description: '',
     price: '',
     imageUrl: '',
+    description: '',
+    shoeQuantity: 0,
   };
 
   // Handles the shoe form submission
   const handleShoeSubmit = async (values, { setSubmitting }) => {
     try {
-      const response = await adminShoeApi.add(modelId, values);
+      const response = await adminShoeApi.add(values);
       if (response) {
-        showAlert('Shoe added successfully', 'success');
+        enqueueSnackbar('Shoe added successfully', {
+          variant: 'success',
+        });
       }
     } catch (error) {
-      console.error('Error adding shoe:', error);
-      showAlert('Failed to add shoe. Please try again.', 'error');
+      enqueueSnackbar('Failed to add shoe. Please try again', {
+        variant: 'error',
+      });
     } finally {
       setSubmitting(false);
     }
@@ -47,6 +52,7 @@ const ShoeAdditionManager = () => {
               <ShoeForm
                 initialValues={initialShoeValues}
                 onSubmit={handleShoeSubmit}
+                modelList={modelList} 
               />
             </div>
           </div>

@@ -19,7 +19,7 @@ const PaymentSuccessPage = () => {
         </div>
         <div>
           <a
-            href="/purchases"
+            href="/"
             className="px-6 py-3 text-sm font-medium text-white bg-black rounded-md hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
           >
             Return to Homepage

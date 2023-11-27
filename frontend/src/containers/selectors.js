@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { createSelector } from 'reselect';
 
 const cartItemsSelector = (state) => state.cart.cartItems;
@@ -16,6 +15,6 @@ export const cartTotalSelector = createSelector(
   (cartItems) =>
     cartItems
       .reduce((total, item) => total + (item?.totalprice ?? 0), 0)
-      .toFixed(2) // This will convert the total to a string with 2 decimal places
+      .toLocaleString('de-DE') // This will convert the total to a string with 2 decimal places
 );
 

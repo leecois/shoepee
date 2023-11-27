@@ -3,16 +3,23 @@ import { ErrorMessage, Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 
 const shoeScheme = Yup.object().shape({
-  description: Yup.string().required('Please enter description'),
+  shoeModelDto: Yup.object().shape({
+    modelname: Yup.string().required('Please select a model'),
+  }),
+  name: Yup.string().required('Please enter name'),
   price: Yup.number()
     .min(1, 'Price must be greater than 0')
     .required('Please enter price'),
+  description: Yup.string().required('Please enter description'),
   imageUrl: Yup.string()
     .url('Must be a valid URL')
     .required('Please enter image url'),
+  shoeQuantity: Yup.number()
+    .min(0, 'Quantity cannot be negative')
+    .required('Please enter quantity'),
 });
 
-const ShoeForm = ({ initialValues, onSubmit }) => (
+const ShoeForm = ({ initialValues, onSubmit, modelList }) => (
   <Formik
     initialValues={initialValues}
     validationSchema={shoeScheme}
@@ -38,14 +45,14 @@ const ShoeForm = ({ initialValues, onSubmit }) => (
           </div>
           <div className="w-full sm:w-1/2">
             <label className="mb-3 block text-sm font-medium text-black dark:text-white">
-              Price
+              Price (VND)
             </label>
             <Field
               className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus-border-primary"
               type="number"
               name="price"
               min="0"
-              placeholder="$0+"
+              placeholder="0"
             />
             <ErrorMessage name="price" component="div" className="error" />
           </div>
@@ -67,6 +74,21 @@ const ShoeForm = ({ initialValues, onSubmit }) => (
             />
           </div>
         </div>
+        {/* Model Name Field */}
+        <div className="mb-5.5">
+        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+          Select Model
+        </label>
+        <Field as="select" name="shoeModelDto.modelname" className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary">
+          <option value="">Select a Model</option>
+          {modelList.map((model) => (
+            <option key={model.id} value={model.modelname}>
+              {model.modelname}
+            </option>
+          ))}
+        </Field>
+        <ErrorMessage name="shoeModelDto.modelname" component="div" className="error" />
+      </div>
         <div className="mb-5.5">
           <label className="mb-3 block text-sm font-medium text-black dark:text-white">
             Description
@@ -74,6 +96,7 @@ const ShoeForm = ({ initialValues, onSubmit }) => (
           <Field
             className="w-full rounded border border-stroke bg-gray py-3 pl-11.5 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
             type="text"
+            as="textarea"
             name="description"
           />
           <ErrorMessage name="description" component="div" className="error" />
