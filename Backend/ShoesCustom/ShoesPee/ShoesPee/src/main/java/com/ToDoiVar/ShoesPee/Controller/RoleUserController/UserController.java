@@ -51,12 +51,12 @@ public class UserController {
     }
 
     @PostMapping("/change-password")
-    public String changePassword(@RequestBody PasswordRequestUtil requestUtil){
+    public ResponseEntity<String> changePassword(@RequestBody PasswordRequestUtil requestUtil){
         User user = userService.findByEmail(requestUtil.getEmail()).get();
         if (!userService.oldPasswordIsValid(user, requestUtil.getOldPassword())){
-            return "Incorrect old password";
+            return new ResponseEntity<>("Incorrect Old Password",HttpStatus.BAD_REQUEST);
         }
         userService.changePassword(user, requestUtil.getNewPassword());
-        return "Password changed successfully";
+        return new ResponseEntity<>("Password changed successfully",HttpStatus.OK);
     }
 }
