@@ -34,7 +34,7 @@ const ChartRevenue = ({ orderList }) => {
           yAxisIndex: 0,
           label: {
             show: true,
-            text: 'Rally',
+            text: 'Admin',
             style: {
               color: '#fff',
               background: '#775DD0',
@@ -74,103 +74,98 @@ const ChartRevenue = ({ orderList }) => {
   // Function to format date to YYYY/MM/DD
   const formatDate = (date) => {
     const d = new Date(date);
-    const year = d.getFullYear();
-    const month = `0${d.getMonth() + 1}`.slice(-2); // Adding 1 as getMonth() returns 0-11
-    const day = `0${d.getDate()}`.slice(-2);
-    return `${year}/${month}/${day}`;
+    return `${d.getFullYear()}/${String(d.getMonth() + 1).padStart(
+      2,
+      '0'
+    )}/${String(d.getDate()).padStart(2, '0')}`;
   };
 
-  // Function to aggregate product quantities by formatted date
-  const aggregateProductsByDate = (orders) => {
-    const productSalesMap = new Map();
-
-    orders.forEach((order) => {
-      if (order.orderCompeledAt && order.orderItem) {
-        const date = formatDate(order.orderCompeledAt);
-        let dailyTotal = productSalesMap.get(date) || 0;
-
-        order.orderItem.forEach((item) => {
-          dailyTotal += item.productQuantity; // Assuming item.productQuantity holds the number of products sold
-        });
-
-        productSalesMap.set(date, dailyTotal);
-      }
-    });
-
-    return Array.from(productSalesMap, ([date, total]) => ({
-      x: new Date(date).getTime(),
-      y: total,
-    })).sort((a, b) => a.x - b.x);
-  };
-
-  const aggregateSalesByDate = (orders) => {
+  const aggregateData = (orders, keyExtractor) => {
     const salesMap = new Map();
-
     orders.forEach((order) => {
       if (order.orderCompeledAt) {
-        const date = new Date(order.orderCompeledAt).toDateString();
+        const date = formatDate(order.orderCompeledAt);
         const currentTotal = salesMap.get(date) || 0;
-        salesMap.set(date, currentTotal + order.orderAmt);
+        salesMap.set(date, currentTotal + keyExtractor(order));
       }
     });
-
     return Array.from(salesMap, ([date, total]) => ({
       x: new Date(date).getTime(),
       y: total,
     })).sort((a, b) => a.x - b.x);
   };
 
-  // Update series with aggregated data
+  const [series, setSeries] = useState([]);
+
   useEffect(() => {
     if (orderList && orderList.length > 0) {
-      const aggregatedData = aggregateProductsByDate(orderList);
-      const aggregateSalesByDateData = aggregateSalesByDate(orderList);
+      const productsData = aggregateData(orderList, (order) =>
+        order.orderItem.reduce((sum, item) => sum + item.productQuantity, 0)
+      );
+      const salesData = aggregateData(orderList, (order) => order.orderAmt);
       setSeries([
-        { name: 'Total Products Sold', data: aggregatedData },
-        { name: 'Total Sales', data: aggregateSalesByDateData },
+        { name: 'Total Products Sold', data: productsData },
+        { name: 'Total Sales', data: salesData },
       ]);
     }
   }, [orderList]);
-  const [series, setSeries] = useState([
-    {
-      name: 'Total Products Sold',
-      data: [],
-    },
-  ]);
+  const getDataRange = () => {
+    let minDate = new Date();
+    let maxDate = new Date(0); // A very old date
+
+    orderList.forEach((order) => {
+      if (order.orderCompeledAt) {
+        const date = new Date(order.orderCompeledAt);
+        if (date < minDate) minDate = date;
+        if (date > maxDate) maxDate = date;
+      }
+    });
+
+    return { minDate, maxDate };
+  };
 
   // Function to update the chart data
   const updateData = (timeline) => {
+    const { minDate, maxDate } = getDataRange();
     let newMinDate, newMaxDate;
+    const currentDate = new Date();
+
     switch (timeline) {
       case 'one_month':
-        // Adjusted for one month in 2023
-        newMinDate = new Date('2023-11-15').getTime();
-        newMaxDate = new Date('2023-12-16').getTime();
+        newMinDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth(),
+          1
+        );
+        newMaxDate = currentDate; // Or use the end of the current month
         break;
       case 'six_months':
-        // Adjusted for the last six months up to a date in 2023
-        newMinDate = new Date('2022-08-27').getTime();
-        newMaxDate = new Date('2023-02-27').getTime();
+        newMinDate = new Date(
+          maxDate.getFullYear(),
+          maxDate.getMonth() - 6,
+          maxDate.getDate()
+        );
+        newMaxDate = maxDate;
         break;
       case 'one_year':
-        // Adjusted for one year up to a date in 2023
-        newMinDate = new Date('2022-02-27').getTime();
-        newMaxDate = new Date('2023-02-27').getTime();
+        newMinDate = new Date(
+          maxDate.getFullYear() - 1,
+          maxDate.getMonth(),
+          maxDate.getDate()
+        );
+        newMaxDate = maxDate;
         break;
       case 'ytd':
-        // From the start of 2023 to a specific date
-        newMinDate = new Date('2023-01-01').getTime();
-        newMaxDate = new Date('2023-02-27').getTime();
+        newMinDate = new Date(maxDate.getFullYear(), 0, 1); // Start of the year
+        newMaxDate = maxDate;
         break;
       case 'all':
-        // Assuming your data starts from a date in 2022
-        newMinDate = new Date('2022-01-01').getTime();
-        newMaxDate = new Date('2023-02-27').getTime();
+        newMinDate = minDate;
+        newMaxDate = maxDate;
         break;
       default:
-        // Default case can be adjusted as needed
-        newMinDate = new Date('2023-01-01').getTime();
-        newMaxDate = new Date('2023-02-27').getTime();
+        newMinDate = minDate;
+        newMaxDate = maxDate;
     }
 
     ApexCharts.exec('area-datetime', 'zoomX', newMinDate, newMaxDate);

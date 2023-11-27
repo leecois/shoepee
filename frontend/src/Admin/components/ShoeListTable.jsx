@@ -38,7 +38,7 @@ function EditToolbar() {
         startIcon={<AddIcon />}
         onClick={handleClick}
       >
-        Add Inspiration 
+        Add Customized Shoe
       </Button>
     </GridToolbarContainer>
   );

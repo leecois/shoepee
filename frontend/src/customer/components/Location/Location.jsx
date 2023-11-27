@@ -8,20 +8,7 @@ const Location = () => {
           DROP-OFF LOCATIONS
         </h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="p-4 bg-yellow-200 rounded-lg">
-            <h2 className="text-2xl font-semibold text-yellow-800 mb-4">
-              HA NOI, VIET NAM
-            </h2>
-            <p className="mb-2">
-              <span className="font-semibold">Flagship Store</span>
-            </p>
-            <p className="mb-2">
-              Khu Giáo dục và Đào tạo – Khu Công nghệ cao Hòa Lạc
-            </p>
-            <p className="mb-2">Km29 Đại lộ Thăng Long, Thạch Thất, TP. HN</p>
-            <p>Monday - Sunday</p>
-            <p>9:00 AM - 21:00 PM</p>
-          </div>
+          
           <div className="p-4 bg-red-200 rounded-lg">
             <h2 className="text-2xl font-semibold text-red-800 mb-4">
               HO CHI MINH, VIET NAM
