@@ -33,22 +33,24 @@ const OrdersTable = ({
   };
 
   const columns = [
-    { field: 'id', headerName: 'Order ID', width: 150 },
-    { field: 'phone', headerName: 'Phone', width: 130 },
-    { field: 'address', headerName: 'Address', width: 200 },
-    { field: 'paymentMethod', headerName: 'Payment Method', width: 120 },
-    { field: 'orderStatus', headerName: 'Order Status', width: 130 },
-    { field: 'orderCreateAt', headerName: 'Created At', width: 180 },
+    { field: 'id', headerName: 'Order ID', width: 70 },
     {
       field: 'orderAmt',
       headerName: 'Total in VND',
       type: 'number',
       width: 130,
     },
+    { field: 'phone', headerName: 'Phone', width: 130 },
+    { field: 'address', headerName: 'Address', width: 200 },
+    { field: 'paymentMethod', headerName: 'Payment Method', width: 120 },
+    { field: 'orderStatus', headerName: 'Order Status', width: 130 },
+    { field: 'orderCreateAt', headerName: 'Created At', width: 180 },
+    { field: 'orderCompeledAt', headerName: 'Completed At', width: 180 },
+
     {
       field: 'actions',
       headerName: 'Actions',
-      width: 200,
+      width: 120,
       renderCell: (params) => (
         <div className="flex items-center space-x-2">
           {params.row.orderStatus === 'PENDING' && (
@@ -89,18 +91,25 @@ const OrdersTable = ({
   const rows =
   orderList && Array.isArray(orderList.content)
     ? orderList.content
-        .filter(order => !(order.paymentMethod === 'VNPAY' && order.paymentStatus === 'NOT PAID'))
+        .filter(
+          (order) =>
+            !(
+              order.paymentMethod === 'VNPAY' &&
+              order.paymentStatus === 'NOT PAID'
+            )
+        )
         .map((order) => ({
-            id: order.orderId,
-            phone: order.phoneNumber || 'N/A',
-            address: order.billingAddress || 'N/A',
-            paymentMethod: order.paymentMethod,
-            orderStatus: order.orderStatus,
-            orderCreateAt: new Date(order.orderCreateAt).toLocaleString(),
-            orderAmt: order.orderAmt,
-            status: order.status, // Add this line
-            actions: '', // Actions are rendered in the renderCell function
-          }))
+          id: order.orderId,
+          phone: order.phoneNumber || 'N/A',
+          address: order.billingAddress || 'N/A',
+          paymentMethod: order.paymentMethod,
+          orderStatus: order.orderStatus,
+          orderCreateAt: new Date(order.orderCreateAt).toLocaleString(),
+          orderCompeledAt: order.orderCompeledAt ? new Date(order.orderCompeledAt).toLocaleString() : 'N/A',
+          orderAmt: order.orderAmt,
+          status: order.status, // Add this line
+          actions: '', // Actions are rendered in the renderCell function
+        }))
     : [];
 
   return (

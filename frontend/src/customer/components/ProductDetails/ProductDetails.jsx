@@ -152,7 +152,7 @@ const ProductDetails = ({ product, userLoggedIn }) => {
             {selectedShoe?.stock ? (
               <p className="flex items-center space-x-1 text-sm text-gray-700 font-semibold">
                 <CheckIcon className="mr-2 w-5 h-5 text-green-500" />
-                In stock and ready to ship
+                {selectedShoe?.shoeQuantity} In stock and ready to ship{' '}
               </p>
             ) : (
               <p className="flex items-center space-x-1 text-sm text-gray-700 font-semibold">
@@ -178,9 +178,7 @@ const ProductDetails = ({ product, userLoggedIn }) => {
 
       {/* <h3 className="mt-10 text-lg text-gray-700 font-semibold">Overview</h3> */}
       <div className="mt-8 p-6 border-2 rounded-lg shadow-lg">
-        <h1 className="text-2xl text-black-2 font-bold mb-4">
-          {selectedShoe?.name}
-        </h1>
+        <h1 className="text-2xl text-black-2 font-bold mb-4">Overview</h1>
         <p className="text-black-2 text-lg font-light">
           {selectedShoe?.description}
         </p>
