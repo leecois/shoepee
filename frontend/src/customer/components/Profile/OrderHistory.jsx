@@ -42,14 +42,24 @@ const OrderHistory = ({ orders, selectedTab, fetchOrders }) => {
           quantity: item.productQuantity,
         };
 
-        await dispatch(addToCartAsync(cartItem));
+        await dispatch(addToCartAsync(cartItem)).then((action) => {
+          if (!action.error) {
+            dispatch(getCartAsync());
+            enqueueSnackbar('Added to Bag ', {
+              variant: 'success',
+            });
+          } else {
+            enqueueSnackbar('Something went wrong', {
+              variant: 'error',
+            });
+          }
+        });
       }
       dispatch(getCartAsync()); // Refresh the cart state
-      enqueueSnackbar('Added to Bag', {
-        variant: 'success',
-      });
     } catch (error) {
-      console.error('Error in buying again:', error);
+      enqueueSnackbar('Something went wrong', {
+        variant: 'error',
+      });
     }
   };
 
@@ -154,13 +164,14 @@ const OrderHistory = ({ orders, selectedTab, fetchOrders }) => {
                 </span>
 
                 <div className="space-x-2">
-                
                   <div className="font-semibold btn btn-disabled mx-2">
                     Payment Method: {order.paymentMethod}
                   </div>
                   <div
                     className={`font-semibold ${
-                      (order.paymentStatus === 'PAID' || (order.paymentStatus === 'NOT PAID' && order.paymentMethod === 'COD'))
+                      order.paymentStatus === 'PAID' ||
+                      (order.paymentStatus === 'NOT PAID' &&
+                        order.paymentMethod === 'COD')
                         ? 'btn btn-success no-animation text-white cursor-default'
                         : order.paymentStatus === 'NOT PAID'
                         ? 'btn btn-error no-animation text-white cursor-default'
@@ -186,7 +197,10 @@ const OrderHistory = ({ orders, selectedTab, fetchOrders }) => {
                   </div>
                 </div>
               </div>
-              <div onClick={() => handleOrderClick(order)} className="space-y-4 cursor-pointer">
+              <div
+                onClick={() => handleOrderClick(order)}
+                className="space-y-4 cursor-pointer"
+              >
                 {order.orderItem
                   ?.slice()
                   .sort((a, b) => a.orderItemId - b.orderItemId)

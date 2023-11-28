@@ -67,6 +67,10 @@ const ProductDetails = ({ product, userLoggedIn }) => {
         enqueueSnackbar('Added to Bag ', {
           variant: 'success',
         });
+      } else{
+        enqueueSnackbar('Something went wrong', {
+          variant: 'error',
+        });
       }
     });
   };
