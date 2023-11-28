@@ -140,6 +140,7 @@ public class ShoeModelServiceImpl implements ShoeModelService{
             CustomizedShoeDto customizedShoeDto = new CustomizedShoeDto();
             customizedShoeDto.setId(customizedShoe.getId());
             customizedShoeDto.setShoeQuantity(customizedShoe.getShoeQuantity());
+            customizedShoeDto.setName(customizedShoe.getName());
             customizedShoeDto.setStock(customizedShoe.isStock());
             customizedShoeDto.setDescription(customizedShoe.getDescription());
             customizedShoeDto.setPrice(customizedShoe.getPrice());

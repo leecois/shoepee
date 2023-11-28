@@ -1,13 +1,12 @@
 package com.ToDoiVar.ShoesPee.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-@Data
+
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderDto {
@@ -16,8 +15,9 @@ public class OrderDto {
     private String orderStatus;
     private String paymentStatus;
     private Date orderCreateAt;
+    private Date orderCompeledAt;
     private double orderAmt;
-    private String customerName;
+    private String fullName;
     private String phoneNumber;
     private String billingAddress;
     private UserDto user;
@@ -83,4 +83,43 @@ public class OrderDto {
         this.orderItem = orderItem;
     }
 
+    public Date getOrderCreateAt() {
+        return orderCreateAt;
+    }
+
+    public void setOrderCreateAt(Date orderCreateAt) {
+        this.orderCreateAt = orderCreateAt;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public Date getOrderCompeledAt() {
+        return orderCompeledAt;
+    }
+
+    public void setOrderCompeledAt(Date orderCompeledAt) {
+        this.orderCompeledAt = orderCompeledAt;
+    }
 }

@@ -40,7 +40,22 @@ public class CartService {
         // Fetch Product
         CustomizedShoe customizedShoe = this.customizedShoeRepository.findById(productId)
                 .orElseThrow(() -> new ResourceNotFoundException("Product Not Found"));
+        Cart cart = user.getCart();
+        if (cart == null) {
+            cart = new Cart();
+            cart.setUser(user);
+        }
 
+        // Tính tổng số lượng của sản phẩm đó trong giỏ hàng (cho tất cả kích thước)
+        int totalQuantityInCart = cart.getItems().stream()
+                .filter(i -> i.getShoe().getId() == productId)
+                .mapToInt(CartItem::getQuantity)
+                .sum();
+
+        // Kiểm tra nếu tổng số lượng vượt quá số lượng có sẵn
+        if (totalQuantityInCart + quantity > customizedShoe.getShoeQuantity()) {
+            throw new IllegalArgumentException("Adding this quantity exceeds available stock");
+        }
         // Create cartItem with productId, quantity, and size
         CartItem cartItem = new CartItem();
         cartItem.setShoe(customizedShoe);
@@ -50,11 +65,11 @@ public class CartService {
         cartItem.setTotalprice(totalprice);
 
         // Get cart from user
-        Cart cart = user.getCart();
-        if (cart == null) {
-            cart = new Cart();
-            cart.setUser(user);
-        }
+//        Cart cart = user.getCart();
+//        if (cart == null) {
+//            cart = new Cart();
+//            cart.setUser(user);
+//        }
 
         // Check if item is available in CartItem or not, and if size matches
         AtomicReference<Boolean> flag = new AtomicReference<>(false);

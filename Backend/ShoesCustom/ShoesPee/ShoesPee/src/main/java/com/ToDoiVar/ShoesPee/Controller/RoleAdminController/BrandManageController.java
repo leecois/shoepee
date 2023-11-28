@@ -18,9 +18,9 @@ public class BrandManageController {
     @Autowired
     private BrandService brandService;
     @GetMapping("/brands")
-    public ResponseEntity<List<Brand>> getAllBrand(){
+    public ResponseEntity<List<Brand>> getAllBrand(@RequestParam(defaultValue = "")String searchKey){
 
-        return new ResponseEntity<List<Brand>>(brandService.getAllBrand(), HttpStatus.OK);
+        return new ResponseEntity<List<Brand>>(brandService.getAllBrand(searchKey), HttpStatus.OK);
     }
     @GetMapping("/getbrandbyid/{id}")
     public ResponseEntity<BrandDto> getBrandById(@PathVariable int id){

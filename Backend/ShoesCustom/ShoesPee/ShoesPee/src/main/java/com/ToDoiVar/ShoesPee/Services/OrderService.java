@@ -13,6 +13,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
@@ -56,7 +60,7 @@ public class OrderService {
 
             //set product in orderItem
             orderItem.setShoe(cartItem.getShoe());
-
+            orderItem.setSize(cartItem.getSize());
             //set productQty in orderItem
 
             orderItem.setProductQuantity(cartItem.getQuantity());
@@ -80,7 +84,9 @@ public class OrderService {
         order.setUser(user);
         order.setOrderItem(orderitems);
         order.setOrderAmt(totalOrderPrice.get());
-        order.setOrderCreateAt(new Date());
+        ZonedDateTime nowInVietnam = ZonedDateTime.now(ZoneId.of("Asia/Ho_Chi_Minh"));
+        Date orderCreateDate = Date.from(nowInVietnam.toInstant());
+        order.setOrderCreateAt(orderCreateDate);
         Order save;
         if(order.getOrderAmt()>0){
             save = this.orderReop.save(order);
@@ -215,6 +221,7 @@ public class OrderService {
                     ShoeModelDto shoeModelDto = modelMapper.map(orderItem.getShoe().getShoeModel(),ShoeModelDto.class);
                     orderItemDto.setShoeDto(shoeDto);
                     orderItemDto.getShoeDto().setShoeModelDto(shoeModelDto);
+
                 }
                 return orderItemDto;
             }).collect(Collectors.toSet());
@@ -236,27 +243,6 @@ public class OrderService {
     public OrderDto acceptOrder(int orderid){
       Order order=  this.orderReop.findById(orderid).orElseThrow(() -> new ResourceNotFoundException("order not found"));
       order.setOrderStatus("CONFIRMED");
-      Order save = this.orderReop.save(order);
-      OrderDto orderDto = this.modelMapper.map(save,OrderDto.class);
-      return orderDto;
-    }
-    public OrderDto cancelOrder(int orderid){
-      Order order=  this.orderReop.findById(orderid).orElseThrow(() -> new ResourceNotFoundException("order not found"));
-      order.setOrderStatus("CANCELLED");
-      Order save = this.orderReop.save(order);
-      OrderDto orderDto = this.modelMapper.map(save,OrderDto.class);
-      return orderDto;
-    }
-    public OrderDto deliveryOrder(int orderid){
-      Order order=  this.orderReop.findById(orderid).orElseThrow(() -> new ResourceNotFoundException("order not found"));
-      order.setOrderStatus("SHIPPING");
-      Order save = this.orderReop.save(order);
-      OrderDto orderDto = this.modelMapper.map(save,OrderDto.class);
-      return orderDto;
-    }
-    public OrderDto completedOrder(int orderid){
-      Order order=  this.orderReop.findById(orderid).orElseThrow(() -> new ResourceNotFoundException("order not found"));
-      order.setOrderStatus("COMPLETED");
         order.getOrderItem().forEach(orderItem -> {
             CustomizedShoe shoe = orderItem.getShoe();
             int soldQuantity = orderItem.getProductQuantity();
@@ -275,43 +261,91 @@ public class OrderService {
       OrderDto orderDto = this.modelMapper.map(save,OrderDto.class);
       return orderDto;
     }
+    public OrderDto cancelOrder(int orderid){
+      Order order=  this.orderReop.findById(orderid).orElseThrow(() -> new ResourceNotFoundException("order not found"));
+      order.setOrderStatus("CANCELLED");
+
+      Order save = this.orderReop.save(order);
+      OrderDto orderDto = this.modelMapper.map(save,OrderDto.class);
+      return orderDto;
+    }
+    public OrderDto deliveryOrder(int orderid){
+      Order order=  this.orderReop.findById(orderid).orElseThrow(() -> new ResourceNotFoundException("order not found"));
+      order.setOrderStatus("SHIPPING");
+      Order save = this.orderReop.save(order);
+      OrderDto orderDto = this.modelMapper.map(save,OrderDto.class);
+      return orderDto;
+    }
+    public OrderDto completedOrder(int orderid){
+      Order order=  this.orderReop.findById(orderid).orElseThrow(() -> new ResourceNotFoundException("order not found"));
+      order.setOrderStatus("COMPLETED");
+        order.setOrderCompeledAt(new Date());
+
+      Order save = this.orderReop.save(order);
+      OrderDto orderDto = this.modelMapper.map(save,OrderDto.class);
+      return orderDto;
+    }
     public Order paidOrder(int orderid) {
         Order order = orderReop.findById(orderid).orElseThrow(()-> new ResourceNotFoundException("order not found"));
         order.setPaymentStatus("PAID");
         Order savedOrder = this.orderReop.save(order);
         OrderDto orderDto = this.modelMapper.map(savedOrder, OrderDto.class);
         return savedOrder;
-//        User user = this.userRepo.findById(userid)
-//                .orElseThrow(() -> new userNotFoundException("User not found"));
+    }
+//    public DailyOrderSummary getCompletedOrdersToday() {
+//        LocalDate today = LocalDate.now();
+//        List<Order> filteredOrders = orderReop.findAll()
+//                .stream()
+//                .filter(order ->
+//                        order.getOrderStatus().equals("COMPLETED") &&
+//                                Optional.ofNullable(order.getOrderCompeledAt())
+//                                        .map(date -> date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
+//                                        .filter(date -> date.equals(today))
+//                                        .isPresent())
+//                .collect(Collectors.toList());
+//
+//        List<OrderDto> orderDtos = filteredOrders.stream()
+//                .map(this::convertToDto)
+//                .collect(Collectors.toList());
+//
+//        int numberOfOrders = filteredOrders.size();
+//
+//        return new DailyOrderSummary(orderDtos, numberOfOrders);
+//    }
+public DailyOrderSummary getCompletedOrdersByDate(LocalDate selectedDate) {
+    List<Order> filteredOrders = orderReop.findAll()
+            .stream()
+            .filter(order ->
+                    order.getOrderStatus().equals("COMPLETED") &&
+                            Optional.ofNullable(order.getOrderCompeledAt())
+                                    .map(date -> date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
+                                    .filter(date -> date.equals(selectedDate))
+                                    .isPresent())
+            .collect(Collectors.toList());
 
-        // Tìm tất cả các đơn hàng của người dùng
-//        List<Order> userOrders = this.orderReop.findByUser(user);
+    List<OrderDto> orderDtos = filteredOrders.stream()
+            .map(this::convertToDto)
+            .collect(Collectors.toList());
 
-        // Lọc ra đơn hàng có id trùng với PathVariable
-//        Optional<Order> selectedOrder = userOrders.stream()
-//                .filter(order -> order.getOrderId() == orderid)
-//                .findFirst();
+    int numberOfOrders = filteredOrders.size();
 
-//        if (selectedOrder.isPresent()) {
-//            // Đã tìm thấy đơn hàng, thực hiện các bước cần thiết với đơn hàng này
-//            Order order = selectedOrder.get();
-//
-//            // Đặt trạng thái thanh toán của đơn hàng là "PAID"
-//            order.setPaymentStatus("PAID");
-//
-//            // Lưu đơn hàng sau khi cập nhật
-//            Order savedOrder = this.orderReop.save(order);
-//
-//            // Chuyển đổi đối tượng Order sang OrderDto (nếu cần)
-//             OrderDto orderDto = this.modelMapper.map(savedOrder, OrderDto.class);
-//
-//            // Trả về đối tượng Order sau khi cập nhật
-//            return savedOrder;
-//
-//
-//        }else {
-//            // Không tìm thấy đơn hàng với id tương ứng
-//            throw new ResourceNotFoundException("Order not found");
-//        }
+    return new DailyOrderSummary(orderDtos, numberOfOrders);
+}
+
+    private OrderDto convertToDto(Order order) {
+        return modelMapper.map(order, OrderDto.class);
+    }
+    public BigDecimal calculateTodayRevenue() {
+        LocalDate today = LocalDate.now();
+        return orderReop.findAll()
+                .stream()
+                .filter(order ->
+                        order.getOrderStatus().equals("COMPLETED") &&
+                                Optional.ofNullable(order.getOrderCompeledAt())
+                                        .map(date -> date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
+                                        .filter(date -> date.equals(today)) // Thêm bước kiểm tra này
+                                        .isPresent()) // Kiểm tra xem có dữ liệu sau khi lọc hay không
+                .map(order -> BigDecimal.valueOf(order.getOrderAmt()))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }

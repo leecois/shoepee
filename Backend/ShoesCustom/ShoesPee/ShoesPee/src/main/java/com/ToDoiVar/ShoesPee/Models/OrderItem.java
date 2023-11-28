@@ -2,8 +2,14 @@ package com.ToDoiVar.ShoesPee.Models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "orderitems")
 public class OrderItem {
 
@@ -13,6 +19,7 @@ public class OrderItem {
     @ManyToOne
     @JsonIgnore
     private CustomizedShoe customizedShoe;
+    private int size;
 
     private double totalProductprice;
 
@@ -28,18 +35,7 @@ public class OrderItem {
     public void setProductQuantity(int productQuantity) {
         this.productQuantity = productQuantity;
     }
-    public OrderItem(int orderItemId, CustomizedShoe customizedShoe, double totalProductprice, int productQuantity, Order order) {
-        super();
-        this.orderItemId = orderItemId;
-        this.customizedShoe = customizedShoe;
-        this.totalProductprice = totalProductprice;
-        this.productQuantity = productQuantity;
-        this.order = order;
-    }
-    public OrderItem() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+
     public int getOrderItemId() {
         return orderItemId;
     }

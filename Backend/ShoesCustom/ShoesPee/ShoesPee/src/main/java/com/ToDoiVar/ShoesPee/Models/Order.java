@@ -26,6 +26,7 @@ public class Order {
     private String phoneNumber;
     private String fullName;
     private Date orderCreateAt;
+    private Date orderCompeledAt;
     @ManyToOne
     private User user;
     @OneToMany(mappedBy = "order",cascade = CascadeType.ALL)

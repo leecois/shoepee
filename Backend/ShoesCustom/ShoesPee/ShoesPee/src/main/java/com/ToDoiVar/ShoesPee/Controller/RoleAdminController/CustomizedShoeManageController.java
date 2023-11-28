@@ -17,8 +17,8 @@ public class CustomizedShoeManageController {
     @Autowired
     private CustomizedShoeService shoeService;
     @GetMapping("/shoes")
-    public ResponseEntity<List<CustomizedShoeDto>> getAllShoe(){
-        return new ResponseEntity<List<CustomizedShoeDto>>(shoeService.getAllShoe(), HttpStatus.OK);
+    public ResponseEntity<List<CustomizedShoeDto>> getAllShoe(@RequestParam(defaultValue = "")String searchKey){
+        return new ResponseEntity<List<CustomizedShoeDto>>(shoeService.getAllShoe(searchKey), HttpStatus.OK);
     }
     @GetMapping("/getshoebyshoemodelid/{id}")
     public ResponseEntity<List<CustomizedShoeDto>> getShoeByShoemodelId(@PathVariable int id){

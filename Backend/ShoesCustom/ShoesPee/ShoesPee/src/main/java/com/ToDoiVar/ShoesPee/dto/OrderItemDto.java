@@ -1,13 +1,20 @@
 package com.ToDoiVar.ShoesPee.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+
+@AllArgsConstructor
+@NoArgsConstructor
 public class OrderItemDto {
 
     private int orderItemId;
 
     private CustomizedShoeDto customizedShoeDto;
     private int productQuantity;
+    private int size;
     private double totalProductprice;
     @JsonIgnore
     private OrderDto order;
@@ -60,4 +67,11 @@ public class OrderItemDto {
         this.order = order;
     }
 
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
 }

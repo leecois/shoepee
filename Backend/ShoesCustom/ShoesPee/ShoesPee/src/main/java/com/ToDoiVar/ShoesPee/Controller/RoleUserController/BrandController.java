@@ -17,9 +17,9 @@ public class BrandController {
     @Autowired
     private BrandService brandService;
     @GetMapping("/brands")
-    public List<Brand> getAllBrand(){
+    public List<Brand> getAllBrand(@RequestParam(defaultValue = "")String searchKey){
 //        List<Brand> allbrand = this.brandService.getAllBrand();
-        List<Brand> brands= brandService.getAllBrand();
+        List<Brand> brands= brandService.getAllBrand(searchKey);
 
         return brands;
     }

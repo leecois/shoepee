@@ -6,7 +6,7 @@ import com.ToDoiVar.ShoesPee.dto.CustomizedShoeDto;
 import java.util.List;
 
 public interface CustomizedShoeService {
-    List<CustomizedShoeDto> getAllShoe();
+    List<CustomizedShoeDto> getAllShoe(String searchKey);
     CustomizedShoeDto getShoeById(int id);
     CustomizedShoe findById(int id);
     CustomizedShoe addShoe(CustomizedShoeDto newShoe);

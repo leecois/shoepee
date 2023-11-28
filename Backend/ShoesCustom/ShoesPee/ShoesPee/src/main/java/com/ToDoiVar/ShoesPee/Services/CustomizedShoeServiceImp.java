@@ -1,6 +1,7 @@
 package com.ToDoiVar.ShoesPee.Services;
 
 import com.ToDoiVar.ShoesPee.Exeption.BrandNotFoundException;
+import com.ToDoiVar.ShoesPee.Exeption.shoeModelExistedException;
 import com.ToDoiVar.ShoesPee.Exeption.shoeModelNotFounException;
 import com.ToDoiVar.ShoesPee.Exeption.shoeNotFoundException;
 import com.ToDoiVar.ShoesPee.Models.Brand;
@@ -26,10 +27,17 @@ public class CustomizedShoeServiceImp implements CustomizedShoeService {
     @Autowired
     public ShoeModelRepository shoeModelRepository;
     @Override
-    public List<CustomizedShoeDto> getAllShoe() {
-        List<CustomizedShoe> allCustomizedShoe =  this.customizedShoeRepository.findAll();
-        List<CustomizedShoeDto> getALlShoe = allCustomizedShoe.stream().map(shoe -> this.toDto(shoe)).collect(Collectors.toList());
-        return getALlShoe;
+    public List<CustomizedShoeDto> getAllShoe(String searchKey) {
+        if (searchKey.equals("")){
+            List<CustomizedShoe> getAllCustomizedShoe = customizedShoeRepository.findAll();
+            List<CustomizedShoeDto> getAllCustomizedShoeDto =getAllCustomizedShoe.stream().map(shoe -> this.toDto(shoe)).collect(Collectors.toList());
+            return getAllCustomizedShoeDto;
+        }
+        else {
+            List<CustomizedShoe> getAllCustomized= customizedShoeRepository.findCustomizedShoeByNameContainingIgnoreCase(searchKey);
+            List<CustomizedShoeDto> getAllShoemodelDto =getAllCustomized.stream().map(shoe -> this.toDto(shoe)).collect(Collectors.toList());
+            return getAllShoemodelDto;
+        }
     }
 
     @Override
@@ -48,7 +56,9 @@ public class CustomizedShoeServiceImp implements CustomizedShoeService {
     @Override
     public CustomizedShoe addShoe(CustomizedShoeDto newShoe) {
         ShoeModel shoeModel = this.shoeModelRepository.getShoeModelsByModelname(newShoe.getShoeModelDto().getModelname()).orElseThrow(() -> new shoeModelNotFounException("shoe model not found"));
-
+        if(customizedShoeExisted(newShoe.getName())){
+            throw new shoeModelExistedException(newShoe.getName() + "ShoeModel has been existed");
+        }
         CustomizedShoe customizedShoe = this.mapper.map(newShoe, CustomizedShoe.class);
         customizedShoe.setStatus("available");
         if(newShoe.getShoeQuantity() == 0){
@@ -108,7 +118,9 @@ public class CustomizedShoeServiceImp implements CustomizedShoeService {
     private CustomizedShoeDto toDto(CustomizedShoe customizedShoe){
         CustomizedShoeDto st = new CustomizedShoeDto();
         st.setId(customizedShoe.getId());
+        st.setName(customizedShoe.getName());
         st.setDescription(customizedShoe.getDescription());
+        st.setShoeQuantity(customizedShoe.getShoeQuantity());
         st.setPrice(customizedShoe.getPrice());
         st.setImageUrl(customizedShoe.getImageUrl());
         st.setStatus(customizedShoe.getStatus());
@@ -121,6 +133,9 @@ public class CustomizedShoeServiceImp implements CustomizedShoeService {
 //        smdt.setBrandDto(shoe.get);
         st.setShoeModelDto(smdt);
         return st;
+    }
+    private boolean customizedShoeExisted(String shoename) {
+        return customizedShoeRepository.getCustomizedShoeByName(shoename).isPresent();
     }
 
 }

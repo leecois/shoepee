@@ -3,7 +3,9 @@ package com.ToDoiVar.ShoesPee.Services;
 import com.ToDoiVar.ShoesPee.Exeption.BrandExistedException;
 import com.ToDoiVar.ShoesPee.Exeption.BrandNotFoundException;
 import com.ToDoiVar.ShoesPee.Models.Brand;
+import com.ToDoiVar.ShoesPee.Models.CustomizedShoe;
 import com.ToDoiVar.ShoesPee.dto.BrandDto;
+import com.ToDoiVar.ShoesPee.dto.CustomizedShoeDto;
 import com.ToDoiVar.ShoesPee.repositiory.BrandRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +24,16 @@ public class BrandServiceImp implements BrandService{
 
 
     @Override
-    public List<Brand> getAllBrand() {
-        List<Brand> getAll = this.brandRepository.findAll();
-//        List<BrandDto> allBrand = getAll.stream().map(brand -> this.mapper.map(brand,BrandDto.class)).collect(Collectors.toList());
-        return getAll;
+    public List<Brand> getAllBrand(String searchKey) {
+        if (searchKey.equals("")) {
+            List<Brand> getAllBrand = brandRepository.findAll();
+//            List<CustomizedShoeDto> getAllCustomizedShoeDto = getAllCustomizedShoe.stream().map(shoe -> this.toDto(shoe)).collect(Collectors.toList());
+            return getAllBrand;
+        } else {
+            List<Brand> getAllCustomized = brandRepository.findBrandByBrandNameContainingIgnoreCase(searchKey);
+//            List<CustomizedShoeDto> getAllShoemodelDto = getAllCustomized.stream().map(shoe -> this.toDto(shoe)).collect(Collectors.toList());
+            return getAllCustomized;
+        }
     }
 
 //    @Override

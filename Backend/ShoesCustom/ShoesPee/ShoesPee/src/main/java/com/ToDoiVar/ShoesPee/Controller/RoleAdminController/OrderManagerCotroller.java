@@ -3,12 +3,19 @@ package com.ToDoiVar.ShoesPee.Controller.RoleAdminController;
 import com.ToDoiVar.ShoesPee.Models.Order;
 import com.ToDoiVar.ShoesPee.Models.OrderResponse;
 import com.ToDoiVar.ShoesPee.Services.OrderService;
+import com.ToDoiVar.ShoesPee.dto.DailyOrderSummary;
 import com.ToDoiVar.ShoesPee.dto.OrderDto;
+import com.ToDoiVar.ShoesPee.dto.QueryDateDto;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
 
 @CrossOrigin("*")
 @RestController
@@ -43,5 +50,17 @@ public class OrderManagerCotroller {
         OrderResponse findAllOrders = this.orderService.findAllOrders(pageNumber, pageSize);
 
         return findAllOrders;
+    }
+    @GetMapping("/completed-orders")
+    public ResponseEntity<DailyOrderSummary> getCompletedOrdersByDate(
+            @RequestBody QueryDateDto queryDateDto) {
+        DailyOrderSummary summary = orderService.getCompletedOrdersByDate(queryDateDto.getQueryDate());
+        return ResponseEntity.ok(summary);
+    }
+
+    @GetMapping("/revenue-today")
+    public ResponseEntity<BigDecimal> getTodayRevenue() {
+        BigDecimal revenue = orderService.calculateTodayRevenue();
+        return ResponseEntity.ok(revenue);
     }
 }

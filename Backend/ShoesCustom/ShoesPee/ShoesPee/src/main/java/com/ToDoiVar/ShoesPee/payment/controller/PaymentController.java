@@ -63,7 +63,7 @@
             String vnp_Version = "2.1.0";
             String vnp_Command = "pay";
             String orderType = "other";
-            long amount = (long) order.getOrderAmt() *1000;
+            long amount = (long) order.getOrderAmt() *100;
             String bankCode = "NCB";
 
             String vnp_TxnRef = Config.getRandomNumber(8);
@@ -77,7 +77,7 @@
             vnp_Params.put("vnp_Version", vnp_Version);
             vnp_Params.put("vnp_Command", vnp_Command);
             vnp_Params.put("vnp_TmnCode", vnp_TmnCode);
-            vnp_Params.put("vnp_Amount", String.valueOf(amount));
+            vnp_Params.put("vnp_Amount", String.valueOf(amount) );
             vnp_Params.put("vnp_CurrCode", "VND");
 //            vnp_Params.put("vnp_Orderid", String.valueOf(orderid.getOrderId()));
 
@@ -183,7 +183,7 @@
                 Order paidOrder = orderService.paidOrder(Integer.parseInt(String.valueOf(orderid)));
                 OrderDto orderDto = this.modelMapper.map(paidOrder,OrderDto.class);
                 orderDto = orderService.acceptOrder(Integer.parseInt(String.valueOf(orderid)));
-                response.sendRedirect("https://shoepee.vercel.com/success");
+                response.sendRedirect("https://shoepee.vercel.app/success");
 
             }
             else {
