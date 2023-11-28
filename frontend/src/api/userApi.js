@@ -15,6 +15,23 @@ const createUser = (user) => {
   });
 };
 
+const createAdmin = (admin) => {
+  const jwt = localStorage.getItem(StorageKeys.TOKEN);
+  return axiosClient.post('auth/registeradmin', admin, {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  });
+};
+const createStaff = (staff) => {
+  const jwt = localStorage.getItem(StorageKeys.TOKEN);
+  return axiosClient.post('auth/registerstaff', staff, {
+    headers: {
+      Authorization: `Bearer ${jwt}`,
+    },
+  });
+};
+
 const getUserInfo = (userId) => {
   const jwt = localStorage.getItem(StorageKeys.TOKEN);
   return axiosClient.get(`auth/inforuser/${userId}`, {
@@ -158,6 +175,8 @@ const userApi = {
   payOrder,
   cancelOrder,
   changePassword,
+  createAdmin,
+  createStaff,
 };
 
 export default userApi;
