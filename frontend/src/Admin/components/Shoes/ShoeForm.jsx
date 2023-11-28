@@ -8,7 +8,7 @@ const shoeScheme = Yup.object().shape({
   }),
   name: Yup.string().required('Please enter name'),
   price: Yup.number()
-    .min(1, 'Price must be greater than 0')
+    .min(1000, 'Price must be greater than 1000')
     .required('Please enter price'),
   description: Yup.string().required('Please enter description'),
   imageUrl: Yup.string()
@@ -51,7 +51,7 @@ const ShoeForm = ({ initialValues, onSubmit, modelList }) => (
               className="w-full rounded border border-stroke bg-gray py-3 px-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus-border-primary"
               type="number"
               name="price"
-              min="0"
+              min="1000"
               placeholder="0"
             />
             <ErrorMessage name="price" component="div" className="error" />
