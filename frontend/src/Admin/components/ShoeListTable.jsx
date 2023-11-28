@@ -38,7 +38,7 @@ function EditToolbar() {
         startIcon={<AddIcon />}
         onClick={handleClick}
       >
-        Add Inspiration 
+        Add Customized Shoe
       </Button>
     </GridToolbarContainer>
   );
@@ -142,6 +142,7 @@ export default function ShoeListTable({ shoeList, updateShoe, deleteShoe }) {
       width: 90,
       height: 90,
       editable: true,
+      sortable: false,
       renderCell: (params) => (
         <img
           src={params.value}

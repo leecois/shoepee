@@ -53,7 +53,7 @@ export default function Navigation() {
       variant: 'success',
     });
     dispatch(clearUserData());
-    window.location.reload();
+    window.location.href = '/';
   };
 
   // Function to close the sign-in modal

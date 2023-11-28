@@ -30,14 +30,10 @@ const ProductPage = () => {
           model.modelname.toLowerCase().includes(searchKey.toLowerCase()) ||
           model.brandDto.brandName
             .toLowerCase()
-            .includes(searchKey.toLowerCase()) ||
-          model.shoes.some(
-            (shoe) =>
-              shoe.name &&
-              shoe.name.toLowerCase().includes(searchKey.toLowerCase())
-          )
+            .includes(searchKey.toLowerCase())
       );
     }
+    
     // Filter by selected brands
     if (selectedBrands.length > 0) {
       updatedList = updatedList.filter((model) =>

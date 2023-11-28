@@ -2,6 +2,28 @@ import ApexCharts from 'apexcharts';
 import React, { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 
+const formatDate = (date) => {
+  const d = new Date(date);
+  return `${d.getFullYear()}/${String(d.getMonth() + 1).padStart(
+    2,
+    '0'
+  )}/${String(d.getDate()).padStart(2, '0')}`;
+};
+const aggregateData = (orders, keyExtractor) => {
+  const salesMap = new Map();
+  orders.forEach((order) => {
+    if (order.orderCompeledAt) {
+      const date = formatDate(order.orderCompeledAt);
+      const currentTotal = salesMap.get(date) || 0;
+      salesMap.set(date, currentTotal + keyExtractor(order));
+    }
+  });
+  return Array.from(salesMap, ([date, total]) => ({
+    x: new Date(date).getTime(),
+    y: total,
+  })).sort((a, b) => new Date(a.x) - new Date(b.x)); // Sort based on date
+};
+
 const ChartRevenue = ({ orderList }) => {
   const options = {
     chart: {
@@ -12,37 +34,7 @@ const ChartRevenue = ({ orderList }) => {
         autoScaleYaxis: true,
       },
     },
-    annotations: {
-      yaxis: [
-        {
-          y: 30,
-          borderColor: '#999',
-          label: {
-            show: true,
-            text: 'Support',
-            style: {
-              color: '#fff',
-              background: '#00E396',
-            },
-          },
-        },
-      ],
-      xaxis: [
-        {
-          x: new Date('14 Nov 2023').getTime(),
-          borderColor: '#999',
-          yAxisIndex: 0,
-          label: {
-            show: true,
-            text: 'Rally',
-            style: {
-              color: '#fff',
-              background: '#775DD0',
-            },
-          },
-        },
-      ],
-    },
+    
     dataLabels: {
       enabled: false,
     },
@@ -51,9 +43,15 @@ const ChartRevenue = ({ orderList }) => {
       style: 'hollow',
     },
     xaxis: {
-      type: 'datetime',
-      min: new Date('01 Mar 2023').getTime(),
+      type: 'category',
+      min: new Date('20 Nov 2023').getTime(),
       tickAmount: 6,
+      labels: {
+        formatter: function (val) {
+          // Format the date as 'yyyy/mm/dd'
+          return formatDate(val);
+        },
+      },
     },
     tooltip: {
       x: {
@@ -71,106 +69,66 @@ const ChartRevenue = ({ orderList }) => {
     },
   };
 
-  // Function to format date to YYYY/MM/DD
-  const formatDate = (date) => {
-    const d = new Date(date);
-    const year = d.getFullYear();
-    const month = `0${d.getMonth() + 1}`.slice(-2); // Adding 1 as getMonth() returns 0-11
-    const day = `0${d.getDate()}`.slice(-2);
-    return `${year}/${month}/${day}`;
-  };
+  const [series, setSeries] = useState([]);
 
-  // Function to aggregate product quantities by formatted date
-  const aggregateProductsByDate = (orders) => {
-    const productSalesMap = new Map();
-
-    orders.forEach((order) => {
-      if (order.orderCompeledAt && order.orderItem) {
-        const date = formatDate(order.orderCompeledAt);
-        let dailyTotal = productSalesMap.get(date) || 0;
-
-        order.orderItem.forEach((item) => {
-          dailyTotal += item.productQuantity; // Assuming item.productQuantity holds the number of products sold
-        });
-
-        productSalesMap.set(date, dailyTotal);
-      }
-    });
-
-    return Array.from(productSalesMap, ([date, total]) => ({
-      x: new Date(date).getTime(),
-      y: total,
-    })).sort((a, b) => a.x - b.x);
-  };
-
-  const aggregateSalesByDate = (orders) => {
-    const salesMap = new Map();
-
-    orders.forEach((order) => {
-      if (order.orderCompeledAt) {
-        const date = new Date(order.orderCompeledAt).toDateString();
-        const currentTotal = salesMap.get(date) || 0;
-        salesMap.set(date, currentTotal + order.orderAmt);
-      }
-    });
-
-    return Array.from(salesMap, ([date, total]) => ({
-      x: new Date(date).getTime(),
-      y: total,
-    })).sort((a, b) => a.x - b.x);
-  };
-
-  // Update series with aggregated data
   useEffect(() => {
     if (orderList && orderList.length > 0) {
-      const aggregatedData = aggregateProductsByDate(orderList);
-      const aggregateSalesByDateData = aggregateSalesByDate(orderList);
+      const productsData = aggregateData(orderList, (order) =>
+        order.orderItem.reduce((sum, item) => sum + item.productQuantity, 0)
+      );
+      const salesData = aggregateData(orderList, (order) => order.orderAmt);
+
       setSeries([
-        { name: 'Total Products Sold', data: aggregatedData },
-        { name: 'Total Sales', data: aggregateSalesByDateData },
+        { name: 'Total Sales', data: salesData },
+        { name: 'Total Products Sold', data: productsData },
       ]);
     }
   }, [orderList]);
-  const [series, setSeries] = useState([
-    {
-      name: 'Total Products Sold',
-      data: [],
-    },
-  ]);
+
+  const getDataRange = () => {
+    let minDate = new Date();
+    let maxDate = new Date(0); // A very old date
+
+    orderList.forEach((order) => {
+      if (order.orderCompeledAt) {
+        const date = new Date(order.orderCompeledAt);
+        if (date < minDate) minDate = date;
+        if (date > maxDate) maxDate = date;
+      }
+    });
+
+    return { minDate, maxDate };
+  };
 
   // Function to update the chart data
   const updateData = (timeline) => {
+    const { minDate, maxDate } = getDataRange();
     let newMinDate, newMaxDate;
+    const currentDate = new Date();
     switch (timeline) {
       case 'one_month':
-        // Adjusted for one month in 2023
-        newMinDate = new Date('2023-11-15').getTime();
-        newMaxDate = new Date('2023-12-16').getTime();
-        break;
-      case 'six_months':
-        // Adjusted for the last six months up to a date in 2023
-        newMinDate = new Date('2022-08-27').getTime();
-        newMaxDate = new Date('2023-02-27').getTime();
+        newMinDate = new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth(),
+          1
+        );
+        newMaxDate = currentDate; // Or use the end of the current month
         break;
       case 'one_year':
-        // Adjusted for one year up to a date in 2023
-        newMinDate = new Date('2022-02-27').getTime();
-        newMaxDate = new Date('2023-02-27').getTime();
-        break;
-      case 'ytd':
-        // From the start of 2023 to a specific date
-        newMinDate = new Date('2023-01-01').getTime();
-        newMaxDate = new Date('2023-02-27').getTime();
+        newMinDate = new Date(
+          maxDate.getFullYear() - 1,
+          maxDate.getMonth(),
+          maxDate.getDate()
+        );
+        newMaxDate = maxDate;
         break;
       case 'all':
-        // Assuming your data starts from a date in 2022
-        newMinDate = new Date('2022-01-01').getTime();
-        newMaxDate = new Date('2023-02-27').getTime();
+        newMinDate = minDate;
+        newMaxDate = maxDate;
         break;
       default:
-        // Default case can be adjusted as needed
-        newMinDate = new Date('2023-01-01').getTime();
-        newMaxDate = new Date('2023-02-27').getTime();
+        newMinDate = minDate;
+        newMaxDate = maxDate;
     }
 
     ApexCharts.exec('area-datetime', 'zoomX', newMinDate, newMaxDate);
@@ -184,31 +142,21 @@ const ChartRevenue = ({ orderList }) => {
           <div className="inline-flex items-center rounded-md bg-whiter p-1.5 dark:bg-meta-4">
             <button
               onClick={() => updateData('one_month')}
-              className="rounded bg-white py-1 px-3 text-xs font-medium text-black shadow-card hover:bg-white hover:shadow-card dark:bg-boxdark dark:text-white dark:hover:bg-boxdark"
+              className={`rounded py-1 px-3 text-xs font-medium text-black  hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark`}
             >
               1M
             </button>
-            <button
-              onClick={() => updateData('six_months')}
-              className="rounded py-1 px-3 text-xs font-medium text-black hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark"
-            >
-              6M
-            </button>
+
             <button
               onClick={() => updateData('one_year')}
-              className="rounded py-1 px-3 text-xs font-medium text-black hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark"
+              className={`rounded py-1 px-3 text-xs font-medium text-black  hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark`}
             >
               1Y
             </button>
-            <button
-              onClick={() => updateData('ytd')}
-              className="rounded py-1 px-3 text-xs font-medium text-black hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark"
-            >
-              YTD
-            </button>
+
             <button
               onClick={() => updateData('all')}
-              className="rounded py-1 px-3 text-xs font-medium text-black hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark"
+              className={`rounded py-1 px-3 text-xs font-medium text-black hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark`}
             >
               ALL
             </button>

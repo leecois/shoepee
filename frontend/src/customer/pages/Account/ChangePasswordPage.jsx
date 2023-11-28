@@ -26,7 +26,6 @@ const ChangePasswordPage = () => {
             <h1 className="text-2xl font-semibold text-gray-800 dark:text-white">
               Change Password
             </h1>
-            <p>Manage and protect your account</p>
             {/* Render Profile with passed data */}
             <ChangePassword />
           </section>

@@ -13,6 +13,7 @@ import {
   getCartAsync,
 } from '../../../containers/Cart/cartSlice';
 import OrderDetailModal from './OrderDetailModal';
+import { InformationCircleIcon } from '@heroicons/react/24/outline';
 
 const OrderHistory = ({ orders, selectedTab, fetchOrders }) => {
   const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
@@ -28,7 +29,10 @@ const OrderHistory = ({ orders, selectedTab, fetchOrders }) => {
   };
 
   const dispatch = useDispatch();
-
+  const handleOrderClick = (order) => {
+    setSelectedOrder(order);
+    setIsModalOpen(true);
+  };
   const handleBuyAgain = async (canceledOrder) => {
     try {
       for (const item of canceledOrder.orderItem) {
@@ -38,14 +42,24 @@ const OrderHistory = ({ orders, selectedTab, fetchOrders }) => {
           quantity: item.productQuantity,
         };
 
-        await dispatch(addToCartAsync(cartItem));
+        await dispatch(addToCartAsync(cartItem)).then((action) => {
+          if (!action.error) {
+            dispatch(getCartAsync());
+            enqueueSnackbar('Added to Bag ', {
+              variant: 'success',
+            });
+          } else {
+            enqueueSnackbar('Something went wrong', {
+              variant: 'error',
+            });
+          }
+        });
       }
       dispatch(getCartAsync()); // Refresh the cart state
-      enqueueSnackbar('Added to Bag', {
-        variant: 'success',
-      });
     } catch (error) {
-      console.error('Error in buying again:', error);
+      enqueueSnackbar('Something went wrong', {
+        variant: 'error',
+      });
     }
   };
 
@@ -155,7 +169,9 @@ const OrderHistory = ({ orders, selectedTab, fetchOrders }) => {
                   </div>
                   <div
                     className={`font-semibold ${
-                      order.paymentStatus === 'PAID'
+                      order.paymentStatus === 'PAID' ||
+                      (order.paymentStatus === 'NOT PAID' &&
+                        order.paymentMethod === 'COD')
                         ? 'btn btn-success no-animation text-white cursor-default'
                         : order.paymentStatus === 'NOT PAID'
                         ? 'btn btn-error no-animation text-white cursor-default'
@@ -181,7 +197,10 @@ const OrderHistory = ({ orders, selectedTab, fetchOrders }) => {
                   </div>
                 </div>
               </div>
-              <div className="space-y-4">
+              <div
+                onClick={() => handleOrderClick(order)}
+                className="space-y-4 cursor-pointer"
+              >
                 {order.orderItem
                   ?.slice()
                   .sort((a, b) => a.orderItemId - b.orderItemId)
@@ -321,6 +340,11 @@ const OrderHistory = ({ orders, selectedTab, fetchOrders }) => {
           </Button>
         </DialogActions>
       </Dialog>
+      <OrderDetailModal
+        order={selectedOrder}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      />
     </div>
   );
 };

@@ -151,10 +151,11 @@ export default function BrandsListTable({
       headerName: 'Image',
       width: 130,
       editable: true,
+      sortable: false,
       renderCell: (params) => (
         <img
           src={params.value}
-          alt="Brand"
+          alt="brand logo"
           style={{ width: '50px', height: '50px' }}
           className="object-cover"
         />

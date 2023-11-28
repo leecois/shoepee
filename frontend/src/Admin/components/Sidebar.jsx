@@ -1,11 +1,9 @@
 import {
   ChevronUpIcon,
-  Cog8ToothIcon,
   CubeIcon,
-  PresentationChartLineIcon,
   SquaresPlusIcon,
   TableCellsIcon,
-  XMarkIcon,
+  XMarkIcon
 } from '@heroicons/react/24/outline';
 import React, { useEffect, useRef, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
@@ -261,13 +259,13 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
           </div>
 
           {/* <!-- Others Group --> */}
-          <div>
+          {/* <div>
             <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
               OTHERS
             </h3>
 
             <ul className="mb-6 flex flex-col gap-1.5">
-              {/* <!-- Menu Item Chart --> */}
+              <!-- Menu Item Chart --> 
               <li>
                 <NavLink
                   to="chart"
@@ -279,10 +277,11 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                   Chart
                 </NavLink>
               </li>
-              {/* <!-- Menu Item Chart --> */}
+               <!-- Menu Item Chart --> 
             </ul>
-          </div>
+          </div> */}
         </nav>
+
         {/* <!-- Sidebar Menu --> */}
       </div>
     </aside>

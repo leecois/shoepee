@@ -84,12 +84,14 @@ export default function AccountsListTable({ userData, updateRole }) {
       field: 'phone',
       headerName: 'Phone',
       width: 180,
+      sortable: false,
       valueGetter: (params) => params.row.inforUser?.phone,
     },
     {
       field: 'address',
       headerName: 'Address',
       width: 180,
+      sortable: false,
       valueGetter: (params) => params.row.inforUser?.address,
     },
     {

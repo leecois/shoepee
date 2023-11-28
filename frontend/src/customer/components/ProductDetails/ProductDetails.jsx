@@ -10,6 +10,7 @@ import Inspiration from './Inspiration';
 import Size from './Size';
 import YourDesign from './YourDesign';
 import { enqueueSnackbar } from 'notistack';
+import { CheckIcon, XMarkIcon } from '@heroicons/react/24/outline';
 
 const ProductDetails = ({ product, userLoggedIn }) => {
   const [isAlertOpen, setIsAlertOpen] = useState(false);
@@ -66,6 +67,10 @@ const ProductDetails = ({ product, userLoggedIn }) => {
         enqueueSnackbar('Added to Bag ', {
           variant: 'success',
         });
+      } else{
+        enqueueSnackbar('Something went wrong', {
+          variant: 'error',
+        });
       }
     });
   };
@@ -97,13 +102,17 @@ const ProductDetails = ({ product, userLoggedIn }) => {
 
         <div className="order-1 lg:order-2 col-span-full lg:col-span-1 lg:max-w-xl flex flex-col items-start">
           <h1 className="text-4xl text-black font-extrabold">
-            {product.modelname}{' '}
+            {product.modelname}
           </h1>
+          <span className="border-l-2 italic p-2 text-2xl font-sans font-normal">
+            {selectedShoe?.name}
+          </span>
           <div className="mt-5 flex items-center">
-            <p className="text-2xl text-black pr-5">
+            <p className="text-3xl font-bold text-black pr-5">
               {selectedShoe?.price.toLocaleString('de-DE')} VND
             </p>
           </div>
+
           <div className="mt-4 ">
             <button
               onClick={() => setShowInspiration(true)}
@@ -116,23 +125,22 @@ const ProductDetails = ({ product, userLoggedIn }) => {
           </div>
 
           {/* Toggle between Inspiration and YourDesign */}
-          {showInspiration ? (
-            <Inspiration
-              product={product}
-              selectedShoe={selectedShoe}
-              handleShoeButtonClick={handleShoeButtonClick}
-            />
-          ) : (
-            <YourDesign />
-          )}
 
-          <Size
+          <Inspiration
             product={product}
-            selectedSize={selectedSize}
-            setSelectedSize={setSelectedSize}
-            isToastOpen={isToastOpen}
-            setIsToastOpen={setIsToastOpen}
+            selectedShoe={selectedShoe}
+            handleShoeButtonClick={handleShoeButtonClick}
           />
+
+          {selectedShoe?.stock ? (
+            <Size
+              product={product}
+              selectedSize={selectedSize}
+              setSelectedSize={setSelectedSize}
+              isToastOpen={isToastOpen}
+              setIsToastOpen={setIsToastOpen}
+            />
+          ) : null}
 
           <div className="mt-4 py-2 w-full inline-block rounded-md outline-8 transition delay-150 text-base text-red-300 font-semibold tracking-wide ">
             <AlertSign
@@ -140,24 +148,38 @@ const ProductDetails = ({ product, userLoggedIn }) => {
               onClose={() => setIsAlertOpen(false)}
             />
           </div>
-
-          <button
-            onClick={handleAddToCart}
-            className="mt-4 btn btn-outline btn-block"
-          >
-            Add To Cart
-          </button>
-          <p className="mt-3 w-full inline-flex justify-center items-center text-sm text-gray-500 font font-semibold">
-            <ShieldCheckIcon className="mr-2 w-4 h-4" />
-            Lifetime Guarantee
-          </p>
+          {/* ::Availability */}
+          <div className="w-full inline-flex justify-center items-center text-sm text-gray-500 font font-semibold">
+            {selectedShoe?.stock ? (
+              <p className="flex items-center space-x-1 text-sm text-gray-700 font-semibold">
+                <CheckIcon className="mr-2 w-5 h-5 text-green-500" />
+                {selectedShoe?.shoeQuantity} In stock and ready to ship{' '}
+              </p>
+            ) : (
+              <p className="flex items-center space-x-1 text-sm text-gray-700 font-semibold">
+                <XMarkIcon className="mr-2 w-5 h-5 text-red-500" />
+                Unavailable for the moment
+              </p>
+            )}
+          </div>
+          {selectedShoe?.stock ? (
+            <button
+              onClick={handleAddToCart}
+              className="mt-4 btn btn-outline btn-block"
+            >
+              Add To Cart
+            </button>
+          ) : (
+            <button disabled className="mt-4 btn btn-outline btn-block">
+              Add To Cart
+            </button>
+          )}
         </div>
       </div>
+
       {/* <h3 className="mt-10 text-lg text-gray-700 font-semibold">Overview</h3> */}
       <div className="mt-8 p-6 border-2 rounded-lg shadow-lg">
-        <h1 className="text-2xl text-black-2 font-bold mb-4">
-          {selectedShoe?.name}
-        </h1>
+        <h1 className="text-2xl text-black-2 font-bold mb-4">Overview</h1>
         <p className="text-black-2 text-lg font-light">
           {selectedShoe?.description}
         </p>
