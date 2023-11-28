@@ -1,14 +1,9 @@
 import Box from '@mui/material/Box';
 
-import CancelIcon from '@mui/icons-material/Close';
-import EditIcon from '@mui/icons-material/Edit';
-import SaveIcon from '@mui/icons-material/Save';
 
 import {
   DataGrid,
-  GridActionsCellItem,
-  GridRowEditStopReasons,
-  GridRowModes,
+  GridRowEditStopReasons
 } from '@mui/x-data-grid';
 import * as React from 'react';
 import { useEffect, useState } from 'react';
@@ -30,30 +25,6 @@ export default function AccountsListTable({ userData, updateRole }) {
   const handleRowEditStop = (params, event) => {
     if (params.reason === GridRowEditStopReasons.rowFocusOut) {
       event.defaultMuiPrevented = true;
-    }
-  };
-
-  const handleEditClick = (id) => () => {
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
-  };
-
-  const handleSaveClick = (id) => async () => {
-    const updatedRow = rows.find((row) => row.id === id);
-    try {
-      updateRole(updatedRow.id, updatedRow);
-    } catch (error) {}
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.View } });
-  };
-
-  const handleCancelClick = (id) => () => {
-    setRowModesModel({
-      ...rowModesModel,
-      [id]: { mode: GridRowModes.View, ignoreModifications: true },
-    });
-
-    const editedRow = rows.find((row) => row.id === id);
-    if (editedRow.isNew) {
-      setRows(rows.filter((row) => row.id !== id));
     }
   };
 
@@ -98,50 +69,9 @@ export default function AccountsListTable({ userData, updateRole }) {
       field: 'role',
       headerName: 'is Admin ?',
       width: 150,
-      editable: true,
 
       type: 'singleSelect',
       valueOptions: roles,
-    },
-    {
-      field: 'actions',
-      type: 'actions',
-      headerName: 'Actions',
-      width: 300,
-      cellClassName: 'actions',
-      getActions: ({ id, row }) => {
-        const isInEditMode = rowModesModel[id]?.mode === GridRowModes.Edit;
-
-        if (isInEditMode) {
-          return [
-            <GridActionsCellItem
-              icon={<SaveIcon />}
-              label="Save"
-              sx={{
-                color: 'primary.main',
-              }}
-              onClick={handleSaveClick(id)}
-            />,
-            <GridActionsCellItem
-              icon={<CancelIcon />}
-              label="Cancel"
-              className="textPrimary"
-              onClick={handleCancelClick(id)}
-              color="inherit"
-            />,
-          ];
-        }
-
-        return [
-          <GridActionsCellItem
-            icon={<EditIcon className="transparent dark:text-gray-300" />}
-            label="Edit"
-            className="textPrimary"
-            onClick={handleEditClick(id)}
-            color="inherit"
-          />,
-        ];
-      },
     },
   ];
 
