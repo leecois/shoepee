@@ -8,6 +8,7 @@ import {
 } from '@heroicons/react/24/outline';
 import OrderDetailModal from '../../customer/components/Profile/OrderDetailModal';
 import Box from '@mui/material/Box';
+import { enqueueSnackbar } from 'notistack';
 
 const OrdersTable = ({
   orderList,
@@ -24,22 +25,24 @@ const OrdersTable = ({
   };
   const confirmOrder = (orderId) => {
     acceptOrder(orderId);
+    enqueueSnackbar('Order confirmed successfully', { variant: 'success' });
   };
   const startShipping = (orderId) => {
     deliveryOrder(orderId);
+    enqueueSnackbar('Shipping started successfully', { variant: 'success' });
   };
   const completedOrder = (orderId) => {
     completeOrder(orderId);
+    enqueueSnackbar('Order completed successfully', { variant: 'success' });
   };
   const handleViewDetails = (order) => {
     // Find the full order data with 'orderItem' details from 'orderList'
-    const fullOrderData = orderList.content.find(o => o.orderId === order.id);
-  
+    const fullOrderData = orderList.content.find((o) => o.orderId === order.id);
+
     // Set the selected order with all its details
     setSelectedOrder(fullOrderData);
     setIsModalOpen(true);
   };
-  
 
   const columns = [
     { field: 'id', headerName: 'Order ID', width: 70 },
@@ -89,7 +92,10 @@ const OrdersTable = ({
               <CheckBadgeIcon className="h-5 w-5 text-purple-500" />
             </button>
           )}
-          <button onClick={() => handleViewDetails(params.row)} title="View Details">
+          <button
+            onClick={() => handleViewDetails(params.row)}
+            title="View Details"
+          >
             <EyeIcon className="h-5 w-5" />
           </button>
         </div>
@@ -104,7 +110,8 @@ const OrdersTable = ({
             (order) =>
               !(
                 (order.paymentMethod === 'VNPAY' &&
-                order.paymentStatus === 'NOT PAID') || order.orderStatus === 'CANCELLED'
+                  order.paymentStatus === 'NOT PAID') ||
+                order.orderStatus === 'CANCELLED'
               )
           )
           .map((order) => ({
@@ -119,7 +126,7 @@ const OrdersTable = ({
               ? new Date(order.orderCompeledAt).toLocaleString()
               : 'N/A',
             orderAmt: order.orderAmt,
-            status: order.status, 
+            status: order.status,
             actions: '',
           }))
       : [];
